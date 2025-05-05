@@ -20,4 +20,6 @@
 
 word_t expr(char *e, bool *success);
 
+// int cmd_si(char *args);
+
 #endif

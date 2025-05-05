@@ -18,6 +18,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
+#include <memory/vaddr.h>
 
 static int is_batch_mode = false;
 
@@ -53,6 +54,90 @@ static int cmd_q(char *args) {
   return -1;
 }
 
+static int cmd_si(char *args) {
+  int n = 1;
+  
+  if (args != NULL) {
+    char *endptr = NULL;
+    n = strtol(args, &endptr, 10);
+    
+    // 不为空时运行
+    if (*endptr != '\0' || n <= 0) {
+      printf("Invalid argument: '%s'\n", args);
+      return 0;
+    }
+  } 
+
+  cpu_exec(n); // 执行n步命令
+  return 0;
+}
+
+static int cmd_info(char *args) {
+  char *arg = strtok(NULL, " ");
+  
+  if (arg == NULL) {
+    printf("Usage: info r - print register values\n");
+    return 0;
+  }
+
+  if (strcmp(arg, "r") == 0 || strcmp(arg, "reg") == 0) {
+    // 打印所有寄存器的值
+    isa_reg_display();
+    return 0;
+  }
+
+  printf("Unknown info command: '%s'\n", arg);
+  return 0;
+}
+
+static int cmd_x(char *args) {
+  if (args == NULL) {
+    printf("Usage x N EXPR\n");
+    return 0;
+  }
+  
+  char *n_str = strtok(args, " ");
+  if (n_str == NULL) {
+    printf("Error: Missing parameters\n");
+    return 0;
+  }
+
+  char *addr_str = strtok(NULL, " ");
+  if (addr_str == NULL) {
+    printf("Error: Missing address expression\n");
+    return 0;
+  }
+
+  char *endptr;
+  int n = strtol(n_str, &endptr, 10);
+  if (*endptr != '\0' || n <= 0) {
+    printf("Error: Invalid number of words: '%s'\n", n_str);
+    return 0;
+  }
+
+  //bool success = false;
+  vaddr_t addr;
+
+  if (strncmp(addr_str, "0x", 2) == 0 || strncmp(addr_str, "0x", 2) == 0) {
+    addr = strtoul(addr_str, &endptr, 16);
+  } else {
+    addr = strtoul(addr_str, &endptr, 10);
+  }
+
+  if (*endptr != '\0') {
+    printf("Error: Invalid address: '%s'\n", addr_str);
+    return 0;
+  }
+
+  printf("Memory at 0x%08x:\n", addr);
+  for (int i = 0; i < n; i ++ ) {
+    word_t data = vaddr_read(addr + i * sizeof(word_t), sizeof(word_t));
+    printf("0x%08lx: 0x%08x\n", addr + i * sizeof(word_t), data);
+  }
+
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -63,10 +148,13 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
+  { "si", "step to do the order", cmd_si},
+  { "info", "print information", cmd_info},
+  { "x", "Examine memory.", cmd_x},
   /* TODO: Add more commands */
 
 };
+
 
 #define NR_CMD ARRLEN(cmd_table)
 
