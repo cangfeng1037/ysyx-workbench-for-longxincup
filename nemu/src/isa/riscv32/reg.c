@@ -35,5 +35,32 @@ void isa_reg_display() {
 }
 
 word_t isa_reg_str2val(const char *s, bool *success) {
+  *success = false;
+
+  // 处理特殊寄存器
+  if (strcmp(s, "pc") == 0) { // pc程序寄存器，指向下一CPU指令的地址
+    *success = true;
+    return cpu.pc; // 返回程序计数器的值
+  }
+
+  // 处理通用寄存器
+  for (int i = 0; i < 32; i ++ ) {
+    if (strcmp(s, regs[i]) == 0) {
+      *success = true;
+      return cpu.gpr[i]; // 返回对应寄存器的值
+    }
+  }
+
+  // 处理数字寄存器名 (x0, x1, x31)
+  if(s[0] == 'x') {
+    char *endptr;
+    long reg_num = strtol(s + 1, &endptr, 10); // 转换字符串为10进制数
+    if (*endptr == '\0' && reg_num >= 0 && reg_num < 32) {
+      *success = true;
+      return cpu.gpr[reg_num]; // 返回对应寄存器的值
+    }
+  }
+
   return 0;
+
 }
