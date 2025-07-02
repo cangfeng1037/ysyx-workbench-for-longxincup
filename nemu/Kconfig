@@ -215,3 +215,17 @@ config RT_CHECK
   default y
 
 endmenu
+
+menu "Testing and Debugging"
+
+# ... 其他选项 ...
+
+config WATCHPOINT
+  bool "Enable watchpoint support"
+  default y
+  help
+    Enable watchpoint functionality for debugging.
+    When enabled, NEMU will check watchpoints after each instruction execution.
+    This may impact performance but provides powerful debugging capabilities.
+
+endmenu

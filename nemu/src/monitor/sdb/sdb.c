@@ -72,6 +72,36 @@ static int cmd_si(char *args) {
   return 0;
 }
 
+// w,添加监视点
+static int cmd_w(char *args) {
+  if (args == NULL || *args == '\0') {
+    printf("Usage: w EXPR - Set a watchpoint for expression EXPR\n");
+    return 0;
+  }
+
+  create_watchpoint(args);
+  return 0;
+}
+
+// d,删除监视点
+static int cmd_d(char *args) {
+  if (args == NULL || *args == '\0') {
+    printf("Usage: d N - Delete watchpoint number N\n");
+    return 0;
+  }
+
+  char *endptr;
+  int no = strtol(args, &endptr, 10);
+
+  if (*endptr != '\0') {
+    printf("Error: Invalid watchpoint number '%s'\n", args);
+    return 0;
+  }
+
+  delete_watchpoint(no);
+  return 0;
+}
+
 static int cmd_info(char *args) {
   char *arg = strtok(NULL, " ");
   
@@ -83,6 +113,11 @@ static int cmd_info(char *args) {
   if (strcmp(arg, "r") == 0 || strcmp(arg, "reg") == 0) {
     // 打印所有寄存器的值
     isa_reg_display();
+    return 0;
+  }
+  else if (strcmp(arg, "w") == 0 || strcmp(arg, "watchpoints") == 0) {
+    // 打印所有监视点
+    print_watchpoints();
     return 0;
   }
 
@@ -151,6 +186,8 @@ static struct {
   { "si", "step to do the order", cmd_si},
   { "info", "print information", cmd_info},
   { "x", "Examine memory.", cmd_x},
+  { "w", "Set a watchpoint.", cmd_w},
+  { "d", "Delete a watchpoint.", cmd_d},
   /* TODO: Add more commands */
 
 };
