@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -g
-TARGET = ex3
-SRC = ex3.c
+TARGET = ex10
+SRC = ex10.c
 
 all: $(TARGET)
 

@@ -8,46 +8,47 @@ TESTS = tests/list_tests tests/list_algos_tests
 
 # 编译器和编译选项
 CC = cc
-CFLAGS = -g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG -fPIC
+CFLAGS = -g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG $(OPTFLAGS)
+LIBS = -ldl $(OPTLIBS)
+PREFIX ?= /usr/local
+
+SOURCES = $(wildcard src/**/*.c src/*.c)
+OBJECTS = $(patsubst %.c,%.o,$(SOURCES))
+
+TEST_SRC = $(wildcard tests/*_tests.c)
+TESTS = $(patsubst %.c,%,$(TEST_SRC))
+
+TARGET = build/liblcthw.a
+SO_TARGET = $(patsubst %.a,%.so,$(TARGET))
 
 # 默认目标
-all: $(TESTS) run_tests
+all: $(TARGET) $(SO_TARGET) tests
 
-# 目标清理命令
-clean:
-	rm -rf $(BUILD_DIR) $(LIST_OBJ) $(LIST_ALGOS_OBJ) $(TESTS)
-	rm -f tests/tests.log
-	find . -name "*.gc*" -exec rm {} \;
-	rm -rf `find . -name "*.dSYM" -print`
+dev: CFLAGS = -g -Wall -Isrc -Wall -Wextra $(OPTFLAGS)
+dev: all
 
-# 编译目标文件
-$(LIST_OBJ): src/lcthw/list.c
-	$(CC) $(CFLAGS) -c -o $@ $<
-
-$(LIST_ALGOS_OBJ): src/lcthw/list_algos.c
-	$(CC) $(CFLAGS) -c -o $@ $<
-
-# 构建静态库
-$(LIBRARY): $(LIST_OBJ) $(LIST_ALGOS_OBJ)
-	@mkdir -p $(BUILD_DIR)
-	ar rcs $@ $^
+$(TARGET): CFLAGS += -fPIC
+$(TARGET): build $(OBJECTS)
+	ar rcs $@ $(OBJECTS)
 	ranlib $@
 
-# 构建动态库
-$(SHARED_LIB): $(LIST_OBJ) $(LIST_ALGOS_OBJ)
-	@mkdir -p $(BUILD_DIR)
-	$(CC) -shared -o $@ $^
+$(SO_TARGET): $(TARGET) $(OBJECTS)
+	$(CC) -shared -o $@ $(OBJECTS)
+
+build:
+	@mkdir -p build
+	@mkdir -p bin
 
 # 编译测试程序
 tests/list_tests:  tests/list_tests.c $(LIBRARY)
-	$(CC) $(CFLAGS) $(LIBRARY) $< -o $@
+	$(CC) $(CFLAGS) $< -o $@ $(TARGET) $(LIBS)
 
 tests/list_algos_tests: tests/list_algos_tests.c $(LIBRARY) 
-	$(CC) $(CFLAGS) $(LIBRARY) $< -o $@
+	$(CC) $(CFLAGS) $< -o $@ $(TARGET) $(LIBS)
 
 # 运行测试脚本
 run_tests: $(TESTS)
 	sh ./tests/runtests.sh
 
 # 定义伪目标
-.PHONY: all clean run_tests
+.PHONY: all clean run_tests tests dev

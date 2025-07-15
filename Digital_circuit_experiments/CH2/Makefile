@@ -1,4 +1,4 @@
-TOPNAME = Mux241
+TOPNAME = encode83
 NXDC_FILES = constr/top.nxdc
 INC_PATH ?=
 
@@ -20,8 +20,8 @@ $(SRC_AUTO_BIND): $(NXDC_FILES)
 	python3 $(NVBOARD_HOME)/scripts/auto_pin_bind.py $^ $@
 
 # project source
-VSRCS = $(shell find $(abspath ./vsrc) -name "Mux241.v")
-CSRCS = $(shell find $(abspath ./csrc) -name "Vmux41_nvboard.cpp")
+VSRCS = $(shell find $(abspath ./vsrc) -name "encode83.v")
+CSRCS = $(shell find $(abspath ./csrc) -name "encode83_nvboard.cpp")
 CSRCS += $(SRC_AUTO_BIND)
 
 # rules for NVBoard
