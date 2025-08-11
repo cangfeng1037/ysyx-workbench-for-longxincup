@@ -34,7 +34,7 @@ static char* rl_gets() {
     line_read = NULL;
   }
 
-  line_read = readline("(nemu) ");
+  line_read = readline("(nemu) "); // 读取用户指令
 
   if (line_read && *line_read) {
     add_history(line_read);
@@ -249,9 +249,9 @@ void sdb_mainloop() {
 #endif
 
     int i;
-    for (i = 0; i < NR_CMD; i ++) {
-      if (strcmp(cmd, cmd_table[i].name) == 0) {
-        if (cmd_table[i].handler(args) < 0) { return; }
+    for (i = 0; i < NR_CMD; i ++) { // NR_CMD是ARRLEN(cmd_table)，
+      if (strcmp(cmd, cmd_table[i].name) == 0) { // 字符串匹配
+        if (cmd_table[i].handler(args) < 0) { return; } // 调用函数指针
         break;
       }
     }

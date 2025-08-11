@@ -33,13 +33,14 @@ enum {
 #define immU() do { *imm = SEXT(BITS(i, 31, 12), 20) << 12; } while(0)
 #define immS() do { *imm = (SEXT(BITS(i, 31, 25), 7) << 5) | BITS(i, 11, 7); } while(0)
 
+// src1，src2源操作数1，2，imm立即数，rd目标存储器编号
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type) {
   uint32_t i = s->isa.inst;
   int rs1 = BITS(i, 19, 15);
   int rs2 = BITS(i, 24, 20);
   *rd     = BITS(i, 11, 7);
   switch (type) {
-    case TYPE_I: src1R();          immI(); break;
+    case TYPE_I: src1R();          immI(); break; // 提取rs1寄存器值，读立即数immI()
     case TYPE_U:                   immU(); break;
     case TYPE_S: src1R(); src2R(); immS(); break;
     case TYPE_N: break;
