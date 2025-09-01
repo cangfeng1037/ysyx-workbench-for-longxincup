@@ -115,6 +115,8 @@ void init_monitor(int argc, char *argv[]) {
   /* Initialize differential testing. */
   init_difftest(diff_so_file, img_size, difftest_port);
 
+  //sdb_set_batch_mode();
+
   /* Initialize the simple debugger. */
   init_sdb();
 
@@ -123,7 +125,7 @@ void init_monitor(int argc, char *argv[]) {
   /* Display welcome message. */
   // welcome();
 }
-#else // CONFIG_TARGET_AM
+#else //CONFIG_TARGET_AM
 static long load_img() {
   extern char bin_start, bin_end;
   size_t size = &bin_end - &bin_start;
@@ -138,6 +140,6 @@ void am_init_monitor() {
   init_isa();
   load_img();
   IFDEF(CONFIG_DEVICE, init_device());
-  welcome();
+  //welcome();
 }
 #endif

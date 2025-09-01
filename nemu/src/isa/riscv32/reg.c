@@ -14,6 +14,7 @@
 ***************************************************************************************/
 
 #include <isa.h>
+#include <stdlib.h>
 #include "local-include/reg.h"
 
 const char *regs[] = {

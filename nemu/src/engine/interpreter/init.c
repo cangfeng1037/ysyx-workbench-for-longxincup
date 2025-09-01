@@ -18,8 +18,8 @@
 void sdb_mainloop();
 
 void engine_start() {
-#ifdef CONFIG_TARGET_AM
-  cpu_exec(-1);
+#ifdef CONFIG_TARGET_AM 
+  cpu_exec(-1); // 无符号数，所以-1是uint_64最大值
 #else
   /* Receive commands from user. */
   sdb_mainloop();
