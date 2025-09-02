@@ -18,14 +18,26 @@ char *strcpy(char *dst, const char *src) {
 
  // strncpy复制n个字符，不够就补‘\0’
 char *strncpy(char *dst, const char *src, size_t n) {
-  size_t i;
-  for (i = 0; i < n && src[i] != '\0'; i++ ) 
-    dst[i] = src[i];
+   if (dst == NULL) return NULL;
+   if (src == NULL) {
+    char *d = dst;
+    size_t i;
+    for (i = 0; i < n; i ++ ) *d ++ = '\0';
+    
+    return dst;
+   }
 
-  for(; i < n; i ++ )
-    dst[i] = '\0';
+   char *d = dst;
+   const char *s = src;
 
-  return dst;
+   size_t i;
+   for (i = 0; i < n && *s != '\0'; i ++ ) 
+    *d ++ = *s ++ ;
+   
+    for (; i < n; i ++ )
+      *d ++ = '\0';
+
+    return dst;
 }
 
 // 在dst末尾加src
