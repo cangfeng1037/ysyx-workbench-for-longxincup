@@ -31,6 +31,8 @@
 #include <stdlib.h>
 #endif
 
+
+
 #if CONFIG_MBASE + CONFIG_MSIZE > 0x100000000ul
 #define PMEM64 1
 #endif
@@ -46,4 +48,10 @@ typedef uint16_t ioaddr_t;
 
 #include <debug.h>
 
+#endif
+
+#ifdef CONFIG_FTRACE
+void ftrace_check(vaddr_t pc, uint32_t inst);
+#else
+static inline void ftrace_check(vaddr_t pc, uint32_t inst) {}
 #endif

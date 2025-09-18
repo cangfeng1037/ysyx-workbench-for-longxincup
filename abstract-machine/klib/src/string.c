@@ -22,20 +22,21 @@ char *strncpy(char *dst, const char *src, size_t n) {
    if (src == NULL) {
     char *d = dst;
     size_t i;
-    for (i = 0; i < n; i ++ ) *d ++ = '\0';
+  
+   for (i = 0; i < n; i ++ ) *d ++ = '\0';
     
     return dst;
    }
 
-   char *d = dst;
-   const char *s = src;
 
-   size_t i;
-   for (i = 0; i < n && *s != '\0'; i ++ ) 
-    *d ++ = *s ++ ;
+
+    char *d = dst;
+    const char *s = src;
+
+    size_t i;
+    for (i = 0; i < n && *s != '\0'; i ++ ) {*d ++ = *s ++ ;}
    
-    for (; i < n; i ++ )
-      *d ++ = '\0';
+    for (; i < n; i ++ ){ *d ++ = '\0';}
 
     return dst;
 }
