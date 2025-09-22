@@ -16,10 +16,25 @@
 #include <isa.h>
 #include <cpu/difftest.h>
 #include "../local-include/reg.h"
+#include <stdio.h>
 
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
-  return false;
+
+  for (int i = 0; i < 32; i ++ )
+    if(cpu.gpr[i] != ref_r -> gpr[i]) {
+      printf("Difftest failed at pc = 0x%08x\n", (uint32_t)pc);
+      return false;
+    }
+
+  if(cpu.pc != ref_r -> pc) {
+    printf("Difftest failed at pc = 0x%08x\n", (uint32_t)pc);
+    return false;
+  }
+
+  return true;
 }
+
+ 
 
 void isa_difftest_attach() {
 }

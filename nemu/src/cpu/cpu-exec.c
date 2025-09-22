@@ -40,6 +40,10 @@ typedef struct {
 extern Func_Info symbols[];
 
 Func_Info* find_func(uint32_t addr);
+
+#define MAX_CALL_DEPTH 256
+static int call_depth = 0;
+static vaddr_t ra_stack[MAX_CALL_DEPTH]; // 保存返回地址的栈
 #endif
 
 CPU_state cpu = {};
@@ -51,9 +55,7 @@ static bool g_print_step = false;
 char *buffering[N];
 bool buffer_full = false;
 
-#define MAX_CALL_DEPTH 256
-static int call_depth = 0;
-static vaddr_t ra_stack[MAX_CALL_DEPTH]; // 保存返回地址的栈
+
 
 int cnt = 0 ;
 
@@ -78,6 +80,7 @@ void iringbuf_output() {
   }
 }
 
+#ifdef CONFIG_FTRACE
 // ftrace函数调用检测
 void ftrace_check(vaddr_t pc, uint32_t inst) {
   if (!ftrace_enabled) return;  // 如果没有启用ftrace，直接返回
@@ -121,6 +124,8 @@ void ftrace_check(vaddr_t pc, uint32_t inst) {
     }
   }
 }
+
+#endif
 
 void device_update();
 

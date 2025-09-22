@@ -158,7 +158,9 @@ static long load_img() {
 
   if (magic[0] == 0x7f && magic[1] == 'E' && magic[2] == 'L' && magic[3] == 'F') {
     Log("Detected ELF file: %s", img_file);
+    #ifdef CONFIG_FTRACE
     load_elf(fp);
+    #endif
   }
 
   fseek(fp, 0, SEEK_END);
@@ -187,8 +189,9 @@ static int parse_args(int argc, char *argv[]) {
     {0          , 0                , NULL,  0 },
   };
 
+  #ifdef CONFIG_FTRACE
   char *elf_file = NULL; // 储存elf文件路径
-
+  #endif
 
 
   int o;

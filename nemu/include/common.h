@@ -53,5 +53,5 @@ typedef uint16_t ioaddr_t;
 #ifdef CONFIG_FTRACE
 void ftrace_check(vaddr_t pc, uint32_t inst);
 #else
-static inline void ftrace_check(vaddr_t pc, uint32_t inst) {}
+//static inline void ftrace_check(vaddr_t pc, uint32_t inst) {}
 #endif
