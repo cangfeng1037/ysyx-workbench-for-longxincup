@@ -2,6 +2,13 @@
 TOP_MODULE = top
 TOPNAME = $(TOP_MODULE)
 
+
+IMAGE ?=
+ELF   ?=
+ARGS  ?= 
+WAVE  ?= 0
+
+
 # 工具配置
 VERILATOR = verilator
 VERILATOR_CFLAGS = -Wall --cc --trace --exe --build -j 0 \
@@ -43,13 +50,13 @@ $(BIN): $(VSRCS) $(CSRCS)
 # 仿真运行
 sim: $(BIN)
 	@echo "Running simulation..."
-	@$(BIN)
+	@$(BIN) $(IMAGE)
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 
 # 快速运行
 run: $(BIN)
 	@echo "Running simulation (quick)..."
-	@$(BIN)
+	@$(BIN) $(IMAGE)
 
 # 调试信息
 info:

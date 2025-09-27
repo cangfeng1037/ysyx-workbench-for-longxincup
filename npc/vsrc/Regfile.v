@@ -17,7 +17,9 @@ module ysyx_25080212_Regfile #(
     input [ADDR_WIDTH - 1 : 0] rd,
     input [DATA_WIDTH - 1 : 0] din,
 
-    input wen
+    input wen,
+
+    output [DATA_WIDTH-1:0] x10_value
 );
     reg [DATA_WIDTH - 1 : 0] regs_out [2**ADDR_WIDTH - 1 : 0];
 
@@ -30,8 +32,16 @@ module ysyx_25080212_Regfile #(
     
 
     // 异步读，组合逻辑
-    assign rdata1 = regs_out[rs1];
-    assign rdata2 = regs_out[rs2];
+    assign rdata1 = (rs1 == {ADDR_WIDTH{1'b0}}) ? {DATA_WIDTH{1'b0}} : regs_out[rs1];
+    assign rdata2 = (rs2 == {ADDR_WIDTH{1'b0}}) ? {DATA_WIDTH{1'b0}} : regs_out[rs2];
+
+    assign x10_value = regs_out[5'd10];
+
+    export "DPI-C" function rf_read;
+    function int unsigned rf_read(input int idx);
+        if (idx == 0) rf_read = '0;
+        else          rf_read = regs_out[idx];
+    endfunction
 endmodule
 
 

@@ -3,7 +3,8 @@ module top(
     input rst,
 
     output [31 : 0] pc,
-    input [31 : 0] inst
+    input [31 : 0] inst,
+    output [31 : 0] halt_ret
 );
     // 声明DPI-C函数
     import "DPI-C" function void ebreak(); 
@@ -18,7 +19,8 @@ module top(
         .clk(clk),
         .rst(rst),
         .pc(pc),
-        .inst(inst)
+        .inst(inst),
+        .halt_ret(halt_ret)
     );
 
     // 上升沿检测ebreak指令并调用DPI-C函数

@@ -34,6 +34,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vtop VL_NOT_FINAL : public VerilatedModel {
     VL_IN8(&rst,0,0);
     VL_OUT(&pc,31,0);
     VL_IN(&inst,31,0);
+    VL_OUT(&halt_ret,31,0);
 
     // CELLS
     // Public to allow access to /* verilator public */ items.
@@ -74,6 +75,9 @@ class alignas(VL_CACHE_LINE_BYTES) Vtop VL_NOT_FINAL : public VerilatedModel {
     void trace(VerilatedTraceBaseC* tfp, int levels, int options = 0) { contextp()->trace(tfp, levels, options); }
     /// Retrieve name of this model instance (as passed to constructor).
     const char* name() const;
+
+    /// DPI Export functions
+    static unsigned int rf_read(int idx);
 
     // Abstract methods from VerilatedModel
     const char* hierName() const override final;

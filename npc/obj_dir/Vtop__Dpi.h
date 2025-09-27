@@ -15,8 +15,12 @@ extern "C" {
 #endif
 
 
+    // DPI EXPORTS
+    // DPI export at /home/cangfeng_/ysyx-workbench/npc/vsrc/Regfile.v:41:27
+    extern unsigned int rf_read(int idx);
+
     // DPI IMPORTS
-    // DPI import at /home/cangfeng_/ysyx-workbench/npc/vsrc/top.v:9:34
+    // DPI import at /home/cangfeng_/ysyx-workbench/npc/vsrc/top.v:10:34
     extern void ebreak();
 
 #ifdef __cplusplus

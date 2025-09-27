@@ -14,3 +14,11 @@
 #include "Vtop__Dpi.h"
 #include "Vtop.h"
 
+#ifndef VL_DPIDECL_rf_read_
+#define VL_DPIDECL_rf_read_
+unsigned int rf_read(int idx) {
+    // DPI export at /home/cangfeng_/ysyx-workbench/npc/vsrc/Regfile.v:41:27
+    return Vtop::rf_read(idx);
+}
+#endif
+
