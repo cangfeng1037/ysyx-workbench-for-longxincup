@@ -31,7 +31,9 @@ CSRCS = $(shell find $(abspath ./csrc) -name "*.cpp")
 # 编译标志
 INCFLAGS = $(addprefix -I, $(INC_PATH))
 CXXFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(TOPNAME)\""
-
+CFLAGS += -DCONFIG_DIFFTEST
+CXXFLAGS += -DCONFIG_DIFFTEST
+LDFLAGS += -ldl
 # 默认目标
 all: sim
 
@@ -50,13 +52,16 @@ $(BIN): $(VSRCS) $(CSRCS)
 # 仿真运行
 sim: $(BIN)
 	@echo "Running simulation..."
-	@$(BIN) $(IMAGE)
+	@$(BIN) $(IMAGE) 
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 
 # 快速运行
 run: $(BIN)
 	@echo "Running simulation (quick)..."
-	@$(BIN) $(IMAGE)
+	@$(BIN) $(IMAGE) # 快速运行
+run: $(BIN)
+	@echo "Running simulation (quick)..."
+	@$(BIN) $(IMAGE) 
 
 # 调试信息
 info:

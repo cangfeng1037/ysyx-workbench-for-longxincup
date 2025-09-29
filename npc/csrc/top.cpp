@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
+#include "difftest.h"
 
 #define MAX_SIZE (1024 * 1024 * 4) // 定义最大内存4MB
 
@@ -41,6 +42,15 @@ static svScope regfile_scope = nullptr;
 
 static void init_dpi_scope() {
     regfile_scope = svGetScopeFromName("TOP.top.cpu.regfile");
+    if (!regfile_scope) {
+        fprintf(stderr, "Error: DPI scope 'TOP.top.cpu.regfile' not found. 请检查实例名与层次路径。\n");
+        // 可在此打印或查看 obj_dir/Vtop__Syms.h 中的实例层次来确认
+    }
+}
+
+static inline void ensure_regfile_scope() {
+    if (!regfile_scope) init_dpi_scope();
+    if (regfile_scope) svSetScope(regfile_scope);
 }
 
 //InstMem g_imem;
@@ -129,6 +139,22 @@ void eval() {
     }
 
     cnt ++ ;
+#ifdef CONFIG_DIFFTEST
+    if (!sim_exit_flag && cnt > 3) { // 复位后开始差分测试
+        difftest_step(1);
+
+        ensure_regfile_scope();
+
+        CPU_state dut_s;
+        for (int i = 0; i < 32; i ++ ) dut_s.gpr[i] = rf_read(i);
+        dut_s.pc = top -> pc;
+        bool check = difftest_check_reg(dut_s.gpr, dut_s.pc);
+        if (!check) {
+            printf("Difftest failed at cycle %d, pc = 0x%08x\n, inst = 0x%08x\n", cnt, dut_s.pc, top->inst);
+            exit(1);
+        }
+    }
+#endif
 }
 
 void init_sim() {
@@ -224,6 +250,9 @@ int main(int argc, char** argv) {
 
     init_sim();
 
+#ifdef CONFIG_DIFFTEST
+    difftest_init(START_ADDR, mem, n);
+#endif
     sdb_mainloop();
 
     if(!sim_exit_flag)printf("\n=== Simulation completed without ebreak ===\n");

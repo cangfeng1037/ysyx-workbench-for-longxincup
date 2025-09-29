@@ -38,12 +38,15 @@ VM_MODPREFIX = Vtop
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
   -DTOP_NAME="Vtop" \
+  -DCONFIG_DIFFTEST \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \
+  -ldl \
 
 # User .cpp files (from .cpp's on Verilator command line)
 VM_USER_CLASSES = \
+  difftest \
   top \
 
 # User .cpp directories (from .cpp's on Verilator command line)
@@ -60,6 +63,8 @@ include $(VERILATOR_ROOT)/include/verilated.mk
 ### Executable rules... (from --exe)
 VPATH += $(VM_USER_DIR)
 
+difftest.o: /home/cangfeng_/ysyx-workbench/npc/csrc/difftest.cpp 
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
 top.o: /home/cangfeng_/ysyx-workbench/npc/csrc/top.cpp 
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
 

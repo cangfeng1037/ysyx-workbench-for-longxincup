@@ -51,6 +51,7 @@ uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 
+#ifdef CONFIG_ITRACE
 #define N 16
 char *buffering[N];
 bool buffer_full = false;
@@ -65,7 +66,7 @@ void iringbuf(Decode *s) {
   }
 
   buffering[cnt] = (char *)malloc(128 * sizeof(char));
-  strcpy(buffering[cnt], s -> logbuf);
+  strcpy(buffering[cnt], s->logbuf);
 
   cnt ++ ;
   if (cnt >= N) {cnt = 0; buffer_full = true;}
@@ -79,6 +80,7 @@ void iringbuf_output() {
       puts(buffering[j]);
   }
 }
+#endif
 
 #ifdef CONFIG_FTRACE
 // ftrace函数调用检测
@@ -209,9 +211,9 @@ static void statistic() {
 
 void assert_fail_msg() {
   isa_reg_display();
-
+#ifdef CONFIG_ITRACE
   iringbuf_output();
-  
+#endif
   statistic();
 }
 
@@ -241,7 +243,9 @@ void cpu_exec(uint64_t n) {
            (nemu_state.halt_ret == 0 ? ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN) :
             ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))),
           nemu_state.halt_pc);
+  #ifdef CONFIG_ITRACE
       iringbuf_output();
+  #endif
       // fall through
     case NEMU_QUIT: statistic();
   }
