@@ -55,6 +55,12 @@ __am_asm_trap:
   mv a0, sp
   call __am_irq_handle
 
+  // 切换到新的上下文
+  mv t0, a0
+  beqz t0, 1f
+  mv sp, t0
+  
+1:
   LOAD t1, OFFSET_STATUS(sp)
   LOAD t2, OFFSET_EPC(sp)
   csrw mstatus, t1

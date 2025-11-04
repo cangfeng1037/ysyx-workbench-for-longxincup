@@ -7,16 +7,14 @@
 default: /home/cangfeng_/ysyx-workbench/npc/obj_dir/Vtop
 
 ### Constants...
-# Perl executable (from $PERL, defaults to 'perl' if not set)
+# Perl executable (from $PERL)
 PERL = perl
-# Python3 executable (from $PYTHON3, defaults to 'python3' if not set)
-PYTHON3 = python3
 # Path to Verilator kit (from $VERILATOR_ROOT)
-VERILATOR_ROOT = /home/cangfeng_/oss-cad-suite/share/verilator
+VERILATOR_ROOT = /usr/local/share/verilator
 # SystemC include directory with systemc.h (from $SYSTEMC_INCLUDE)
-SYSTEMC_INCLUDE ?=
+SYSTEMC_INCLUDE ?= 
 # SystemC library directory with libsystemc.a (from $SYSTEMC_LIBDIR)
-SYSTEMC_LIBDIR ?=
+SYSTEMC_LIBDIR ?= 
 
 ### Switches...
 # C++ code coverage  0/1 (from --prof-c)
@@ -37,24 +35,23 @@ VM_PREFIX = Vtop
 VM_MODPREFIX = Vtop
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
-  -DTOP_NAME="Vtop" \
-  -DCONFIG_DIFFTEST \
-  -DCONFIG_MTRACE \
-  -DCONFIG_PATCH \
+	-DTOP_NAME="Vtop" \
+	-DCONFIG_MTRACE \
+	-DCONFIG_PATCH \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \
-  -ldl \
+	-ldl \
 
 # User .cpp files (from .cpp's on Verilator command line)
 VM_USER_CLASSES = \
-  difftest \
-  top \
+	difftest \
+	top \
 
 # User .cpp directories (from .cpp's on Verilator command line)
 VM_USER_DIR = \
-  .. \
-  ../csrc \
+	/home/cangfeng_/ysyx-workbench/npc/csrc \
+
 
 ### Default rules...
 # Include list of all generated classes
@@ -65,13 +62,14 @@ include $(VERILATOR_ROOT)/include/verilated.mk
 ### Executable rules... (from --exe)
 VPATH += $(VM_USER_DIR)
 
-difftest.o: /home/cangfeng_/ysyx-workbench/npc/csrc/difftest.cpp 
-	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
-top.o: /home/cangfeng_/ysyx-workbench/npc/csrc/top.cpp 
-	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
+difftest.o: /home/cangfeng_/ysyx-workbench/npc/csrc/difftest.cpp
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+top.o: /home/cangfeng_/ysyx-workbench/npc/csrc/top.cpp
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 
 ### Link rules... (from --exe)
 /home/cangfeng_/ysyx-workbench/npc/obj_dir/Vtop: $(VK_USER_OBJS) $(VK_GLOBAL_OBJS) $(VM_PREFIX)__ALL.a $(VM_HIER_LIBS)
 	$(LINK) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS) $(LIBS) $(SC_LIBS) -o $@
+
 
 # Verilated -*- Makefile -*-

@@ -14,6 +14,7 @@
 ***************************************************************************************/
 
 #include "local-include/reg.h"
+#include "local-include/csr.h"
 #include <cpu/cpu.h>
 #include <cpu/ifetch.h>
 #include <cpu/decode.h>
@@ -35,7 +36,7 @@ enum {
 #define immS() do { *imm = (SEXT(BITS(i, 31, 25), 7) << 5) | BITS(i, 11, 7); } while(0)
 #define immJ() do { *imm = (SEXT(BITS(i, 31, 31), 1) << 20) | BITS(i, 19, 12) << 12 | BITS(i, 20, 20) << 11 | BITS(i, 30, 21) << 1;} while(0)
 #define immB() do { *imm = (SEXT(BITS(i, 31, 31) , 1) << 12) | BITS(i, 7, 7) << 11 | BITS(i, 30, 25) << 5 | BITS(i, 11, 8) << 1;} while(0)
-
+#define csrN() do { *imm = SEXT(BITS(i, 31, 20), 12); } while(0)
 // src1，src2源操作数1，2，imm立即数，rd目标存储器编号
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type) {
   uint32_t i = s->isa.inst;
@@ -85,6 +86,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 100 ????? 00000 11", lbu, I, R(rd) = Mr(src1 + imm, 1)); // lbu,读一个字节0符号数)
   INSTPAT("??????? ????? ????? 001 ????? 00000 11", lh, I, R(rd) = SEXT(Mr(src1 + imm, 2), 16)); // lh,读半节，符号扩展为32位
   INSTPAT("??????? ????? ????? 101 ????? 00000 11", lhu, I, R(rd) = Mr(src1 + imm, 2)); // lhu,读半节，0扩展
+  INSTPAT("??????? ????? ????? 000 ????? 00000 11", lb, I, R(rd) = SEXT(Mr(src1 + imm, 1), 8)); // lb,读一个字节，符号扩展为32位
 
 
   INSTPAT("0000000 00001 ????? 011 ????? 00100 11", seqz, I, R(rd) = src1 == 0 ? 1 : 0 ); // seqz指令，判断src1是否为0，若为0则rd=1，否则rd=0
@@ -107,10 +109,38 @@ static int decode_exec(Decode *s) {
   INSTPAT("0000000 ????? ????? 111 ????? 01100 11", and, R, R(rd) = src1 & src2);
   INSTPAT("0000001 ????? ????? 000 ????? 01100 11", mul, R, R(rd) = src1 * src2);
   INSTPAT("0000001 ????? ????? 001 ????? 01100 11", mulh, R, R(rd) = ((int64_t)(sword_t)src1 * (int64_t)(sword_t)src2) >> 32;); // mulh,有符号乘法高32位
-  INSTPAT("0000001 ????? ????? 100 ????? 01100 11", div, R, R(rd) = src1 / src2);
-  INSTPAT("0000001 ????? ????? 101 ????? 01100 11", divu, R, R(rd) = (word_t)src1 / (word_t)src2); // divu,无符号除法
-  INSTPAT("0000001 ????? ????? 110 ????? 01100 11", rem, R, R(rd) = src1 % src2); // rem,取余数
-  INSTPAT("0000001 ????? ????? 111 ????? 01100 11", remu, R, R(rd) = (word_t)src1 % (word_t)src2); // remu,无符号取余数
+  INSTPAT("0000001 ????? ????? 011 ????? 01100 11", mulhu, R, R(rd) = ((uint64_t)(word_t)src1 * (uint64_t)(word_t)src2) >> 32;); // mulhu,无符号乘法高32位
+  INSTPAT("0000000 ????? ????? 000 ????? 01100 11", mv, R, R(rd) = src1); // mv指令，寄存器间搬运
+  // 除法，处理除数为0的情况
+
+  INSTPAT("0000001 ????? ????? 100 ????? 01100 11", div, R, {
+      sword_t a = (sword_t)src1; sword_t b = (sword_t)src2;
+      if (b == 0) R(rd) = (word_t)-1;
+      else if (a == INT32_MIN && b == -1) R(rd) = INT32_MIN; // INT_MIN / -1溢出
+      else R(rd) = (word_t)(a / b);
+    }
+  );
+  
+  INSTPAT("0000001 ????? ????? 101 ????? 01100 11", divu, R, {
+      word_t a = (word_t)src1; word_t b = (word_t)src2;
+      if (b == 0) R(rd) = (word_t)-1;
+      else R(rd) = a / b;
+    }
+  ); // divu,无符号除法
+  
+  INSTPAT("0000001 ????? ????? 110 ????? 01100 11", rem, R, {
+      sword_t a = (sword_t)src1; sword_t b = (sword_t)src2;
+      if (b == 0) R(rd) = (word_t)-1;
+      else if (a == INT32_MIN && b == -1) R(rd) = INT32_MIN; // INT_MIN / -1溢出
+      else R(rd) = (word_t)(a % b);
+    }
+  );
+  INSTPAT("0000001 ????? ????? 111 ????? 01100 11", remu, R, {
+      word_t a = (word_t)src1; word_t b = (word_t)src2;
+      if (b == 0) R(rd) = (word_t)-1;
+      else R(rd) = a % b;
+    }
+  ); // remu,无符号取余数
 
   INSTPAT("0000000 ????? ????? 010 ????? 01100 11", slt, R, R(rd) = (sword_t)src1 < (sword_t)src2 ? 1 : 0); // slt,比较置数
   INSTPAT("0000000 ????? ????? 001 ????? 01100 11", sll, R, R(rd) = src1 << (src2 & 0x1f)); // sll,逻辑左移src2的低5位位
@@ -134,6 +164,29 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 010 ????? 01000 11", sw, S, Mw(src1 + imm, 4, src2));
   INSTPAT("??????? ????? ????? 000 ????? 01000 11", sb, S, Mw(src1 + imm, 1, src2));
 
+  // CSR系统寄存器操作
+  INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw, I, { csr_write(imm, src1); R(rd) = csr_read(imm); } ); // csrrw指令，读写CSR寄存器
+  INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs, I, {
+  R(rd) = csr_read(imm);
+  if (src1 != 0) csr_write(imm, csr_read(imm) | src1);
+});
+
+  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall, N, {
+      //printf("ecall at pc = " FMT_WORD "\n", s->pc);
+      word_t epc = s->pc;
+      word_t exc_entry = isa_raise_intr(11, epc); // 11是ecall的异常号
+      s->dnpc = exc_entry;
+  });
+
+  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret, N, {
+    word_t mstatus = csr_read(0x342); // CSR_MSTATUS
+    word_t mpie = (mstatus >> 7) & 0x1;
+    mstatus = (mstatus & ~(1 << 3)) | (mpie << 3); // 恢复mie
+    mstatus = mstatus | (1 << 7); // 设置mpie为1
+    csr_write(0x300, mstatus);
+    cpu.pc = csr_read(0x341); // CSR_MEPCc s
+    s->dnpc = cpu.pc;
+  });
 
   // 无效指令
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv    , N, INV(s->pc));

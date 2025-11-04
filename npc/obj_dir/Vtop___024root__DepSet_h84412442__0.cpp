@@ -2,7 +2,9 @@
 // DESCRIPTION: Verilator output: Design implementation internals
 // See Vtop.h for the primary calling header
 
-#include "Vtop__pch.h"
+#include "verilated.h"
+#include "verilated_dpi.h"
+
 #include "Vtop__Syms.h"
 #include "Vtop___024root.h"
 
@@ -28,7 +30,7 @@ VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__cpu__DOT__mem__DOT__pm
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiimwrap_top__DOT__cpu__DOT__mem__DOT__pmem_read_TOP\n"); );
     // Body
     int raddr__Vcvt;
-    raddr__Vcvt = raddr;
+    for (size_t raddr__Vidx = 0; raddr__Vidx < 1; ++raddr__Vidx) raddr__Vcvt = raddr;
     int pmem_read__Vfuncrtn__Vcvt;
     pmem_read__Vfuncrtn__Vcvt = pmem_read(raddr__Vcvt);
     pmem_read__Vfuncrtn = pmem_read__Vfuncrtn__Vcvt;
@@ -40,11 +42,11 @@ VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__cpu__DOT__mem__DOT__pm
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiimwrap_top__DOT__cpu__DOT__mem__DOT__pmem_write_TOP\n"); );
     // Body
     int waddr__Vcvt;
-    waddr__Vcvt = waddr;
+    for (size_t waddr__Vidx = 0; waddr__Vidx < 1; ++waddr__Vidx) waddr__Vcvt = waddr;
     int wdata__Vcvt;
-    wdata__Vcvt = wdata;
+    for (size_t wdata__Vidx = 0; wdata__Vidx < 1; ++wdata__Vidx) wdata__Vcvt = wdata;
     int wmask__Vcvt;
-    wmask__Vcvt = wmask;
+    for (size_t wmask__Vidx = 0; wmask__Vidx < 1; ++wmask__Vidx) wmask__Vcvt = wmask;
     pmem_write(waddr__Vcvt, wdata__Vcvt, wmask__Vcvt);
 }
 
@@ -53,11 +55,11 @@ VL_ATTR_COLD void Vtop___024root___dump_triggers__ico(Vtop___024root* vlSelf);
 #endif  // VL_DEBUG
 
 void Vtop___024root___eval_triggers__ico(Vtop___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___eval_triggers__ico\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___eval_triggers__ico\n"); );
     // Body
-    vlSelfRef.__VicoTriggered.setBit(0U, (IData)(vlSelfRef.__VicoFirstIteration));
+    vlSelf->__VicoTriggered.at(0U) = (0U == vlSelf->__VicoIterCount);
 #ifdef VL_DEBUG
     if (VL_UNLIKELY(vlSymsp->_vm_contextp__->debug())) {
         Vtop___024root___dump_triggers__ico(vlSelf);
@@ -70,16 +72,18 @@ VL_ATTR_COLD void Vtop___024root___dump_triggers__act(Vtop___024root* vlSelf);
 #endif  // VL_DEBUG
 
 void Vtop___024root___eval_triggers__act(Vtop___024root* vlSelf) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___eval_triggers__act\n"); );
+    if (false && vlSelf) {}  // Prevent unused
     Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    auto& vlSelfRef = std::ref(*vlSelf).get();
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___eval_triggers__act\n"); );
     // Body
-    vlSelfRef.__VactTriggered.setBit(0U, ((IData)(vlSelfRef.clk) 
-                                          & (~ (IData)(vlSelfRef.__Vtrigprevexpr___TOP__clk__0))));
-    vlSelfRef.__VactTriggered.setBit(1U, ((IData)(vlSelfRef.rst) 
-                                          & (~ (IData)(vlSelfRef.__Vtrigprevexpr___TOP__rst__0))));
-    vlSelfRef.__Vtrigprevexpr___TOP__clk__0 = vlSelfRef.clk;
-    vlSelfRef.__Vtrigprevexpr___TOP__rst__0 = vlSelfRef.rst;
+    vlSelf->__VactTriggered.at(0U) = (((IData)(vlSelf->clk) 
+                                       & (~ (IData)(vlSelf->__Vtrigrprev__TOP__clk))) 
+                                      | ((IData)(vlSelf->rst) 
+                                         & (~ (IData)(vlSelf->__Vtrigrprev__TOP__rst))));
+    vlSelf->__VactTriggered.at(1U) = ((IData)(vlSelf->clk) 
+                                      & (~ (IData)(vlSelf->__Vtrigrprev__TOP__clk)));
+    vlSelf->__Vtrigrprev__TOP__clk = vlSelf->clk;
+    vlSelf->__Vtrigrprev__TOP__rst = vlSelf->rst;
 #ifdef VL_DEBUG
     if (VL_UNLIKELY(vlSymsp->_vm_contextp__->debug())) {
         Vtop___024root___dump_triggers__act(vlSelf);

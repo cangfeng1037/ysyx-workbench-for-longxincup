@@ -20,7 +20,7 @@
 using Vtop__Vcb_rf_read_t = void (*) (Vtop__Syms* __restrict vlSymsp, IData/*31:0*/ idx, IData/*31:0*/ &rf_read__Vfuncrtn);
 
 // SYMS CLASS (contains all model state)
-class alignas(VL_CACHE_LINE_BYTES)Vtop__Syms final : public VerilatedSyms {
+class Vtop__Syms final : public VerilatedSyms {
   public:
     // INTERNAL STATE
     Vtop* const __Vm_modelp;
@@ -44,6 +44,6 @@ class alignas(VL_CACHE_LINE_BYTES)Vtop__Syms final : public VerilatedSyms {
 
     // METHODS
     const char* name() { return TOP.name(); }
-};
+} VL_ATTR_ALIGNED(VL_CACHE_LINE_BYTES);
 
 #endif  // guard

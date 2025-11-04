@@ -31,6 +31,10 @@ static inline bool in_pmem(paddr_t addr) {
   return addr - CONFIG_MBASE < CONFIG_MSIZE;
 }
 
+static inline bool in_csr(paddr_t addr) {
+  return (addr >= 0xa0000300 && addr <= 0xa00003FF); // CSR寄存器地址范围
+}
+
 word_t paddr_read(paddr_t addr, int len);
 void paddr_write(paddr_t addr, int len, word_t data);
 

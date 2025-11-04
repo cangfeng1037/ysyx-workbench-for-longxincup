@@ -9,12 +9,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
+#include <time.h>
+#include "device.h"
 #include "difftest.h"
+
+
 
 
 using namespace std;
 
-const uint32_t MAX_SIZE = 40000000;// 定义最大内存4MB
+const uint32_t MAX_SIZE = 400000000;// 定义最大内存4MB
 
 bool sim_exit_flag = false;
 char* img_file = NULL;
@@ -35,6 +39,13 @@ static svScope regfile_scope = nullptr;
 static uint32_t cache_addr = 0;
 static uint32_t cache_data = 0;
 
+static inline uint64_t time_get_us() {
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);  // 或 CLOCK_REALTIME
+    return (uint64_t)ts.tv_sec * 1000000ull + (uint64_t)(ts.tv_nsec / 1000ull);
+}
+
+
 // extern “C” 将函数转化为C类型函数，不然verilator链接错误
 extern "C" void ebreak() {
     printf("[DPI-C] ebreak detected, simulation exit.\n");
@@ -46,11 +57,29 @@ extern "C" uint32_t rf_read(uint32_t idx);
 
 int current_circle = 0;
 
+static bool g_skip_ref_next = false; 
+
 extern "C" int pmem_read(int raddr) {
 
+    uint64_t time_us = time_get_us();
+
     if(current_circle == cnt) {
-        //printf("reuse : cache\n");
+        //printf("reuse : cache cache_data: %ld\n", cache_data);
         return cache_data;
+    }   
+    
+    if(raddr == TIMER_ADDR) {
+        g_skip_ref_next = true;
+        uint32_t time_low = (uint32_t)(time_us & 0xffffffff);
+        current_circle = cnt;
+        //printf("timelow: %u\n", time_low);
+        return time_low;
+    } else if(raddr == TIMER_ADDR + 4) {
+        g_skip_ref_next = true;
+        uint32_t time_high = (uint32_t)((time_us >> 32) & 0xffffffff);
+        current_circle = cnt;
+        //printf("timehigh: %u\n", time_high);
+        return time_high;
     }
     
     uint32_t addr = (uint32_t) raddr;
@@ -81,12 +110,19 @@ extern "C" int pmem_read(int raddr) {
     current_circle = cnt;
 
 #ifdef CONFIG_MTRACE
-    printf("MEM read: addr=0x%08x, data=0x%08x\n", addr, data);
+    //printf("MEM read: addr=0x%08x, data=0x%08x\n", addr, data);
 #endif
     return data;
 }
 
 extern "C" void pmem_write(int waddr, int wdata, int wmask) {
+    
+    if(waddr == SERIAL_ADDR) {
+        g_skip_ref_next = true;
+        putchar((char)wdata);
+        fflush(stdout);
+        return;
+    }
 
     //bool trace;
     cache_addr = 0x7fffffff;
@@ -108,7 +144,7 @@ extern "C" void pmem_write(int waddr, int wdata, int wmask) {
     uint32_t base = addr & ~0x3u;
 
 #ifdef CONFIG_MTRACE
-    printf("MEM write: addr=0x%08x, wdata=0x%08x, wmask=0x%01x\n", addr, wdata, wmask);
+    //printf("MEM write: addr=0x%08x, wdata=0x%08x, wmask=0x%01x\n", addr, wdata, wmask);
 #endif
 
     if (wmask & 0x1) mem[base + 0] = (uint8_t)(wdata & 0xff);
@@ -206,7 +242,7 @@ void eval() {
     
     // 组合阶段
     top -> clk = 0;
-    printf("Inst 0x%08x at pc = 0x%08x\n", top->inst, top->pc);
+    //printf("Inst 0x%08x at pc = 0x%08x, cycle = %d\n", top->inst, top->pc, cnt);
     top -> eval();
     if(tfp) tfp -> dump(sim_time ++);
 
@@ -228,6 +264,17 @@ void eval() {
     cnt ++ ;
 #ifdef CONFIG_DIFFTEST
     if (!sim_exit_flag && cnt > 3) { // 复位后开始差分测试
+
+        if (g_skip_ref_next) {
+            ensure_regfile_scope();
+            CPU_state dut_s;
+            for (int i = 0; i < 32; i ++ ) dut_s.gpr[i] = rf_read(i);
+            dut_s.pc = top -> pc;
+            difftest_sync(dut_s.gpr, dut_s.pc);
+            difftest_skip();
+            g_skip_ref_next = false;
+        }
+
         difftest_step(1);
 
         ensure_regfile_scope();
@@ -238,9 +285,12 @@ void eval() {
         bool check = difftest_check_reg(dut_s.gpr, dut_s.pc);
         if (!check) {
             printf("Difftest failed at cycle %d, pc = 0x%08x\n, inst = 0x%08x\n", cnt, dut_s.pc - 4, top->inst);
+            if(top -> non_inst) {
+                printf("The non-inst instruction detected! : inst = 0x%08x\n, pc = 0x%08x\n", top->inst, top->pc);
+            }
             exit(1);
         } else {
-            printf("Difftest passed at cycle %d, pc = 0x%08x\n", cnt, dut_s.pc - 4);
+            //printf("Difftest passed at cycle %d, pc = 0x%08x\n", cnt, dut_s.pc - 4);
         }
     }
 #endif
@@ -249,12 +299,14 @@ void eval() {
 void init_sim() {
 
     top = new Vtop;
+
+/*
     Verilated::traceEverOn(true);
     tfp = new VerilatedVcdC;
     top->trace(tfp, 99);
     tfp->open("wave.vcd");
     
-
+*/
     top -> rst = 1;
     top -> clk = 0;
     //top -> pc = START_ADDR;
@@ -270,7 +322,7 @@ void init_sim() {
 }
 
 void cmd_c() {
-    while (!sim_exit_flag && cnt < maxn) {
+    while (!sim_exit_flag) {
         eval();
     }
 }
@@ -296,7 +348,7 @@ void cmd_m() {
 void cmd_r() {
     svSetScope(regfile_scope);
     printf("\nRegister state:\n");
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < 31; i++) {
         uint32_t val = rf_read(i);
         printf("x%02d: 0x%08x\n", i, val);
     }
@@ -307,7 +359,7 @@ void sdb_mainloop() {
 
     while(true) {
         printf("\n\033[1;34m(npc.sdb)\033[0m ");
-#ifndef CONFIG_PATCH
+#ifdef CONFIG_PATCH
         if(!getline(cin, cmd)) break;
 #else   
         cmd = "c";

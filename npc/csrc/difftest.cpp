@@ -4,6 +4,7 @@
 #include "Vtop.h"
 #include <verilated.h>
 #include <dlfcn.h>
+#include "difftest.h"  // 使用统一的 CPU_state 定义
 
 #define DIFFTEST_TO_DUT 0
 #define DIFFTEST_TO_REF 1
@@ -12,17 +13,19 @@ using difftest_init_t   = void (*)(int);
 using difftest_memcpy_t = void (*)(uintptr_t addr, void *buf, size_t n, bool direction);
 using difftest_regcpy_t = void (*)(void *dut, bool direction);
 using difftest_exec_t   = void (*)(uint64_t n);
+using difftest_skip_ref_t = void (*)();
 
 static void* ref_handle = nullptr;
 static difftest_init_t ref_init;
 static difftest_memcpy_t ref_memcpy;
 static difftest_regcpy_t ref_regcpy;
 static difftest_exec_t ref_exec;
+static difftest_skip_ref_t ref_skip = nullptr;
 
-struct CPU_state {
-    uint32_t gpr[32];
-    uint32_t pc;
-};
+// 为避免与 NEMU 的 CPU_state 大小不一致导致溢出，使用足够大的中间缓冲区
+static constexpr size_t DIFF_CTX_SIZE = 1024;      // 保守值
+static constexpr size_t OFF_GPR       = 0;
+static constexpr size_t OFF_PC        = 32 * sizeof(uint32_t);
 
 static void difftest_load() {
     const char *so_path = getenv("DIFFTEST_SO");
@@ -36,8 +39,8 @@ static void difftest_load() {
     ref_memcpy = (difftest_memcpy_t) dlsym(ref_handle, "difftest_memcpy");
     ref_regcpy = (difftest_regcpy_t) dlsym(ref_handle, "difftest_regcpy");
     ref_exec   = (difftest_exec_t)   dlsym(ref_handle, "difftest_exec");
-
-    if (!ref_init || !ref_memcpy || !ref_regcpy || !ref_exec) {
+    ref_skip   = (difftest_skip_ref_t)dlsym(ref_handle, "difftest_skip_ref");
+    if (!ref_init || !ref_memcpy || !ref_regcpy || !ref_exec || !ref_skip) {
         printf("dlsym failed: %s\n", dlerror());
         exit(1);
     }
@@ -46,7 +49,6 @@ static void difftest_load() {
 void difftest_init(uintptr_t reset_vec, const void* img_buf, size_t img_size) {
     difftest_load();
     ref_init(0);
-    // 将DUT的镜像拷贝到ref的guest内存
     if (img_buf && img_size) {
         ref_memcpy(reset_vec, const_cast<void*>(img_buf), img_size, DIFFTEST_TO_REF);
         printf("[DiffTest] Image copied to REF.\n");
@@ -56,10 +58,11 @@ void difftest_init(uintptr_t reset_vec, const void* img_buf, size_t img_size) {
 }
 
 void difftest_sync(const uint32_t gpr[32], uint32_t pc) {
-    CPU_state s{};
-    for (int i = 0; i < 32; i ++ ) s.gpr[i] = gpr[i];
-    s.pc = pc;
-    ref_regcpy(&s, DIFFTEST_TO_REF);
+    alignas(16) uint8_t buf[DIFF_CTX_SIZE] = {0};
+    memcpy(buf + OFF_GPR, gpr, 32 * sizeof(uint32_t));
+    memcpy(buf + OFF_PC,  &pc, sizeof(uint32_t));
+    // 将“大的”上下文从 DUT 写到 REF
+    ref_regcpy(buf, DIFFTEST_TO_REF);
 }
 
 void difftest_step(uint32_t n) {
@@ -67,8 +70,11 @@ void difftest_step(uint32_t n) {
 }
 
 void difftest_get_reg(CPU_state* s) {
-    ref_regcpy(s, DIFFTEST_TO_DUT);
-    return;  
+    alignas(16) uint8_t buf[DIFF_CTX_SIZE] = {0};
+    // 从 REF 取回完整上下文到大缓冲区，再抽取前缀（GPR+PC）
+    ref_regcpy(buf, DIFFTEST_TO_DUT);
+    memcpy(s->gpr, buf + OFF_GPR, 32 * sizeof(uint32_t));
+    memcpy(&s->pc,  buf + OFF_PC,  sizeof(uint32_t));
 }
 
 bool difftest_check_reg(const uint32_t dut_gpr[32], uint32_t dut_pc) {
@@ -84,5 +90,11 @@ bool difftest_check_reg(const uint32_t dut_gpr[32], uint32_t dut_pc) {
         printf("Difftest failed at pc, ref: 0x%08x, dut: 0x%08x\n", ref_s.pc, dut_pc);
         return false;
     }
+    return true;
+}
+
+bool difftest_skip() {
+    if (!ref_skip) return false;
+    ref_skip();
     return true;
 }

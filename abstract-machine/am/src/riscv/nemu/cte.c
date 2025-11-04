@@ -4,14 +4,26 @@
 
 static Context* (*user_handler)(Event, Context*) = NULL;
 
-Context* __am_irq_handle(Context *c) {
+Context* __am_irq_handle(Context *c) {                 
+ 
   if (user_handler) {
     Event ev = {0};
-    switch (c->mcause) {
-      default: ev.event = EVENT_ERROR; break;
-    }
+    uintptr_t mcause = c->mcause;
+    bool is_irq = (mcause >> (sizeof(mcause) * 8 - 1)) & 1;
 
+    if (!is_irq) {
+      switch (mcause & 0xfff) {
+        case 11:  ev.event = EVENT_YIELD; 
+                  c->mepc += 4;
+                  break;
+        default:  ev.event = EVENT_ERROR; break;
+      }
+    } else {
+      ev.event = EVENT_ERROR;
+    }
+    // 调用了事件处理函数
     c = user_handler(ev, c);
+    // 输出c
     assert(c != NULL);
   }
 
@@ -20,6 +32,11 @@ Context* __am_irq_handle(Context *c) {
 
 extern void __am_asm_trap(void);
 
+
+// 修改am_asm_trap,是其从am_irq_handle返回后，跳转到新进程的入口，从而实现上下文的切换
+// am_asm_trap需要：1.保存异常发生后的上下文 2. 调用am_irq_handle 
+//                 3. 先切换栈顶指针到新的上下文结构，再恢复原进程的上下文
+
 bool cte_init(Context*(*handler)(Event, Context*)) {
   // initialize exception entry
   asm volatile("csrw mtvec, %0" : : "r"(__am_asm_trap));
@@ -27,11 +44,29 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
   // register event handler
   user_handler = handler;
 
+
   return true;
 }
 
+// 在kstack的底部创建以entry为入口函数的上下文，并返回该上下文的指针
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
-  return NULL;
+  uintptr_t *sp = (uintptr_t *)((uintptr_t)kstack.end & ~0xf);
+
+  sp -= sizeof(Context) / sizeof(uintptr_t);
+  Context *ctx = (Context *)sp;
+
+  for (int i = 0; i < NR_REGS; i ++ ) {
+    ctx->gpr[i] = 0;
+  }
+
+  ctx->gpr[10] = (uintptr_t)arg;  // a0 = arg
+ 
+  // 设置 mepc为 entry 地址
+  ctx->mepc = (uintptr_t)entry;
+
+  ctx->mstatus = 0x1800; 
+
+  return ctx;
 }
 
 void yield() {

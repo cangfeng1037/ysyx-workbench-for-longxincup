@@ -12,3 +12,4 @@ void difftest_sync(const uint32_t gpr[32], uint32_t pc);
 void difftest_step(uint32_t n);
 void difftest_get_reg(CPU_state *state);
 bool difftest_check_reg(const uint32_t dut_gpr[32], uint32_t dut_pc);
+bool difftest_skip();

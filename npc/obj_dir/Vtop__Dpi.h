@@ -20,7 +20,7 @@ extern "C" {
     extern unsigned int rf_read(int idx);
 
     // DPI IMPORTS
-    // DPI import at /home/cangfeng_/ysyx-workbench/npc/vsrc/top.v:11:34
+    // DPI import at /home/cangfeng_/ysyx-workbench/npc/vsrc/top.v:12:34
     extern void ebreak();
     // DPI import at /home/cangfeng_/ysyx-workbench/npc/vsrc/Mem.v:12:29
     extern int pmem_read(int raddr);

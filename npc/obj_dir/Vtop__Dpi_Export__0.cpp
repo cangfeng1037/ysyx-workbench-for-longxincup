@@ -21,6 +21,6 @@ unsigned int Vtop::rf_read(int idx) {
     idx__Vcvt = idx;
     (*__Vcb)((Vtop__Syms*)(__Vscopep->symsp()), idx__Vcvt, rf_read__Vfuncrtn__Vcvt);
     unsigned int rf_read__Vfuncrtn;
-    rf_read__Vfuncrtn = rf_read__Vfuncrtn__Vcvt;
+    for (size_t rf_read__Vfuncrtn__Vidx = 0; rf_read__Vfuncrtn__Vidx < 1; ++rf_read__Vfuncrtn__Vidx) rf_read__Vfuncrtn = rf_read__Vfuncrtn__Vcvt;
     return rf_read__Vfuncrtn;
 }

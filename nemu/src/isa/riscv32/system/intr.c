@@ -15,12 +15,24 @@
 
 #include <isa.h>
 
+#define mepc 0x341
+#define mcause 0x342
+#define mtvec 0x305
+
 word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   /* TODO: Trigger an interrupt/exception with ``NO''.
    * Then return the address of the interrupt/exception vector.
    */
+  // 汇编执行ecall后，跳转到这里，完成自陷操作
+  //printf("""Raising intr: NO = %d, epc = " FMT_WORD "\n", NO, epc);
+  csr_write(mepc, epc);          // 将异常发生时的pc保存到mepc寄存器中
+  csr_write(mcause, NO);           // 将异常号保存到mcause
+  //printf("mepc = " FMT_WORD ", mcause = " FMT_WORD ", mtvec = " FMT_WORD "\n", csr_read(mepc), csr_read(mcause), csr_read(mtvec));
+#ifdef CONFIG_ETRACE
+  printf("ETRACE: intr NO = %d, epc = " FMT_WORD "\n", NO, epc);≠
+#endif
 
-  return 0;
+  return csr_read(mtvec);        // 返回异常处理入口地址mtvec
 }
 
 word_t isa_query_intr() {

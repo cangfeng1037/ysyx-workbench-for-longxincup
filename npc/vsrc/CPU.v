@@ -7,8 +7,8 @@ module ysyx_25080212_cpu #(
 
     output [DATA_WIDTH - 1 : 0] pc,
     input [DATA_WIDTH - 1 : 0] inst,
-    output [DATA_WIDTH - 1 : 0] halt_ret
-    //output stall
+    output [DATA_WIDTH - 1 : 0] halt_ret,
+    output non_inst
 );
 
     wire [DATA_WIDTH - 1 : 0] pc_current, pc_next; // dnpc
@@ -103,7 +103,11 @@ module ysyx_25080212_cpu #(
     wire is_sw;
     wire is_sb;
     wire is_sh;
-
+    wire is_lb;
+    wire is_ecall;
+    wire is_mret;
+    wire is_csrrw;
+    wire is_csrrs;
 
     
     wire reg_wen_normal;
@@ -113,13 +117,15 @@ module ysyx_25080212_cpu #(
                      is_slt  | is_sltu| is_sll  | is_srl  | is_sra  |
                      is_mul  | is_div | is_divu | is_rem  | is_remu |
                      is_seqz | is_srai| is_srli | is_slli ;
-    assign is_load = is_lw | is_lbu | is_lh | is_lhu ;
+    assign is_load = is_lw | is_lbu | is_lh | is_lhu | is_lb;
     //assign stall = is_load;
     //assign
 
+    assign non_inst = ~(reg_wen_normal | is_load | is_sw | is_sb | is_sh |
+                        is_beq | is_bne | is_blt | is_bltu | is_bge | is_bgeu |
+                        is_jal | is_jalr | is_csrrw | is_csrrs | is_ecall | is_mret);
  
- 
-    assign reg_wen = reg_wen_normal | is_load;
+    assign reg_wen = reg_wen_normal | is_load | is_csrrs | is_csrrw;
 
     wire [31 : 0] rs1_data, rs2_data;
     wire [31 : 0] reg_wdata;
@@ -135,6 +141,7 @@ module ysyx_25080212_cpu #(
     wire [15:0] r2byte = (byte_off[1] == 1'b0) ? rdata[15:0] : rdata[31:16];
     wire [31:0] lh_data  = {{16{r2byte[15]}}, r2byte};
     wire [31:0] lhu_data = {16'b0, r2byte};
+    wire [31:0] lb_data = {{24{rbyte[7]}}, rbyte};
 
     ysyx_25080212_Decoder decoder(
         .inst       (inst       ),
@@ -160,6 +167,7 @@ module ysyx_25080212_cpu #(
         .is_lbu     (is_lbu     ),
         .is_lh      (is_lh      ),
         .is_lhu     (is_lhu     ),
+        .is_lb      (is_lb      ),
         .is_seqz    (is_seqz    ),
         .is_srai    (is_srai    ),
         .is_srli    (is_srli    ),
@@ -188,7 +196,11 @@ module ysyx_25080212_cpu #(
         .is_bltu    (is_bltu    ),
         .is_sw      (is_sw      ),
         .is_sb      (is_sb      ),
-        .is_sh      (is_sh      )
+        .is_sh      (is_sh      ),
+        .is_ecall   (is_ecall   ),
+        .is_mret    (is_mret    ),
+        .is_csrrw   (is_csrrw   ),
+        .is_csrrs   (is_csrrs   )
 
     );
 
@@ -209,6 +221,45 @@ module ysyx_25080212_cpu #(
         .x10_value (halt_ret)
     );
     
+
+    // output declaration of module ysyx_25080212_csr
+    reg [DATA_WIDTH-1:0] csr_rdata;
+    
+    ysyx_25080212_csr #(
+        .ADDR_WIDTH 	(12  ),
+        .DATA_WIDTH 	(32  ))
+    csr(
+        .clk       	(clk        ),
+        .rst       	(rst        ),
+        .csr_raddr 	(csr_raddr  ),
+        .csr_waddr 	(csr_waddr  ),
+        .csr_wdata 	(csr_wdata  ),
+        .csr_wen   	(csr_wen    ),
+        .csr_rdata 	(csr_rdata  ),
+        .is_ecall   (is_ecall   ),
+        .is_mret    (is_mret    )
+    );
+    
+    wire [11:0] csr_raddr;
+    wire [11:0] csr_waddr;
+    wire [DATA_WIDTH-1:0] csr_wdata;
+    wire csr_wen;
+    wire [DATA_WIDTH-1:0] csr_rdata;
+
+    assign csr_wen = is_csrrw | is_ecall | is_mret;
+
+    assign csr_raddr =  is_ecall ? 12'h305 : // 读取mtvec
+                        is_mret  ? 12'h341 : // 读取mepc
+                        inst[31:20];
+
+
+
+    assign csr_waddr =  is_ecall ? 12'h341 : // 写入mepc
+                        is_mret  ? 12'h342 : // 写入mcause
+                        inst[31:20];
+    assign csr_wdata = is_ecall ? pc_current : // 写入pc_current to mepc
+                       is_mret  ? 32'd0  : // MRET写入0到mcause
+                       rs1_data;          // CSRRW/CSRRS写入rs1_data到csr
 
     // output declaration of module ysyx_25080212_Mem
     wire [31:0] rdata;
@@ -232,6 +283,7 @@ module ysyx_25080212_cpu #(
                    is_lbu   ? rs1_data :
                    is_lh    ? rs1_data :
                    is_lhu   ? rs1_data :
+                   is_lb    ? rs1_data :
                    is_seqz  ? rs1_data :
                    is_srai  ? rs1_data : 
                    is_srli  ? rs1_data :
@@ -265,6 +317,7 @@ module ysyx_25080212_cpu #(
                    is_lbu   ? imm_i :
                    is_lh    ? imm_i :
                    is_lhu   ? imm_i :
+                   is_lb    ? imm_i :
                    is_seqz  ? 32'h0000 :
                    is_srai  ? {27'b0, imm_i[4:0]} :
                    is_srli  ? {27'b0, imm_i[4:0]} :
@@ -298,6 +351,7 @@ module ysyx_25080212_cpu #(
                 is_lbu   ? 4'b0000 : 
                 is_lh    ? 4'b0000 :
                 is_lhu   ? 4'b0000 :
+                is_lb    ? 4'b0000 :
                 is_seqz  ? 4'b0011 :
                 is_srai  ? 4'b0111 : // SRA
                 is_srli  ? 4'b0110 : // SRL
@@ -340,6 +394,7 @@ module ysyx_25080212_cpu #(
                         is_lbu  ? lbu_data :
                         is_lh   ? lh_data  :
                         is_lhu  ? lhu_data :
+                        is_lb   ? lb_data  :
                         is_seqz ? (alu_out == 0) ? 32'h0001 : 32'h0000 : 
                         is_srai ? alu_out :
                         is_srli ? alu_out :
@@ -359,6 +414,7 @@ module ysyx_25080212_cpu #(
                         is_sll  ? alu_out :
                         is_srl  ? alu_out :
                         is_sra  ? alu_out :
+                        is_csrrs ? csr_rdata :
                         32'b0;
                        
     
@@ -370,6 +426,8 @@ module ysyx_25080212_cpu #(
                     is_bltu  ? ( ($unsigned(rs1_data) < $unsigned(rs2_data)) ? (pc_current + imm_b) : snpc ) :
                     is_bge   ? ( ($signed(rs1_data) >= $signed(rs2_data)) ? (pc_current + imm_b) : snpc ) :
                     is_bgeu  ? ( ($unsigned(rs1_data) >= $unsigned(rs2_data)) ? (pc_current + imm_b) : snpc ) :
+                    is_ecall ? csr_rdata :
+                    is_mret  ? csr_rdata : 
                     snpc;
     assign pc_next = dnpc;
 
@@ -382,6 +440,7 @@ module ysyx_25080212_cpu #(
                      is_lbu ? 1'b1 : 
                      is_lhu ? 1'b1 :
                      is_lh  ? 1'b1 :
+                     is_lb  ? 1'b1 :
                      is_sw  ? 1'b1 :
                      is_sb  ? 1'b1 :
                      is_sh  ? 1'b1 :
@@ -412,11 +471,17 @@ module ysyx_25080212_cpu #(
         .rdata (rdata)
     );
 
-always @(posedge clk) begin
-    if (is_srai) begin
-        $display("SRAI: a=0x%08x, b=0x%08x, b[4:0]=%d, result=0x%08x", 
-                 alu_a, alu_b, alu_b[4:0], alu_out);
+/*
+    always @(posedge clk) begin
+        if(is_ecall) begin
+            $strobe("ECALL at pc: 0x%08x, dnpc=: 0x%08x", pc_current, dnpc); 
+        end else if(is_mret) begin
+            $strobe("MRET at pc: 0x%08x, dnpc=: 0x%08x", pc_current, dnpc); 
+        end else if(rd == 5'd19) begin
+            $strobe("Write 0x%08x to x19 at pc: 0x%08x", reg_wdata, pc_current);
+        end else if(pc_current == 32'h80000304) begin
+            $strobe("Write 0x%08x to 0x%08x at pc: 0x%08x", reg_wdata, rd, pc_current);
+        end
     end
-end
-
+*/
 endmodule

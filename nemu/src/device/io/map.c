@@ -18,10 +18,16 @@
 #include <memory/vaddr.h>
 #include <device/map.h>
 
+//#define CONFIG_DTRACE
+
 #define IO_SPACE_MAX (32 * 1024 * 1024)
 
 static uint8_t *io_space = NULL;
 static uint8_t *p_space = NULL;
+
+#ifdef CONFIG_DTRACE
+  char *dtrace_buf;
+#endif
 
 uint8_t* new_space(int size) {
   uint8_t *p = p_space;
@@ -50,6 +56,10 @@ void init_map() {
   io_space = malloc(IO_SPACE_MAX);
   assert(io_space);
   p_space = io_space;
+  #ifdef CONFIG_DTRACE
+    dtrace_buf = malloc(IO_SPACE_MAX);
+    assert(dtrace_buf);
+  #endif
 }
 
 word_t map_read(paddr_t addr, int len, IOMap *map) {
@@ -58,6 +68,12 @@ word_t map_read(paddr_t addr, int len, IOMap *map) {
   paddr_t offset = addr - map->low;
   invoke_callback(map->callback, offset, len, false); // prepare data to read
   word_t ret = host_read(map->space + offset, len);
+
+  #ifdef CONFIG_DTRACE
+    sprintf(dtrace_buf, "Device trace: read addr = " FMT_PADDR ", len = %d at pc = " FMT_WORD ", device name = %s\n",
+        addr, len, cpu.pc, map->name);
+  #endif
+
   return ret;
 }
 
@@ -67,4 +83,9 @@ void map_write(paddr_t addr, int len, word_t data, IOMap *map) {
   paddr_t offset = addr - map->low;
   host_write(map->space + offset, len, data);
   invoke_callback(map->callback, offset, len, true);
+
+  #ifdef CONFIG_DTRACE
+    sprintf(dtrace_buf, "Device trace: write addr = " FMT_PADDR ", len = %d, data = " FMT_WORD " at pc = " FMT_WORD ", device name = %s\n",
+        addr, len, data, cpu.pc, map->name);
+  #endif
 }

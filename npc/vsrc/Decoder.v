@@ -23,6 +23,8 @@ module ysyx_25080212_Decoder(
     output is_lbu,
     output is_lh,
     output is_lhu,
+    output is_lb,
+
     output is_seqz,
     output is_srai,
     output is_srli,
@@ -51,7 +53,11 @@ module ysyx_25080212_Decoder(
     output is_bltu,
     output is_sw,
     output is_sb,
-    output is_sh
+    output is_sh,
+    output is_ecall,
+    output is_mret,
+    output is_csrrw,
+    output is_csrrs
 );
 
     assign opcode = inst[6:0];
@@ -83,6 +89,7 @@ module ysyx_25080212_Decoder(
     assign is_lbu = (opcode == 7'b0000011 && funct3 == 3'b100) ? 1'b1 : 1'b0; // LBU
     assign is_lh = (opcode == 7'b0000011 && funct3 == 3'b001) ? 1'b1 : 1'b0; // LH
     assign is_lhu = (opcode == 7'b0000011 && funct3 == 3'b101) ? 1'b1 : 1'b0; // LHU
+    assign is_lb = (opcode == 7'b0000011 && funct3 == 3'b000) ? 1'b1 : 1'b0; // LB
 
     // SEQZ 是伪指令：seqz rd, rs -> sltiu rd, rs, 1
     assign is_seqz = (opcode == 7'b0010011 && funct3 == 3'b011 && inst[31:20] == 12'h001) ? 1'b1 : 1'b0; // SEQZ
@@ -127,5 +134,10 @@ module ysyx_25080212_Decoder(
     assign is_sb = (opcode == 7'b0100011 && funct3 == 3'b000) ? 1'b1 : 1'b0; // SB
     assign is_sh = (opcode == 7'b0100011 && funct3 == 3'b001) ? 1'b1 : 1'b0; // SH
 
+    // CSR指令，系统寄存器指令
+    assign is_ecall = inst == 32'h00000073 ? 1'b1 : 1'b0; // ECALL
+    assign is_mret = inst == 32'h30200073 ? 1'b1 : 1'b0; // MRET    
+    assign is_csrrw = (opcode == 7'b1110011 && funct3 == 3'b001) ? 1'b1 : 1'b0; // CSRRW
+    assign is_csrrs = (opcode == 7'b1110011 && funct3 == 3'b010) ? 1'b1 : 1'b0; // CSRRS
 
 endmodule

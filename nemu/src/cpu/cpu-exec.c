@@ -152,13 +152,17 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   #endif
 }
 
-static void exec_once(Decode *s, vaddr_t pc) {
+int cntt = 0;
+bool is_ecall = false;
+
+static void exec_once(Decode *s, vaddr_t pc) {  
+  //printf("inst: 0x%08x,pc: 0x%08x, cnt = %d\n", s->isa.inst, s->pc, cntt++);if(pc == 0x80000300) printf("run into kstart_wrapper\n");  //if(s->dnpc == 0x00000012) printf("!!!error: pc = 0x%08x\n", s->dnpc);
+
   s->pc = pc;
   s->snpc = pc;
   isa_exec_once(s);
   cpu.pc = s->dnpc;
   // 上面是执行指令的内容，记录pc，snpc，调用指令集执行，更新pc
-
   // 下面开始是 itrace
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
@@ -245,6 +249,10 @@ void cpu_exec(uint64_t n) {
           nemu_state.halt_pc);
   #ifdef CONFIG_ITRACE
       iringbuf_output();
+  #endif
+
+  #ifdef CONFIG_DTRACE
+      puts(dtrace_buf);
   #endif
       // fall through
     case NEMU_QUIT: statistic();

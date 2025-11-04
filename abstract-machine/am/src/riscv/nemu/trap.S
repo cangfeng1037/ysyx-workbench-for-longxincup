@@ -57,9 +57,17 @@ __am_asm_trap:
   or t1, t1, a0
   csrw mstatus, t1
 
+  # 调用 C 处理函数：a0=当前 Context*
   mv a0, sp
   call __am_irq_handle
 
+  # 切换到新的上下文
+  mv t0, a0
+  beqz t0, 1f
+  mv sp, t0  # 切换栈指针到新的上下文
+
+1:
+  # 从Context恢复上下文（这里的context是新的上下文）
   LOAD t1, OFFSET_STATUS(sp)
   LOAD t2, OFFSET_EPC(sp)
   csrw mstatus, t1

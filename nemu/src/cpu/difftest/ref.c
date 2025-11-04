@@ -22,6 +22,15 @@
 #define DIFFTEST_TO_DUT 0
 #define DIFFTEST_TO_REF 1
 
+#ifdef CONFIG_DIFFTEST
+static bool skip_next_exec = false;
+
+
+
+__EXPORT void difftest_skip_ref() {
+  skip_next_exec = true;
+}
+
 __EXPORT void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction) {
   uint8_t *haddr = guest_to_host(addr);
   if (direction == DIFFTEST_TO_REF) {
@@ -49,6 +58,10 @@ __EXPORT void difftest_regcpy(void *dut, bool direction) {
 }
 
 __EXPORT void difftest_exec(uint64_t n) {
+  if (skip_next_exec) {
+    skip_next_exec = false;
+    return;
+  }
   cpu_exec(n);
   //assert(0);
 }
@@ -63,3 +76,4 @@ __EXPORT void difftest_init(int port) {
   /* Perform ISA dependent initialization. */
   init_isa();
 }
+#endif

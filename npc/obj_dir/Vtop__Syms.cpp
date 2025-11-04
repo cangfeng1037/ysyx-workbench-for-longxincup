@@ -1,7 +1,7 @@
 // Verilated -*- C++ -*-
 // DESCRIPTION: Verilator output: Symbol table implementation internals
 
-#include "Vtop__pch.h"
+#include "Vtop__Syms.h"
 #include "Vtop.h"
 #include "Vtop___024root.h"
 
@@ -22,8 +22,6 @@ Vtop__Syms::Vtop__Syms(VerilatedContext* contextp, const char* namep, Vtop* mode
     // Setup module instances
     , TOP{this, namep}
 {
-        // Check resources
-        Verilated::stackCheck(105);
     // Configure time unit / time precision
     _vm_contextp__->timeunit(-12);
     _vm_contextp__->timeprecision(-12);
@@ -31,7 +29,7 @@ Vtop__Syms::Vtop__Syms(VerilatedContext* contextp, const char* namep, Vtop* mode
     // Setup each module's pointer back to symbol table (for public functions)
     TOP.__Vconfigure(true);
     // Setup scopes
-    __Vscope_top__cpu__regfile.configure(this, name(), "top.cpu.regfile", "regfile", "<null>", -12, VerilatedScope::SCOPE_OTHER);
+    __Vscope_top__cpu__regfile.configure(this, name(), "top.cpu.regfile", "regfile", -12, VerilatedScope::SCOPE_OTHER);
 
     // Set up scope hierarchy
 

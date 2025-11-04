@@ -4,7 +4,8 @@ module top(
 
     output [31 : 0] pc,
     input [31 : 0] inst,
-    output [31 : 0] halt_ret
+    output [31 : 0] halt_ret,
+    output non_inst
     //output stall
 );
     // 声明DPI-C函数
@@ -21,7 +22,8 @@ module top(
         .rst(rst),
         .pc(pc),
         .inst(inst),
-        .halt_ret(halt_ret)
+        .halt_ret(halt_ret),
+        .non_inst(non_inst)
         //.stall(stall)
     );
 

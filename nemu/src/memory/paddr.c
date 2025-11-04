@@ -20,6 +20,9 @@
 
 #if   defined(CONFIG_PMEM_MALLOC)
 static uint8_t *pmem = NULL;
+
+//#define CONFIG_DEVICE 1
+
 #else // CONFIG_PMEM_GARRAY
 static uint8_t pmem[CONFIG_MSIZE] PG_ALIGN = {};
 #endif
@@ -34,12 +37,16 @@ void mtrace (paddr_t addr, int len, char type) {
 
 static word_t pmem_read(paddr_t addr, int len) {
   word_t ret = host_read(guest_to_host(addr), len);
-  //mtrace(addr, len, 'R');
+  #ifdef CONFIG_MTRACE
+    mtrace(addr, len, 'R');
+  #endif
   return ret;
 }
 
 static void pmem_write(paddr_t addr, int len, word_t data) {
-  //mtrace(addr, len, 'W');
+  #ifdef CONFIG_MTRACE
+    mtrace(addr, len, 'W');
+  #endif
   host_write(guest_to_host(addr), len, data);
 }
 
@@ -59,15 +66,16 @@ void init_mem() {
 
 word_t paddr_read(paddr_t addr, int len) {
   if (likely(in_pmem(addr))) return pmem_read(addr, len);
+  // 处理csr寄存器读取
+  //if (likely(in_csr(addr))) return csr_read(addr - 0xa0000000);
   IFDEF(CONFIG_DEVICE, return mmio_read(addr, len));
-  //mtrace(addr, len, 'R');
   out_of_bound(addr);
   return 0;
 }
 
 void paddr_write(paddr_t addr, int len, word_t data) {
   if (likely(in_pmem(addr))) { pmem_write(addr, len, data); return; }
+  //if (likely(in_csr(addr))) { csr_write(addr - 0xa0000000, data); return; }
   IFDEF(CONFIG_DEVICE, mmio_write(addr, len, data); return);
-  //mtrace(addr, len, 'W');
   out_of_bound(addr);
 }

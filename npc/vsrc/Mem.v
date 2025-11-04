@@ -16,7 +16,7 @@ import "DPI-C" function void pmem_write(
 
 always @(*) begin
   if (valid && !wen) begin    
-    $display("PMEM_read from addr: %h, clk: %h, valid: %h, wen: %h", raddr, clk, valid, wen);
+    //$display("PMEM_read from addr: %h, clk: %h, valid: %h, wen: %h", raddr, clk, valid, wen);
     rdata = pmem_read(raddr);    
   end else begin
     rdata = 32'b0;
@@ -26,6 +26,7 @@ end
 always @(posedge clk) begin
   if (valid && wen) begin
     pmem_write(waddr, wdata, {28'b0, wmask});
+    //$display("PMEM_write to addr: %h, clk: %h, valid: %h, wen: %h", waddr, clk, valid, wen);
   end
 end
 
