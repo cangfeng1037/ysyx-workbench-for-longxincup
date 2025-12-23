@@ -32,7 +32,16 @@ static inline bool in_pmem(paddr_t addr) {
 }
 
 static inline bool in_csr(paddr_t addr) {
-  return (addr >= 0xa0000300 && addr <= 0xa00003FF); // CSR寄存器地址范围
+  // 仅放行已实现的 CSR（按你当前 csr.c 的实现）
+  switch (addr) {
+    case 0xa0000300: // mstatus (0x300)
+    case 0xa0000305: // mtvec   (0x305)
+    case 0xa0000341: // mepc    (0x341)
+    case 0xa0000342: // mcause  (0x342)
+      return true;
+    default:
+      return false;
+  }
 }
 
 word_t paddr_read(paddr_t addr, int len);

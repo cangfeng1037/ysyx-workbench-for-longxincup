@@ -1,10 +1,8 @@
 // Verilated -*- C++ -*-
 // DESCRIPTION: Verilator output: Model implementation (design independent parts)
 
-#include "Vtop.h"
-#include "Vtop__Syms.h"
+#include "Vtop__pch.h"
 #include "verilated_vcd_c.h"
-#include "verilated_dpi.h"
 
 //============================================================
 // Constructors
@@ -12,16 +10,50 @@
 Vtop::Vtop(VerilatedContext* _vcontextp__, const char* _vcname__)
     : VerilatedModel{*_vcontextp__}
     , vlSymsp{new Vtop__Syms(contextp(), _vcname__, this)}
-    , clk{vlSymsp->TOP.clk}
-    , rst{vlSymsp->TOP.rst}
-    , non_inst{vlSymsp->TOP.non_inst}
-    , pc{vlSymsp->TOP.pc}
-    , inst{vlSymsp->TOP.inst}
-    , halt_ret{vlSymsp->TOP.halt_ret}
+    , clock{vlSymsp->TOP.clock}
+    , reset{vlSymsp->TOP.reset}
+    , io_halt_ret{vlSymsp->TOP.io_halt_ret}
+    , io_non_inst{vlSymsp->TOP.io_non_inst}
+    , io_pc{vlSymsp->TOP.io_pc}
+    , io_inst{vlSymsp->TOP.io_inst}
+    , io_gpr_0{vlSymsp->TOP.io_gpr_0}
+    , io_gpr_1{vlSymsp->TOP.io_gpr_1}
+    , io_gpr_2{vlSymsp->TOP.io_gpr_2}
+    , io_gpr_3{vlSymsp->TOP.io_gpr_3}
+    , io_gpr_4{vlSymsp->TOP.io_gpr_4}
+    , io_gpr_5{vlSymsp->TOP.io_gpr_5}
+    , io_gpr_6{vlSymsp->TOP.io_gpr_6}
+    , io_gpr_7{vlSymsp->TOP.io_gpr_7}
+    , io_gpr_8{vlSymsp->TOP.io_gpr_8}
+    , io_gpr_9{vlSymsp->TOP.io_gpr_9}
+    , io_gpr_10{vlSymsp->TOP.io_gpr_10}
+    , io_gpr_11{vlSymsp->TOP.io_gpr_11}
+    , io_gpr_12{vlSymsp->TOP.io_gpr_12}
+    , io_gpr_13{vlSymsp->TOP.io_gpr_13}
+    , io_gpr_14{vlSymsp->TOP.io_gpr_14}
+    , io_gpr_15{vlSymsp->TOP.io_gpr_15}
+    , io_gpr_16{vlSymsp->TOP.io_gpr_16}
+    , io_gpr_17{vlSymsp->TOP.io_gpr_17}
+    , io_gpr_18{vlSymsp->TOP.io_gpr_18}
+    , io_gpr_19{vlSymsp->TOP.io_gpr_19}
+    , io_gpr_20{vlSymsp->TOP.io_gpr_20}
+    , io_gpr_21{vlSymsp->TOP.io_gpr_21}
+    , io_gpr_22{vlSymsp->TOP.io_gpr_22}
+    , io_gpr_23{vlSymsp->TOP.io_gpr_23}
+    , io_gpr_24{vlSymsp->TOP.io_gpr_24}
+    , io_gpr_25{vlSymsp->TOP.io_gpr_25}
+    , io_gpr_26{vlSymsp->TOP.io_gpr_26}
+    , io_gpr_27{vlSymsp->TOP.io_gpr_27}
+    , io_gpr_28{vlSymsp->TOP.io_gpr_28}
+    , io_gpr_29{vlSymsp->TOP.io_gpr_29}
+    , io_gpr_30{vlSymsp->TOP.io_gpr_30}
+    , io_gpr_31{vlSymsp->TOP.io_gpr_31}
     , rootp{&(vlSymsp->TOP)}
 {
     // Register model with the context
     contextp()->addModel(this);
+    contextp()->traceBaseModelCbAdd(
+        [this](VerilatedTraceBaseC* tfp, int levels, int options) { traceBaseModel(tfp, levels, options); });
 }
 
 Vtop::Vtop(const char* _vcname__)
@@ -62,13 +94,9 @@ void Vtop::eval_step() {
         Vtop___024root___eval_initial(&(vlSymsp->TOP));
         Vtop___024root___eval_settle(&(vlSymsp->TOP));
     }
-    // MTask 0 start
-    VL_DEBUG_IF(VL_DBG_MSGF("MTask0 starting\n"););
-    Verilated::mtaskId(0);
     VL_DEBUG_IF(VL_DBG_MSGF("+ Eval\n"););
     Vtop___024root___eval(&(vlSymsp->TOP));
     // Evaluate cleanup
-    Verilated::endOfThreadMTask(vlSymsp->__Vm_evalMsgQp);
     Verilated::endOfEval(vlSymsp->__Vm_evalMsgQp);
 }
 
@@ -77,7 +105,7 @@ void Vtop::eval_step() {
 bool Vtop::eventsPending() { return false; }
 
 uint64_t Vtop::nextTimeSlot() {
-    VL_FATAL_MT(__FILE__, __LINE__, "", "%Error: No delays in the design");
+    VL_FATAL_MT(__FILE__, __LINE__, "", "No delays in the design");
     return 0;
 }
 
@@ -103,12 +131,18 @@ VL_ATTR_COLD void Vtop::final() {
 const char* Vtop::hierName() const { return vlSymsp->name(); }
 const char* Vtop::modelName() const { return "Vtop"; }
 unsigned Vtop::threads() const { return 1; }
+void Vtop::prepareClone() const { contextp()->prepareClone(); }
+void Vtop::atClone() const {
+    contextp()->threadPoolpOnClone();
+}
 std::unique_ptr<VerilatedTraceConfig> Vtop::traceConfig() const {
     return std::unique_ptr<VerilatedTraceConfig>{new VerilatedTraceConfig{false, false, false}};
 };
 
 //============================================================
 // Trace configuration
+
+void Vtop___024root__trace_decl_types(VerilatedVcd* tracep);
 
 void Vtop___024root__trace_init_top(Vtop___024root* vlSelf, VerilatedVcd* tracep);
 
@@ -121,21 +155,22 @@ VL_ATTR_COLD static void trace_init(void* voidSelf, VerilatedVcd* tracep, uint32
             "Turning on wave traces requires Verilated::traceEverOn(true) call before time 0.");
     }
     vlSymsp->__Vm_baseCode = code;
-    tracep->scopeEscape(' ');
-    tracep->pushNamePrefix(std::string{vlSymsp->name()} + ' ');
+    tracep->pushPrefix(std::string{vlSymsp->name()}, VerilatedTracePrefixType::SCOPE_MODULE);
+    Vtop___024root__trace_decl_types(tracep);
     Vtop___024root__trace_init_top(vlSelf, tracep);
-    tracep->popNamePrefix();
-    tracep->scopeEscape('.');
+    tracep->popPrefix();
 }
 
 VL_ATTR_COLD void Vtop___024root__trace_register(Vtop___024root* vlSelf, VerilatedVcd* tracep);
 
-VL_ATTR_COLD void Vtop::trace(VerilatedVcdC* tfp, int levels, int options) {
-    if (tfp->isOpen()) {
-        vl_fatal(__FILE__, __LINE__, __FILE__,"'Vtop::trace()' shall not be called after 'VerilatedVcdC::open()'.");
+VL_ATTR_COLD void Vtop::traceBaseModel(VerilatedTraceBaseC* tfp, int levels, int options) {
+    (void)levels; (void)options;
+    VerilatedVcdC* const stfp = dynamic_cast<VerilatedVcdC*>(tfp);
+    if (VL_UNLIKELY(!stfp)) {
+        vl_fatal(__FILE__, __LINE__, __FILE__,"'Vtop::trace()' called on non-VerilatedVcdC object;"
+            " use --trace-fst with VerilatedFst object, and --trace with VerilatedVcd object");
     }
-    if (false && levels && options) {}  // Prevent unused
-    tfp->spTrace()->addModel(this);
-    tfp->spTrace()->addInitCb(&trace_init, &(vlSymsp->TOP));
-    Vtop___024root__trace_register(&(vlSymsp->TOP), tfp->spTrace());
+    stfp->spTrace()->addModel(this);
+    stfp->spTrace()->addInitCb(&trace_init, &(vlSymsp->TOP));
+    Vtop___024root__trace_register(&(vlSymsp->TOP), stfp->spTrace());
 }

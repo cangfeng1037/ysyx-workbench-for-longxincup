@@ -16,22 +16,58 @@ class Vtop___024root;
 class VerilatedVcdC;
 
 // This class is the main interface to the Verilated model
-class Vtop VL_NOT_FINAL : public VerilatedModel {
+class alignas(VL_CACHE_LINE_BYTES) Vtop VL_NOT_FINAL : public VerilatedModel {
   private:
     // Symbol table holding complete model state (owned by this class)
     Vtop__Syms* const vlSymsp;
 
   public:
 
+    // CONSTEXPR CAPABILITIES
+    // Verilated with --trace?
+    static constexpr bool traceCapable = true;
+
     // PORTS
     // The application code writes and reads these signals to
     // propagate new values into/out from the Verilated model.
-    VL_IN8(&clk,0,0);
-    VL_IN8(&rst,0,0);
-    VL_OUT8(&non_inst,0,0);
-    VL_OUT(&pc,31,0);
-    VL_IN(&inst,31,0);
-    VL_OUT(&halt_ret,31,0);
+    VL_IN8(&clock,0,0);
+    VL_IN8(&reset,0,0);
+    VL_OUT8(&io_halt_ret,0,0);
+    VL_OUT8(&io_non_inst,0,0);
+    VL_OUT(&io_pc,31,0);
+    VL_IN(&io_inst,31,0);
+    VL_OUT(&io_gpr_0,31,0);
+    VL_OUT(&io_gpr_1,31,0);
+    VL_OUT(&io_gpr_2,31,0);
+    VL_OUT(&io_gpr_3,31,0);
+    VL_OUT(&io_gpr_4,31,0);
+    VL_OUT(&io_gpr_5,31,0);
+    VL_OUT(&io_gpr_6,31,0);
+    VL_OUT(&io_gpr_7,31,0);
+    VL_OUT(&io_gpr_8,31,0);
+    VL_OUT(&io_gpr_9,31,0);
+    VL_OUT(&io_gpr_10,31,0);
+    VL_OUT(&io_gpr_11,31,0);
+    VL_OUT(&io_gpr_12,31,0);
+    VL_OUT(&io_gpr_13,31,0);
+    VL_OUT(&io_gpr_14,31,0);
+    VL_OUT(&io_gpr_15,31,0);
+    VL_OUT(&io_gpr_16,31,0);
+    VL_OUT(&io_gpr_17,31,0);
+    VL_OUT(&io_gpr_18,31,0);
+    VL_OUT(&io_gpr_19,31,0);
+    VL_OUT(&io_gpr_20,31,0);
+    VL_OUT(&io_gpr_21,31,0);
+    VL_OUT(&io_gpr_22,31,0);
+    VL_OUT(&io_gpr_23,31,0);
+    VL_OUT(&io_gpr_24,31,0);
+    VL_OUT(&io_gpr_25,31,0);
+    VL_OUT(&io_gpr_26,31,0);
+    VL_OUT(&io_gpr_27,31,0);
+    VL_OUT(&io_gpr_28,31,0);
+    VL_OUT(&io_gpr_29,31,0);
+    VL_OUT(&io_gpr_30,31,0);
+    VL_OUT(&io_gpr_31,31,0);
 
     // CELLS
     // Public to allow access to /* verilator public */ items.
@@ -69,18 +105,24 @@ class Vtop VL_NOT_FINAL : public VerilatedModel {
     /// Returns time at next time slot. Aborts if !eventsPending()
     uint64_t nextTimeSlot();
     /// Trace signals in the model; called by application code
-    void trace(VerilatedVcdC* tfp, int levels, int options = 0);
+    void trace(VerilatedTraceBaseC* tfp, int levels, int options = 0) { contextp()->trace(tfp, levels, options); }
     /// Retrieve name of this model instance (as passed to constructor).
     const char* name() const;
-
-    /// DPI Export functions
-    static unsigned int rf_read(int idx);
 
     // Abstract methods from VerilatedModel
     const char* hierName() const override final;
     const char* modelName() const override final;
     unsigned threads() const override final;
+    /// Prepare for cloning the model at the process level (e.g. fork in Linux)
+    /// Release necessary resources. Called before cloning.
+    void prepareClone() const;
+    /// Re-init after cloning the model at the process level (e.g. fork in Linux)
+    /// Re-allocate necessary resources. Called after cloning.
+    void atClone() const;
     std::unique_ptr<VerilatedTraceConfig> traceConfig() const override final;
-} VL_ATTR_ALIGNED(VL_CACHE_LINE_BYTES);
+  private:
+    // Internal functions - trace registration
+    void traceBaseModel(VerilatedTraceBaseC* tfp, int levels, int options);
+};
 
 #endif  // guard

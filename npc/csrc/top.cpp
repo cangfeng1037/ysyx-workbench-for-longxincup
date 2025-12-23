@@ -18,7 +18,7 @@
 
 using namespace std;
 
-const uint32_t MAX_SIZE = 400000000;// 定义最大内存4MB
+const uint32_t MAX_SIZE = 400000000;// 定义最大内存40MB
 
 bool sim_exit_flag = false;
 char* img_file = NULL;
@@ -53,7 +53,7 @@ extern "C" void ebreak() {
     sim_exit_flag = true; // 设置退出标志
 }
 
-extern "C" uint32_t rf_read(uint32_t idx);
+// extern "C" uint32_t rf_read(uint32_t idx);
 
 int current_circle = 0;
 
@@ -63,11 +63,6 @@ extern "C" int pmem_read(int raddr) {
 
     uint64_t time_us = time_get_us();
 
-    if(current_circle == cnt) {
-        //printf("reuse : cache cache_data: %ld\n", cache_data);
-        return cache_data;
-    }   
-    
     if(raddr == TIMER_ADDR) {
         g_skip_ref_next = true;
         uint32_t time_low = (uint32_t)(time_us & 0xffffffff);
@@ -81,22 +76,29 @@ extern "C" int pmem_read(int raddr) {
         //printf("timehigh: %u\n", time_high);
         return time_high;
     }
-    
-    uint32_t addr = (uint32_t) raddr;
-    if(addr == cache_addr) 
+
+    if(current_circle == cnt) {
+        //printf("reuse : cache cache_data: %ld\n", cache_data);
         return cache_data;
+    }   
+   
+ 
+    uint32_t addr = (uint32_t) raddr;
+    
+    
+        if(addr == cache_addr) 
+        return cache_data;
+    
 
     addr -= START_ADDR;
     if(addr >= MAX_SIZE || addr + 3 >= MAX_SIZE) {    
 
-        printf("P READ Error: PMEM read out of range: addr=0x%08x, cache data = %08x\n", addr + START_ADDR, cache_data);
+        //printf("P READ Error: PMEM read out of range: addr=0x%08x, addr + START_ADDR=0x%08x, cache data = %08x\n", addr, addr + START_ADDR, cache_data);
         return cache_data;
     }
 
     // 把低2位清零，保证地址4字节对齐
     // 如0x8000，当传入地址为0x8001时，将1清零，以保证四字节对齐，返回依然是0x8000 ～ 0x8003四字节
-
-
     
     uint32_t base = addr & ~0x3u;
     // 按小段序拼接32位值
@@ -154,7 +156,7 @@ extern "C" void pmem_write(int waddr, int wdata, int wmask) {
 }
 
 
-
+/*
 static void init_dpi_scope() {
     regfile_scope = svGetScopeFromName("TOP.top.cpu.regfile");
     if (!regfile_scope) {
@@ -169,7 +171,47 @@ static inline void ensure_regfile_scope() {
 }
 
 //InstMem g_imem;
+*/
 
+static inline uint32_t rf_read(int idx) {
+    switch (idx) {
+        case 0: return 0;
+        case 1: return top -> io_gpr_1;
+        case 2: return top -> io_gpr_2;
+        case 3: return top -> io_gpr_3;
+        case 4: return top -> io_gpr_4;
+        case 5: return top -> io_gpr_5;
+        case 6: return top -> io_gpr_6;
+        case 7: return top -> io_gpr_7;
+        case 8: return top -> io_gpr_8;
+        case 9: return top -> io_gpr_9;
+        case 10: return top -> io_gpr_10;
+        case 11: return top -> io_gpr_11;
+        case 12: return top -> io_gpr_12;
+        case 13: return top -> io_gpr_13;
+        case 14: return top -> io_gpr_14;
+        case 15: return top -> io_gpr_15;
+        case 16: return top -> io_gpr_16;
+        case 17: return top -> io_gpr_17;
+        case 18: return top -> io_gpr_18;
+        case 19: return top -> io_gpr_19;
+        case 20: return top -> io_gpr_20;
+        case 21: return top -> io_gpr_21;
+        case 22: return top -> io_gpr_22;
+        case 23: return top -> io_gpr_23;
+        case 24: return top -> io_gpr_24;
+        case 25: return top -> io_gpr_25;
+        case 26: return top -> io_gpr_26;
+        case 27: return top -> io_gpr_27;
+        case 28: return top -> io_gpr_28;
+        case 29: return top -> io_gpr_29;
+        case 30: return top -> io_gpr_30;
+        case 31: return top -> io_gpr_31;
+        default: 
+            printf("rf_read: invalid register index %d\n", idx);
+            return 0;
+    }
+}
 
 static void parse_args(int argc, char** argv) {
     for (int i = 1; i < argc; i++) {
@@ -238,27 +280,27 @@ uint32_t pmem_read_inst(uint32_t pc) {
 void eval() {
 
     
-    top -> inst = pmem_read_inst(top -> pc);
+    top -> io_inst = pmem_read_inst(top -> io_pc);
     
     // 组合阶段
-    top -> clk = 0;
-    //printf("Inst 0x%08x at pc = 0x%08x, cycle = %d\n", top->inst, top->pc, cnt);
+    top -> clock = 0;
+    //printf("Inst 0x%08x at pc = 0x%08x, cycle = %d\n", top->io_inst, top->io_pc, cnt);
     top -> eval();
     if(tfp) tfp -> dump(sim_time ++);
 
     // 上升沿：写回，更新pc
-    top -> clk = 1;
+    top -> clock = 1;
     top -> eval();
     if (tfp) tfp -> dump(sim_time ++);
 
-    //top -> inst = pmem_read_inst(top -> pc);
+    //top -> io_inst = pmem_read_inst(top -> io_pc);
 
-/*    top -> clk = 0;
+/*    top -> clock = 0;
     top -> eval();
     if (tfp) tfp -> dump(sim_time ++);
 */
     if(cnt == 2) { // 在第三个周期释放复位
-        top -> rst = 0;
+        top -> reset = 0;
     }
 
     cnt ++ ;
@@ -266,10 +308,9 @@ void eval() {
     if (!sim_exit_flag && cnt > 3) { // 复位后开始差分测试
 
         if (g_skip_ref_next) {
-            ensure_regfile_scope();
             CPU_state dut_s;
             for (int i = 0; i < 32; i ++ ) dut_s.gpr[i] = rf_read(i);
-            dut_s.pc = top -> pc;
+            dut_s.pc = top -> io_pc;
             difftest_sync(dut_s.gpr, dut_s.pc);
             difftest_skip();
             g_skip_ref_next = false;
@@ -277,22 +318,21 @@ void eval() {
 
         difftest_step(1);
 
-        ensure_regfile_scope();
-
         CPU_state dut_s;
         for (int i = 0; i < 32; i ++ ) dut_s.gpr[i] = rf_read(i);
-        dut_s.pc = top -> pc;
+        dut_s.pc = top -> io_pc;
         bool check = difftest_check_reg(dut_s.gpr, dut_s.pc);
         if (!check) {
-            printf("Difftest failed at cycle %d, pc = 0x%08x\n, inst = 0x%08x\n", cnt, dut_s.pc - 4, top->inst);
-            if(top -> non_inst) {
-                printf("The non-inst instruction detected! : inst = 0x%08x\n, pc = 0x%08x\n", top->inst, top->pc);
+            printf("Difftest failed at cycle %d, pc = 0x%08x\n, inst = 0x%08x\n", cnt, dut_s.pc - 4, top->io_inst);
+            if(top -> io_non_inst) {
+                printf("The non-inst instruction detected! : inst = 0x%08x\n, pc = 0x%08x\n", top->io_inst, top->io_pc);
             }
             exit(1);
         } else {
             //printf("Difftest passed at cycle %d, pc = 0x%08x\n", cnt, dut_s.pc - 4);
         }
-    }
+      
+    } 
 #endif
 }
 
@@ -307,18 +347,18 @@ void init_sim() {
     tfp->open("wave.vcd");
     
 */
-    top -> rst = 1;
-    top -> clk = 0;
+    top -> reset = 1;
+    top -> clock = 0;
     //top -> pc = START_ADDR;
     top -> eval();          // 让 pc 输出 0x80000000
     
-    top->clk = 1;
+    top->clock = 1;
     top->eval();          // 同步复位：pc <= 0x80000000
 
-    top->clk = 0;
+    top->clock = 0;
     top->eval();
 
-    init_dpi_scope();
+    //init_dpi_scope();
 }
 
 void cmd_c() {
@@ -346,12 +386,12 @@ void cmd_m() {
 }
 
 void cmd_r() {
-    svSetScope(regfile_scope);
-    printf("\nRegister state:\n");
+
     for (int i = 0; i < 31; i++) {
         uint32_t val = rf_read(i);
         printf("x%02d: 0x%08x\n", i, val);
     }
+    printf("Register read not available (rf_read DPI-C function not defined)\n");
 }
 
 void sdb_mainloop() {
@@ -359,7 +399,7 @@ void sdb_mainloop() {
 
     while(true) {
         printf("\n\033[1;34m(npc.sdb)\033[0m ");
-#ifdef CONFIG_PATCH
+#ifndef CONFIG_PATCH
         if(!getline(cin, cmd)) break;
 #else   
         cmd = "c";
@@ -411,7 +451,7 @@ int main(int argc, char** argv) {
 
     if(!sim_exit_flag)printf("\n=== Simulation completed without ebreak ===\n");
 
-    uint32_t halt_ret = top -> halt_ret;
+    uint32_t halt_ret = top -> io_halt_ret;
     if (!sim_exit_flag) {
         printf("\n=== Simulation completed without ebreak ===\n");
     } else if (halt_ret == 0) {
@@ -420,6 +460,9 @@ int main(int argc, char** argv) {
         printf("\033[1;31m===== HIT BAD TRAP =====\033[0m\n");
     }
 
+    // 结束时输出周期数
+    printf("====== Total cycles = %d =======\n", cnt);
+    
     delete top;
 
     free(mem);

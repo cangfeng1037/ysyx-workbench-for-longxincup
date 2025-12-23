@@ -22,6 +22,17 @@ Context* __am_irq_handle(Context *c) {
       ev.event = EVENT_ERROR;
     }
     // 调用了事件处理函数
+    if (ev.event == EVENT_ERROR) {
+      static int err_cnt = 0;
+      if (err_cnt < 16) {
+        // NOTE: klib printf may not support length modifiers like "%lx".
+        // Use 32-bit formats to avoid argument misalignment on riscv32.
+        printf("[cte] EVENT_ERROR: mcause=0x%x (is_irq=%d, code=0x%x) mepc=0x%x mstatus=0x%x GPR1=0x%x\n",
+               (unsigned)mcause, (int)is_irq, (unsigned)(mcause & 0xfff),
+               (unsigned)c->mepc, (unsigned)c->mstatus, (unsigned)c->GPR1);
+        err_cnt++;
+      }
+    }
     c = user_handler(ev, c);
     // 输出c
     assert(c != NULL);

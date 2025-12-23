@@ -13,7 +13,7 @@ struct Context {
   uintptr_t mcause,
             mstatus, mepc;
             
-  //void *pdir;
+  void *pdir;
 };
 
 #ifdef __riscv_e

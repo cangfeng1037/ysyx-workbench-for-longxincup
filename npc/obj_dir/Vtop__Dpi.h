@@ -15,16 +15,12 @@ extern "C" {
 #endif
 
 
-    // DPI EXPORTS
-    // DPI export at /home/cangfeng_/ysyx-workbench/npc/vsrc/Regfile.v:41:27
-    extern unsigned int rf_read(int idx);
-
     // DPI IMPORTS
-    // DPI import at /home/cangfeng_/ysyx-workbench/npc/vsrc/top.v:12:34
+    // DPI import at verilog/top.sv:1460:34
     extern void ebreak();
-    // DPI import at /home/cangfeng_/ysyx-workbench/npc/vsrc/Mem.v:12:29
+    // DPI import at verilog/top.sv:1428:29
     extern int pmem_read(int raddr);
-    // DPI import at /home/cangfeng_/ysyx-workbench/npc/vsrc/Mem.v:13:30
+    // DPI import at verilog/top.sv:1429:30
     extern void pmem_write(int waddr, int wdata, int wmask);
 
 #ifdef __cplusplus

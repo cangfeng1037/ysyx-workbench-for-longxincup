@@ -24,7 +24,6 @@ VM_TRACE_FST = 0
 # Generated module classes, fast-path, compile with highest optimization
 VM_CLASSES_FAST += \
 	Vtop \
-	Vtop__Dpi_Export__0 \
 	Vtop___024root__DepSet_h84412442__0 \
 	Vtop___024root__DepSet_heccd7ead__0 \
 
@@ -43,6 +42,7 @@ VM_SUPPORT_FAST += \
 VM_SUPPORT_SLOW += \
 	Vtop__Syms \
 	Vtop__Trace__0__Slow \
+	Vtop__TraceDecls__0__Slow \
 
 # Global classes, need linked once per executable, fast-path, compile with highest optimization
 VM_GLOBAL_FAST += \
