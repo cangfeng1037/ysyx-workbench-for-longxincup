@@ -2,41 +2,93 @@
 module IFU(
   input         clock,
                 reset,
+                io_out_ready,
+  output        io_out_valid,
   output [31:0] io_out_bits_pc,
                 io_out_bits_inst,
-  input  [31:0] io_in_pc_branch,
-                io_in_pc_jal,
-                io_in_pc_jalr,
-  input         io_in_is_branch_taken,
-                io_in_is_jal,
-                io_in_is_jalr,
-                io_in_is_ecall,
-                io_in_is_mret,
-  input  [31:0] io_in_pc_csr,
-                io_inst_in
+  input         io_in_valid,
+  input  [31:0] io_in_bits_pc_branch,
+                io_in_bits_pc_jal,
+                io_in_bits_pc_jalr,
+  input         io_in_bits_is_branch_taken,
+                io_in_bits_is_jal,
+                io_in_bits_is_jalr,
+                io_in_bits_is_ecall,
+                io_in_bits_is_mret,
+  input  [31:0] io_in_bits_pc_csr,
+  input         io_inst_req_ready,
+  output        io_inst_req_valid,
+  output [31:0] io_inst_req_bits_pc,
+  output        io_inst_resp_ready,
+  input         io_inst_resp_valid,
+  input  [31:0] io_inst_resp_bits_inst,
+  output        io_flush
 );
 
-  reg [31:0] pc;
+  reg  [31:0] pc;
+  reg  [31:0] pc_reg;
+  reg  [31:0] inst_reg;
+  reg         state;
+  reg         out_valid;
+  wire        io_inst_resp_ready_0 = state & ~out_valid;
+  wire        io_flush_0 =
+    io_in_valid
+    & (io_in_bits_is_jal | io_in_bits_is_jalr | io_in_bits_is_branch_taken
+       | io_in_bits_is_ecall | io_in_bits_is_mret);
+  wire        io_inst_req_valid_0 = ~state & ~io_flush_0;
+  wire        _GEN = io_inst_req_ready & io_inst_req_valid_0;
+  wire        _GEN_0 = io_inst_resp_ready_0 & io_inst_resp_valid;
+  wire        _GEN_1 = io_out_ready & out_valid;
+  wire [31:0] _pc_T = pc + 32'h4;
   always @(posedge clock) begin
-    if (reset)
+    if (reset) begin
       pc <= 32'h80000000;
-    else
-      pc <=
-        io_in_is_jal
-          ? io_in_pc_jal
-          : io_in_is_jalr
-              ? io_in_pc_jalr
-              : io_in_is_branch_taken
-                  ? io_in_pc_branch
-                  : io_in_is_ecall | io_in_is_mret ? io_in_pc_csr : pc + 32'h4;
+      pc_reg <= 32'h0;
+      inst_reg <= 32'h0;
+      state <= 1'h0;
+      out_valid <= 1'h0;
+    end
+    else begin
+      if (io_flush_0)
+        pc <=
+          io_in_bits_is_jal
+            ? io_in_bits_pc_jal
+            : io_in_bits_is_jalr
+                ? io_in_bits_pc_jalr
+                : io_in_bits_is_branch_taken
+                    ? io_in_bits_pc_branch
+                    : io_in_bits_is_ecall | io_in_bits_is_mret
+                        ? io_in_bits_pc_csr
+                        : _pc_T;
+      else if (_GEN_1)
+        pc <= _pc_T;
+      if (~state & _GEN)
+        pc_reg <= pc;
+      if (state & _GEN_0)
+        inst_reg <= io_inst_resp_bits_inst;
+      state <= ~io_flush_0 & (state ? ~(state & _GEN_1) : _GEN);
+      out_valid <=
+        ~(io_flush_0 | _GEN_1) & (state ? ~_GEN_1 & (_GEN_0 | out_valid) : out_valid);
+    end
   end // always @(posedge)
-  assign io_out_bits_pc = pc;
-  assign io_out_bits_inst = io_inst_in;
+  assign io_out_valid = out_valid;
+  assign io_out_bits_pc = pc_reg;
+  assign io_out_bits_inst = inst_reg;
+  assign io_inst_req_valid = io_inst_req_valid_0;
+  assign io_inst_req_bits_pc = pc;
+  assign io_inst_resp_ready = io_inst_resp_ready_0;
+  assign io_flush = io_flush_0;
 endmodule
 
 module IDU(
+  input         clock,
+                reset,
+  output        io_in_ready,
+  input         io_in_valid,
   input  [31:0] io_in_bits_pc,
                 io_in_bits_inst,
+  input         io_out_ready,
+  output        io_out_valid,
   output [31:0] io_out_bits_pc,
   output [4:0]  io_out_bits_rd_addr,
   output        io_out_bits_rd_en,
@@ -76,100 +128,111 @@ module IDU(
   output [11:0] io_csr_raddr,
   input  [31:0] io_csr_rdata,
   output        io_is_ecall,
-                io_is_mret
+                io_is_mret,
+  input         io_busy
 );
 
-  wire [31:0] imm_i = {{20{io_in_bits_inst[31]}}, io_in_bits_inst[31:20]};
-  wire        is_auipc = io_in_bits_inst[6:0] == 7'h17;
-  wire        is_lui = io_in_bits_inst[6:0] == 7'h37;
-  wire        is_op_imm = io_in_bits_inst[6:0] == 7'h13;
-  wire        _is_sb_T_1 = io_in_bits_inst[14:12] == 3'h0;
-  wire        _is_bltu_T_1 = io_in_bits_inst[14:12] == 3'h6;
-  wire        _is_blt_T_1 = io_in_bits_inst[14:12] == 3'h4;
-  wire        _is_lb_T = io_in_bits_inst[6:0] == 7'h3;
-  wire        _is_csrrs_T_1 = io_in_bits_inst[14:12] == 3'h2;
+  reg         state;
+  wire        io_in_ready_0 = ~state & ~io_busy;
+  reg  [31:0] inst;
+  reg  [31:0] pc;
+  wire [31:0] imm_i = {{20{inst[31]}}, inst[31:20]};
+  wire        is_auipc = inst[6:0] == 7'h17;
+  wire        is_lui = inst[6:0] == 7'h37;
+  wire        is_op_imm = inst[6:0] == 7'h13;
+  wire        _is_sb_T_1 = inst[14:12] == 3'h0;
+  wire        _is_bltu_T_1 = inst[14:12] == 3'h6;
+  wire        _is_blt_T_1 = inst[14:12] == 3'h4;
+  wire        _is_lb_T = inst[6:0] == 7'h3;
+  wire        _is_csrrs_T_1 = inst[14:12] == 3'h2;
   wire        is_lw = _is_lb_T & _is_csrrs_T_1;
   wire        is_lbu = _is_lb_T & _is_blt_T_1;
-  wire        _is_csrrw_T_1 = io_in_bits_inst[14:12] == 3'h1;
+  wire        _is_csrrw_T_1 = inst[14:12] == 3'h1;
   wire        is_lh = _is_lb_T & _is_csrrw_T_1;
-  wire        _is_bge_T_1 = io_in_bits_inst[14:12] == 3'h5;
+  wire        _is_bge_T_1 = inst[14:12] == 3'h5;
   wire        is_lhu = _is_lb_T & _is_bge_T_1;
   wire        is_lb = _is_lb_T & _is_sb_T_1;
   wire        is_load = is_lw | is_lbu | is_lh | is_lhu | is_lb;
-  wire        _is_sltu_T_1 = io_in_bits_inst[14:12] == 3'h3;
-  wire        is_srai = is_op_imm & _is_bge_T_1 & io_in_bits_inst[30];
-  wire        is_srli = is_op_imm & _is_bge_T_1 & ~(io_in_bits_inst[30]);
+  wire        _is_sltu_T_1 = inst[14:12] == 3'h3;
+  wire        is_srai = is_op_imm & _is_bge_T_1 & inst[30];
+  wire        is_srli = is_op_imm & _is_bge_T_1 & ~(inst[30]);
   wire        is_slli = is_op_imm & _is_csrrw_T_1;
-  wire        is_jal = io_in_bits_inst[6:0] == 7'h6F;
-  wire        is_jalr = io_in_bits_inst[6:0] == 7'h67 & _is_sb_T_1;
-  wire        is_op = io_in_bits_inst[6:0] == 7'h33;
-  wire        _is_remu_T_3 = io_in_bits_inst[31:25] == 7'h1;
-  wire        _is_bltu_T = io_in_bits_inst[6:0] == 7'h63;
+  wire        is_jal = inst[6:0] == 7'h6F;
+  wire        is_jalr = inst[6:0] == 7'h67 & _is_sb_T_1;
+  wire        is_op = inst[6:0] == 7'h33;
+  wire        _is_remu_T_3 = inst[31:25] == 7'h1;
+  wire        _is_bltu_T = inst[6:0] == 7'h63;
   wire        is_bne = _is_bltu_T & _is_csrrw_T_1;
   wire        is_beq = _is_bltu_T & _is_sb_T_1;
   wire        is_bge = _is_bltu_T & _is_bge_T_1;
-  wire        is_bgeu = _is_bltu_T & (&(io_in_bits_inst[14:12]));
+  wire        is_bgeu = _is_bltu_T & (&(inst[14:12]));
   wire        is_blt = _is_bltu_T & _is_blt_T_1;
   wire        is_bltu = _is_bltu_T & _is_bltu_T_1;
   wire        is_branch = is_bne | is_beq | is_bge | is_bgeu | is_blt | is_bltu;
-  wire        _is_sh_T = io_in_bits_inst[6:0] == 7'h23;
+  wire        _is_sh_T = inst[6:0] == 7'h23;
   wire        is_sw = _is_sh_T & _is_csrrs_T_1;
   wire        is_sb = _is_sh_T & _is_sb_T_1;
   wire        is_sh = _is_sh_T & _is_csrrw_T_1;
   wire        is_store = is_sw | is_sb | is_sh;
-  wire        is_ecall = io_in_bits_inst == 32'h73;
-  wire        is_mret = io_in_bits_inst == 32'h30200073;
-  wire        is_csr = io_in_bits_inst[6:0] == 7'h73;
+  wire        is_ecall = inst == 32'h73;
+  wire        is_mret = inst == 32'h30200073;
+  wire        is_csr = inst[6:0] == 7'h73;
   wire        is_csrrw = is_csr & _is_csrrw_T_1;
   wire        is_csrrs = is_csr & _is_csrrs_T_1;
-  assign io_out_bits_pc = io_in_bits_pc;
-  assign io_out_bits_rd_addr = io_in_bits_inst[11:7];
+  wire        _GEN = io_in_ready_0 & io_in_valid;
+  always @(posedge clock) begin
+    if (reset) begin
+      state <= 1'h0;
+      inst <= 32'h0;
+      pc <= 32'h0;
+    end
+    else begin
+      if (state)
+        state <= ~(state & io_out_ready);
+      else
+        state <= _GEN;
+      if (_GEN) begin
+        inst <= io_in_bits_inst;
+        pc <= io_in_bits_pc;
+      end
+    end
+  end // always @(posedge)
+  assign io_in_ready = io_in_ready_0;
+  assign io_out_valid = state;
+  assign io_out_bits_pc = pc;
+  assign io_out_bits_rd_addr = inst[11:7];
   assign io_out_bits_rd_en =
     is_load | is_lui | is_auipc | is_op | is_jal | is_jalr | is_op_imm
-    | (is_csrrw | is_csrrs) & (|(io_in_bits_inst[11:7]));
-  assign io_out_bits_alu_a =
-    is_auipc | is_jal ? io_in_bits_pc : is_lui ? 32'h0 : io_reg_rs1_data;
+    | (is_csrrw | is_csrrs) & (|(inst[11:7]));
+  assign io_out_bits_alu_a = is_auipc | is_jal ? pc : is_lui ? 32'h0 : io_reg_rs1_data;
   assign io_out_bits_alu_b =
     is_op_imm | is_load | is_store | is_jal | is_jalr | is_auipc | is_lui | is_branch
       ? (is_lui | is_auipc
-           ? {io_in_bits_inst[31:12], 12'h0}
+           ? {inst[31:12], 12'h0}
            : is_jal
-               ? {{12{io_in_bits_inst[31]}},
-                  io_in_bits_inst[19:12],
-                  io_in_bits_inst[20],
-                  io_in_bits_inst[30:21],
-                  1'h0}
+               ? {{12{inst[31]}}, inst[19:12], inst[20], inst[30:21], 1'h0}
                : is_jalr
                    ? imm_i
                    : is_store
-                       ? {{20{io_in_bits_inst[31]}},
-                          io_in_bits_inst[31:25],
-                          io_in_bits_inst[11:7]}
+                       ? {{20{inst[31]}}, inst[31:25], inst[11:7]}
                        : is_branch
-                           ? {{20{io_in_bits_inst[31]}},
-                              io_in_bits_inst[7],
-                              io_in_bits_inst[30:25],
-                              io_in_bits_inst[11:8],
-                              1'h0}
-                           : is_slli | is_srli | is_srai
-                               ? {27'h0, io_in_bits_inst[24:20]}
-                               : imm_i)
+                           ? {{20{inst[31]}}, inst[7], inst[30:25], inst[11:8], 1'h0}
+                           : is_slli | is_srli | is_srai ? {27'h0, inst[24:20]} : imm_i)
       : io_reg_rs2_data;
   assign io_out_bits_alu_op =
-    is_op & _is_sb_T_1 & io_in_bits_inst[30]
+    is_op & _is_sb_T_1 & inst[30]
       ? 4'h1
-      : is_op & (&(io_in_bits_inst[14:12])) | is_op_imm & (&(io_in_bits_inst[14:12]))
+      : is_op & (&(inst[14:12])) | is_op_imm & (&(inst[14:12]))
           ? 4'h2
           : is_op & _is_bltu_T_1 | is_op_imm & _is_bltu_T_1
               ? 4'h3
               : is_op & _is_blt_T_1 | is_op_imm & _is_blt_T_1
                   ? 4'h4
-                  : is_op & _is_csrrw_T_1 & ~(io_in_bits_inst[30]) | is_slli
+                  : is_op & _is_csrrw_T_1 & ~(inst[30]) | is_slli
                       ? 4'h5
-                      : is_op & _is_bge_T_1 & ~(io_in_bits_inst[30])
-                        & io_in_bits_inst[31:25] == 7'h0 | is_srli
+                      : is_op & _is_bge_T_1 & ~(inst[30]) & inst[31:25] == 7'h0 | is_srli
                           ? 4'h6
-                          : is_op & _is_bge_T_1 & io_in_bits_inst[30] | is_srai
+                          : is_op & _is_bge_T_1 & inst[30] | is_srai
                               ? 4'h7
                               : is_op & _is_csrrs_T_1
                                   ? 4'hD
@@ -188,18 +251,15 @@ module IDU(
                                                           : is_op & _is_bltu_T_1
                                                             & _is_remu_T_3
                                                               ? 4'hB
-                                                              : is_op
-                                                                & (&(io_in_bits_inst[14:12]))
+                                                              : is_op & (&(inst[14:12]))
                                                                 & _is_remu_T_3
                                                                   ? 4'hC
                                                                   : 4'h0;
   assign io_out_bits_rs1_data = io_reg_rs1_data;
   assign io_out_bits_rs2_data = io_reg_rs2_data;
-  assign io_out_bits_csr_wdata =
-    is_ecall ? io_in_bits_pc : is_mret ? 32'h0 : io_reg_rs1_data;
+  assign io_out_bits_csr_wdata = is_ecall ? pc : is_mret ? 32'h0 : io_reg_rs1_data;
   assign io_out_bits_csr_wen = is_csrrw | is_ecall;
-  assign io_out_bits_csr_waddr =
-    is_ecall ? 12'h341 : is_mret ? 12'h342 : io_in_bits_inst[31:20];
+  assign io_out_bits_csr_waddr = is_ecall ? 12'h341 : is_mret ? 12'h342 : inst[31:20];
   assign io_out_bits_csr_rdata = io_csr_rdata;
   assign io_out_bits_is_csrrw = is_csrrw;
   assign io_out_bits_is_csrrs = is_csrrs;
@@ -221,9 +281,9 @@ module IDU(
   assign io_out_bits_is_bgeu = is_bgeu;
   assign io_out_bits_is_ecall = is_ecall;
   assign io_out_bits_is_mret = is_mret;
-  assign io_reg_rs1_addr = io_in_bits_inst[19:15];
-  assign io_reg_rs2_addr = io_in_bits_inst[24:20];
-  assign io_csr_raddr = is_ecall ? 12'h305 : is_mret ? 12'h341 : io_in_bits_inst[31:20];
+  assign io_reg_rs1_addr = inst[19:15];
+  assign io_reg_rs2_addr = inst[24:20];
+  assign io_csr_raddr = is_ecall ? 12'h305 : is_mret ? 12'h341 : inst[31:20];
   assign io_is_ecall = is_ecall;
   assign io_is_mret = is_mret;
 endmodule
@@ -279,6 +339,10 @@ module ALU(
 endmodule
 
 module EXU(
+  input         clock,
+                reset,
+  output        io_in_ready,
+  input         io_in_valid,
   input  [31:0] io_in_bits_pc,
   input  [4:0]  io_in_bits_rd_addr,
   input         io_in_bits_rd_en,
@@ -311,6 +375,8 @@ module EXU(
                 io_in_bits_is_bgeu,
                 io_in_bits_is_ecall,
                 io_in_bits_is_mret,
+                io_out_ready,
+  output        io_out_valid,
   output [31:0] io_out_bits_pc,
                 io_out_bits_alu_result,
                 io_out_bits_rs2_data,
@@ -332,68 +398,191 @@ module EXU(
                 io_out_bits_is_sh,
                 io_out_bits_is_jalr,
                 io_out_bits_is_jal,
-  output [31:0] io_branch_pc_branch,
-                io_branch_pc_jal,
-                io_branch_pc_jalr,
-  output        io_branch_is_branch_taken,
-                io_branch_is_jal,
-                io_branch_is_jalr,
-                io_branch_is_ecall,
-                io_branch_is_mret,
-  output [31:0] io_branch_pc_csr
+                io_branch_valid,
+  output [31:0] io_branch_bits_pc_branch,
+                io_branch_bits_pc_jal,
+                io_branch_bits_pc_jalr,
+  output        io_branch_bits_is_branch_taken,
+                io_branch_bits_is_jal,
+                io_branch_bits_is_jalr,
+                io_branch_bits_is_ecall,
+                io_branch_bits_is_mret,
+  output [31:0] io_branch_bits_pc_csr
 );
 
-  wire [31:0] _pc_jal_T = io_in_bits_pc + io_in_bits_alu_b;
-  wire [31:0] _pc_jalr_T = io_in_bits_alu_a + io_in_bits_alu_b;
+  reg         state;
+  reg         out_valid;
+  reg  [31:0] alu_a;
+  reg  [31:0] alu_b;
+  reg  [3:0]  alu_op;
+  reg  [31:0] rs1_data;
+  reg  [31:0] rs2_data;
+  reg  [31:0] csr_rdata;
+  reg  [31:0] pc;
+  reg  [4:0]  rd_addr;
+  reg         rd_en;
+  reg  [31:0] csr_wdata;
+  reg         csr_wen;
+  reg  [11:0] csr_waddr;
+  reg         is_csrrw;
+  reg         is_csrrs;
+  reg         is_lw;
+  reg         is_lbu;
+  reg         is_lh;
+  reg         is_lhu;
+  reg         is_lb;
+  reg         is_sw;
+  reg         is_sb;
+  reg         is_sh;
+  reg         is_jalr;
+  reg         is_jal;
+  reg         is_ecall;
+  reg         is_mret;
+  reg         is_beq;
+  reg         is_bne;
+  reg         is_blt;
+  reg         is_bltu;
+  reg         is_bge;
+  reg         is_bgeu;
+  wire [31:0] _pc_jal_T = pc + alu_b;
+  wire [31:0] _pc_jalr_T = alu_a + alu_b;
+  wire        _GEN = ~state & io_in_valid;
+  wire        _GEN_0 = io_out_ready & out_valid;
+  always @(posedge clock) begin
+    if (reset) begin
+      state <= 1'h0;
+      out_valid <= 1'h0;
+      alu_a <= 32'h0;
+      alu_b <= 32'h0;
+      alu_op <= 4'h0;
+      rs1_data <= 32'h0;
+      rs2_data <= 32'h0;
+      csr_rdata <= 32'h0;
+      pc <= 32'h0;
+      rd_addr <= 5'h0;
+      rd_en <= 1'h0;
+      csr_wdata <= 32'h0;
+      csr_wen <= 1'h0;
+      csr_waddr <= 12'h0;
+      is_csrrw <= 1'h0;
+      is_csrrs <= 1'h0;
+      is_lw <= 1'h0;
+      is_lbu <= 1'h0;
+      is_lh <= 1'h0;
+      is_lhu <= 1'h0;
+      is_lb <= 1'h0;
+      is_sw <= 1'h0;
+      is_sb <= 1'h0;
+      is_sh <= 1'h0;
+      is_jalr <= 1'h0;
+      is_jal <= 1'h0;
+      is_ecall <= 1'h0;
+      is_mret <= 1'h0;
+      is_beq <= 1'h0;
+      is_bne <= 1'h0;
+      is_blt <= 1'h0;
+      is_bltu <= 1'h0;
+      is_bge <= 1'h0;
+      is_bgeu <= 1'h0;
+    end
+    else begin
+      if (state)
+        state <= ~(state & _GEN_0);
+      else
+        state <= _GEN;
+      out_valid <= state & (state ? ~_GEN_0 : out_valid);
+      if (_GEN) begin
+        alu_a <= io_in_bits_alu_a;
+        alu_b <= io_in_bits_alu_b;
+        alu_op <= io_in_bits_alu_op;
+        rs1_data <= io_in_bits_rs1_data;
+        rs2_data <= io_in_bits_rs2_data;
+        csr_rdata <= io_in_bits_csr_rdata;
+        pc <= io_in_bits_pc;
+        rd_addr <= io_in_bits_rd_addr;
+        rd_en <= io_in_bits_rd_en;
+        csr_wdata <= io_in_bits_csr_wdata;
+        csr_wen <= io_in_bits_csr_wen;
+        csr_waddr <= io_in_bits_csr_waddr;
+        is_csrrw <= io_in_bits_is_csrrw;
+        is_csrrs <= io_in_bits_is_csrrs;
+        is_lw <= io_in_bits_is_lw;
+        is_lbu <= io_in_bits_is_lbu;
+        is_lh <= io_in_bits_is_lh;
+        is_lhu <= io_in_bits_is_lhu;
+        is_lb <= io_in_bits_is_lb;
+        is_sw <= io_in_bits_is_sw;
+        is_sb <= io_in_bits_is_sb;
+        is_sh <= io_in_bits_is_sh;
+        is_jalr <= io_in_bits_is_jalr;
+        is_jal <= io_in_bits_is_jal;
+        is_ecall <= io_in_bits_is_ecall;
+        is_mret <= io_in_bits_is_mret;
+        is_beq <= io_in_bits_is_beq;
+        is_bne <= io_in_bits_is_bne;
+        is_blt <= io_in_bits_is_blt;
+        is_bltu <= io_in_bits_is_bltu;
+        is_bge <= io_in_bits_is_bge;
+        is_bgeu <= io_in_bits_is_bgeu;
+      end
+    end
+  end // always @(posedge)
   ALU alu (
-    .io_a     (io_in_bits_alu_a),
-    .io_b     (io_in_bits_alu_b),
-    .io_aluOp (io_in_bits_alu_op),
+    .io_a     (alu_a),
+    .io_b     (alu_b),
+    .io_aluOp (alu_op),
     .io_out   (io_out_bits_alu_result)
   );
-  assign io_out_bits_pc = io_in_bits_pc;
-  assign io_out_bits_rs2_data = io_in_bits_rs2_data;
-  assign io_out_bits_rd_addr = io_in_bits_rd_addr;
-  assign io_out_bits_rd_en = io_in_bits_rd_en;
-  assign io_out_bits_csr_wdata = io_in_bits_csr_wdata;
-  assign io_out_bits_csr_wen = io_in_bits_csr_wen;
-  assign io_out_bits_csr_waddr = io_in_bits_csr_waddr;
-  assign io_out_bits_csr_rdata = io_in_bits_csr_rdata;
-  assign io_out_bits_is_csrrw = io_in_bits_is_csrrw;
-  assign io_out_bits_is_csrrs = io_in_bits_is_csrrs;
-  assign io_out_bits_is_lw = io_in_bits_is_lw;
-  assign io_out_bits_is_lbu = io_in_bits_is_lbu;
-  assign io_out_bits_is_lh = io_in_bits_is_lh;
-  assign io_out_bits_is_lhu = io_in_bits_is_lhu;
-  assign io_out_bits_is_lb = io_in_bits_is_lb;
-  assign io_out_bits_is_sw = io_in_bits_is_sw;
-  assign io_out_bits_is_sb = io_in_bits_is_sb;
-  assign io_out_bits_is_sh = io_in_bits_is_sh;
-  assign io_out_bits_is_jalr = io_in_bits_is_jalr;
-  assign io_out_bits_is_jal = io_in_bits_is_jal;
-  assign io_branch_pc_branch = _pc_jal_T;
-  assign io_branch_pc_jal = _pc_jal_T;
-  assign io_branch_pc_jalr = {_pc_jalr_T[31:1], 1'h0};
-  assign io_branch_is_branch_taken =
-    io_in_bits_is_beq
-      ? io_in_bits_rs1_data == io_in_bits_rs2_data
-      : io_in_bits_is_bne
-          ? io_in_bits_rs1_data != io_in_bits_rs2_data
-          : io_in_bits_is_blt
-              ? $signed(io_in_bits_rs1_data) < $signed(io_in_bits_rs2_data)
-              : io_in_bits_is_bltu
-                  ? io_in_bits_rs1_data < io_in_bits_rs2_data
-                  : io_in_bits_is_bge
-                      ? $signed(io_in_bits_rs1_data) >= $signed(io_in_bits_rs2_data)
-                      : io_in_bits_is_bgeu & io_in_bits_rs1_data >= io_in_bits_rs2_data;
-  assign io_branch_is_jal = io_in_bits_is_jal;
-  assign io_branch_is_jalr = io_in_bits_is_jalr;
-  assign io_branch_is_ecall = io_in_bits_is_ecall;
-  assign io_branch_is_mret = io_in_bits_is_mret;
-  assign io_branch_pc_csr = io_in_bits_csr_rdata;
+  assign io_in_ready = ~state;
+  assign io_out_valid = out_valid;
+  assign io_out_bits_pc = pc;
+  assign io_out_bits_rs2_data = rs2_data;
+  assign io_out_bits_rd_addr = rd_addr;
+  assign io_out_bits_rd_en = rd_en;
+  assign io_out_bits_csr_wdata = csr_wdata;
+  assign io_out_bits_csr_wen = csr_wen;
+  assign io_out_bits_csr_waddr = csr_waddr;
+  assign io_out_bits_csr_rdata = csr_rdata;
+  assign io_out_bits_is_csrrw = is_csrrw;
+  assign io_out_bits_is_csrrs = is_csrrs;
+  assign io_out_bits_is_lw = is_lw;
+  assign io_out_bits_is_lbu = is_lbu;
+  assign io_out_bits_is_lh = is_lh;
+  assign io_out_bits_is_lhu = is_lhu;
+  assign io_out_bits_is_lb = is_lb;
+  assign io_out_bits_is_sw = is_sw;
+  assign io_out_bits_is_sb = is_sb;
+  assign io_out_bits_is_sh = is_sh;
+  assign io_out_bits_is_jalr = is_jalr;
+  assign io_out_bits_is_jal = is_jal;
+  assign io_branch_valid = out_valid;
+  assign io_branch_bits_pc_branch = _pc_jal_T;
+  assign io_branch_bits_pc_jal = _pc_jal_T;
+  assign io_branch_bits_pc_jalr = {_pc_jalr_T[31:1], 1'h0};
+  assign io_branch_bits_is_branch_taken =
+    is_beq
+      ? rs1_data == rs2_data
+      : is_bne
+          ? rs1_data != rs2_data
+          : is_blt
+              ? $signed(rs1_data) < $signed(rs2_data)
+              : is_bltu
+                  ? rs1_data < rs2_data
+                  : is_bge
+                      ? $signed(rs1_data) >= $signed(rs2_data)
+                      : is_bgeu & rs1_data >= rs2_data;
+  assign io_branch_bits_is_jal = is_jal;
+  assign io_branch_bits_is_jalr = is_jalr;
+  assign io_branch_bits_is_ecall = is_ecall;
+  assign io_branch_bits_is_mret = is_mret;
+  assign io_branch_bits_pc_csr = csr_rdata;
 endmodule
 
 module MEM(
+  input         clock,
+                reset,
+  output        io_in_ready,
+  input         io_in_valid,
   input  [31:0] io_in_bits_pc,
                 io_in_bits_alu_result,
                 io_in_bits_rs2_data,
@@ -415,6 +604,8 @@ module MEM(
                 io_in_bits_is_sh,
                 io_in_bits_is_jalr,
                 io_in_bits_is_jal,
+                io_out_ready,
+  output        io_out_valid,
   output [31:0] io_out_bits_pc,
                 io_out_bits_alu_result,
   output [4:0]  io_out_bits_rd_addr,
@@ -429,66 +620,193 @@ module MEM(
   output [31:0] io_out_bits_csr_rdata,
   output        io_out_bits_is_csrrw,
                 io_out_bits_is_csrrs,
-                io_mem_valid,
-                io_mem_wen,
-  output [31:0] io_mem_raddr,
-                io_mem_waddr,
-                io_mem_wdata,
-  output [3:0]  io_mem_wmask,
-  input  [31:0] io_mem_rdata
+  input         io_mem_req_ready,
+  output        io_mem_req_valid,
+                io_mem_req_bits_wen,
+  output [31:0] io_mem_req_bits_raddr,
+                io_mem_req_bits_waddr,
+                io_mem_req_bits_wdata,
+  output [3:0]  io_mem_req_bits_wmask,
+  output        io_mem_resp_ready,
+  input         io_mem_resp_valid,
+  input  [31:0] io_mem_resp_bits_rdata
 );
 
-  wire        is_load =
-    io_in_bits_is_lw | io_in_bits_is_lb | io_in_bits_is_lbu | io_in_bits_is_lh
-    | io_in_bits_is_lhu;
-  wire [38:0] _wdata_T_2 =
-    {31'h0, io_in_bits_rs2_data[7:0]} << {34'h0, io_in_bits_alu_result[1:0], 3'h0};
-  wire [46:0] _wdata_T_5 =
-    {31'h0, io_in_bits_rs2_data[15:0]} << {42'h0, io_in_bits_alu_result[1], 4'h0};
-  wire [31:0] _rdata_byte_T_1 = io_mem_rdata >> {27'h0, io_in_bits_alu_result[1:0], 3'h0};
-  wire [31:0] _rdata_half_T_1 = io_mem_rdata >> {27'h0, io_in_bits_alu_result[1], 4'h0};
-  assign io_out_bits_pc = io_in_bits_pc;
-  assign io_out_bits_alu_result = io_in_bits_alu_result;
-  assign io_out_bits_rd_addr = io_in_bits_rd_addr;
-  assign io_out_bits_rd_en = io_in_bits_rd_en;
-  assign io_out_bits_mem_data =
-    io_in_bits_is_lb
-      ? {{24{_rdata_byte_T_1[7]}}, _rdata_byte_T_1[7:0]}
-      : io_in_bits_is_lbu
-          ? {24'h0, _rdata_byte_T_1[7:0]}
-          : io_in_bits_is_lh
-              ? {{16{_rdata_half_T_1[15]}}, _rdata_half_T_1[15:0]}
-              : io_in_bits_is_lhu
-                  ? {16'h0, _rdata_half_T_1[15:0]}
-                  : io_in_bits_is_lw ? io_mem_rdata : 32'h0;
+  wire        in_ready;
+  reg  [31:0] pc;
+  reg  [31:0] alu_result;
+  reg  [31:0] rs2_data;
+  reg  [4:0]  rd_addr;
+  reg         rd_en;
+  reg  [31:0] csr_wdata;
+  reg         csr_wen;
+  reg  [11:0] csr_waddr;
+  reg  [31:0] csr_rdata;
+  reg         is_csrrw;
+  reg         is_csrrs;
+  reg         is_lw;
+  reg         is_lbu;
+  reg         is_lh;
+  reg         is_lhu;
+  reg         is_lb;
+  reg         is_sw;
+  reg         is_sb;
+  reg         is_sh;
+  reg         is_jalr;
+  reg         is_jal;
+  reg         is_load;
+  wire        _GEN = in_ready & io_in_valid;
+  reg  [1:0]  state;
+  assign in_ready = state == 2'h0;
+  reg         out_valid;
+  reg  [31:0] mem_data;
+  wire        io_mem_resp_ready_0 = state == 2'h2;
+  wire        _GEN_0 = state == 2'h1;
+  wire        io_mem_req_valid_0 = ~in_ready & _GEN_0;
+  wire        _GEN_1 = io_mem_resp_ready_0 & io_mem_resp_valid;
+  reg  [7:0]  casez_tmp;
+  always_comb begin
+    casez (alu_result[1:0])
+      2'b00:
+        casez_tmp = io_mem_resp_bits_rdata[7:0];
+      2'b01:
+        casez_tmp = io_mem_resp_bits_rdata[15:8];
+      2'b10:
+        casez_tmp = io_mem_resp_bits_rdata[23:16];
+      default:
+        casez_tmp = io_mem_resp_bits_rdata[31:24];
+    endcase
+  end // always_comb
+  wire        _GEN_2 = (&state) & io_out_ready & out_valid;
+  reg  [1:0]  casez_tmp_0;
+  always_comb begin
+    casez (state)
+      2'b00:
+        casez_tmp_0 =
+          _GEN
+            ? {~(io_in_bits_is_lw | io_in_bits_is_lb | io_in_bits_is_lbu
+                 | io_in_bits_is_lh | io_in_bits_is_lhu | io_in_bits_is_sw
+                 | io_in_bits_is_sb | io_in_bits_is_sh),
+               1'h1}
+            : state;
+      2'b01:
+        casez_tmp_0 = io_mem_req_ready & io_mem_req_valid_0 ? {1'h1, ~is_load} : state;
+      2'b10:
+        casez_tmp_0 = _GEN_1 ? 2'h3 : state;
+      default:
+        casez_tmp_0 = _GEN_2 ? 2'h0 : state;
+    endcase
+  end // always_comb
+  wire [38:0] _wdata_T_2 = {31'h0, rs2_data[7:0]} << {34'h0, alu_result[1:0], 3'h0};
+  wire [46:0] _wdata_T_5 = {31'h0, rs2_data[15:0]} << {42'h0, alu_result[1], 4'h0};
+  wire [15:0] sel_half =
+    alu_result[1] ? io_mem_resp_bits_rdata[31:16] : io_mem_resp_bits_rdata[15:0];
+  always @(posedge clock) begin
+    if (reset) begin
+      pc <= 32'h0;
+      alu_result <= 32'h0;
+      rs2_data <= 32'h0;
+      rd_addr <= 5'h0;
+      rd_en <= 1'h0;
+      csr_wdata <= 32'h0;
+      csr_wen <= 1'h0;
+      csr_waddr <= 12'h0;
+      csr_rdata <= 32'h0;
+      is_csrrw <= 1'h0;
+      is_csrrs <= 1'h0;
+      is_lw <= 1'h0;
+      is_lbu <= 1'h0;
+      is_lh <= 1'h0;
+      is_lhu <= 1'h0;
+      is_lb <= 1'h0;
+      is_sw <= 1'h0;
+      is_sb <= 1'h0;
+      is_sh <= 1'h0;
+      is_jalr <= 1'h0;
+      is_jal <= 1'h0;
+      is_load <= 1'h0;
+      state <= 2'h0;
+      out_valid <= 1'h0;
+      mem_data <= 32'h0;
+    end
+    else begin
+      if (_GEN) begin
+        pc <= io_in_bits_pc;
+        alu_result <= io_in_bits_alu_result;
+        rs2_data <= io_in_bits_rs2_data;
+        rd_addr <= io_in_bits_rd_addr;
+        rd_en <= io_in_bits_rd_en;
+        csr_wdata <= io_in_bits_csr_wdata;
+        csr_wen <= io_in_bits_csr_wen;
+        csr_waddr <= io_in_bits_csr_waddr;
+        csr_rdata <= io_in_bits_csr_rdata;
+        is_csrrw <= io_in_bits_is_csrrw;
+        is_csrrs <= io_in_bits_is_csrrs;
+        is_lw <= io_in_bits_is_lw;
+        is_lbu <= io_in_bits_is_lbu;
+        is_lh <= io_in_bits_is_lh;
+        is_lhu <= io_in_bits_is_lhu;
+        is_lb <= io_in_bits_is_lb;
+        is_sw <= io_in_bits_is_sw;
+        is_sb <= io_in_bits_is_sb;
+        is_sh <= io_in_bits_is_sh;
+        is_jalr <= io_in_bits_is_jalr;
+        is_jal <= io_in_bits_is_jal;
+        is_load <=
+          io_in_bits_is_lw | io_in_bits_is_lb | io_in_bits_is_lbu | io_in_bits_is_lh
+          | io_in_bits_is_lhu;
+      end
+      state <= casez_tmp_0;
+      out_valid <=
+        (in_ready | _GEN_0 | io_mem_resp_ready_0 | ~_GEN_2)
+        & ((&state) & ~out_valid | out_valid);
+      if (in_ready | _GEN_0 | ~_GEN_1) begin
+      end
+      else
+        mem_data <=
+          is_lw
+            ? io_mem_resp_bits_rdata
+            : is_lbu
+                ? {24'h0, casez_tmp}
+                : is_lb
+                    ? {{24{casez_tmp[7]}}, casez_tmp}
+                    : is_lhu
+                        ? {16'h0, sel_half}
+                        : is_lh ? {{16{sel_half[15]}}, sel_half} : 32'h0;
+    end
+  end // always @(posedge)
+  assign io_in_ready = in_ready;
+  assign io_out_valid = out_valid;
+  assign io_out_bits_pc = pc;
+  assign io_out_bits_alu_result = alu_result;
+  assign io_out_bits_rd_addr = rd_addr;
+  assign io_out_bits_rd_en = rd_en;
+  assign io_out_bits_mem_data = mem_data;
   assign io_out_bits_is_load = is_load;
-  assign io_out_bits_is_jalr = io_in_bits_is_jalr;
-  assign io_out_bits_is_jal = io_in_bits_is_jal;
-  assign io_out_bits_csr_wdata = io_in_bits_csr_wdata;
-  assign io_out_bits_csr_wen = io_in_bits_csr_wen;
-  assign io_out_bits_csr_waddr = io_in_bits_csr_waddr;
-  assign io_out_bits_csr_rdata = io_in_bits_csr_rdata;
-  assign io_out_bits_is_csrrw = io_in_bits_is_csrrw;
-  assign io_out_bits_is_csrrs = io_in_bits_is_csrrs;
-  assign io_mem_valid = is_load | io_in_bits_is_sw | io_in_bits_is_sb | io_in_bits_is_sh;
-  assign io_mem_wen = io_in_bits_is_sw | io_in_bits_is_sh | io_in_bits_is_sb;
-  assign io_mem_raddr = io_in_bits_alu_result;
-  assign io_mem_waddr = io_in_bits_alu_result;
-  assign io_mem_wdata =
-    io_in_bits_is_sb
-      ? _wdata_T_2[31:0]
-      : io_in_bits_is_sh
-          ? _wdata_T_5[31:0]
-          : io_in_bits_is_sw ? io_in_bits_rs2_data : 32'h0;
-  assign io_mem_wmask =
-    io_in_bits_is_sb
-      ? 4'h1 << io_in_bits_alu_result[1:0]
-      : io_in_bits_is_sh
-          ? (io_in_bits_alu_result[1] ? 4'hC : 4'h3)
-          : {4{io_in_bits_is_sw}};
+  assign io_out_bits_is_jalr = is_jalr;
+  assign io_out_bits_is_jal = is_jal;
+  assign io_out_bits_csr_wdata = csr_wdata;
+  assign io_out_bits_csr_wen = csr_wen;
+  assign io_out_bits_csr_waddr = csr_waddr;
+  assign io_out_bits_csr_rdata = csr_rdata;
+  assign io_out_bits_is_csrrw = is_csrrw;
+  assign io_out_bits_is_csrrs = is_csrrs;
+  assign io_mem_req_valid = io_mem_req_valid_0;
+  assign io_mem_req_bits_wen = is_sw | is_sh | is_sb;
+  assign io_mem_req_bits_raddr = alu_result;
+  assign io_mem_req_bits_waddr = alu_result;
+  assign io_mem_req_bits_wdata =
+    is_sb ? _wdata_T_2[31:0] : is_sh ? _wdata_T_5[31:0] : is_sw ? rs2_data : 32'h0;
+  assign io_mem_req_bits_wmask =
+    is_sb ? 4'h1 << alu_result[1:0] : is_sh ? (alu_result[1] ? 4'hC : 4'h3) : {4{is_sw}};
+  assign io_mem_resp_ready = io_mem_resp_ready_0;
 endmodule
 
 module WB(
+  input         clock,
+                reset,
+  output        io_in_ready,
+  input         io_in_valid,
   input  [31:0] io_in_bits_pc,
                 io_in_bits_alu_result,
   input  [4:0]  io_in_bits_rd_addr,
@@ -508,22 +826,75 @@ module WB(
   output        io_rd_en,
   output [11:0] io_csr_waddr,
   output [31:0] io_csr_wdata,
-  output        io_csr_wen
+  output        io_csr_wen,
+                io_commit
 );
 
-  assign io_rd_addr = io_in_bits_rd_addr;
+  reg  [31:0] pc;
+  reg  [31:0] alu_result;
+  reg  [4:0]  rd_addr;
+  reg         rd_en;
+  reg  [31:0] mem_data;
+  reg         is_load;
+  reg         is_jalr;
+  reg         is_jal;
+  reg  [31:0] csr_wdata;
+  reg         csr_wen;
+  reg  [11:0] csr_waddr;
+  reg  [31:0] csr_rdata;
+  reg         is_csrrw;
+  reg         is_csrrs;
+  reg         state;
+  wire        _GEN = ~state & io_in_valid;
+  always @(posedge clock) begin
+    if (reset) begin
+      pc <= 32'h0;
+      alu_result <= 32'h0;
+      rd_addr <= 5'h0;
+      rd_en <= 1'h0;
+      mem_data <= 32'h0;
+      is_load <= 1'h0;
+      is_jalr <= 1'h0;
+      is_jal <= 1'h0;
+      csr_wdata <= 32'h0;
+      csr_wen <= 1'h0;
+      csr_waddr <= 12'h0;
+      csr_rdata <= 32'h0;
+      is_csrrw <= 1'h0;
+      is_csrrs <= 1'h0;
+      state <= 1'h0;
+    end
+    else begin
+      if (_GEN) begin
+        pc <= io_in_bits_pc;
+        alu_result <= io_in_bits_alu_result;
+        rd_addr <= io_in_bits_rd_addr;
+        rd_en <= io_in_bits_rd_en;
+        mem_data <= io_in_bits_mem_data;
+        is_load <= io_in_bits_is_load;
+        is_jalr <= io_in_bits_is_jalr;
+        is_jal <= io_in_bits_is_jal;
+        csr_wdata <= io_in_bits_csr_wdata;
+        csr_wen <= io_in_bits_csr_wen;
+        csr_waddr <= io_in_bits_csr_waddr;
+        csr_rdata <= io_in_bits_csr_rdata;
+        is_csrrw <= io_in_bits_is_csrrw;
+        is_csrrs <= io_in_bits_is_csrrs;
+      end
+      state <= ~state & (_GEN | state);
+    end
+  end // always @(posedge)
+  assign io_in_ready = ~state;
+  assign io_rd_addr = rd_addr;
   assign io_rd_data =
-    io_in_bits_is_csrrw | io_in_bits_is_csrrs
-      ? io_in_bits_csr_rdata
-      : io_in_bits_is_load
-          ? io_in_bits_mem_data
-          : io_in_bits_is_jal | io_in_bits_is_jalr
-              ? io_in_bits_pc + 32'h4
-              : io_in_bits_alu_result;
-  assign io_rd_en = io_in_bits_rd_en;
-  assign io_csr_waddr = io_in_bits_csr_waddr;
-  assign io_csr_wdata = io_in_bits_csr_wdata;
-  assign io_csr_wen = io_in_bits_csr_wen;
+    is_csrrw | is_csrrs
+      ? csr_rdata
+      : is_load ? mem_data : is_jal | is_jalr ? pc + 32'h4 : alu_result;
+  assign io_rd_en = rd_en;
+  assign io_csr_waddr = csr_waddr;
+  assign io_csr_wdata = csr_wdata;
+  assign io_csr_wen = csr_wen;
+  assign io_commit = state;
 endmodule
 
 module Regfile(
@@ -877,6 +1248,421 @@ module Regfile(
   assign io_regs_out_31 = regs_31;
 endmodule
 
+module AXI_IFU_Master(
+  input         clock,
+                reset,
+  output [31:0] io_I_bus_ARADDR,
+  output        io_I_bus_ARVALID,
+  input         io_I_bus_ARREADY,
+  input  [31:0] io_I_bus_RDATA,
+  input         io_I_bus_RVALID,
+  output        io_I_bus_RREADY,
+                io_inst_req_ready,
+  input         io_inst_req_valid,
+  input  [31:0] io_inst_req_bits_pc,
+  input         io_inst_resp_ready,
+  output        io_inst_resp_valid,
+  output [31:0] io_inst_resp_bits_inst,
+  input         io_flush
+);
+
+  reg  pending;
+  reg  killPending;
+  wire io_I_bus_ARVALID_0 = io_inst_req_valid & ~pending;
+  wire io_I_bus_RREADY_0 = io_inst_resp_ready | killPending;
+  wire r_fire = io_I_bus_RVALID & io_I_bus_RREADY_0;
+  always @(posedge clock) begin
+    if (reset) begin
+      pending <= 1'h0;
+      killPending <= 1'h0;
+    end
+    else begin
+      pending <= ~r_fire & (io_I_bus_ARVALID_0 & io_I_bus_ARREADY | pending);
+      killPending <= io_flush & pending | ~r_fire & killPending;
+    end
+  end // always @(posedge)
+  assign io_I_bus_ARADDR = io_inst_req_bits_pc;
+  assign io_I_bus_ARVALID = io_I_bus_ARVALID_0;
+  assign io_I_bus_RREADY = io_I_bus_RREADY_0;
+  assign io_inst_req_ready = io_I_bus_ARREADY & ~pending;
+  assign io_inst_resp_valid = io_I_bus_RVALID & ~killPending;
+  assign io_inst_resp_bits_inst = io_I_bus_RDATA;
+endmodule
+
+module AXI_MEM_Master(
+  input         clock,
+                reset,
+  output [31:0] io_M_bus_AWADDR,
+  output        io_M_bus_AWVALID,
+  input         io_M_bus_AWREADY,
+  output [31:0] io_M_bus_WDATA,
+  output [3:0]  io_M_bus_WSTRB,
+  output        io_M_bus_WVALID,
+  input         io_M_bus_WREADY,
+                io_M_bus_BVALID,
+  output        io_M_bus_BREADY,
+  output [31:0] io_M_bus_ARADDR,
+  output        io_M_bus_ARVALID,
+  input         io_M_bus_ARREADY,
+  input  [31:0] io_M_bus_RDATA,
+  input         io_M_bus_RVALID,
+  output        io_M_bus_RREADY,
+                io_mem_req_ready,
+  input         io_mem_req_valid,
+                io_mem_req_bits_wen,
+  input  [31:0] io_mem_req_bits_raddr,
+                io_mem_req_bits_waddr,
+                io_mem_req_bits_wdata,
+  input  [3:0]  io_mem_req_bits_wmask,
+  input         io_mem_resp_ready,
+  output        io_mem_resp_valid,
+  output [31:0] io_mem_resp_bits_rdata
+);
+
+  reg  [1:0] state;
+  wire       _GEN = state == 2'h0;
+  wire       _GEN_0 = io_mem_req_valid & io_mem_req_bits_wen;
+  wire       _GEN_1 = _GEN & _GEN_0;
+  wire       io_M_bus_WVALID_0 = _GEN & _GEN_0;
+  wire       io_mem_req_ready_0 =
+    _GEN
+    & (_GEN_0 ? io_M_bus_AWREADY & io_M_bus_WREADY : io_mem_req_valid & io_M_bus_ARREADY);
+  wire       _GEN_2 = state == 2'h1;
+  wire       io_M_bus_RREADY_0 = ~_GEN & _GEN_2 & io_mem_resp_ready;
+  wire       _GEN_3 = state == 2'h2;
+  wire       io_M_bus_BREADY_0 = ~(_GEN | _GEN_2) & _GEN_3;
+  always @(posedge clock) begin
+    if (reset)
+      state <= 2'h0;
+    else if (_GEN) begin
+      if (_GEN_0) begin
+        if (io_mem_req_ready_0)
+          state <= 2'h2;
+      end
+      else if (io_mem_req_valid & io_mem_req_ready_0)
+        state <= 2'h1;
+    end
+    else if (_GEN_2
+               ? io_M_bus_RVALID & io_M_bus_RREADY_0
+               : _GEN_3 & io_M_bus_BVALID & io_M_bus_BREADY_0)
+      state <= 2'h0;
+  end // always @(posedge)
+  assign io_M_bus_AWADDR = _GEN_1 ? io_mem_req_bits_waddr : 32'h0;
+  assign io_M_bus_AWVALID = io_M_bus_WVALID_0;
+  assign io_M_bus_WDATA = _GEN_1 ? io_mem_req_bits_wdata : 32'h0;
+  assign io_M_bus_WSTRB = _GEN_1 ? io_mem_req_bits_wmask : 4'h0;
+  assign io_M_bus_WVALID = io_M_bus_WVALID_0;
+  assign io_M_bus_BREADY = io_M_bus_BREADY_0;
+  assign io_M_bus_ARADDR =
+    ~_GEN | _GEN_0 | ~io_mem_req_valid ? 32'h0 : io_mem_req_bits_raddr;
+  assign io_M_bus_ARVALID = _GEN & ~_GEN_0 & io_mem_req_valid;
+  assign io_M_bus_RREADY = io_M_bus_RREADY_0;
+  assign io_mem_req_ready = io_mem_req_ready_0;
+  assign io_mem_resp_valid =
+    ~_GEN & (_GEN_2 ? io_M_bus_RVALID : _GEN_3 & io_M_bus_BVALID);
+  assign io_mem_resp_bits_rdata = _GEN | ~_GEN_2 ? 32'h0 : io_M_bus_RDATA;
+endmodule
+
+module DSRAM(
+  input         clock,
+                reset,
+  input  [31:0] io_M_bus_AWADDR,
+  input         io_M_bus_AWVALID,
+  output        io_M_bus_AWREADY,
+  input  [31:0] io_M_bus_WDATA,
+  input  [3:0]  io_M_bus_WSTRB,
+  input         io_M_bus_WVALID,
+  output        io_M_bus_WREADY,
+                io_M_bus_BVALID,
+  input         io_M_bus_BREADY,
+  input  [31:0] io_M_bus_ARADDR,
+  input         io_M_bus_ARVALID,
+  output        io_M_bus_ARREADY,
+  output [31:0] io_M_bus_RDATA,
+  output        io_M_bus_RVALID,
+  input         io_M_bus_RREADY
+);
+
+  wire [31:0] _mem_blackbox_rdata;
+  reg  [1:0]  state;
+  reg  [31:0] rdata_reg;
+  wire        idle = state == 2'h0;
+  wire        write_req = io_M_bus_AWVALID & io_M_bus_WVALID;
+  wire        io_M_bus_WREADY_0 = idle & write_req;
+  wire        io_M_bus_ARREADY_0 = idle & ~write_req;
+  wire        ar_fire = io_M_bus_ARVALID & io_M_bus_ARREADY_0;
+  wire        _GEN = ~idle | io_M_bus_WREADY_0 | ~ar_fire;
+  wire        _GEN_0 = state == 2'h1;
+  wire        io_M_bus_RVALID_0 = ~idle & _GEN_0;
+  wire        _GEN_1 = state == 2'h2;
+  wire        io_M_bus_BVALID_0 = ~(idle | _GEN_0) & _GEN_1;
+  always @(posedge clock) begin
+    if (reset) begin
+      state <= 2'h0;
+      rdata_reg <= 32'h0;
+    end
+    else begin
+      if (idle) begin
+        if (io_M_bus_WREADY_0)
+          state <= 2'h2;
+        else if (ar_fire)
+          state <= 2'h1;
+      end
+      else if (_GEN_0
+                 ? io_M_bus_RVALID_0 & io_M_bus_RREADY
+                 : _GEN_1 & io_M_bus_BVALID_0 & io_M_bus_BREADY)
+        state <= 2'h0;
+      if (_GEN) begin
+      end
+      else
+        rdata_reg <= _mem_blackbox_rdata;
+    end
+  end // always @(posedge)
+  MemBlackBox mem_blackbox (
+    .clk   (clock),
+    .valid (idle & (io_M_bus_WREADY_0 | ar_fire)),
+    .wen   (idle & io_M_bus_WREADY_0),
+    .raddr (_GEN ? 32'h0 : io_M_bus_ARADDR),
+    .waddr (io_M_bus_WREADY_0 ? io_M_bus_AWADDR : 32'h0),
+    .wdata (io_M_bus_WREADY_0 ? io_M_bus_WDATA : 32'h0),
+    .wmask (io_M_bus_WREADY_0 ? io_M_bus_WSTRB : 4'h0),
+    .rdata (_mem_blackbox_rdata)
+  );
+  assign io_M_bus_AWREADY = io_M_bus_WREADY_0;
+  assign io_M_bus_WREADY = io_M_bus_WREADY_0;
+  assign io_M_bus_BVALID = io_M_bus_BVALID_0;
+  assign io_M_bus_ARREADY = io_M_bus_ARREADY_0;
+  assign io_M_bus_RDATA = rdata_reg;
+  assign io_M_bus_RVALID = io_M_bus_RVALID_0;
+endmodule
+
+module ISRAM(
+  input         clock,
+                reset,
+  input  [31:0] io_I_bus_ARADDR,
+  input         io_I_bus_ARVALID,
+  output        io_I_bus_ARREADY,
+  output [31:0] io_I_bus_RDATA,
+  output        io_I_bus_RVALID,
+  input         io_I_bus_RREADY
+);
+
+  wire        _imem_inst_valid;
+  wire [31:0] _imem_inst;
+  reg  [1:0]  state;
+  reg  [31:0] pc_lat;
+  reg  [31:0] mem_inst;
+  wire        io_I_bus_ARREADY_0 = state == 2'h0;
+  wire        _GEN = io_I_bus_ARVALID & io_I_bus_ARREADY_0;
+  wire        _GEN_0 = state == 2'h1;
+  wire        _GEN_1 = state == 2'h2;
+  wire        io_I_bus_RVALID_0 = ~(io_I_bus_ARREADY_0 | _GEN_0) & _GEN_1;
+  always @(posedge clock) begin
+    if (reset) begin
+      state <= 2'h0;
+      pc_lat <= 32'h0;
+      mem_inst <= 32'h0;
+    end
+    else begin
+      if (io_I_bus_ARREADY_0) begin
+        if (_GEN)
+          state <= 2'h1;
+      end
+      else if (_GEN_0) begin
+        if (_imem_inst_valid)
+          state <= 2'h2;
+      end
+      else if (_GEN_1 & io_I_bus_RREADY & io_I_bus_RVALID_0)
+        state <= 2'h0;
+      if (_GEN)
+        pc_lat <= io_I_bus_ARADDR;
+      if (io_I_bus_ARREADY_0 | ~(_GEN_0 & _imem_inst_valid)) begin
+      end
+      else
+        mem_inst <= _imem_inst;
+    end
+  end // always @(posedge)
+  ImemBlackBox imem (
+    .clock      (clock),
+    .reset      (reset),
+    .pc_valid   (io_I_bus_ARREADY_0 & _GEN),
+    .pc         (_GEN ? io_I_bus_ARADDR : pc_lat),
+    .inst_valid (_imem_inst_valid),
+    .inst       (_imem_inst)
+  );
+  assign io_I_bus_ARREADY = io_I_bus_ARREADY_0;
+  assign io_I_bus_RDATA = mem_inst;
+  assign io_I_bus_RVALID = io_I_bus_RVALID_0;
+endmodule
+
+module AXI_ARB2TO1(
+  input         clock,
+                reset,
+  input  [31:0] io_i_master_ARADDR,
+  input         io_i_master_ARVALID,
+  output        io_i_master_ARREADY,
+  output [31:0] io_i_master_RDATA,
+  output        io_i_master_RVALID,
+  input         io_i_master_RREADY,
+  input  [31:0] io_m_master_AWADDR,
+  input         io_m_master_AWVALID,
+  output        io_m_master_AWREADY,
+  input  [31:0] io_m_master_WDATA,
+  input  [3:0]  io_m_master_WSTRB,
+  input         io_m_master_WVALID,
+  output        io_m_master_WREADY,
+                io_m_master_BVALID,
+  input         io_m_master_BREADY,
+  input  [31:0] io_m_master_ARADDR,
+  input         io_m_master_ARVALID,
+  output        io_m_master_ARREADY,
+  output [31:0] io_m_master_RDATA,
+  output        io_m_master_RVALID,
+  input         io_m_master_RREADY,
+  output [31:0] io_slave_AWADDR,
+  output        io_slave_AWVALID,
+  input         io_slave_AWREADY,
+  output [31:0] io_slave_WDATA,
+  output [3:0]  io_slave_WSTRB,
+  output        io_slave_WVALID,
+  input         io_slave_WREADY,
+                io_slave_BVALID,
+  output        io_slave_BREADY,
+  output [31:0] io_slave_ARADDR,
+  output        io_slave_ARVALID,
+  input         io_slave_ARREADY,
+  input  [31:0] io_slave_RDATA,
+  input         io_slave_RVALID,
+  output        io_slave_RREADY,
+                io_is_inst
+);
+
+  reg  busy;
+  reg  using_ifu;
+  reg  is_write;
+  wire m_aw_req = io_m_master_AWVALID & io_m_master_WVALID;
+  wire pick_ifu = io_i_master_ARVALID | ~io_m_master_ARVALID & ~m_aw_req;
+  wire awvalid = ~pick_ifu & io_m_master_AWVALID;
+  wire wvalid = ~pick_ifu & io_m_master_WVALID;
+  wire _GEN = ~busy & m_aw_req;
+  wire _GEN_0 = ~_GEN | pick_ifu;
+  wire _GEN_1 = io_i_master_ARVALID | io_m_master_ARVALID;
+  wire arvalid = pick_ifu ? io_i_master_ARVALID : io_m_master_ARVALID;
+  wire io_slave_BREADY_0 = busy & is_write & ~using_ifu & io_m_master_BREADY;
+  wire _GEN_2 = ~busy | is_write;
+  wire io_slave_RREADY_0 =
+    ~_GEN_2 & (using_ifu ? io_i_master_RREADY : io_m_master_RREADY);
+  wire _GEN_3 = ~busy | is_write | using_ifu;
+  wire _GEN_4 = io_slave_AWREADY & io_slave_WREADY & awvalid & wvalid;
+  wire _GEN_5 = _GEN_1 & io_slave_ARREADY & arvalid;
+  always @(posedge clock) begin
+    if (reset) begin
+      busy <= 1'h0;
+      using_ifu <= 1'h0;
+      is_write <= 1'h0;
+    end
+    else begin
+      if (busy)
+        busy <=
+          is_write
+            ? ~(io_slave_BVALID & io_slave_BREADY_0) & busy
+            : ~(io_slave_RVALID & io_slave_RREADY_0) & busy;
+      else
+        busy <= m_aw_req ? _GEN_4 | busy : _GEN_5 | busy;
+      if (busy | ~(m_aw_req ? _GEN_4 : _GEN_5)) begin
+      end
+      else
+        using_ifu <= pick_ifu;
+      if (busy) begin
+      end
+      else
+        is_write <= m_aw_req ? _GEN_4 | is_write : ~_GEN_5 & is_write;
+    end
+  end // always @(posedge)
+  assign io_i_master_ARREADY = ~busy & ~m_aw_req & _GEN_1 & pick_ifu & io_slave_ARREADY;
+  assign io_i_master_RDATA = _GEN_2 | ~using_ifu ? 32'h0 : io_slave_RDATA;
+  assign io_i_master_RVALID = ~_GEN_2 & using_ifu & io_slave_RVALID;
+  assign io_m_master_AWREADY = _GEN & ~pick_ifu & io_slave_AWREADY;
+  assign io_m_master_WREADY = _GEN & ~pick_ifu & io_slave_WREADY;
+  assign io_m_master_BVALID = busy & is_write & ~using_ifu & io_slave_BVALID;
+  assign io_m_master_ARREADY = ~busy & ~m_aw_req & _GEN_1 & ~pick_ifu & io_slave_ARREADY;
+  assign io_m_master_RDATA = _GEN_3 ? 32'h0 : io_slave_RDATA;
+  assign io_m_master_RVALID = ~_GEN_3 & io_slave_RVALID;
+  assign io_slave_AWADDR = _GEN_0 ? 32'h0 : io_m_master_AWADDR;
+  assign io_slave_AWVALID = _GEN & awvalid;
+  assign io_slave_WDATA = _GEN_0 ? 32'h0 : io_m_master_WDATA;
+  assign io_slave_WSTRB = _GEN_0 ? 4'h0 : io_m_master_WSTRB;
+  assign io_slave_WVALID = _GEN & wvalid;
+  assign io_slave_BREADY = io_slave_BREADY_0;
+  assign io_slave_ARADDR =
+    busy | m_aw_req | ~_GEN_1
+      ? 32'h0
+      : pick_ifu ? io_i_master_ARADDR : io_m_master_ARADDR;
+  assign io_slave_ARVALID = ~busy & ~m_aw_req & _GEN_1 & arvalid;
+  assign io_slave_RREADY = io_slave_RREADY_0;
+  assign io_is_inst = busy ? using_ifu : pick_ifu;
+endmodule
+
+module slaveSel(
+  input  [31:0] io_slave_in_AWADDR,
+  input         io_slave_in_AWVALID,
+  output        io_slave_in_AWREADY,
+  input  [31:0] io_slave_in_WDATA,
+  input  [3:0]  io_slave_in_WSTRB,
+  input         io_slave_in_WVALID,
+  output        io_slave_in_WREADY,
+                io_slave_in_BVALID,
+  input         io_slave_in_BREADY,
+  input  [31:0] io_slave_in_ARADDR,
+  input         io_slave_in_ARVALID,
+  output        io_slave_in_ARREADY,
+  output [31:0] io_slave_in_RDATA,
+  output        io_slave_in_RVALID,
+  input         io_slave_in_RREADY,
+  output [31:0] io_slave_m_AWADDR,
+  output        io_slave_m_AWVALID,
+  input         io_slave_m_AWREADY,
+  output [31:0] io_slave_m_WDATA,
+  output [3:0]  io_slave_m_WSTRB,
+  output        io_slave_m_WVALID,
+  input         io_slave_m_WREADY,
+                io_slave_m_BVALID,
+  output        io_slave_m_BREADY,
+  output [31:0] io_slave_m_ARADDR,
+  output        io_slave_m_ARVALID,
+  input         io_slave_m_ARREADY,
+  input  [31:0] io_slave_m_RDATA,
+  input         io_slave_m_RVALID,
+  output        io_slave_m_RREADY,
+  output [31:0] io_slave_i_ARADDR,
+  output        io_slave_i_ARVALID,
+  input         io_slave_i_ARREADY,
+  input  [31:0] io_slave_i_RDATA,
+  input         io_slave_i_RVALID,
+  output        io_slave_i_RREADY,
+  input         io_is_inst
+);
+
+  assign io_slave_in_AWREADY = ~io_is_inst & io_slave_m_AWREADY;
+  assign io_slave_in_WREADY = ~io_is_inst & io_slave_m_WREADY;
+  assign io_slave_in_BVALID = ~io_is_inst & io_slave_m_BVALID;
+  assign io_slave_in_ARREADY = io_is_inst ? io_slave_i_ARREADY : io_slave_m_ARREADY;
+  assign io_slave_in_RDATA = io_is_inst ? io_slave_i_RDATA : io_slave_m_RDATA;
+  assign io_slave_in_RVALID = io_is_inst ? io_slave_i_RVALID : io_slave_m_RVALID;
+  assign io_slave_m_AWADDR = io_is_inst ? 32'h0 : io_slave_in_AWADDR;
+  assign io_slave_m_AWVALID = ~io_is_inst & io_slave_in_AWVALID;
+  assign io_slave_m_WDATA = io_is_inst ? 32'h0 : io_slave_in_WDATA;
+  assign io_slave_m_WSTRB = io_is_inst ? 4'h0 : io_slave_in_WSTRB;
+  assign io_slave_m_WVALID = ~io_is_inst & io_slave_in_WVALID;
+  assign io_slave_m_BREADY = ~io_is_inst & io_slave_in_BREADY;
+  assign io_slave_m_ARADDR = io_is_inst ? 32'h0 : io_slave_in_ARADDR;
+  assign io_slave_m_ARVALID = ~io_is_inst & io_slave_in_ARVALID;
+  assign io_slave_m_RREADY = ~io_is_inst & io_slave_in_RREADY;
+  assign io_slave_i_ARADDR = io_is_inst ? io_slave_in_ARADDR : 32'h0;
+  assign io_slave_i_ARVALID = io_is_inst & io_slave_in_ARVALID;
+  assign io_slave_i_RREADY = io_is_inst & io_slave_in_RREADY;
+endmodule
+
 module CSR(
   input         clock,
                 reset,
@@ -935,8 +1721,6 @@ endmodule
 module CPU(
   input         clock,
                 reset,
-  output [31:0] io_pc_out,
-  input  [31:0] io_inst_in,
   output [31:0] io_regs_out_1,
                 io_regs_out_2,
                 io_regs_out_3,
@@ -967,19 +1751,88 @@ module CPU(
                 io_regs_out_28,
                 io_regs_out_29,
                 io_regs_out_30,
-                io_regs_out_31
+                io_regs_out_31,
+                io_pc_out,
+                io_inst_out
 );
 
   wire [31:0] _csr_io_csr_rdata;
-  wire [31:0] _mem_blackbox_rdata;
+  wire        _slave_selector_io_slave_in_AWREADY;
+  wire        _slave_selector_io_slave_in_WREADY;
+  wire        _slave_selector_io_slave_in_BVALID;
+  wire        _slave_selector_io_slave_in_ARREADY;
+  wire [31:0] _slave_selector_io_slave_in_RDATA;
+  wire        _slave_selector_io_slave_in_RVALID;
+  wire [31:0] _slave_selector_io_slave_m_AWADDR;
+  wire        _slave_selector_io_slave_m_AWVALID;
+  wire [31:0] _slave_selector_io_slave_m_WDATA;
+  wire [3:0]  _slave_selector_io_slave_m_WSTRB;
+  wire        _slave_selector_io_slave_m_WVALID;
+  wire        _slave_selector_io_slave_m_BREADY;
+  wire [31:0] _slave_selector_io_slave_m_ARADDR;
+  wire        _slave_selector_io_slave_m_ARVALID;
+  wire        _slave_selector_io_slave_m_RREADY;
+  wire [31:0] _slave_selector_io_slave_i_ARADDR;
+  wire        _slave_selector_io_slave_i_ARVALID;
+  wire        _slave_selector_io_slave_i_RREADY;
+  wire        _axi_arbiter_io_i_master_ARREADY;
+  wire [31:0] _axi_arbiter_io_i_master_RDATA;
+  wire        _axi_arbiter_io_i_master_RVALID;
+  wire        _axi_arbiter_io_m_master_AWREADY;
+  wire        _axi_arbiter_io_m_master_WREADY;
+  wire        _axi_arbiter_io_m_master_BVALID;
+  wire        _axi_arbiter_io_m_master_ARREADY;
+  wire [31:0] _axi_arbiter_io_m_master_RDATA;
+  wire        _axi_arbiter_io_m_master_RVALID;
+  wire [31:0] _axi_arbiter_io_slave_AWADDR;
+  wire        _axi_arbiter_io_slave_AWVALID;
+  wire [31:0] _axi_arbiter_io_slave_WDATA;
+  wire [3:0]  _axi_arbiter_io_slave_WSTRB;
+  wire        _axi_arbiter_io_slave_WVALID;
+  wire        _axi_arbiter_io_slave_BREADY;
+  wire [31:0] _axi_arbiter_io_slave_ARADDR;
+  wire        _axi_arbiter_io_slave_ARVALID;
+  wire        _axi_arbiter_io_slave_RREADY;
+  wire        _axi_arbiter_io_is_inst;
+  wire        _ISRAM_io_I_bus_ARREADY;
+  wire [31:0] _ISRAM_io_I_bus_RDATA;
+  wire        _ISRAM_io_I_bus_RVALID;
+  wire        _DSRAM_io_M_bus_AWREADY;
+  wire        _DSRAM_io_M_bus_WREADY;
+  wire        _DSRAM_io_M_bus_BVALID;
+  wire        _DSRAM_io_M_bus_ARREADY;
+  wire [31:0] _DSRAM_io_M_bus_RDATA;
+  wire        _DSRAM_io_M_bus_RVALID;
+  wire [31:0] _axi_mem_master_io_M_bus_AWADDR;
+  wire        _axi_mem_master_io_M_bus_AWVALID;
+  wire [31:0] _axi_mem_master_io_M_bus_WDATA;
+  wire [3:0]  _axi_mem_master_io_M_bus_WSTRB;
+  wire        _axi_mem_master_io_M_bus_WVALID;
+  wire        _axi_mem_master_io_M_bus_BREADY;
+  wire [31:0] _axi_mem_master_io_M_bus_ARADDR;
+  wire        _axi_mem_master_io_M_bus_ARVALID;
+  wire        _axi_mem_master_io_M_bus_RREADY;
+  wire        _axi_mem_master_io_mem_req_ready;
+  wire        _axi_mem_master_io_mem_resp_valid;
+  wire [31:0] _axi_mem_master_io_mem_resp_bits_rdata;
+  wire [31:0] _axi_ifu_master_io_I_bus_ARADDR;
+  wire        _axi_ifu_master_io_I_bus_ARVALID;
+  wire        _axi_ifu_master_io_I_bus_RREADY;
+  wire        _axi_ifu_master_io_inst_req_ready;
+  wire        _axi_ifu_master_io_inst_resp_valid;
+  wire [31:0] _axi_ifu_master_io_inst_resp_bits_inst;
   wire [31:0] _regfile_io_rs1_data;
   wire [31:0] _regfile_io_rs2_data;
+  wire        _wb_io_in_ready;
   wire [4:0]  _wb_io_rd_addr;
   wire [31:0] _wb_io_rd_data;
   wire        _wb_io_rd_en;
   wire [11:0] _wb_io_csr_waddr;
   wire [31:0] _wb_io_csr_wdata;
   wire        _wb_io_csr_wen;
+  wire        _wb_io_commit;
+  wire        _mem_io_in_ready;
+  wire        _mem_io_out_valid;
   wire [31:0] _mem_io_out_bits_pc;
   wire [31:0] _mem_io_out_bits_alu_result;
   wire [4:0]  _mem_io_out_bits_rd_addr;
@@ -994,12 +1847,15 @@ module CPU(
   wire [31:0] _mem_io_out_bits_csr_rdata;
   wire        _mem_io_out_bits_is_csrrw;
   wire        _mem_io_out_bits_is_csrrs;
-  wire        _mem_io_mem_valid;
-  wire        _mem_io_mem_wen;
-  wire [31:0] _mem_io_mem_raddr;
-  wire [31:0] _mem_io_mem_waddr;
-  wire [31:0] _mem_io_mem_wdata;
-  wire [3:0]  _mem_io_mem_wmask;
+  wire        _mem_io_mem_req_valid;
+  wire        _mem_io_mem_req_bits_wen;
+  wire [31:0] _mem_io_mem_req_bits_raddr;
+  wire [31:0] _mem_io_mem_req_bits_waddr;
+  wire [31:0] _mem_io_mem_req_bits_wdata;
+  wire [3:0]  _mem_io_mem_req_bits_wmask;
+  wire        _mem_io_mem_resp_ready;
+  wire        _exu_io_in_ready;
+  wire        _exu_io_out_valid;
   wire [31:0] _exu_io_out_bits_pc;
   wire [31:0] _exu_io_out_bits_alu_result;
   wire [31:0] _exu_io_out_bits_rs2_data;
@@ -1021,15 +1877,18 @@ module CPU(
   wire        _exu_io_out_bits_is_sh;
   wire        _exu_io_out_bits_is_jalr;
   wire        _exu_io_out_bits_is_jal;
-  wire [31:0] _exu_io_branch_pc_branch;
-  wire [31:0] _exu_io_branch_pc_jal;
-  wire [31:0] _exu_io_branch_pc_jalr;
-  wire        _exu_io_branch_is_branch_taken;
-  wire        _exu_io_branch_is_jal;
-  wire        _exu_io_branch_is_jalr;
-  wire        _exu_io_branch_is_ecall;
-  wire        _exu_io_branch_is_mret;
-  wire [31:0] _exu_io_branch_pc_csr;
+  wire        _exu_io_branch_valid;
+  wire [31:0] _exu_io_branch_bits_pc_branch;
+  wire [31:0] _exu_io_branch_bits_pc_jal;
+  wire [31:0] _exu_io_branch_bits_pc_jalr;
+  wire        _exu_io_branch_bits_is_branch_taken;
+  wire        _exu_io_branch_bits_is_jal;
+  wire        _exu_io_branch_bits_is_jalr;
+  wire        _exu_io_branch_bits_is_ecall;
+  wire        _exu_io_branch_bits_is_mret;
+  wire [31:0] _exu_io_branch_bits_pc_csr;
+  wire        _idu_io_in_ready;
+  wire        _idu_io_out_valid;
   wire [31:0] _idu_io_out_bits_pc;
   wire [4:0]  _idu_io_out_bits_rd_addr;
   wire        _idu_io_out_bits_rd_en;
@@ -1067,27 +1926,54 @@ module CPU(
   wire [11:0] _idu_io_csr_raddr;
   wire        _idu_io_is_ecall;
   wire        _idu_io_is_mret;
+  wire        _ifu_io_out_valid;
   wire [31:0] _ifu_io_out_bits_pc;
   wire [31:0] _ifu_io_out_bits_inst;
+  wire        _ifu_io_inst_req_valid;
+  wire [31:0] _ifu_io_inst_req_bits_pc;
+  wire        _ifu_io_inst_resp_ready;
+  wire        _ifu_io_flush;
+  reg         busy;
+  always @(posedge clock) begin
+    if (reset)
+      busy <= 1'h0;
+    else
+      busy <= ~_wb_io_commit & (_idu_io_in_ready & _ifu_io_out_valid | busy);
+  end // always @(posedge)
   IFU ifu (
-    .clock                 (clock),
-    .reset                 (reset),
-    .io_out_bits_pc        (_ifu_io_out_bits_pc),
-    .io_out_bits_inst      (_ifu_io_out_bits_inst),
-    .io_in_pc_branch       (_exu_io_branch_pc_branch),
-    .io_in_pc_jal          (_exu_io_branch_pc_jal),
-    .io_in_pc_jalr         (_exu_io_branch_pc_jalr),
-    .io_in_is_branch_taken (_exu_io_branch_is_branch_taken),
-    .io_in_is_jal          (_exu_io_branch_is_jal),
-    .io_in_is_jalr         (_exu_io_branch_is_jalr),
-    .io_in_is_ecall        (_exu_io_branch_is_ecall),
-    .io_in_is_mret         (_exu_io_branch_is_mret),
-    .io_in_pc_csr          (_exu_io_branch_pc_csr),
-    .io_inst_in            (io_inst_in)
+    .clock                      (clock),
+    .reset                      (reset),
+    .io_out_ready               (_idu_io_in_ready),
+    .io_out_valid               (_ifu_io_out_valid),
+    .io_out_bits_pc             (_ifu_io_out_bits_pc),
+    .io_out_bits_inst           (_ifu_io_out_bits_inst),
+    .io_in_valid                (_exu_io_branch_valid),
+    .io_in_bits_pc_branch       (_exu_io_branch_bits_pc_branch),
+    .io_in_bits_pc_jal          (_exu_io_branch_bits_pc_jal),
+    .io_in_bits_pc_jalr         (_exu_io_branch_bits_pc_jalr),
+    .io_in_bits_is_branch_taken (_exu_io_branch_bits_is_branch_taken),
+    .io_in_bits_is_jal          (_exu_io_branch_bits_is_jal),
+    .io_in_bits_is_jalr         (_exu_io_branch_bits_is_jalr),
+    .io_in_bits_is_ecall        (_exu_io_branch_bits_is_ecall),
+    .io_in_bits_is_mret         (_exu_io_branch_bits_is_mret),
+    .io_in_bits_pc_csr          (_exu_io_branch_bits_pc_csr),
+    .io_inst_req_ready          (_axi_ifu_master_io_inst_req_ready),
+    .io_inst_req_valid          (_ifu_io_inst_req_valid),
+    .io_inst_req_bits_pc        (_ifu_io_inst_req_bits_pc),
+    .io_inst_resp_ready         (_ifu_io_inst_resp_ready),
+    .io_inst_resp_valid         (_axi_ifu_master_io_inst_resp_valid),
+    .io_inst_resp_bits_inst     (_axi_ifu_master_io_inst_resp_bits_inst),
+    .io_flush                   (_ifu_io_flush)
   );
   IDU idu (
+    .clock                 (clock),
+    .reset                 (reset),
+    .io_in_ready           (_idu_io_in_ready),
+    .io_in_valid           (_ifu_io_out_valid),
     .io_in_bits_pc         (_ifu_io_out_bits_pc),
     .io_in_bits_inst       (_ifu_io_out_bits_inst),
+    .io_out_ready          (_exu_io_in_ready),
+    .io_out_valid          (_idu_io_out_valid),
     .io_out_bits_pc        (_idu_io_out_bits_pc),
     .io_out_bits_rd_addr   (_idu_io_out_bits_rd_addr),
     .io_out_bits_rd_en     (_idu_io_out_bits_rd_en),
@@ -1127,73 +2013,85 @@ module CPU(
     .io_csr_raddr          (_idu_io_csr_raddr),
     .io_csr_rdata          (_csr_io_csr_rdata),
     .io_is_ecall           (_idu_io_is_ecall),
-    .io_is_mret            (_idu_io_is_mret)
+    .io_is_mret            (_idu_io_is_mret),
+    .io_busy               (busy)
   );
   EXU exu (
-    .io_in_bits_pc             (_idu_io_out_bits_pc),
-    .io_in_bits_rd_addr        (_idu_io_out_bits_rd_addr),
-    .io_in_bits_rd_en          (_idu_io_out_bits_rd_en),
-    .io_in_bits_alu_a          (_idu_io_out_bits_alu_a),
-    .io_in_bits_alu_b          (_idu_io_out_bits_alu_b),
-    .io_in_bits_alu_op         (_idu_io_out_bits_alu_op),
-    .io_in_bits_rs1_data       (_idu_io_out_bits_rs1_data),
-    .io_in_bits_rs2_data       (_idu_io_out_bits_rs2_data),
-    .io_in_bits_csr_wdata      (_idu_io_out_bits_csr_wdata),
-    .io_in_bits_csr_wen        (_idu_io_out_bits_csr_wen),
-    .io_in_bits_csr_waddr      (_idu_io_out_bits_csr_waddr),
-    .io_in_bits_csr_rdata      (_idu_io_out_bits_csr_rdata),
-    .io_in_bits_is_csrrw       (_idu_io_out_bits_is_csrrw),
-    .io_in_bits_is_csrrs       (_idu_io_out_bits_is_csrrs),
-    .io_in_bits_is_jal         (_idu_io_out_bits_is_jal),
-    .io_in_bits_is_jalr        (_idu_io_out_bits_is_jalr),
-    .io_in_bits_is_lw          (_idu_io_out_bits_is_lw),
-    .io_in_bits_is_sw          (_idu_io_out_bits_is_sw),
-    .io_in_bits_is_lb          (_idu_io_out_bits_is_lb),
-    .io_in_bits_is_sb          (_idu_io_out_bits_is_sb),
-    .io_in_bits_is_lh          (_idu_io_out_bits_is_lh),
-    .io_in_bits_is_sh          (_idu_io_out_bits_is_sh),
-    .io_in_bits_is_lbu         (_idu_io_out_bits_is_lbu),
-    .io_in_bits_is_lhu         (_idu_io_out_bits_is_lhu),
-    .io_in_bits_is_beq         (_idu_io_out_bits_is_beq),
-    .io_in_bits_is_bne         (_idu_io_out_bits_is_bne),
-    .io_in_bits_is_blt         (_idu_io_out_bits_is_blt),
-    .io_in_bits_is_bltu        (_idu_io_out_bits_is_bltu),
-    .io_in_bits_is_bge         (_idu_io_out_bits_is_bge),
-    .io_in_bits_is_bgeu        (_idu_io_out_bits_is_bgeu),
-    .io_in_bits_is_ecall       (_idu_io_out_bits_is_ecall),
-    .io_in_bits_is_mret        (_idu_io_out_bits_is_mret),
-    .io_out_bits_pc            (_exu_io_out_bits_pc),
-    .io_out_bits_alu_result    (_exu_io_out_bits_alu_result),
-    .io_out_bits_rs2_data      (_exu_io_out_bits_rs2_data),
-    .io_out_bits_rd_addr       (_exu_io_out_bits_rd_addr),
-    .io_out_bits_rd_en         (_exu_io_out_bits_rd_en),
-    .io_out_bits_csr_wdata     (_exu_io_out_bits_csr_wdata),
-    .io_out_bits_csr_wen       (_exu_io_out_bits_csr_wen),
-    .io_out_bits_csr_waddr     (_exu_io_out_bits_csr_waddr),
-    .io_out_bits_csr_rdata     (_exu_io_out_bits_csr_rdata),
-    .io_out_bits_is_csrrw      (_exu_io_out_bits_is_csrrw),
-    .io_out_bits_is_csrrs      (_exu_io_out_bits_is_csrrs),
-    .io_out_bits_is_lw         (_exu_io_out_bits_is_lw),
-    .io_out_bits_is_lbu        (_exu_io_out_bits_is_lbu),
-    .io_out_bits_is_lh         (_exu_io_out_bits_is_lh),
-    .io_out_bits_is_lhu        (_exu_io_out_bits_is_lhu),
-    .io_out_bits_is_lb         (_exu_io_out_bits_is_lb),
-    .io_out_bits_is_sw         (_exu_io_out_bits_is_sw),
-    .io_out_bits_is_sb         (_exu_io_out_bits_is_sb),
-    .io_out_bits_is_sh         (_exu_io_out_bits_is_sh),
-    .io_out_bits_is_jalr       (_exu_io_out_bits_is_jalr),
-    .io_out_bits_is_jal        (_exu_io_out_bits_is_jal),
-    .io_branch_pc_branch       (_exu_io_branch_pc_branch),
-    .io_branch_pc_jal          (_exu_io_branch_pc_jal),
-    .io_branch_pc_jalr         (_exu_io_branch_pc_jalr),
-    .io_branch_is_branch_taken (_exu_io_branch_is_branch_taken),
-    .io_branch_is_jal          (_exu_io_branch_is_jal),
-    .io_branch_is_jalr         (_exu_io_branch_is_jalr),
-    .io_branch_is_ecall        (_exu_io_branch_is_ecall),
-    .io_branch_is_mret         (_exu_io_branch_is_mret),
-    .io_branch_pc_csr          (_exu_io_branch_pc_csr)
+    .clock                          (clock),
+    .reset                          (reset),
+    .io_in_ready                    (_exu_io_in_ready),
+    .io_in_valid                    (_idu_io_out_valid),
+    .io_in_bits_pc                  (_idu_io_out_bits_pc),
+    .io_in_bits_rd_addr             (_idu_io_out_bits_rd_addr),
+    .io_in_bits_rd_en               (_idu_io_out_bits_rd_en),
+    .io_in_bits_alu_a               (_idu_io_out_bits_alu_a),
+    .io_in_bits_alu_b               (_idu_io_out_bits_alu_b),
+    .io_in_bits_alu_op              (_idu_io_out_bits_alu_op),
+    .io_in_bits_rs1_data            (_idu_io_out_bits_rs1_data),
+    .io_in_bits_rs2_data            (_idu_io_out_bits_rs2_data),
+    .io_in_bits_csr_wdata           (_idu_io_out_bits_csr_wdata),
+    .io_in_bits_csr_wen             (_idu_io_out_bits_csr_wen),
+    .io_in_bits_csr_waddr           (_idu_io_out_bits_csr_waddr),
+    .io_in_bits_csr_rdata           (_idu_io_out_bits_csr_rdata),
+    .io_in_bits_is_csrrw            (_idu_io_out_bits_is_csrrw),
+    .io_in_bits_is_csrrs            (_idu_io_out_bits_is_csrrs),
+    .io_in_bits_is_jal              (_idu_io_out_bits_is_jal),
+    .io_in_bits_is_jalr             (_idu_io_out_bits_is_jalr),
+    .io_in_bits_is_lw               (_idu_io_out_bits_is_lw),
+    .io_in_bits_is_sw               (_idu_io_out_bits_is_sw),
+    .io_in_bits_is_lb               (_idu_io_out_bits_is_lb),
+    .io_in_bits_is_sb               (_idu_io_out_bits_is_sb),
+    .io_in_bits_is_lh               (_idu_io_out_bits_is_lh),
+    .io_in_bits_is_sh               (_idu_io_out_bits_is_sh),
+    .io_in_bits_is_lbu              (_idu_io_out_bits_is_lbu),
+    .io_in_bits_is_lhu              (_idu_io_out_bits_is_lhu),
+    .io_in_bits_is_beq              (_idu_io_out_bits_is_beq),
+    .io_in_bits_is_bne              (_idu_io_out_bits_is_bne),
+    .io_in_bits_is_blt              (_idu_io_out_bits_is_blt),
+    .io_in_bits_is_bltu             (_idu_io_out_bits_is_bltu),
+    .io_in_bits_is_bge              (_idu_io_out_bits_is_bge),
+    .io_in_bits_is_bgeu             (_idu_io_out_bits_is_bgeu),
+    .io_in_bits_is_ecall            (_idu_io_out_bits_is_ecall),
+    .io_in_bits_is_mret             (_idu_io_out_bits_is_mret),
+    .io_out_ready                   (_mem_io_in_ready),
+    .io_out_valid                   (_exu_io_out_valid),
+    .io_out_bits_pc                 (_exu_io_out_bits_pc),
+    .io_out_bits_alu_result         (_exu_io_out_bits_alu_result),
+    .io_out_bits_rs2_data           (_exu_io_out_bits_rs2_data),
+    .io_out_bits_rd_addr            (_exu_io_out_bits_rd_addr),
+    .io_out_bits_rd_en              (_exu_io_out_bits_rd_en),
+    .io_out_bits_csr_wdata          (_exu_io_out_bits_csr_wdata),
+    .io_out_bits_csr_wen            (_exu_io_out_bits_csr_wen),
+    .io_out_bits_csr_waddr          (_exu_io_out_bits_csr_waddr),
+    .io_out_bits_csr_rdata          (_exu_io_out_bits_csr_rdata),
+    .io_out_bits_is_csrrw           (_exu_io_out_bits_is_csrrw),
+    .io_out_bits_is_csrrs           (_exu_io_out_bits_is_csrrs),
+    .io_out_bits_is_lw              (_exu_io_out_bits_is_lw),
+    .io_out_bits_is_lbu             (_exu_io_out_bits_is_lbu),
+    .io_out_bits_is_lh              (_exu_io_out_bits_is_lh),
+    .io_out_bits_is_lhu             (_exu_io_out_bits_is_lhu),
+    .io_out_bits_is_lb              (_exu_io_out_bits_is_lb),
+    .io_out_bits_is_sw              (_exu_io_out_bits_is_sw),
+    .io_out_bits_is_sb              (_exu_io_out_bits_is_sb),
+    .io_out_bits_is_sh              (_exu_io_out_bits_is_sh),
+    .io_out_bits_is_jalr            (_exu_io_out_bits_is_jalr),
+    .io_out_bits_is_jal             (_exu_io_out_bits_is_jal),
+    .io_branch_valid                (_exu_io_branch_valid),
+    .io_branch_bits_pc_branch       (_exu_io_branch_bits_pc_branch),
+    .io_branch_bits_pc_jal          (_exu_io_branch_bits_pc_jal),
+    .io_branch_bits_pc_jalr         (_exu_io_branch_bits_pc_jalr),
+    .io_branch_bits_is_branch_taken (_exu_io_branch_bits_is_branch_taken),
+    .io_branch_bits_is_jal          (_exu_io_branch_bits_is_jal),
+    .io_branch_bits_is_jalr         (_exu_io_branch_bits_is_jalr),
+    .io_branch_bits_is_ecall        (_exu_io_branch_bits_is_ecall),
+    .io_branch_bits_is_mret         (_exu_io_branch_bits_is_mret),
+    .io_branch_bits_pc_csr          (_exu_io_branch_bits_pc_csr)
   );
   MEM mem (
+    .clock                  (clock),
+    .reset                  (reset),
+    .io_in_ready            (_mem_io_in_ready),
+    .io_in_valid            (_exu_io_out_valid),
     .io_in_bits_pc          (_exu_io_out_bits_pc),
     .io_in_bits_alu_result  (_exu_io_out_bits_alu_result),
     .io_in_bits_rs2_data    (_exu_io_out_bits_rs2_data),
@@ -1215,6 +2113,8 @@ module CPU(
     .io_in_bits_is_sh       (_exu_io_out_bits_is_sh),
     .io_in_bits_is_jalr     (_exu_io_out_bits_is_jalr),
     .io_in_bits_is_jal      (_exu_io_out_bits_is_jal),
+    .io_out_ready           (_wb_io_in_ready),
+    .io_out_valid           (_mem_io_out_valid),
     .io_out_bits_pc         (_mem_io_out_bits_pc),
     .io_out_bits_alu_result (_mem_io_out_bits_alu_result),
     .io_out_bits_rd_addr    (_mem_io_out_bits_rd_addr),
@@ -1229,15 +2129,22 @@ module CPU(
     .io_out_bits_csr_rdata  (_mem_io_out_bits_csr_rdata),
     .io_out_bits_is_csrrw   (_mem_io_out_bits_is_csrrw),
     .io_out_bits_is_csrrs   (_mem_io_out_bits_is_csrrs),
-    .io_mem_valid           (_mem_io_mem_valid),
-    .io_mem_wen             (_mem_io_mem_wen),
-    .io_mem_raddr           (_mem_io_mem_raddr),
-    .io_mem_waddr           (_mem_io_mem_waddr),
-    .io_mem_wdata           (_mem_io_mem_wdata),
-    .io_mem_wmask           (_mem_io_mem_wmask),
-    .io_mem_rdata           (_mem_blackbox_rdata)
+    .io_mem_req_ready       (_axi_mem_master_io_mem_req_ready),
+    .io_mem_req_valid       (_mem_io_mem_req_valid),
+    .io_mem_req_bits_wen    (_mem_io_mem_req_bits_wen),
+    .io_mem_req_bits_raddr  (_mem_io_mem_req_bits_raddr),
+    .io_mem_req_bits_waddr  (_mem_io_mem_req_bits_waddr),
+    .io_mem_req_bits_wdata  (_mem_io_mem_req_bits_wdata),
+    .io_mem_req_bits_wmask  (_mem_io_mem_req_bits_wmask),
+    .io_mem_resp_ready      (_mem_io_mem_resp_ready),
+    .io_mem_resp_valid      (_axi_mem_master_io_mem_resp_valid),
+    .io_mem_resp_bits_rdata (_axi_mem_master_io_mem_resp_bits_rdata)
   );
   WB wb (
+    .clock                 (clock),
+    .reset                 (reset),
+    .io_in_ready           (_wb_io_in_ready),
+    .io_in_valid           (_mem_io_out_valid),
     .io_in_bits_pc         (_mem_io_out_bits_pc),
     .io_in_bits_alu_result (_mem_io_out_bits_alu_result),
     .io_in_bits_rd_addr    (_mem_io_out_bits_rd_addr),
@@ -1257,7 +2164,8 @@ module CPU(
     .io_rd_en              (_wb_io_rd_en),
     .io_csr_waddr          (_wb_io_csr_waddr),
     .io_csr_wdata          (_wb_io_csr_wdata),
-    .io_csr_wen            (_wb_io_csr_wen)
+    .io_csr_wen            (_wb_io_csr_wen),
+    .io_commit             (_wb_io_commit)
   );
   Regfile regfile (
     .clock          (clock),
@@ -1301,15 +2209,160 @@ module CPU(
     .io_regs_out_30 (io_regs_out_30),
     .io_regs_out_31 (io_regs_out_31)
   );
-  MemBlackBox mem_blackbox (
-    .clk   (clock),
-    .valid (_mem_io_mem_valid),
-    .wen   (_mem_io_mem_wen),
-    .raddr (_mem_io_mem_raddr),
-    .waddr (_mem_io_mem_waddr),
-    .wdata (_mem_io_mem_wdata),
-    .wmask (_mem_io_mem_wmask),
-    .rdata (_mem_blackbox_rdata)
+  AXI_IFU_Master axi_ifu_master (
+    .clock                  (clock),
+    .reset                  (reset),
+    .io_I_bus_ARADDR        (_axi_ifu_master_io_I_bus_ARADDR),
+    .io_I_bus_ARVALID       (_axi_ifu_master_io_I_bus_ARVALID),
+    .io_I_bus_ARREADY       (_axi_arbiter_io_i_master_ARREADY),
+    .io_I_bus_RDATA         (_axi_arbiter_io_i_master_RDATA),
+    .io_I_bus_RVALID        (_axi_arbiter_io_i_master_RVALID),
+    .io_I_bus_RREADY        (_axi_ifu_master_io_I_bus_RREADY),
+    .io_inst_req_ready      (_axi_ifu_master_io_inst_req_ready),
+    .io_inst_req_valid      (_ifu_io_inst_req_valid),
+    .io_inst_req_bits_pc    (_ifu_io_inst_req_bits_pc),
+    .io_inst_resp_ready     (_ifu_io_inst_resp_ready),
+    .io_inst_resp_valid     (_axi_ifu_master_io_inst_resp_valid),
+    .io_inst_resp_bits_inst (_axi_ifu_master_io_inst_resp_bits_inst),
+    .io_flush               (_ifu_io_flush)
+  );
+  AXI_MEM_Master axi_mem_master (
+    .clock                  (clock),
+    .reset                  (reset),
+    .io_M_bus_AWADDR        (_axi_mem_master_io_M_bus_AWADDR),
+    .io_M_bus_AWVALID       (_axi_mem_master_io_M_bus_AWVALID),
+    .io_M_bus_AWREADY       (_axi_arbiter_io_m_master_AWREADY),
+    .io_M_bus_WDATA         (_axi_mem_master_io_M_bus_WDATA),
+    .io_M_bus_WSTRB         (_axi_mem_master_io_M_bus_WSTRB),
+    .io_M_bus_WVALID        (_axi_mem_master_io_M_bus_WVALID),
+    .io_M_bus_WREADY        (_axi_arbiter_io_m_master_WREADY),
+    .io_M_bus_BVALID        (_axi_arbiter_io_m_master_BVALID),
+    .io_M_bus_BREADY        (_axi_mem_master_io_M_bus_BREADY),
+    .io_M_bus_ARADDR        (_axi_mem_master_io_M_bus_ARADDR),
+    .io_M_bus_ARVALID       (_axi_mem_master_io_M_bus_ARVALID),
+    .io_M_bus_ARREADY       (_axi_arbiter_io_m_master_ARREADY),
+    .io_M_bus_RDATA         (_axi_arbiter_io_m_master_RDATA),
+    .io_M_bus_RVALID        (_axi_arbiter_io_m_master_RVALID),
+    .io_M_bus_RREADY        (_axi_mem_master_io_M_bus_RREADY),
+    .io_mem_req_ready       (_axi_mem_master_io_mem_req_ready),
+    .io_mem_req_valid       (_mem_io_mem_req_valid),
+    .io_mem_req_bits_wen    (_mem_io_mem_req_bits_wen),
+    .io_mem_req_bits_raddr  (_mem_io_mem_req_bits_raddr),
+    .io_mem_req_bits_waddr  (_mem_io_mem_req_bits_waddr),
+    .io_mem_req_bits_wdata  (_mem_io_mem_req_bits_wdata),
+    .io_mem_req_bits_wmask  (_mem_io_mem_req_bits_wmask),
+    .io_mem_resp_ready      (_mem_io_mem_resp_ready),
+    .io_mem_resp_valid      (_axi_mem_master_io_mem_resp_valid),
+    .io_mem_resp_bits_rdata (_axi_mem_master_io_mem_resp_bits_rdata)
+  );
+  DSRAM DSRAM (
+    .clock            (clock),
+    .reset            (reset),
+    .io_M_bus_AWADDR  (_slave_selector_io_slave_m_AWADDR),
+    .io_M_bus_AWVALID (_slave_selector_io_slave_m_AWVALID),
+    .io_M_bus_AWREADY (_DSRAM_io_M_bus_AWREADY),
+    .io_M_bus_WDATA   (_slave_selector_io_slave_m_WDATA),
+    .io_M_bus_WSTRB   (_slave_selector_io_slave_m_WSTRB),
+    .io_M_bus_WVALID  (_slave_selector_io_slave_m_WVALID),
+    .io_M_bus_WREADY  (_DSRAM_io_M_bus_WREADY),
+    .io_M_bus_BVALID  (_DSRAM_io_M_bus_BVALID),
+    .io_M_bus_BREADY  (_slave_selector_io_slave_m_BREADY),
+    .io_M_bus_ARADDR  (_slave_selector_io_slave_m_ARADDR),
+    .io_M_bus_ARVALID (_slave_selector_io_slave_m_ARVALID),
+    .io_M_bus_ARREADY (_DSRAM_io_M_bus_ARREADY),
+    .io_M_bus_RDATA   (_DSRAM_io_M_bus_RDATA),
+    .io_M_bus_RVALID  (_DSRAM_io_M_bus_RVALID),
+    .io_M_bus_RREADY  (_slave_selector_io_slave_m_RREADY)
+  );
+  ISRAM ISRAM (
+    .clock            (clock),
+    .reset            (reset),
+    .io_I_bus_ARADDR  (_slave_selector_io_slave_i_ARADDR),
+    .io_I_bus_ARVALID (_slave_selector_io_slave_i_ARVALID),
+    .io_I_bus_ARREADY (_ISRAM_io_I_bus_ARREADY),
+    .io_I_bus_RDATA   (_ISRAM_io_I_bus_RDATA),
+    .io_I_bus_RVALID  (_ISRAM_io_I_bus_RVALID),
+    .io_I_bus_RREADY  (_slave_selector_io_slave_i_RREADY)
+  );
+  AXI_ARB2TO1 axi_arbiter (
+    .clock               (clock),
+    .reset               (reset),
+    .io_i_master_ARADDR  (_axi_ifu_master_io_I_bus_ARADDR),
+    .io_i_master_ARVALID (_axi_ifu_master_io_I_bus_ARVALID),
+    .io_i_master_ARREADY (_axi_arbiter_io_i_master_ARREADY),
+    .io_i_master_RDATA   (_axi_arbiter_io_i_master_RDATA),
+    .io_i_master_RVALID  (_axi_arbiter_io_i_master_RVALID),
+    .io_i_master_RREADY  (_axi_ifu_master_io_I_bus_RREADY),
+    .io_m_master_AWADDR  (_axi_mem_master_io_M_bus_AWADDR),
+    .io_m_master_AWVALID (_axi_mem_master_io_M_bus_AWVALID),
+    .io_m_master_AWREADY (_axi_arbiter_io_m_master_AWREADY),
+    .io_m_master_WDATA   (_axi_mem_master_io_M_bus_WDATA),
+    .io_m_master_WSTRB   (_axi_mem_master_io_M_bus_WSTRB),
+    .io_m_master_WVALID  (_axi_mem_master_io_M_bus_WVALID),
+    .io_m_master_WREADY  (_axi_arbiter_io_m_master_WREADY),
+    .io_m_master_BVALID  (_axi_arbiter_io_m_master_BVALID),
+    .io_m_master_BREADY  (_axi_mem_master_io_M_bus_BREADY),
+    .io_m_master_ARADDR  (_axi_mem_master_io_M_bus_ARADDR),
+    .io_m_master_ARVALID (_axi_mem_master_io_M_bus_ARVALID),
+    .io_m_master_ARREADY (_axi_arbiter_io_m_master_ARREADY),
+    .io_m_master_RDATA   (_axi_arbiter_io_m_master_RDATA),
+    .io_m_master_RVALID  (_axi_arbiter_io_m_master_RVALID),
+    .io_m_master_RREADY  (_axi_mem_master_io_M_bus_RREADY),
+    .io_slave_AWADDR     (_axi_arbiter_io_slave_AWADDR),
+    .io_slave_AWVALID    (_axi_arbiter_io_slave_AWVALID),
+    .io_slave_AWREADY    (_slave_selector_io_slave_in_AWREADY),
+    .io_slave_WDATA      (_axi_arbiter_io_slave_WDATA),
+    .io_slave_WSTRB      (_axi_arbiter_io_slave_WSTRB),
+    .io_slave_WVALID     (_axi_arbiter_io_slave_WVALID),
+    .io_slave_WREADY     (_slave_selector_io_slave_in_WREADY),
+    .io_slave_BVALID     (_slave_selector_io_slave_in_BVALID),
+    .io_slave_BREADY     (_axi_arbiter_io_slave_BREADY),
+    .io_slave_ARADDR     (_axi_arbiter_io_slave_ARADDR),
+    .io_slave_ARVALID    (_axi_arbiter_io_slave_ARVALID),
+    .io_slave_ARREADY    (_slave_selector_io_slave_in_ARREADY),
+    .io_slave_RDATA      (_slave_selector_io_slave_in_RDATA),
+    .io_slave_RVALID     (_slave_selector_io_slave_in_RVALID),
+    .io_slave_RREADY     (_axi_arbiter_io_slave_RREADY),
+    .io_is_inst          (_axi_arbiter_io_is_inst)
+  );
+  slaveSel slave_selector (
+    .io_slave_in_AWADDR  (_axi_arbiter_io_slave_AWADDR),
+    .io_slave_in_AWVALID (_axi_arbiter_io_slave_AWVALID),
+    .io_slave_in_AWREADY (_slave_selector_io_slave_in_AWREADY),
+    .io_slave_in_WDATA   (_axi_arbiter_io_slave_WDATA),
+    .io_slave_in_WSTRB   (_axi_arbiter_io_slave_WSTRB),
+    .io_slave_in_WVALID  (_axi_arbiter_io_slave_WVALID),
+    .io_slave_in_WREADY  (_slave_selector_io_slave_in_WREADY),
+    .io_slave_in_BVALID  (_slave_selector_io_slave_in_BVALID),
+    .io_slave_in_BREADY  (_axi_arbiter_io_slave_BREADY),
+    .io_slave_in_ARADDR  (_axi_arbiter_io_slave_ARADDR),
+    .io_slave_in_ARVALID (_axi_arbiter_io_slave_ARVALID),
+    .io_slave_in_ARREADY (_slave_selector_io_slave_in_ARREADY),
+    .io_slave_in_RDATA   (_slave_selector_io_slave_in_RDATA),
+    .io_slave_in_RVALID  (_slave_selector_io_slave_in_RVALID),
+    .io_slave_in_RREADY  (_axi_arbiter_io_slave_RREADY),
+    .io_slave_m_AWADDR   (_slave_selector_io_slave_m_AWADDR),
+    .io_slave_m_AWVALID  (_slave_selector_io_slave_m_AWVALID),
+    .io_slave_m_AWREADY  (_DSRAM_io_M_bus_AWREADY),
+    .io_slave_m_WDATA    (_slave_selector_io_slave_m_WDATA),
+    .io_slave_m_WSTRB    (_slave_selector_io_slave_m_WSTRB),
+    .io_slave_m_WVALID   (_slave_selector_io_slave_m_WVALID),
+    .io_slave_m_WREADY   (_DSRAM_io_M_bus_WREADY),
+    .io_slave_m_BVALID   (_DSRAM_io_M_bus_BVALID),
+    .io_slave_m_BREADY   (_slave_selector_io_slave_m_BREADY),
+    .io_slave_m_ARADDR   (_slave_selector_io_slave_m_ARADDR),
+    .io_slave_m_ARVALID  (_slave_selector_io_slave_m_ARVALID),
+    .io_slave_m_ARREADY  (_DSRAM_io_M_bus_ARREADY),
+    .io_slave_m_RDATA    (_DSRAM_io_M_bus_RDATA),
+    .io_slave_m_RVALID   (_DSRAM_io_M_bus_RVALID),
+    .io_slave_m_RREADY   (_slave_selector_io_slave_m_RREADY),
+    .io_slave_i_ARADDR   (_slave_selector_io_slave_i_ARADDR),
+    .io_slave_i_ARVALID  (_slave_selector_io_slave_i_ARVALID),
+    .io_slave_i_ARREADY  (_ISRAM_io_I_bus_ARREADY),
+    .io_slave_i_RDATA    (_ISRAM_io_I_bus_RDATA),
+    .io_slave_i_RVALID   (_ISRAM_io_I_bus_RVALID),
+    .io_slave_i_RREADY   (_slave_selector_io_slave_i_RREADY),
+    .io_is_inst          (_axi_arbiter_io_is_inst)
   );
   CSR csr (
     .clock        (clock),
@@ -1323,13 +2376,14 @@ module CPU(
     .io_is_mret   (_idu_io_is_mret)
   );
   assign io_pc_out = _ifu_io_out_bits_pc;
+  assign io_inst_out = _ifu_io_out_bits_inst;
 endmodule
 
 module top(
   input         clock,
                 reset,
   output [31:0] io_pc,
-  input  [31:0] io_inst,
+                io_inst,
   output        io_halt_ret,
                 io_non_inst,
   output [31:0] io_gpr_0,
@@ -1366,11 +2420,10 @@ module top(
                 io_gpr_31
 );
 
+  wire [31:0] _cpu_io_inst_out;
   CPU cpu (
     .clock          (clock),
     .reset          (reset),
-    .io_pc_out      (io_pc),
-    .io_inst_in     (io_inst),
     .io_regs_out_1  (io_gpr_1),
     .io_regs_out_2  (io_gpr_2),
     .io_regs_out_3  (io_gpr_3),
@@ -1401,11 +2454,14 @@ module top(
     .io_regs_out_28 (io_gpr_28),
     .io_regs_out_29 (io_gpr_29),
     .io_regs_out_30 (io_gpr_30),
-    .io_regs_out_31 (io_gpr_31)
+    .io_regs_out_31 (io_gpr_31),
+    .io_pc_out      (io_pc),
+    .io_inst_out    (_cpu_io_inst_out)
   );
   EbreakBlackBox ebreak_box (
-    .is_ebreak (io_inst == 32'h100073)
+    .is_ebreak (_cpu_io_inst_out == 32'h100073)
   );
+  assign io_inst = _cpu_io_inst_out;
   assign io_halt_ret = 1'h0;
   assign io_non_inst = 1'h0;
   assign io_gpr_0 = 32'h0;
@@ -1448,6 +2504,46 @@ always @(posedge clk) begin
     pmem_write(waddr, wdata, {28'b0, wmask});
     //$display("PMEM_write to addr: %h, clk: %h, valid: %h, wen: %h", waddr, clk, valid, wen);
     //mem_array[waddr] <= wdata; // 256KB
+  end
+end
+
+endmodule
+// ----- 8< ----- FILE "./Inst_fetch.v" ----- 8< -----
+
+module ImemBlackBox(
+    input         clock,
+    input         reset,
+
+    input         pc_valid,
+    input  [31:0] pc,
+
+    output reg        inst_valid,
+    output reg [31:0] inst
+);
+
+import "DPI-C" function int pmem_read_inst(input int pc);
+
+reg [31:0] pc_r;
+reg        pc_valid_r;
+
+always @(posedge clock) begin
+  if (reset) begin
+    pc_r       <= 32'b0;
+    pc_valid_r <= 1'b0;
+    inst       <= 32'b0;
+    inst_valid <= 1'b0;
+  end else begin
+    // 第 N 拍：锁存取指请求
+    pc_r       <= pc;
+    pc_valid_r <= pc_valid;
+
+    // 第 N+1 拍：返回指令
+    if (pc_valid_r) begin
+      inst       <= pmem_read_inst(pc_r);
+      inst_valid <= 1'b1;
+    end else begin
+      inst_valid <= 1'b0;
+    end
   end
 end
 

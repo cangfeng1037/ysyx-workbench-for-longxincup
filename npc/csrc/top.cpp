@@ -53,6 +53,8 @@ extern "C" void ebreak() {
     sim_exit_flag = true; // 设置退出标志
 }
 
+extern "C" uint32_t pmem_read_inst(uint32_t pc);
+
 // extern "C" uint32_t rf_read(uint32_t idx);
 
 int current_circle = 0;
@@ -257,7 +259,7 @@ static void load_img() {
 uint32_t pmem_read_inst(uint32_t pc) {
     uint32_t addr = pc - START_ADDR;
     if(addr >= MAX_SIZE){
-        printf("pc = %08x\n", pc);
+        printf("Pmem_read_inst error: out of range\n pc = %08x\n", pc);
         printf("addr = %08x\n", addr);
         assert(0);
     }
@@ -278,13 +280,8 @@ uint32_t pmem_read_inst(uint32_t pc) {
 }
 
 void eval() {
-
-    
-    top -> io_inst = pmem_read_inst(top -> io_pc);
-    
     // 组合阶段
     top -> clock = 0;
-    //printf("Inst 0x%08x at pc = 0x%08x, cycle = %d\n", top->io_inst, top->io_pc, cnt);
     top -> eval();
     if(tfp) tfp -> dump(sim_time ++);
 
@@ -293,7 +290,8 @@ void eval() {
     top -> eval();
     if (tfp) tfp -> dump(sim_time ++);
 
-    //top -> io_inst = pmem_read_inst(top -> io_pc);
+    // 日志在时序稳定后读取输出指令
+    //printf("Inst 0x%08x at pc = 0x%08x, cycle = %d\n", top->io_inst, top->io_pc, cnt);
 
 /*    top -> clock = 0;
     top -> eval();

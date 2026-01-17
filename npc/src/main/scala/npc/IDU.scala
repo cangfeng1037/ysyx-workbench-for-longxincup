@@ -67,16 +67,39 @@ class IDU extends Module {
         val csr_rdata = Input(UInt(32.W))
         val is_ecall  = Output(Bool())
         val is_mret   = Output(Bool())
+
+        val busy = Input(Bool())
     })
 
     // 状态机
-    // IDU是纯组合逻辑，不需要状态机
-    io.in.ready := io.out.ready
-    io.out.valid := io.in.valid
+    val s_idle :: s_decode :: Nil = Enum(2)
+    val state = RegInit(s_idle)
+
+    // 默认信号
+    io.in.ready := (state === s_idle) && !io.busy
+    io.out.valid := (state === s_decode)
+    
+    val inst = RegInit(0.U(32.W))
+    val pc = RegInit(0.U(32.W))
+    // 状态机实现
+    switch(state) {
+        is (s_idle) {
+            when (io.in.fire) {
+                // 锁存指令
+                inst := io.in.bits.inst
+                pc := io.in.bits.pc
+                state := s_decode
+            }
+        }
+
+        is (s_decode) {
+            when (io.out.fire) {
+                state := s_idle
+            }
+        }
+    }
 
     // 根据inst译码
-    val inst     = io.in.bits.inst
-    val pc       = io.in.bits.pc
     val opcode   = inst(6, 0)
     val rd_addr  = inst(11, 7)
     val rs1_addr = inst(19, 15)
@@ -280,4 +303,7 @@ class IDU extends Module {
     printf("IDU: inst=%x, in.valid=%d, in.ready=%d, out.valid=%d, out.ready=%d\n",
         inst, io.in.valid, io.in.ready, io.out.valid, io.out.ready)
     */
+
+
+    //printf("IDU: pc=%x, inst=%x, busy=%d, ready=%d, state=%d\n", pc, inst, io.busy, io.in.ready, state)
 }
