@@ -66,6 +66,7 @@ class CPU extends Module {
     // 连接AXI主接口到仲裁器
     axi_arbiter.io.i_master <> axi_ifu_master.io.I_bus
     axi_arbiter.io.m_master <> axi_mem_master.io.M_bus
+    
 
     // 实例化选择器
     val slave_selector = Module(new bus.slaveSel())
