@@ -293,16 +293,13 @@ void eval() {
     // 日志在时序稳定后读取输出指令
     //printf("Inst 0x%08x at pc = 0x%08x, cycle = %d\n", top->io_inst, top->io_pc, cnt);
 
-/*    top -> clock = 0;
-    top -> eval();
-    if (tfp) tfp -> dump(sim_time ++);
-*/
     if(cnt == 2) { // 在第三个周期释放复位
         top -> reset = 0;
     }
 
     cnt ++ ;
 #ifdef CONFIG_DIFFTEST
+    // difftest 根据多周期 CPU 修改，仅在difftest_valid有效时才进行对比，使用difftest_pc
     if (!sim_exit_flag && cnt > 3) { // 复位后开始差分测试
 
         if (g_skip_ref_next) {
@@ -314,22 +311,23 @@ void eval() {
             g_skip_ref_next = false;
         }
 
-        difftest_step(1);
-
-        CPU_state dut_s;
-        for (int i = 0; i < 32; i ++ ) dut_s.gpr[i] = rf_read(i);
-        dut_s.pc = top -> io_pc;
-        bool check = difftest_check_reg(dut_s.gpr, dut_s.pc);
-        if (!check) {
-            printf("Difftest failed at cycle %d, pc = 0x%08x\n, inst = 0x%08x\n", cnt, dut_s.pc - 4, top->io_inst);
-            if(top -> io_non_inst) {
-                printf("The non-inst instruction detected! : inst = 0x%08x\n, pc = 0x%08x\n", top->io_inst, top->io_pc);
+        if (top -> io_difftest_valid) {
+            difftest_step(1);
+        
+            CPU_state dut_s;
+            for (int i = 0; i < 32; i ++ ) dut_s.gpr[i] = rf_read(i);
+            dut_s.pc = top -> io_pc;
+            bool check = difftest_check_reg(dut_s.gpr, dut_s.pc);
+            if (!check) {
+                printf("Difftest failed at cycle %d, pc = 0x%08x\n, inst = 0x%08x\n", cnt, dut_s.pc, top->io_inst);
+                if(top -> io_non_inst) {
+                    printf("The non-inst instruction detected! : inst = 0x%08x\n, pc = 0x%08x\n", top->io_inst, top->io_pc);
+                }
+                exit(1);
+            } else {
+                //printf("Difftest passed at cycle %d, pc = 0x%08x\n", cnt, dut_s.pc - 4);
             }
-            exit(1);
-        } else {
-            //printf("Difftest passed at cycle %d, pc = 0x%08x\n", cnt, dut_s.pc - 4);
         }
-      
     } 
 #endif
 }

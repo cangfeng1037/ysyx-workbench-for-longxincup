@@ -17,6 +17,8 @@ class WB extends Module {
         val csr_wen   = Output(Bool())
 
         val commit    = Output(Bool()) // 指令提交信号
+
+        // Difftest接口
     })
     
     // 拉取信号并锁存
@@ -64,19 +66,42 @@ class WB extends Module {
         is_csrrs   := io.in.bits.is_csrrs
     }
 
-    //状态机
+    // 状态机
     
-    val s_idle :: s_writeback :: Nil = Enum(2)
+    val s_idle :: s_writeback :: s_writeback_hold :: Nil = Enum(3)
     val state = RegInit(s_idle)
 
     io.in.ready := (state === s_idle)
-    io.commit   := (state === s_writeback)
+    io.commit := (state === s_writeback_hold)
+    // 不使用difftest测试时，请使用两周期代码，三周期会带来约9.3%的周期数增加
+
+    /*
+        val s_idle :: s_writeback :: Nil = Enum(2)
+
+
+        io.commit = (state === s_writeback)
+
+        switch(state) {
+            is (s_idle) {
+                when (io.in.fire) { state := s_writeback }
+            }
+            is (s_writeback) {
+                // 写回一拍完成，回到空闲
+                state := s_idle
+            }
+        }
+    */
+
+
     switch(state) {
         is (s_idle) {
             when (io.in.fire) { state := s_writeback }
         }
         is (s_writeback) {
-            // 写回一拍完成，直接回空闲
+            // 写回一拍完成，进入保持状态
+            state := s_writeback_hold
+        }
+        is (s_writeback_hold) {
             state := s_idle
         }
     }

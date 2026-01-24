@@ -34,6 +34,8 @@ class top extends Module {
 
         // 导出寄存器堆的值
         val gpr = Output(Vec(32, UInt(32.W)))
+        // Difftest接口
+        val difftest_valid = Output(Bool())
     })
 
     val cpu = Module(new CPU())
@@ -49,4 +51,7 @@ class top extends Module {
     val is_ebreak = cpu.io.inst_out === "h00100073".U
     val ebreak_box = Module(new EbreakBlackBox())
     ebreak_box.io.is_ebreak := is_ebreak
+
+    // Difftest接口连接
+    io.difftest_valid := cpu.io.difftest_valid
 }

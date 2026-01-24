@@ -22,7 +22,7 @@
 #define DIFFTEST_TO_DUT 0
 #define DIFFTEST_TO_REF 1
 
-#ifdef CONFIG_DIFFTEST
+#ifndef CONFIG_DIFFTEST
 static bool skip_next_exec = false;
 
 

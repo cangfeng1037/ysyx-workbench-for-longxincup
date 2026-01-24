@@ -38,6 +38,7 @@ VM_MODPREFIX = Vtop
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
 	-DTOP_NAME="Vtop" \
+	-DCONFIG_DIFFTEST \
 	-DCONFIG_MTRACE \
 	-DCONFIG_PATCH \
 

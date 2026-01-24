@@ -17,6 +17,9 @@ class CPU extends Module {
         val regs_out = Output(Vec(32, UInt(32.W)))
         val pc_out   = Output(UInt(32.W))
         val inst_out = Output(UInt(32.W))
+
+        // Difftest接口
+        val difftest_valid = Output(Bool())
     })
 
     val ifu = Module(new IFU())
@@ -56,7 +59,7 @@ class CPU extends Module {
     mem.io.mem_req  <> axi_mem_master.io.mem_req
     mem.io.mem_resp <> axi_mem_master.io.mem_resp
 
-    // 实例化SRAM模块
+    // 实例化SRAM各模块
     val DSRAM = Module(new DSRAM())
     val ISRAM = Module(new ISRAM())
 
@@ -67,9 +70,13 @@ class CPU extends Module {
     axi_arbiter.io.i_master <> axi_ifu_master.io.I_bus
     axi_arbiter.io.m_master <> axi_mem_master.io.M_bus
     
-
-    // 实例化选择器
+    // 实例化选择器和从端口
     val slave_selector = Module(new bus.slaveSel())
+    val uart_slave = Module(new bus.AXI_UART_Slave())
+    val timer_slave = Module(new bus.AXI_TIMER_Slave())
+
+    uart_slave.io <> slave_selector.io.uart_slave
+    timer_slave.io <> slave_selector.io.timer_slave
     slave_selector.io.slave_in <> axi_arbiter.io.slave
     slave_selector.io.is_inst := axi_arbiter.io.is_inst
 
@@ -99,11 +106,13 @@ class CPU extends Module {
     io.pc_out   := ifu.io.out.bits.pc
     io.inst_out := ifu.io.out.bits.inst
 
+
+    // 在此添加difftest信号，在wb.commit后执行difftest，传到top供cpp调用
     val busy = RegInit(false.B)
     idu.io.busy := busy
 
     when(idu.io.in.fire) { busy := true.B }
     when(wb.io.commit) { busy := false.B }
-
     
+    io.difftest_valid := wb.io.commit
 }

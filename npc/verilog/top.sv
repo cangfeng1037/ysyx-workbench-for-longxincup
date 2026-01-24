@@ -830,6 +830,7 @@ module WB(
                 io_commit
 );
 
+  wire        io_in_ready_0;
   reg  [31:0] pc;
   reg  [31:0] alu_result;
   reg  [4:0]  rd_addr;
@@ -844,8 +845,22 @@ module WB(
   reg  [31:0] csr_rdata;
   reg         is_csrrw;
   reg         is_csrrs;
-  reg         state;
-  wire        _GEN = ~state & io_in_valid;
+  wire        _GEN = io_in_ready_0 & io_in_valid;
+  reg  [1:0]  state;
+  assign io_in_ready_0 = state == 2'h0;
+  reg  [1:0]  casez_tmp;
+  always_comb begin
+    casez (state)
+      2'b00:
+        casez_tmp = _GEN ? 2'h1 : state;
+      2'b01:
+        casez_tmp = 2'h2;
+      2'b10:
+        casez_tmp = 2'h0;
+      default:
+        casez_tmp = state;
+    endcase
+  end // always_comb
   always @(posedge clock) begin
     if (reset) begin
       pc <= 32'h0;
@@ -862,7 +877,7 @@ module WB(
       csr_rdata <= 32'h0;
       is_csrrw <= 1'h0;
       is_csrrs <= 1'h0;
-      state <= 1'h0;
+      state <= 2'h0;
     end
     else begin
       if (_GEN) begin
@@ -881,10 +896,10 @@ module WB(
         is_csrrw <= io_in_bits_is_csrrw;
         is_csrrs <= io_in_bits_is_csrrs;
       end
-      state <= ~state & (_GEN | state);
+      state <= casez_tmp;
     end
   end // always @(posedge)
-  assign io_in_ready = ~state;
+  assign io_in_ready = io_in_ready_0;
   assign io_rd_addr = rd_addr;
   assign io_rd_data =
     is_csrrw | is_csrrs
@@ -894,7 +909,7 @@ module WB(
   assign io_csr_waddr = csr_waddr;
   assign io_csr_wdata = csr_wdata;
   assign io_csr_wen = csr_wen;
-  assign io_commit = state;
+  assign io_commit = state == 2'h2;
 endmodule
 
 module Regfile(
@@ -1643,21 +1658,36 @@ module slaveSel(
   input         io_is_inst
 );
 
-  assign io_slave_in_AWREADY = ~io_is_inst & io_slave_m_AWREADY;
-  assign io_slave_in_WREADY = ~io_is_inst & io_slave_m_WREADY;
-  assign io_slave_in_BVALID = ~io_is_inst & io_slave_m_BVALID;
-  assign io_slave_in_ARREADY = io_is_inst ? io_slave_i_ARREADY : io_slave_m_ARREADY;
-  assign io_slave_in_RDATA = io_is_inst ? io_slave_i_RDATA : io_slave_m_RDATA;
-  assign io_slave_in_RVALID = io_is_inst ? io_slave_i_RVALID : io_slave_m_RVALID;
-  assign io_slave_m_AWADDR = io_is_inst ? 32'h0 : io_slave_in_AWADDR;
-  assign io_slave_m_AWVALID = ~io_is_inst & io_slave_in_AWVALID;
-  assign io_slave_m_WDATA = io_is_inst ? 32'h0 : io_slave_in_WDATA;
-  assign io_slave_m_WSTRB = io_is_inst ? 4'h0 : io_slave_in_WSTRB;
-  assign io_slave_m_WVALID = ~io_is_inst & io_slave_in_WVALID;
-  assign io_slave_m_BREADY = ~io_is_inst & io_slave_in_BREADY;
-  assign io_slave_m_ARADDR = io_is_inst ? 32'h0 : io_slave_in_ARADDR;
-  assign io_slave_m_ARVALID = ~io_is_inst & io_slave_in_ARVALID;
-  assign io_slave_m_RREADY = ~io_is_inst & io_slave_in_RREADY;
+  wire [31:0] addr = io_slave_in_ARVALID ? io_slave_in_ARADDR : io_slave_in_AWADDR;
+  wire        _GEN = io_is_inst | addr == 32'hA00003F8 | addr == 32'hA0000200;
+  wire        _RRESP_T_2 = addr != 32'hA00003F8;
+  wire        _RRESP_T_3 = addr != 32'hA0000200;
+  wire        _GEN_0 = addr == 32'hA00003F8 | addr == 32'hA0000200;
+  wire        _GEN_1 = io_is_inst | _GEN_0;
+  assign io_slave_in_AWREADY = ~_GEN_1 & _RRESP_T_2 & _RRESP_T_3 & io_slave_m_AWREADY;
+  assign io_slave_in_WREADY = ~_GEN_1 & _RRESP_T_2 & _RRESP_T_3 & io_slave_m_WREADY;
+  assign io_slave_in_BVALID = ~_GEN_1 & _RRESP_T_2 & _RRESP_T_3 & io_slave_m_BVALID;
+  assign io_slave_in_ARREADY =
+    io_is_inst
+      ? io_slave_i_ARREADY
+      : ~_GEN_0 & _RRESP_T_2 & _RRESP_T_3 & io_slave_m_ARREADY;
+  assign io_slave_in_RDATA =
+    io_is_inst
+      ? io_slave_i_RDATA
+      : _GEN_0 | ~(_RRESP_T_2 & _RRESP_T_3) ? 32'h0 : io_slave_m_RDATA;
+  assign io_slave_in_RVALID =
+    io_is_inst
+      ? io_slave_i_RVALID
+      : ~_GEN_0 & _RRESP_T_2 & _RRESP_T_3 & io_slave_m_RVALID;
+  assign io_slave_m_AWADDR = _GEN ? 32'h0 : io_slave_in_AWADDR;
+  assign io_slave_m_AWVALID = ~_GEN & io_slave_in_AWVALID;
+  assign io_slave_m_WDATA = _GEN ? 32'h0 : io_slave_in_WDATA;
+  assign io_slave_m_WSTRB = _GEN ? 4'h0 : io_slave_in_WSTRB;
+  assign io_slave_m_WVALID = ~_GEN & io_slave_in_WVALID;
+  assign io_slave_m_BREADY = ~_GEN & io_slave_in_BREADY;
+  assign io_slave_m_ARADDR = _GEN ? 32'h0 : io_slave_in_ARADDR;
+  assign io_slave_m_ARVALID = ~_GEN & io_slave_in_ARVALID;
+  assign io_slave_m_RREADY = ~_GEN & io_slave_in_RREADY;
   assign io_slave_i_ARADDR = io_is_inst ? io_slave_in_ARADDR : 32'h0;
   assign io_slave_i_ARVALID = io_is_inst & io_slave_in_ARVALID;
   assign io_slave_i_RREADY = io_is_inst & io_slave_in_RREADY;
@@ -1753,7 +1783,8 @@ module CPU(
                 io_regs_out_30,
                 io_regs_out_31,
                 io_pc_out,
-                io_inst_out
+                io_inst_out,
+  output        io_difftest_valid
 );
 
   wire [31:0] _csr_io_csr_rdata;
@@ -2377,6 +2408,7 @@ module CPU(
   );
   assign io_pc_out = _ifu_io_out_bits_pc;
   assign io_inst_out = _ifu_io_out_bits_inst;
+  assign io_difftest_valid = _wb_io_commit;
 endmodule
 
 module top(
@@ -2417,46 +2449,48 @@ module top(
                 io_gpr_28,
                 io_gpr_29,
                 io_gpr_30,
-                io_gpr_31
+                io_gpr_31,
+  output        io_difftest_valid
 );
 
   wire [31:0] _cpu_io_inst_out;
   CPU cpu (
-    .clock          (clock),
-    .reset          (reset),
-    .io_regs_out_1  (io_gpr_1),
-    .io_regs_out_2  (io_gpr_2),
-    .io_regs_out_3  (io_gpr_3),
-    .io_regs_out_4  (io_gpr_4),
-    .io_regs_out_5  (io_gpr_5),
-    .io_regs_out_6  (io_gpr_6),
-    .io_regs_out_7  (io_gpr_7),
-    .io_regs_out_8  (io_gpr_8),
-    .io_regs_out_9  (io_gpr_9),
-    .io_regs_out_10 (io_gpr_10),
-    .io_regs_out_11 (io_gpr_11),
-    .io_regs_out_12 (io_gpr_12),
-    .io_regs_out_13 (io_gpr_13),
-    .io_regs_out_14 (io_gpr_14),
-    .io_regs_out_15 (io_gpr_15),
-    .io_regs_out_16 (io_gpr_16),
-    .io_regs_out_17 (io_gpr_17),
-    .io_regs_out_18 (io_gpr_18),
-    .io_regs_out_19 (io_gpr_19),
-    .io_regs_out_20 (io_gpr_20),
-    .io_regs_out_21 (io_gpr_21),
-    .io_regs_out_22 (io_gpr_22),
-    .io_regs_out_23 (io_gpr_23),
-    .io_regs_out_24 (io_gpr_24),
-    .io_regs_out_25 (io_gpr_25),
-    .io_regs_out_26 (io_gpr_26),
-    .io_regs_out_27 (io_gpr_27),
-    .io_regs_out_28 (io_gpr_28),
-    .io_regs_out_29 (io_gpr_29),
-    .io_regs_out_30 (io_gpr_30),
-    .io_regs_out_31 (io_gpr_31),
-    .io_pc_out      (io_pc),
-    .io_inst_out    (_cpu_io_inst_out)
+    .clock             (clock),
+    .reset             (reset),
+    .io_regs_out_1     (io_gpr_1),
+    .io_regs_out_2     (io_gpr_2),
+    .io_regs_out_3     (io_gpr_3),
+    .io_regs_out_4     (io_gpr_4),
+    .io_regs_out_5     (io_gpr_5),
+    .io_regs_out_6     (io_gpr_6),
+    .io_regs_out_7     (io_gpr_7),
+    .io_regs_out_8     (io_gpr_8),
+    .io_regs_out_9     (io_gpr_9),
+    .io_regs_out_10    (io_gpr_10),
+    .io_regs_out_11    (io_gpr_11),
+    .io_regs_out_12    (io_gpr_12),
+    .io_regs_out_13    (io_gpr_13),
+    .io_regs_out_14    (io_gpr_14),
+    .io_regs_out_15    (io_gpr_15),
+    .io_regs_out_16    (io_gpr_16),
+    .io_regs_out_17    (io_gpr_17),
+    .io_regs_out_18    (io_gpr_18),
+    .io_regs_out_19    (io_gpr_19),
+    .io_regs_out_20    (io_gpr_20),
+    .io_regs_out_21    (io_gpr_21),
+    .io_regs_out_22    (io_gpr_22),
+    .io_regs_out_23    (io_gpr_23),
+    .io_regs_out_24    (io_gpr_24),
+    .io_regs_out_25    (io_gpr_25),
+    .io_regs_out_26    (io_gpr_26),
+    .io_regs_out_27    (io_gpr_27),
+    .io_regs_out_28    (io_gpr_28),
+    .io_regs_out_29    (io_gpr_29),
+    .io_regs_out_30    (io_gpr_30),
+    .io_regs_out_31    (io_gpr_31),
+    .io_pc_out         (io_pc),
+    .io_inst_out       (_cpu_io_inst_out),
+    .io_difftest_valid (io_difftest_valid)
   );
   EbreakBlackBox ebreak_box (
     .is_ebreak (_cpu_io_inst_out == 32'h100073)

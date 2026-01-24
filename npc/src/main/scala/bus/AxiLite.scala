@@ -182,3 +182,34 @@ class AXI_MEM_Master extends Module {
         }
     }
 }
+
+
+// UART_slave的实现，目前先空置
+class AXI_UART_Slave extends Module {
+    val io = IO(new AxiLiteSlaveIO())
+
+    // 默认不响应
+    io.AWREADY := false.B
+    io.WREADY  := false.B
+    io.BVALID  := false.B
+    io.BRESP   := 0.U
+    io.ARREADY := false.B
+    io.RDATA   := 0.U
+    io.RRESP   := 0.U
+    io.RVALID  := false.B
+}
+
+// TIMER_slave的实现，目前先空置
+class AXI_TIMER_Slave extends Module {
+    val io = IO(new AxiLiteSlaveIO())
+
+    // 默认不响应
+    io.AWREADY := false.B
+    io.WREADY  := false.B
+    io.BVALID  := false.B
+    io.BRESP   := 0.U
+    io.ARREADY := false.B
+    io.RDATA   := 0.U
+    io.RRESP   := 0.U
+    io.RVALID  := false.B
+}

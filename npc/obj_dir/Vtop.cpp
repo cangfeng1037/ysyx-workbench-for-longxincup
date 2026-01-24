@@ -14,6 +14,7 @@ Vtop::Vtop(VerilatedContext* _vcontextp__, const char* _vcname__)
     , reset{vlSymsp->TOP.reset}
     , io_halt_ret{vlSymsp->TOP.io_halt_ret}
     , io_non_inst{vlSymsp->TOP.io_non_inst}
+    , io_difftest_valid{vlSymsp->TOP.io_difftest_valid}
     , io_pc{vlSymsp->TOP.io_pc}
     , io_inst{vlSymsp->TOP.io_inst}
     , io_gpr_0{vlSymsp->TOP.io_gpr_0}

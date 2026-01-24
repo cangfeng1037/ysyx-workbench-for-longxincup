@@ -16,13 +16,13 @@ extern "C" {
 
 
     // DPI IMPORTS
-    // DPI import at verilog/top.sv:2556:34
+    // DPI import at verilog/top.sv:2590:34
     extern void ebreak();
-    // DPI import at verilog/top.sv:2484:29
+    // DPI import at verilog/top.sv:2518:29
     extern int pmem_read(int raddr);
-    // DPI import at verilog/top.sv:2524:29
+    // DPI import at verilog/top.sv:2558:29
     extern int pmem_read_inst(int pc);
-    // DPI import at verilog/top.sv:2485:30
+    // DPI import at verilog/top.sv:2519:30
     extern void pmem_write(int waddr, int wdata, int wmask);
 
 #ifdef __cplusplus
