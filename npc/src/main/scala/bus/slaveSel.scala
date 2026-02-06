@@ -1,3 +1,4 @@
+/*
 package bus
 
 import chisel3._
@@ -195,3 +196,4 @@ class slaveSel extends Module {
     io.slave_in.RVALID  := RVALID
     io.slave_in.RRESP   := RRESP
 }
+*/

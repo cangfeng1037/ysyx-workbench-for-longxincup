@@ -1,6 +1,6 @@
 #include <verilated.h>
 #include <verilated_vcd_c.h>
-#include "Vtop.h"
+#include "VysyxSoCFull.h"
 #include <iostream>
 #include <cstdint>
 #include <string.h>
@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <vector>
 #include <time.h>
+#include <signal.h>
 #include "device.h"
 #include "difftest.h"
 
@@ -25,12 +26,12 @@ char* img_file = NULL;
 int cnt = 0;
 int maxn = 1000000000;
 
-Vtop* top;
+VysyxSoCFull* top;
 VerilatedVcdC* tfp = NULL;
 static vluint64_t sim_time = 0;
 
 
-const uint32_t START_ADDR = 0x80000000;
+const uint32_t START_ADDR = 0x20000000;
 
 uint8_t* mem = NULL;
 
@@ -55,11 +56,32 @@ extern "C" void ebreak() {
 
 extern "C" uint32_t pmem_read_inst(uint32_t pc);
 
+extern "C" void flash_read(int32_t addr, int32_t *data) { assert(0); }
+
+const int mrom_start_addr = 0x20000000;
+
+extern "C" void mrom_read(int32_t addr, int32_t *data) { 
+    // 目前读到mrom区域时，返回ebreak指令
+    // 根据addr读mem中的地址，数据作为*data
+    //printf("mrom_read addr: 0x%08x, data 0x%08x\n", addr - mrom_start_addr, mem[addr - mrom_start_addr]);
+    
+    
+    *data = pmem_read_inst(addr);
+}
+
 // extern "C" uint32_t rf_read(uint32_t idx);
 
 int current_circle = 0;
 
 static bool g_skip_ref_next = false; 
+
+static void handle_sigint(int) {
+    if (tfp) {
+        tfp->close();
+    }
+    fflush(stdout);
+    exit(130);
+}
 
 extern "C" int pmem_read(int raddr) {
 
@@ -175,7 +197,9 @@ static inline void ensure_regfile_scope() {
 //InstMem g_imem;
 */
 
+
 static inline uint32_t rf_read(int idx) {
+    /*
     switch (idx) {
         case 0: return 0;
         case 1: return top -> io_gpr_1;
@@ -213,6 +237,8 @@ static inline uint32_t rf_read(int idx) {
             printf("rf_read: invalid register index %d\n", idx);
             return 0;
     }
+
+    */
 }
 
 static void parse_args(int argc, char** argv) {
@@ -247,6 +273,15 @@ static void load_img() {
     }
 
     n = fread(mem, 1, MAX_SIZE, fp);
+
+    // 把mem打印出来
+    printf("Memory content:\n");
+    for (size_t i = 0; i < n; i++) {
+        printf("%02x ", mem[i]);
+        if ((i + 1) % 16 == 0) printf("\n");
+    }
+    printf("\n");
+
     if(n == 0) {
         printf("Error: cannot read image file '%s'\n", img_file);
         exit(-1);
@@ -257,7 +292,7 @@ static void load_img() {
 }
 
 uint32_t pmem_read_inst(uint32_t pc) {
-    uint32_t addr = pc - START_ADDR;
+    uint32_t addr = pc - mrom_start_addr;
     if(addr >= MAX_SIZE){
         printf("Pmem_read_inst error: out of range\n pc = %08x\n", pc);
         printf("addr = %08x\n", addr);
@@ -275,7 +310,9 @@ uint32_t pmem_read_inst(uint32_t pc) {
     uint32_t b3 = (uint32_t)mem[addr + 3];
 
     uint32_t inst = b0 | (b1 << 8) | (b2 << 16) | (b3 << 24);
-    
+
+    //printf("pmem_read_inst: pc=0x%08x, inst=0x%08x\n", pc, inst);
+
     return inst;
 }
 
@@ -293,7 +330,9 @@ void eval() {
     // 日志在时序稳定后读取输出指令
     //printf("Inst 0x%08x at pc = 0x%08x, cycle = %d\n", top->io_inst, top->io_pc, cnt);
 
-    if(cnt == 2) { // 在第三个周期释放复位
+    //printf("\n========circle %d=========\n", cnt);
+    
+    if(cnt == 20) { // 在第三个周期释放复位
         top -> reset = 0;
     }
 
@@ -334,15 +373,11 @@ void eval() {
 
 void init_sim() {
 
-    top = new Vtop;
-
-/*
+    top = new VysyxSoCFull;
     Verilated::traceEverOn(true);
     tfp = new VerilatedVcdC;
     top->trace(tfp, 99);
     tfp->open("wave.vcd");
-    
-*/
     top -> reset = 1;
     top -> clock = 0;
     //top -> pc = START_ADDR;
@@ -395,7 +430,7 @@ void sdb_mainloop() {
 
     while(true) {
         printf("\n\033[1;34m(npc.sdb)\033[0m ");
-#ifndef CONFIG_PATCH
+#ifdef CONFIG_PATCH
         if(!getline(cin, cmd)) break;
 #else   
         cmd = "c";
@@ -432,7 +467,12 @@ void sdb_mainloop() {
 }
 
 int main(int argc, char** argv) {
+
+    // 去除帧缓冲
+    setvbuf(stdout, NULL, _IONBF, 0);
+    
     Verilated::commandArgs(argc, argv);
+    signal(SIGINT, handle_sigint);
     
     parse_args(argc, argv);
 
@@ -447,7 +487,7 @@ int main(int argc, char** argv) {
 
     if(!sim_exit_flag)printf("\n=== Simulation completed without ebreak ===\n");
 
-    uint32_t halt_ret = top -> io_halt_ret;
+    uint32_t halt_ret = 0;
     if (!sim_exit_flag) {
         printf("\n=== Simulation completed without ebreak ===\n");
     } else if (halt_ret == 0) {

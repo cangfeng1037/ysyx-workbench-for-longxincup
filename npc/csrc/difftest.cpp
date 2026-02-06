@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "Vtop.h"
+#include "VysyxSoCFull.h"
 #include <verilated.h>
 #include <dlfcn.h>
 #include "difftest.h"  // 使用统一的 CPU_state 定义

@@ -305,5 +305,4 @@ class IDU extends Module {
     */
 
 
-    //printf("IDU: pc=%x, inst=%x, busy=%d, ready=%d, state=%d\n", pc, inst, io.busy, io.in.ready, state)
 }

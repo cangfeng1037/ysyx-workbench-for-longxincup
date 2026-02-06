@@ -5,8 +5,8 @@
 // Manually include this file where DPI .c import functions are declared to ensure
 // the C functions match the expectations of the DPI imports.
 
-#ifndef VERILATED_VTOP__DPI_H_
-#define VERILATED_VTOP__DPI_H_  // guard
+#ifndef VERILATED_VYSYXSOCFULL__DPI_H_
+#define VERILATED_VYSYXSOCFULL__DPI_H_  // guard
 
 #include "svdpi.h"
 
@@ -16,14 +16,12 @@ extern "C" {
 
 
     // DPI IMPORTS
-    // DPI import at verilog/top.sv:2590:34
+    // DPI import at verilog/top.sv:2370:34
     extern void ebreak();
-    // DPI import at verilog/top.sv:2518:29
-    extern int pmem_read(int raddr);
-    // DPI import at verilog/top.sv:2558:29
-    extern int pmem_read_inst(int pc);
-    // DPI import at verilog/top.sv:2519:30
-    extern void pmem_write(int waddr, int wdata, int wmask);
+    // DPI import at /home/cangfeng_/ysyx-workbench/ysyxSoC/perip/flash/flash.v:84:30
+    extern void flash_read(int addr, int* data);
+    // DPI import at ../ysyxSoC/build/ysyxSoCFull.v:5403:30
+    extern void mrom_read(int raddr, int* rdata);
 
 #ifdef __cplusplus
 }

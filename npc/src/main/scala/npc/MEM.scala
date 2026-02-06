@@ -28,6 +28,18 @@ class MEM2WB extends Bundle {
     val is_csrrs   = Bool()
 }
 
+class MemReq extends Bundle {
+    val wen   = Bool()
+    val raddr = UInt(32.W)
+    val waddr = UInt(32.W)
+    val wdata = UInt(32.W)
+    val wmask = UInt(4.W)
+}
+
+class MemResp extends Bundle {
+    val rdata = UInt(32.W)
+}
+
 
 class MEM extends Module {
     val io = IO(new Bundle {
@@ -117,6 +129,7 @@ class MEM extends Module {
 
     val is_load_now  = io.in.bits.is_lw || io.in.bits.is_lb || io.in.bits.is_lbu || io.in.bits.is_lh || io.in.bits.is_lhu
     val is_store_now = io.in.bits.is_sw || io.in.bits.is_sb || io.in.bits.is_sh
+
 
     switch(state) {
         is (s_idle) {

@@ -1,3 +1,4 @@
+/*
 // 延迟一拍写IFU
 // 把黑盒机制也放到这里，连接顶层
 package npc.chisel_src.cpucore
@@ -19,17 +20,6 @@ class MemBlackBox extends BlackBox with HasBlackBoxResource {
     addResource("/vsrc/Mem.v")
 }
 
-class MemReq extends Bundle {
-    val wen   = Bool()
-    val raddr = UInt(32.W)
-    val waddr = UInt(32.W)
-    val wdata = UInt(32.W)
-    val wmask = UInt(4.W)
-}
-
-class MemResp extends Bundle {
-    val rdata = UInt(32.W)
-}
 
 // 在SRAM中实现取指和访存，实现仲裁
 // IFU用is_stall的状态机
@@ -117,3 +107,4 @@ class DSRAM extends Module {
     }
   }
 }
+*/

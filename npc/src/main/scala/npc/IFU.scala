@@ -41,7 +41,7 @@ class IFU extends Module {
         val flush = Output(Bool())
     })
 
-    val pc = RegInit("h80000000".U(32.W))
+    val pc = RegInit("h20000000".U(32.W))
 
     // 锁存pc
     val pc_reg = RegInit(0.U(32.W))
@@ -51,6 +51,14 @@ class IFU extends Module {
     val s_idle :: wait_inst :: Nil = Enum(2)
     val state = RegInit(s_idle)
     val out_valid = RegInit(false.B)
+
+    when (reset.asBool) {
+        pc := "h20000000".U(32.W)
+        pc_reg := "h20000000".U(32.W)
+        inst_reg := 0.U
+        state := s_idle
+        out_valid := false.B
+    }
     
     // 给状态机赋初值    
     io.inst_req.valid := false.B

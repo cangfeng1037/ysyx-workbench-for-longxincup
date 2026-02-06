@@ -2,9 +2,9 @@
 # DESCRIPTION: Verilator output: Makefile for building Verilated archive or executable
 #
 # Execute this makefile from the object directory:
-#    make -f Vtop.mk
+#    make -f VysyxSoCFull.mk
 
-default: /home/cangfeng_/ysyx-workbench/npc/obj_dir/Vtop
+default: /home/cangfeng_/ysyx-workbench/npc/obj_dir/VysyxSoCFull
 
 ### Constants...
 # Perl executable (from $PERL, defaults to 'perl' if not set)
@@ -32,13 +32,14 @@ VM_SC_TARGET_ARCH = linux
 
 ### Vars...
 # Design prefix (from --prefix)
-VM_PREFIX = Vtop
+VM_PREFIX = VysyxSoCFull
 # Module prefix (from --prefix)
-VM_MODPREFIX = Vtop
+VM_MODPREFIX = VysyxSoCFull
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
-	-DTOP_NAME="Vtop" \
-	-DCONFIG_DIFFTEST \
+	-I/home/cangfeng_/ysyx-workbench/ysyxSoC/perip/uart16550/rtl \
+	-I/home/cangfeng_/ysyx-workbench/ysyxSoC/perip/spi/rtl \
+	-DTOP_NAME="VysyxSoCFull" \
 	-DCONFIG_MTRACE \
 	-DCONFIG_PATCH \
 
@@ -59,7 +60,7 @@ VM_USER_DIR = \
 
 ### Default rules...
 # Include list of all generated classes
-include Vtop_classes.mk
+include VysyxSoCFull_classes.mk
 # Include global rules
 include $(VERILATOR_ROOT)/include/verilated.mk
 
@@ -72,7 +73,7 @@ top.o: /home/cangfeng_/ysyx-workbench/npc/csrc/top.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST)  -c -o $@ $<
 
 ### Link rules... (from --exe)
-/home/cangfeng_/ysyx-workbench/npc/obj_dir/Vtop: $(VK_USER_OBJS) $(VK_GLOBAL_OBJS) $(VM_PREFIX)__ALL.a $(VM_HIER_LIBS)
+/home/cangfeng_/ysyx-workbench/npc/obj_dir/VysyxSoCFull: $(VK_USER_OBJS) $(VK_GLOBAL_OBJS) $(VM_PREFIX)__ALL.a $(VM_HIER_LIBS)
 	$(LINK) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS) $(LIBS) $(SC_LIBS) -o $@
 
 
