@@ -142,6 +142,15 @@ class AXI_ARB2TO1 extends Module{
         when(is_write) {
             // 写数据阶段：只转发 W，等待 W 握手结束
             when(w_phase) {
+                // 保持aw信号不变，转发w信号
+                /*
+                io.master_out.awaddr  := Mux(using_ifu, io.ifu_master.awaddr, io.mem_master.awaddr)
+                io.master_out.awid    := Mux(using_ifu, io.ifu_master.awid, io.mem_master.awid)
+                io.master_out.awlen   := Mux(using_ifu, io.ifu_master.awlen, io.mem_master.awlen)
+                io.master_out.awsize  := Mux(using_ifu, io.ifu_master.awsize, io.mem_master.awsize)
+                io.master_out.awburst := Mux(using_ifu, io.ifu_master.awburst, io.mem_master.awburst)
+                io.master_out.awvalid := Mux(using_ifu, io.ifu_master.awvalid, io.mem_master.awvalid)
+                */
                 io.master_out.wdata   := Mux(using_ifu, io.ifu_master.wdata, io.mem_master.wdata)
                 io.master_out.wstrb   := Mux(using_ifu, io.ifu_master.wstrb, io.mem_master.wstrb)
                 io.master_out.wlast   := Mux(using_ifu, io.ifu_master.wlast, io.mem_master.wlast)

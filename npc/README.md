@@ -4,6 +4,8 @@
 
 > 适用场景：在 ysyxSoCFull 平台上跑 NPC（Verilator 仿真/波形调试），并通过 AXI 与 SoC 外设交互（例如 UART 输出）。
 
+不要直接修改我的代码！！！！
+
 ---
 
 ## 1. 项目简介

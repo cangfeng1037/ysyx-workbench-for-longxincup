@@ -75,5 +75,7 @@ __EXPORT void difftest_init(int port) {
   init_mem();
   /* Perform ISA dependent initialization. */
   init_isa();
+  // 设置初始pc
+  cpu.pc = MROM_BASE;
 }
 #endif

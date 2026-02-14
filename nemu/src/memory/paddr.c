@@ -50,6 +50,54 @@ static void pmem_write(paddr_t addr, int len, word_t data) {
   host_write(guest_to_host(addr), len, data);
 }
 
+// 为 mrom 和 sram 分配内存
+static uint8_t mrom[MROM_SIZE] PG_ALIGN = {};
+static uint8_t sram[SRAM_SIZE] PG_ALIGN = {};
+
+static word_t mrom_read(paddr_t addr, int len) {
+  uint32_t offset = addr - MROM_BASE;
+  word_t ret = region_read(mrom, offset, len);
+  #ifdef CONFIG_MTRACE
+    mtrace(addr, len, 'R');
+  #endif
+  return ret;
+}
+
+__attribute__((visibility("default")))
+void init_mrom(const void* buf, size_t size) {
+  size_t copy_size = size < MROM_SIZE ? size : MROM_SIZE;
+  memcpy(mrom, buf, copy_size);
+  // 打印 mrom 的具体内容
+  
+  printf("=======[NEMU]: MROM content at init_mrom======\n");
+  for (size_t i = 0; i < copy_size; i += 16) {
+    printf("0x%08lx: ", MROM_BASE + i);
+    for (size_t j = 0; j < 16 && (i + j) < copy_size; j++) {
+      printf("%02x ", mrom[i + j]);
+    }
+    printf("\n");
+  }
+  printf("=======MROM content end======\n\n");
+  
+}
+
+static word_t sram_read(paddr_t addr, int len) {
+  uint32_t offset = addr - SRAM_BASE;
+  word_t ret = region_read(sram, offset, len);
+  #ifdef CONFIG_MTRACE
+    mtrace(addr, len, 'R');
+  #endif
+  return ret;
+}
+
+static void sram_write(paddr_t addr, int len, word_t data) {
+  uint32_t offset = addr - SRAM_BASE;
+  #ifdef CONFIG_MTRACE
+    mtrace(addr, len, 'W');
+  #endif
+  region_write(sram, offset, len, data);
+}
+
 static void out_of_bound(paddr_t addr) {
   panic("address = " FMT_PADDR " is out of bound of pmem [" FMT_PADDR ", " FMT_PADDR "] at pc = " FMT_WORD,
       addr, PMEM_LEFT, PMEM_RIGHT, cpu.pc);
@@ -64,10 +112,17 @@ void init_mem() {
   Log("physical memory area [" FMT_PADDR ", " FMT_PADDR "]", PMEM_LEFT, PMEM_RIGHT);
 }
 
+
+// 在这里，添加对 mrom 和 sram 的支持，镜像写入 mrom 中，栈区在 sram 中 
+
 word_t paddr_read(paddr_t addr, int len) {
   if (likely(in_pmem(addr))) return pmem_read(addr, len);
   // 处理csr寄存器读取
   if (likely(in_csr(addr))) return csr_read(addr - 0xa0000000);
+  // 添加mrom读取支持
+  if (likely(in_mrom(addr))) return mrom_read(addr, len);
+  // 添加sram读取支持
+  if (likely(in_sram(addr))) return sram_read(addr, len); 
   IFDEF(CONFIG_DEVICE, return mmio_read(addr, len));
   out_of_bound(addr);
   return 0;
@@ -76,6 +131,9 @@ word_t paddr_read(paddr_t addr, int len) {
 void paddr_write(paddr_t addr, int len, word_t data) {
   if (likely(in_pmem(addr))) { pmem_write(addr, len, data); return; }
   if (likely(in_csr(addr))) { csr_write(addr - 0xa0000000, data); return; }
+
+  // 添加sram写入支持
+  if (likely(in_sram(addr))) { sram_write(addr, len, data); return; }
   IFDEF(CONFIG_DEVICE, mmio_write(addr, len, data); return);
   out_of_bound(addr);
 }

@@ -43,23 +43,28 @@ class Axi4_IFU_Master extends Module {
     // 单 outstanding 控制，等到RVALID在发起下一个请求
     val pending = RegInit(false.B)
     val killPending = RegInit(false.B)
-
     val ar_fire = io.master.arvalid && io.master.arready
     val r_fire  = io.master.rvalid  && io.master.rready
 
-    when(ar_fire) { pending := true.B }
-    when(r_fire) { pending := false.B; killPending := false.B }
-
-
-    // flush 控制：flush后接回来的rdata不发给inst_resp
-    when(io.flush && pending) {
-        killPending := true.B
+    when (r_fire) {
+        pending := false.B
+        killPending := false.B
+    } .otherwise {
+        when (ar_fire) {
+            pending := true.B
+        }
+        // flush 控制：flush后接回来的rdata不发给inst_resp
+        // ar_fire 同拍 flush 也需要 kill；kill 置位后不重复置位，避免卡高
+        when (!killPending && io.flush && (pending || ar_fire)) {
+            killPending := true.B
+        }
     }
 
     // 读地址通道：只有 pending = 0 才允许发新AR
+    val canIssueAr = !pending && !killPending
     io.master.araddr  := io.inst_req.bits.pc
-    io.master.arvalid := io.inst_req.valid && !pending
-    io.inst_req.ready := io.master.arready && !pending
+    io.master.arvalid := io.inst_req.valid && canIssueAr
+    io.inst_req.ready := io.master.arready && canIssueAr
     
 
     // 读数据通道：用 Decoupled 反压

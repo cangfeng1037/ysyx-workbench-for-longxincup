@@ -14,3 +14,43 @@
 #include "VysyxSoCFull__Dpi.h"
 #include "VysyxSoCFull.h"
 
+#ifndef VL_DPIDECL_get_difftest_valid_
+#define VL_DPIDECL_get_difftest_valid_
+int get_difftest_valid() {
+    // DPI export at verilog/top.sv:2589:18
+    return VysyxSoCFull::get_difftest_valid();
+}
+#endif
+
+#ifndef VL_DPIDECL_get_gpr_
+#define VL_DPIDECL_get_gpr_
+int get_gpr(int idx) {
+    // DPI export at verilog/top.sv:2599:18
+    return VysyxSoCFull::get_gpr(idx);
+}
+#endif
+
+#ifndef VL_DPIDECL_get_inst_
+#define VL_DPIDECL_get_inst_
+int get_inst() {
+    // DPI export at verilog/top.sv:2584:18
+    return VysyxSoCFull::get_inst();
+}
+#endif
+
+#ifndef VL_DPIDECL_get_non_inst_
+#define VL_DPIDECL_get_non_inst_
+int get_non_inst() {
+    // DPI export at verilog/top.sv:2594:18
+    return VysyxSoCFull::get_non_inst();
+}
+#endif
+
+#ifndef VL_DPIDECL_get_pc_
+#define VL_DPIDECL_get_pc_
+int get_pc() {
+    // DPI export at verilog/top.sv:2579:18
+    return VysyxSoCFull::get_pc();
+}
+#endif
+

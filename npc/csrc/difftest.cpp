@@ -14,6 +14,7 @@ using difftest_memcpy_t = void (*)(uintptr_t addr, void *buf, size_t n, bool dir
 using difftest_regcpy_t = void (*)(void *dut, bool direction);
 using difftest_exec_t   = void (*)(uint64_t n);
 using difftest_skip_ref_t = void (*)();
+using difftest_init_mrom_t = void (*)(const void* buf, size_t size);
 
 static void* ref_handle = nullptr;
 static difftest_init_t ref_init;
@@ -21,11 +22,14 @@ static difftest_memcpy_t ref_memcpy;
 static difftest_regcpy_t ref_regcpy;
 static difftest_exec_t ref_exec;
 static difftest_skip_ref_t ref_skip = nullptr;
+static difftest_init_mrom_t ref_init_mrom = nullptr;
 
 // 为避免与 NEMU 的 CPU_state 大小不一致导致溢出，使用足够大的中间缓冲区
 static constexpr size_t DIFF_CTX_SIZE = 1024;      // 保守值
 static constexpr size_t OFF_GPR       = 0;
 static constexpr size_t OFF_PC        = 32 * sizeof(uint32_t);
+
+extern "C" void init_mrom(const void* buf, size_t size);
 
 static void difftest_load() {
     const char *so_path = getenv("DIFFTEST_SO");
@@ -40,7 +44,8 @@ static void difftest_load() {
     ref_regcpy = (difftest_regcpy_t) dlsym(ref_handle, "difftest_regcpy");
     ref_exec   = (difftest_exec_t)   dlsym(ref_handle, "difftest_exec");
     ref_skip   = (difftest_skip_ref_t)dlsym(ref_handle, "difftest_skip_ref");
-    if (!ref_init || !ref_memcpy || !ref_regcpy || !ref_exec || !ref_skip) {
+    ref_init_mrom = (difftest_init_mrom_t)dlsym(ref_handle, "init_mrom");
+    if (!ref_init || !ref_memcpy || !ref_regcpy || !ref_exec || !ref_skip || !ref_init_mrom) {
         printf("dlsym failed: %s\n", dlerror());
         exit(1);
     }
@@ -50,7 +55,7 @@ void difftest_init(uintptr_t reset_vec, const void* img_buf, size_t img_size) {
     difftest_load();
     ref_init(0);
     if (img_buf && img_size) {
-        ref_memcpy(reset_vec, const_cast<void*>(img_buf), img_size, DIFFTEST_TO_REF);
+        ref_init_mrom(img_buf, img_size); // 初始化 MROM 内容
         printf("[DiffTest] Image copied to REF.\n");
     } else {
         printf("[DiffTest] No image copied to REF.\n");

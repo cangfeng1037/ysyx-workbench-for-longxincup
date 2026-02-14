@@ -41,7 +41,8 @@ class IFU extends Module {
         val flush = Output(Bool())
     })
 
-    val pc = RegInit("h20000000".U(32.W))
+    // 在 flash 中取指令
+    val pc = RegInit("h30000000".U(32.W))
 
     // 锁存pc
     val pc_reg = RegInit(0.U(32.W))
@@ -53,8 +54,8 @@ class IFU extends Module {
     val out_valid = RegInit(false.B)
 
     when (reset.asBool) {
-        pc := "h20000000".U(32.W)
-        pc_reg := "h20000000".U(32.W)
+        pc := "h30000000".U(32.W)
+        pc_reg := "h30000000".U(32.W)
         inst_reg := 0.U
         state := s_idle
         out_valid := false.B

@@ -96,6 +96,13 @@ class alignas(VL_CACHE_LINE_BYTES) VysyxSoCFull VL_NOT_FINAL : public VerilatedM
     /// Retrieve name of this model instance (as passed to constructor).
     const char* name() const;
 
+    /// DPI Export functions
+    static int get_difftest_valid();
+    static int get_gpr(int idx);
+    static int get_inst();
+    static int get_non_inst();
+    static int get_pc();
+
     // Abstract methods from VerilatedModel
     const char* hierName() const override final;
     const char* modelName() const override final;

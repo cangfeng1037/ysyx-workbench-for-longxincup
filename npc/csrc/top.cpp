@@ -15,8 +15,6 @@
 #include "difftest.h"
 
 
-
-
 using namespace std;
 
 const uint32_t MAX_SIZE = 400000000;// 定义最大内存40MB
@@ -30,12 +28,13 @@ VysyxSoCFull* top;
 VerilatedVcdC* tfp = NULL;
 static vluint64_t sim_time = 0;
 
-
 const uint32_t START_ADDR = 0x20000000;
+const uint32_t Flash_start_addr = 0x30000000;
+const uint32_t Flash_end_addr = 0x3fffffff;
+const uint32_t flash_size = Flash_end_addr - Flash_start_addr + 1;
 
 uint8_t* mem = NULL;
-
-static svScope regfile_scope = nullptr;
+uint8_t* flash_mem = NULL;
 
 static uint32_t cache_addr = 0;
 static uint32_t cache_data = 0;
@@ -46,33 +45,36 @@ static inline uint64_t time_get_us() {
     return (uint64_t)ts.tv_sec * 1000000ull + (uint64_t)(ts.tv_nsec / 1000ull);
 }
 
-
-// extern “C” 将函数转化为C类型函数，不然verilator链接错误
 extern "C" void ebreak() {
     printf("[DPI-C] ebreak detected, simulation exit.\n");
-    //exit(0);  
     sim_exit_flag = true; // 设置退出标志
 }
 
 extern "C" uint32_t pmem_read_inst(uint32_t pc);
 
-extern "C" void flash_read(int32_t addr, int32_t *data) { assert(0); }
+extern "C" void flash_read(int32_t addr, int32_t *data) { 
+    //uint32_t offset = (uint32_t)(addr - Flash_start_addr);
+    uint32_t offset = (uint32_t)(addr);
+    if(offset + 3 >= flash_size) {
+        printf("Flash read error: out of range\n addr = %08x\n", addr);
+        assert(0);
+    }
+
+    uint32_t b0 = (uint32_t)flash_mem[offset + 0];
+    uint32_t b1 = (uint32_t)flash_mem[offset + 1];
+    uint32_t b2 = (uint32_t)flash_mem[offset + 2];
+    uint32_t b3 = (uint32_t)flash_mem[offset + 3];
+
+    *data = b0 | (b1 << 8) | (b2 << 16) | (b3 << 24);
+}
 
 const int mrom_start_addr = 0x20000000;
 
 extern "C" void mrom_read(int32_t addr, int32_t *data) { 
-    // 目前读到mrom区域时，返回ebreak指令
-    // 根据addr读mem中的地址，数据作为*data
-    //printf("mrom_read addr: 0x%08x, data 0x%08x\n", addr - mrom_start_addr, mem[addr - mrom_start_addr]);
-    
-    
     *data = pmem_read_inst(addr);
 }
 
-// extern "C" uint32_t rf_read(uint32_t idx);
-
 int current_circle = 0;
-
 static bool g_skip_ref_next = false; 
 
 static void handle_sigint(int) {
@@ -91,41 +93,29 @@ extern "C" int pmem_read(int raddr) {
         g_skip_ref_next = true;
         uint32_t time_low = (uint32_t)(time_us & 0xffffffff);
         current_circle = cnt;
-        //printf("timelow: %u\n", time_low);
         return time_low;
     } else if(raddr == TIMER_ADDR + 4) {
         g_skip_ref_next = true;
         uint32_t time_high = (uint32_t)((time_us >> 32) & 0xffffffff);
         current_circle = cnt;
-        //printf("timehigh: %u\n", time_high);
         return time_high;
     }
 
     if(current_circle == cnt) {
-        //printf("reuse : cache cache_data: %ld\n", cache_data);
         return cache_data;
     }   
    
- 
     uint32_t addr = (uint32_t) raddr;
-    
-    
-        if(addr == cache_addr) 
+
+    if(addr == cache_addr) 
         return cache_data;
-    
 
     addr -= START_ADDR;
     if(addr >= MAX_SIZE || addr + 3 >= MAX_SIZE) {    
-
-        //printf("P READ Error: PMEM read out of range: addr=0x%08x, addr + START_ADDR=0x%08x, cache data = %08x\n", addr, addr + START_ADDR, cache_data);
         return cache_data;
     }
 
-    // 把低2位清零，保证地址4字节对齐
-    // 如0x8000，当传入地址为0x8001时，将1清零，以保证四字节对齐，返回依然是0x8000 ～ 0x8003四字节
-    
     uint32_t base = addr & ~0x3u;
-    // 按小段序拼接32位值
     uint32_t data = (uint32_t)mem[base + 0]
                   | ((uint32_t)mem[base + 1] << 8)
                   | ((uint32_t)mem[base + 2] << 16)
@@ -135,9 +125,6 @@ extern "C" int pmem_read(int raddr) {
     cache_data = data;
     current_circle = cnt;
 
-#ifdef CONFIG_MTRACE
-    //printf("MEM read: addr=0x%08x, data=0x%08x\n", addr, data);
-#endif
     return data;
 }
 
@@ -150,28 +137,20 @@ extern "C" void pmem_write(int waddr, int wdata, int wmask) {
         return;
     }
 
-    //bool trace;
     cache_addr = 0x7fffffff;
 
     uint32_t addr = (uint32_t) waddr;
 
     if(addr <= START_ADDR) {;}
     else if(addr >= START_ADDR && addr < START_ADDR + MAX_SIZE) {
-        
         addr -= START_ADDR;
-        //if(trace) printf("\n2:: addr:0x%08x\n", addr);
     }
     else {
         printf("P WRITE Error: PMEM write out of range: addr=0x%08x\n", addr);
         assert(0);
     }
-    //if(addr == 0x00000260 || addr == 0x80000260) {printf("\n\n\nHERE WRITE:0x260 addr = 0x%08x waddr = 0x%08x \n\n\n\n", addr, waddr);}
-    // 把低2位清零，保证地址4字节对齐
-    uint32_t base = addr & ~0x3u;
 
-#ifdef CONFIG_MTRACE
-    //printf("MEM write: addr=0x%08x, wdata=0x%08x, wmask=0x%01x\n", addr, wdata, wmask);
-#endif
+    uint32_t base = addr & ~0x3u;
 
     if (wmask & 0x1) mem[base + 0] = (uint8_t)(wdata & 0xff);
     if (wmask & 0x2) mem[base + 1] = (uint8_t)((wdata >> 8) & 0xff);
@@ -179,71 +158,43 @@ extern "C" void pmem_write(int waddr, int wdata, int wmask) {
     if (wmask & 0x8) mem[base + 3] = (uint8_t)((wdata >> 24) & 0xff);
 }
 
+// ---------------- DPI 导出函数声明 ----------------
+// 这些函数由 top.scala 里的 DifftestDPI 模块 export 出来
+extern "C" int get_pc();
+extern "C" int get_inst();
+extern "C" int get_difftest_valid();
+extern "C" int get_non_inst();
+extern "C" int get_gpr(int idx);
 
-/*
-static void init_dpi_scope() {
-    regfile_scope = svGetScopeFromName("TOP.top.cpu.regfile");
-    if (!regfile_scope) {
-        fprintf(stderr, "Error: DPI scope 'TOP.top.cpu.regfile' not found. 请检查实例名与层次路径。\n");
-        // 可在此打印或查看 obj_dir/Vtop__Syms.h 中的实例层次来确认
+// 注意：这里需要设置 DPI scope 到 DifftestDPI 模块实例
+static const char* DPI_SCOPE_NAME = "TOP.ysyxSoCFull.asic.cpu.cpu.difftest_dpi";
+
+static svScope dpi_scope = nullptr;
+
+static inline void set_dpi_scope() {
+    if (!dpi_scope) {
+        dpi_scope = svGetScopeFromName(DPI_SCOPE_NAME);
+        if (!dpi_scope) {
+            fprintf(stderr, "DPI scope not found: %s\n", DPI_SCOPE_NAME);
+        }
+    }
+    if (dpi_scope) {
+        svSetScope(dpi_scope);
     }
 }
-
-static inline void ensure_regfile_scope() {
-    if (!regfile_scope) init_dpi_scope();
-    if (regfile_scope) svSetScope(regfile_scope);
-}
-
-//InstMem g_imem;
-*/
-
 
 static inline uint32_t rf_read(int idx) {
-    /*
-    switch (idx) {
-        case 0: return 0;
-        case 1: return top -> io_gpr_1;
-        case 2: return top -> io_gpr_2;
-        case 3: return top -> io_gpr_3;
-        case 4: return top -> io_gpr_4;
-        case 5: return top -> io_gpr_5;
-        case 6: return top -> io_gpr_6;
-        case 7: return top -> io_gpr_7;
-        case 8: return top -> io_gpr_8;
-        case 9: return top -> io_gpr_9;
-        case 10: return top -> io_gpr_10;
-        case 11: return top -> io_gpr_11;
-        case 12: return top -> io_gpr_12;
-        case 13: return top -> io_gpr_13;
-        case 14: return top -> io_gpr_14;
-        case 15: return top -> io_gpr_15;
-        case 16: return top -> io_gpr_16;
-        case 17: return top -> io_gpr_17;
-        case 18: return top -> io_gpr_18;
-        case 19: return top -> io_gpr_19;
-        case 20: return top -> io_gpr_20;
-        case 21: return top -> io_gpr_21;
-        case 22: return top -> io_gpr_22;
-        case 23: return top -> io_gpr_23;
-        case 24: return top -> io_gpr_24;
-        case 25: return top -> io_gpr_25;
-        case 26: return top -> io_gpr_26;
-        case 27: return top -> io_gpr_27;
-        case 28: return top -> io_gpr_28;
-        case 29: return top -> io_gpr_29;
-        case 30: return top -> io_gpr_30;
-        case 31: return top -> io_gpr_31;
-        default: 
-            printf("rf_read: invalid register index %d\n", idx);
-            return 0;
+    if (idx == 0) return 0;
+    set_dpi_scope();
+    if (idx < 0 || idx > 31) {
+        printf("rf_read: invalid register index %d\n", idx);
+        return 0;
     }
-
-    */
+    return (uint32_t)get_gpr(idx);
 }
 
 static void parse_args(int argc, char** argv) {
     for (int i = 1; i < argc; i++) {
-
         if(0) {}
         else {
             img_file = argv[i];
@@ -255,32 +206,26 @@ static void parse_args(int argc, char** argv) {
 size_t n = 0;
 
 static void load_img() {
+    // 修改为load到flash中
 
     if(img_file == NULL) return;
 
-    mem = (uint8_t*)malloc(MAX_SIZE);
+    //mem = (uint8_t*)malloc(MAX_SIZE);
+    //flash_mem = (uint8_t*)malloc(flash_size);
 
-    if(mem == NULL) {
-        printf("Error: cannot allocate memory\n");
+    if(flash_mem == NULL) {
+        printf("Error: cannot allocate flash memory\n");
         exit(-1);
     }
 
-    
     FILE* fp = fopen(img_file, "rb");
     if(fp == NULL) {
         printf("Error: cannot open image file '%s'\n", img_file);
         exit(-1);
     }
 
-    n = fread(mem, 1, MAX_SIZE, fp);
-
-    // 把mem打印出来
-    printf("Memory content:\n");
-    for (size_t i = 0; i < n; i++) {
-        printf("%02x ", mem[i]);
-        if ((i + 1) % 16 == 0) printf("\n");
-    }
-    printf("\n");
+    //n = fread(mem, 1, MAX_SIZE, fp);
+    n = fread(flash_mem, 1, flash_size, fp);
 
     if(n == 0) {
         printf("Error: cannot read image file '%s'\n", img_file);
@@ -311,9 +256,27 @@ uint32_t pmem_read_inst(uint32_t pc) {
 
     uint32_t inst = b0 | (b1 << 8) | (b2 << 16) | (b3 << 24);
 
-    //printf("pmem_read_inst: pc=0x%08x, inst=0x%08x\n", pc, inst);
-
     return inst;
+}
+
+uint32_t difftest_get_pc() {
+    set_dpi_scope();
+    return (uint32_t)get_pc();
+}
+
+uint32_t difftest_get_inst() {
+    set_dpi_scope();
+    return (uint32_t)get_inst();
+}
+
+uint32_t difftest_get_difftest_valid() {
+    set_dpi_scope();
+    return (uint32_t)get_difftest_valid();
+}
+
+uint32_t difftest_get_non_inst() {
+    set_dpi_scope();
+    return (uint32_t)get_non_inst();
 }
 
 void eval() {
@@ -327,44 +290,44 @@ void eval() {
     top -> eval();
     if (tfp) tfp -> dump(sim_time ++);
 
-    // 日志在时序稳定后读取输出指令
-    //printf("Inst 0x%08x at pc = 0x%08x, cycle = %d\n", top->io_inst, top->io_pc, cnt);
-
-    //printf("\n========circle %d=========\n", cnt);
-    
-    if(cnt == 20) { // 在第三个周期释放复位
+    if(cnt == 20) {
         top -> reset = 0;
     }
 
+    // 打印具体的指令信息
+    //if(difftest_get_difftest_valid())
+    //printf("Cycle %d: PC = 0x%08x, inst = 0x%08x\n", cnt, difftest_get_pc(), difftest_get_inst());
+
     cnt ++ ;
 #ifdef CONFIG_DIFFTEST
-    // difftest 根据多周期 CPU 修改，仅在difftest_valid有效时才进行对比，使用difftest_pc
-    if (!sim_exit_flag && cnt > 3) { // 复位后开始差分测试
+    if (!sim_exit_flag && cnt > 3) {
 
         if (g_skip_ref_next) {
             CPU_state dut_s;
             for (int i = 0; i < 32; i ++ ) dut_s.gpr[i] = rf_read(i);
-            dut_s.pc = top -> io_pc;
+            dut_s.pc = difftest_get_pc();
             difftest_sync(dut_s.gpr, dut_s.pc);
             difftest_skip();
             g_skip_ref_next = false;
         }
 
-        if (top -> io_difftest_valid) {
+        if (difftest_get_difftest_valid()) {
             difftest_step(1);
         
             CPU_state dut_s;
             for (int i = 0; i < 32; i ++ ) dut_s.gpr[i] = rf_read(i);
-            dut_s.pc = top -> io_pc;
+            dut_s.pc = difftest_get_pc();
+            uint32_t difftest_inst = difftest_get_inst();
             bool check = difftest_check_reg(dut_s.gpr, dut_s.pc);
             if (!check) {
-                printf("Difftest failed at cycle %d, pc = 0x%08x\n, inst = 0x%08x\n", cnt, dut_s.pc, top->io_inst);
-                if(top -> io_non_inst) {
-                    printf("The non-inst instruction detected! : inst = 0x%08x\n, pc = 0x%08x\n", top->io_inst, top->io_pc);
+                printf("Difftest failed at cycle %d, pc = 0x%08x\n, inst = 0x%08x\n", cnt, dut_s.pc, difftest_inst);
+                if(difftest_get_non_inst()) {
+                    printf("The non-inst instruction detected! : inst = 0x%08x\n, pc = 0x%08x\n", difftest_inst, dut_s.pc);
                 }
                 exit(1);
-            } else {
-                //printf("Difftest passed at cycle %d, pc = 0x%08x\n", cnt, dut_s.pc - 4);
+            }
+            else {
+                //printf("Difftest passed at cycle %d, pc = 0x%08x, inst = 0x%08x\n", cnt, dut_s.pc, difftest_inst);
             }
         }
     } 
@@ -380,16 +343,13 @@ void init_sim() {
     tfp->open("wave.vcd");
     top -> reset = 1;
     top -> clock = 0;
-    //top -> pc = START_ADDR;
-    top -> eval();          // 让 pc 输出 0x80000000
+    top -> eval();
     
     top->clock = 1;
-    top->eval();          // 同步复位：pc <= 0x80000000
+    top->eval();
 
     top->clock = 0;
     top->eval();
-
-    //init_dpi_scope();
 }
 
 void cmd_c() {
@@ -401,28 +361,24 @@ void cmd_c() {
 void cmd_si(int n) {
     if (n < 1) n = 1;
     while(n -- > 0 && !sim_exit_flag && cnt < maxn) eval();
-    
 }
 
 void cmd_m() {
     for (int i = 0;  i < MAX_SIZE; i ++ ) {
         if (i % 16 == 0) {
             if (i != 0) printf("\n");
-           // printf("0x%08lx: ", START_ADDR + i);
         }
         printf("%02x ", mem[i]);
     }
     printf("\n");
-    //fflush(stdout);  // 强制刷新输出
 }
 
 void cmd_r() {
-
-    for (int i = 0; i < 31; i++) {
+    printf("pc: 0x%08x\n", difftest_get_pc());
+    for (int i = 0; i < 32; i++) {
         uint32_t val = rf_read(i);
         printf("x%02d: 0x%08x\n", i, val);
     }
-    printf("Register read not available (rf_read DPI-C function not defined)\n");
 }
 
 void sdb_mainloop() {
@@ -430,7 +386,7 @@ void sdb_mainloop() {
 
     while(true) {
         printf("\n\033[1;34m(npc.sdb)\033[0m ");
-#ifdef CONFIG_PATCH
+#ifndef CONFIG_PATCH
         if(!getline(cin, cmd)) break;
 #else   
         cmd = "c";
@@ -442,9 +398,9 @@ void sdb_mainloop() {
             char num_str[16];
             int num = 1;
             if (cmd.size() > 2) {
-                const char* p = cmd.c_str() + 2;   // 跳过"si"
-                while (*p == ' ' || *p == '\t') p++; // 跳过空白
-                if (*p != '\0') num = atoi(p);      // 无参数则保持为1
+                const char* p = cmd.c_str() + 2;
+                while (*p == ' ' || *p == '\t') p++;
+                if (*p != '\0') num = atoi(p);
             }
             cmd_si(num);
             if(sim_exit_flag) break;
@@ -466,22 +422,33 @@ void sdb_mainloop() {
     }
 }
 
+void init_flash() {
+    flash_mem = (uint8_t*)malloc(flash_size);
+    if(flash_mem == NULL) {
+        printf("Error: cannot allocate flash memory\n");
+        exit(-1);
+    }
+    memset(flash_mem, 0, flash_size);
+
+}
+
 int main(int argc, char** argv) {
 
-    // 去除帧缓冲
     setvbuf(stdout, NULL, _IONBF, 0);
     
     Verilated::commandArgs(argc, argv);
     signal(SIGINT, handle_sigint);
     
     parse_args(argc, argv);
-
+    
+    init_flash();
+    
     load_img();
 
     init_sim();
 
 #ifdef CONFIG_DIFFTEST
-    difftest_init(START_ADDR, mem, n);
+    difftest_init(mrom_start_addr, mem, n);
 #endif
     sdb_mainloop();
 
@@ -496,11 +463,9 @@ int main(int argc, char** argv) {
         printf("\033[1;31m===== HIT BAD TRAP =====\033[0m\n");
     }
 
-    // 结束时输出周期数
     printf("====== Total cycles = %d =======\n", cnt);
     
     delete top;
-
     free(mem);
     
     return 0;

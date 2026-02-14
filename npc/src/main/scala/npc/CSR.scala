@@ -19,6 +19,8 @@ class CSR extends Module {
     val mepc  = RegInit(0.U(32.W))  // Machine Exception
     val mcause= RegInit(0.U(32.W))  // Machine Cause Register
     val mstatus=RegInit(0.U(32.W))  // Machine Status Register
+    val mvendorid = 0x79737978.U(32.W) // 'ysyx' 项目码
+    val marchid   = 0x25080212.U(32.W) // 0x25080212 我的学号
 
     // 同步写
     when (io.is_ecall) {
@@ -41,6 +43,8 @@ class CSR extends Module {
             is("h341".U) { mepc    := io.csr_wdata }
             is("h342".U) { mcause  := io.csr_wdata }
             is("h300".U) { mstatus := io.csr_wdata }
+            is("hF11".U){ /* mvendorid 只读 */ }
+            is("hF12".U){ /* marchid    只读 */ }
         }
     }
 
@@ -50,7 +54,9 @@ class CSR extends Module {
         "h305".U -> mtvec,
         "h341".U -> mepc,
         "h342".U -> mcause,
-        "h300".U -> mstatus
+        "h300".U -> mstatus,
+        "hF11".U -> mvendorid,
+        "hF12".U -> marchid
     ))
 
 }

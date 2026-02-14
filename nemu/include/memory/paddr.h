@@ -22,6 +22,16 @@
 #define PMEM_RIGHT ((paddr_t)CONFIG_MBASE + CONFIG_MSIZE - 1)
 #define RESET_VECTOR (PMEM_LEFT + CONFIG_PC_RESET_OFFSET)
 
+// MROM 地址在 0x20000000 到 0x2000 0fff
+// SRAM 地址在 0x0f000000 到 0x0f00 1fff
+#define MROM_BASE 0x20000000
+#define MROM_SIZE 0x00001000
+
+#define SRAM_BASE 0x0f000000
+#define SRAM_SIZE 0x00002000
+
+void init_mrom(const void* buf, size_t size);
+
 /* convert the guest physical address in the guest program to host virtual address in NEMU */
 uint8_t* guest_to_host(paddr_t paddr);
 /* convert the host virtual address in NEMU to guest physical address in the guest program */
@@ -42,6 +52,14 @@ static inline bool in_csr(paddr_t addr) {
     default:
       return false;
   }
+}
+
+static inline bool in_mrom(paddr_t addr) {
+  return addr - MROM_BASE < MROM_SIZE;
+}
+
+static inline bool in_sram(paddr_t addr) {
+  return addr - SRAM_BASE < SRAM_SIZE;
 }
 
 word_t paddr_read(paddr_t addr, int len);

@@ -34,7 +34,7 @@ class Axi4_MEM_Master extends Module {
     io.master.awaddr  := 0.U; io.master.awvalid := false.B
     io.master.awid   := MEM_ID
     io.master.awlen  := 0.U
-    io.master.awsize := 2.U  // 4字节
+    io.master.awsize := 0.U  // 4字节
     io.master.awburst:= 1.U  // INCR模式
     
     io.master.wdata   := 0.U; io.master.wstrb   := 0.U; io.master.wvalid  := false.B
@@ -45,7 +45,7 @@ class Axi4_MEM_Master extends Module {
     io.master.araddr  := 0.U; io.master.arvalid := false.B
     io.master.arid   := MEM_ID
     io.master.arlen  := 0.U
-    io.master.arsize := 2.U  // 4字节
+    io.master.arsize := io.mem_req.bits.rsize
     io.master.arburst:= 1.U  // INCR模式
 
     io.master.rready  := false.B
@@ -54,6 +54,8 @@ class Axi4_MEM_Master extends Module {
     io.mem_resp.valid := false.B
     io.mem_resp.bits := 0.U.asTypeOf(new npc.chisel_src.cpucore.MemResp)
 
+    
+
     switch(state) {
         is(sIdle) {
             // 写（AW/W解锁）
@@ -61,11 +63,13 @@ class Axi4_MEM_Master extends Module {
                 // 先发送 AW
                 io.master.awaddr  := io.mem_req.bits.waddr
                 io.master.awvalid := true.B
-
+                // awsize按wmask字节选择：单子节设为0，多字节设为2
+                io.master.awsize := Mux(PopCount(io.mem_req.bits.wmask) === 1.U, 0.U, 2.U)
+                /*
                 io.master.wdata   := io.mem_req.bits.wdata
                 io.master.wstrb   := io.mem_req.bits.wmask
                 io.master.wvalid  := true.B
-
+                */
 
                 io.mem_req.ready := io.master.awready
 
@@ -89,6 +93,11 @@ class Axi4_MEM_Master extends Module {
         }
 
         is(sWaitW) {
+            /*
+            // 此时，保持awaddr和awvalid不变
+            io.master.awaddr  := waddr
+            io.master.awvalid := true.B
+            */
             // 等待 W 通道握手
             io.master.wdata   := wdata
             io.master.wstrb   := wstrb
@@ -105,6 +114,11 @@ class Axi4_MEM_Master extends Module {
             io.mem_resp.valid := io.master.rvalid
             io.mem_resp.bits.rdata := io.master.rdata
             
+            // 检查 对0x10000005 LSR的访问
+            when(io.mem_req.valid && (io.mem_req.bits.raddr === 0x10000005.U)) {
+                printf("AXI_MEM_Master: Accessing UART LSR = 0x%x\n", io.master.rdata)
+            }
+
             // 读fire，回到空闲
             when(io.master.rvalid && io.master.rready) { 
                 // 检查RLAST和rresp
