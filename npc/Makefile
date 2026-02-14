@@ -1,5 +1,5 @@
 # 基本配置
-TOP_MODULE = top
+TOP_MODULE = ysyxSoCFull
 TOPNAME = $(TOP_MODULE)
 
 
@@ -11,9 +11,13 @@ WAVE  ?= 0
 
 # 工具配置
 VERILATOR = verilator
-VERILATOR_CFLAGS = -Wall --cc --trace --exe --build -j 0 \
-    -Wno-DECLFILENAME -Wno-UNUSEDPARAM -Wno-UNUSEDSIGNAL \
-	--vpi
+VERILATOR_CFLAGS = --cc --trace --exe --build -j 0 \
+    -Wno-DECLFILENAME -Wno-UNUSEDPARAM -Wno-UNUSEDSIGNAL -Wno-ASSIGNDLY \
+    -Wno-PINCONNECTEMPTY -Wno-PINMISSING -Wno-DEFPARAM \
+    -Wno-UNDRIVEN -Wno-SYNCASYNCNET \
+	--timescale 1ns/1ns \
+	--no-timing \
+	--vpi $(addprefix -I, $(PERIP_INC_PATHS))
 
 #chisel配置
 CHISEL_FIRTOOL = /home/cangfeng_/.local/bin/firtool
@@ -30,11 +34,20 @@ CSRC_DIR = ./csrc
 BIN = $(BUILD_DIR)/V$(TOPNAME)
 
 # 源文件搜索
-VSRCS = $(VSRC_DIR)/$(TOPNAME).sv
-CSRCS = $(shell find $(abspath ./csrc) -name "*.cpp")
+GEN_VSRCS = $(VSRC_DIR)/top.sv
+CSRCS = $(shell find $(abspath ./csrc) -name "*.cpp" | grep -v char-test.cpp)
+
+# 外部 Verilog 源文件 （ysyxSoC/perip）
+PERIP_VSRCS = $(shell find $(abspath ../ysyxSoC/perip) -name "*.v" 2>/dev/null)
+PERIP_INC_PATHS = $(abspath ../ysyxSoC/perip/uart16550/rtl) \
+                 $(abspath ../ysyxSoC/perip/spi/rtl) 
+YSYXSOC_VSRCS = ../ysyxSoC/build/ysyxSoCFull.v
+
+EXT_VSRCS = $(PERIP_VSRCS) $(YSYXSOC_VSRCS)
+VSRCS = $(GEN_VSRCS) $(EXT_VSRCS)
 
 # 编译标志
-INCFLAGS = $(addprefix -I, $(INC_PATH))
+INCFLAGS = $(addprefix -I, $(INC_PATH) $(PERIP_INC_PATHS)) 
 CXXFLAGS += $(INCFLAGS) -DTOP_NAME="\"V$(TOPNAME)\""
 
 # 配置选项 DiffTest
@@ -49,7 +62,6 @@ CXXFLAGS += -DCONFIG_MTRACE
 CFLAGS   += -DCONFIG_PATCH
 CXXFLAGS += -DCONFIG_PATCH
 
-
 # Chisel 源文件检测
 CHISEL_SRCS = $(shell find src/main/scala -name "*.scala" 2>/dev/null)
 
@@ -57,7 +69,7 @@ CHISEL_SRCS = $(shell find src/main/scala -name "*.scala" 2>/dev/null)
 all: sim
 
 # Chisel 生成 Verilog
-$(VSRCS): $(CHISEL_SRCS)
+$(GEN_VSRCS): $(CHISEL_SRCS)
 	@echo "=== Generating Verilog from Chisel ==="
 	@chmod +x $(GEN_SCRIPT)
 	@CHISEL_FIRTOOL_PATH=$(CHISEL_FIRTOOL) $(GEN_SCRIPT)

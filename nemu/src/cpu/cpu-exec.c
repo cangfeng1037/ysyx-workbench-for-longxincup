@@ -156,7 +156,7 @@ int cntt = 0;
 bool is_ecall = false;
 
 static void exec_once(Decode *s, vaddr_t pc) {  
-  //printf("inst: 0x%08x,pc: 0x%08x, cnt = %d\n", s->isa.inst, s->pc, cntt++);if(pc == 0x80000300) printf("run into kstart_wrapper\n");  //if(s->dnpc == 0x00000012) printf("!!!error: pc = 0x%08x\n", s->dnpc);
+  //printf("inst: 0x%08x,pc: 0x%08x, cnt = %d\n", s->isa.inst, s->pc, cntt++);  //if(s->dnpc == 0x00000012) printf("!!!error: pc = 0x%08x\n", s->dnpc);
 
   s->pc = pc;
   s->snpc = pc;

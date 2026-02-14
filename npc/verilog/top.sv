@@ -36,13 +36,14 @@ module IFU(
     & (io_in_bits_is_jal | io_in_bits_is_jalr | io_in_bits_is_branch_taken
        | io_in_bits_is_ecall | io_in_bits_is_mret);
   wire        io_inst_req_valid_0 = ~state & ~io_flush_0;
-  wire        _GEN = io_inst_req_ready & io_inst_req_valid_0;
-  wire        _GEN_0 = io_inst_resp_ready_0 & io_inst_resp_valid;
-  wire        _GEN_1 = io_out_ready & out_valid;
+  wire        _GEN = ~reset & out_valid;
+  wire        _GEN_0 = io_inst_req_ready & io_inst_req_valid_0;
+  wire        _GEN_1 = io_inst_resp_ready_0 & io_inst_resp_valid;
+  wire        _GEN_2 = io_out_ready & out_valid;
   wire [31:0] _pc_T = pc + 32'h4;
   always @(posedge clock) begin
     if (reset) begin
-      pc <= 32'h80000000;
+      pc <= 32'h30000000;
       pc_reg <= 32'h0;
       inst_reg <= 32'h0;
       state <= 1'h0;
@@ -60,15 +61,20 @@ module IFU(
                     : io_in_bits_is_ecall | io_in_bits_is_mret
                         ? io_in_bits_pc_csr
                         : _pc_T;
-      else if (_GEN_1)
+      else if (_GEN_2)
         pc <= _pc_T;
-      if (~state & _GEN)
+      else if (reset)
+        pc <= 32'h30000000;
+      if (~state & _GEN_0)
         pc_reg <= pc;
-      if (state & _GEN_0)
+      else if (reset)
+        pc_reg <= 32'h30000000;
+      if (state & _GEN_1)
         inst_reg <= io_inst_resp_bits_inst;
-      state <= ~io_flush_0 & (state ? ~(state & _GEN_1) : _GEN);
-      out_valid <=
-        ~(io_flush_0 | _GEN_1) & (state ? ~_GEN_1 & (_GEN_0 | out_valid) : out_valid);
+      else if (reset)
+        inst_reg <= 32'h0;
+      state <= ~io_flush_0 & (state ? ~(_GEN_2 | reset) : _GEN_0 | ~reset & state);
+      out_valid <= ~(io_flush_0 | _GEN_2) & (state ? ~_GEN_2 & (_GEN_1 | _GEN) : _GEN);
     end
   end // always @(posedge)
   assign io_out_valid = out_valid;
@@ -624,7 +630,8 @@ module MEM(
   output        io_mem_req_valid,
                 io_mem_req_bits_wen,
   output [31:0] io_mem_req_bits_raddr,
-                io_mem_req_bits_waddr,
+  output [2:0]  io_mem_req_bits_rsize,
+  output [31:0] io_mem_req_bits_waddr,
                 io_mem_req_bits_wdata,
   output [3:0]  io_mem_req_bits_wmask,
   output        io_mem_resp_ready,
@@ -794,6 +801,11 @@ module MEM(
   assign io_mem_req_valid = io_mem_req_valid_0;
   assign io_mem_req_bits_wen = is_sw | is_sh | is_sb;
   assign io_mem_req_bits_raddr = alu_result;
+  assign io_mem_req_bits_rsize =
+    {1'h0,
+     alu_result[31:28] == 4'h1
+       ? (is_lb | is_lbu ? 2'h0 : is_lh | is_lhu ? 2'h1 : {is_lw, 1'h0})
+       : 2'h2};
   assign io_mem_req_bits_waddr = alu_result;
   assign io_mem_req_bits_wdata =
     is_sb ? _wdata_T_2[31:0] : is_sh ? _wdata_T_5[31:0] : is_sw ? rs2_data : 32'h0;
@@ -830,6 +842,7 @@ module WB(
                 io_commit
 );
 
+  wire        io_in_ready_0;
   reg  [31:0] pc;
   reg  [31:0] alu_result;
   reg  [4:0]  rd_addr;
@@ -844,8 +857,22 @@ module WB(
   reg  [31:0] csr_rdata;
   reg         is_csrrw;
   reg         is_csrrs;
-  reg         state;
-  wire        _GEN = ~state & io_in_valid;
+  wire        _GEN = io_in_ready_0 & io_in_valid;
+  reg  [1:0]  state;
+  assign io_in_ready_0 = state == 2'h0;
+  reg  [1:0]  casez_tmp;
+  always_comb begin
+    casez (state)
+      2'b00:
+        casez_tmp = _GEN ? 2'h1 : state;
+      2'b01:
+        casez_tmp = 2'h2;
+      2'b10:
+        casez_tmp = 2'h0;
+      default:
+        casez_tmp = state;
+    endcase
+  end // always_comb
   always @(posedge clock) begin
     if (reset) begin
       pc <= 32'h0;
@@ -862,7 +889,7 @@ module WB(
       csr_rdata <= 32'h0;
       is_csrrw <= 1'h0;
       is_csrrs <= 1'h0;
-      state <= 1'h0;
+      state <= 2'h0;
     end
     else begin
       if (_GEN) begin
@@ -881,10 +908,10 @@ module WB(
         is_csrrw <= io_in_bits_is_csrrw;
         is_csrrs <= io_in_bits_is_csrrs;
       end
-      state <= ~state & (_GEN | state);
+      state <= casez_tmp;
     end
   end // always @(posedge)
-  assign io_in_ready = ~state;
+  assign io_in_ready = io_in_ready_0;
   assign io_rd_addr = rd_addr;
   assign io_rd_data =
     is_csrrw | is_csrrs
@@ -894,7 +921,7 @@ module WB(
   assign io_csr_waddr = csr_waddr;
   assign io_csr_wdata = csr_wdata;
   assign io_csr_wen = csr_wen;
-  assign io_commit = state;
+  assign io_commit = state == 2'h2;
 endmodule
 
 module Regfile(
@@ -1248,16 +1275,16 @@ module Regfile(
   assign io_regs_out_31 = regs_31;
 endmodule
 
-module AXI_IFU_Master(
+module Axi4_IFU_Master(
   input         clock,
                 reset,
-  output [31:0] io_I_bus_ARADDR,
-  output        io_I_bus_ARVALID,
-  input         io_I_bus_ARREADY,
-  input  [31:0] io_I_bus_RDATA,
-  input         io_I_bus_RVALID,
-  output        io_I_bus_RREADY,
-                io_inst_req_ready,
+                io_master_arready,
+  output        io_master_arvalid,
+  output [31:0] io_master_araddr,
+  output        io_master_rready,
+  input         io_master_rvalid,
+  input  [31:0] io_master_rdata,
+  output        io_inst_req_ready,
   input         io_inst_req_valid,
   input  [31:0] io_inst_req_bits_pc,
   input         io_inst_resp_ready,
@@ -1268,50 +1295,65 @@ module AXI_IFU_Master(
 
   reg  pending;
   reg  killPending;
-  wire io_I_bus_ARVALID_0 = io_inst_req_valid & ~pending;
-  wire io_I_bus_RREADY_0 = io_inst_resp_ready | killPending;
-  wire r_fire = io_I_bus_RVALID & io_I_bus_RREADY_0;
+  wire canIssueAr = ~pending & ~killPending;
+  wire io_master_arvalid_0 = ~reset & io_inst_req_valid & canIssueAr;
+  wire io_master_rready_0 = ~reset & (io_inst_resp_ready | killPending);
+  wire ar_fire = io_master_arvalid_0 & io_master_arready;
+  wire r_fire = io_master_rvalid & io_master_rready_0;
   always @(posedge clock) begin
     if (reset) begin
       pending <= 1'h0;
       killPending <= 1'h0;
     end
     else begin
-      pending <= ~r_fire & (io_I_bus_ARVALID_0 & io_I_bus_ARREADY | pending);
-      killPending <= io_flush & pending | ~r_fire & killPending;
+      pending <= ~r_fire & (ar_fire | pending);
+      killPending <=
+        ~r_fire & (~killPending & io_flush & (pending | ar_fire) | killPending);
     end
   end // always @(posedge)
-  assign io_I_bus_ARADDR = io_inst_req_bits_pc;
-  assign io_I_bus_ARVALID = io_I_bus_ARVALID_0;
-  assign io_I_bus_RREADY = io_I_bus_RREADY_0;
-  assign io_inst_req_ready = io_I_bus_ARREADY & ~pending;
-  assign io_inst_resp_valid = io_I_bus_RVALID & ~killPending;
-  assign io_inst_resp_bits_inst = io_I_bus_RDATA;
+  assign io_master_arvalid = io_master_arvalid_0;
+  assign io_master_araddr = io_inst_req_bits_pc;
+  assign io_master_rready = io_master_rready_0;
+  assign io_inst_req_ready = io_master_arready & canIssueAr;
+  assign io_inst_resp_valid = io_master_rvalid & ~killPending;
+  assign io_inst_resp_bits_inst = io_master_rdata;
 endmodule
 
-module AXI_MEM_Master(
+
+// Users can define 'PRINTF_COND' to add an extra gate to prints.
+`ifndef PRINTF_COND_
+  `ifdef PRINTF_COND
+    `define PRINTF_COND_ (`PRINTF_COND)
+  `else  // PRINTF_COND
+    `define PRINTF_COND_ 1
+  `endif // PRINTF_COND
+`endif // not def PRINTF_COND_
+module Axi4_MEM_Master(
   input         clock,
                 reset,
-  output [31:0] io_M_bus_AWADDR,
-  output        io_M_bus_AWVALID,
-  input         io_M_bus_AWREADY,
-  output [31:0] io_M_bus_WDATA,
-  output [3:0]  io_M_bus_WSTRB,
-  output        io_M_bus_WVALID,
-  input         io_M_bus_WREADY,
-                io_M_bus_BVALID,
-  output        io_M_bus_BREADY,
-  output [31:0] io_M_bus_ARADDR,
-  output        io_M_bus_ARVALID,
-  input         io_M_bus_ARREADY,
-  input  [31:0] io_M_bus_RDATA,
-  input         io_M_bus_RVALID,
-  output        io_M_bus_RREADY,
-                io_mem_req_ready,
+                io_master_awready,
+  output        io_master_awvalid,
+  output [31:0] io_master_awaddr,
+  output [2:0]  io_master_awsize,
+  input         io_master_wready,
+  output        io_master_wvalid,
+  output [31:0] io_master_wdata,
+  output [3:0]  io_master_wstrb,
+  output        io_master_bready,
+  input         io_master_bvalid,
+                io_master_arready,
+  output        io_master_arvalid,
+  output [31:0] io_master_araddr,
+  output [2:0]  io_master_arsize,
+  output        io_master_rready,
+  input         io_master_rvalid,
+  input  [31:0] io_master_rdata,
+  output        io_mem_req_ready,
   input         io_mem_req_valid,
                 io_mem_req_bits_wen,
   input  [31:0] io_mem_req_bits_raddr,
-                io_mem_req_bits_waddr,
+  input  [2:0]  io_mem_req_bits_rsize,
+  input  [31:0] io_mem_req_bits_waddr,
                 io_mem_req_bits_wdata,
   input  [3:0]  io_mem_req_bits_wmask,
   input         io_mem_resp_ready,
@@ -1319,348 +1361,216 @@ module AXI_MEM_Master(
   output [31:0] io_mem_resp_bits_rdata
 );
 
-  reg  [1:0] state;
-  wire       _GEN = state == 2'h0;
-  wire       _GEN_0 = io_mem_req_valid & io_mem_req_bits_wen;
-  wire       _GEN_1 = _GEN & _GEN_0;
-  wire       io_M_bus_WVALID_0 = _GEN & _GEN_0;
-  wire       io_mem_req_ready_0 =
-    _GEN
-    & (_GEN_0 ? io_M_bus_AWREADY & io_M_bus_WREADY : io_mem_req_valid & io_M_bus_ARREADY);
-  wire       _GEN_2 = state == 2'h1;
-  wire       io_M_bus_RREADY_0 = ~_GEN & _GEN_2 & io_mem_resp_ready;
-  wire       _GEN_3 = state == 2'h2;
-  wire       io_M_bus_BREADY_0 = ~(_GEN | _GEN_2) & _GEN_3;
+  reg  [1:0]  state;
+  reg  [31:0] wdata;
+  reg  [3:0]  wstrb;
+  wire        _GEN = io_mem_req_valid & io_mem_req_bits_wen;
+  wire        _GEN_0 = ~(|state) & _GEN;
+  wire        io_mem_req_ready_0 =
+    ~(|state) & (_GEN ? io_master_awready : io_mem_req_valid & io_master_arready);
+  wire        _GEN_1 = state == 2'h1;
+  wire        _GEN_2 = (|state) & _GEN_1;
+  wire        _GEN_3 = state == 2'h2;
+  wire        _GEN_4 = ~(|state) | _GEN_1;
+  wire        io_master_rready_0 = ~_GEN_4 & _GEN_3 & io_mem_resp_ready;
+  `ifndef SYNTHESIS
+    always @(posedge clock) begin
+      if ((`PRINTF_COND_) & (|state) & state != 2'h1 & _GEN_3 & io_mem_req_valid
+          & io_mem_req_bits_raddr == 32'h10000005 & ~reset)
+        $fwrite(32'h80000002, "AXI_MEM_Master: Accessing UART LSR = 0x%x\n",
+                io_master_rdata);
+    end // always @(posedge)
+  `endif // not def SYNTHESIS
+  wire        io_master_bready_0 = ~(~(|state) | _GEN_1 | _GEN_3) & (&state);
   always @(posedge clock) begin
-    if (reset)
+    if (reset) begin
       state <= 2'h0;
-    else if (_GEN) begin
-      if (_GEN_0) begin
-        if (io_mem_req_ready_0)
-          state <= 2'h2;
+      wdata <= 32'h0;
+      wstrb <= 4'h0;
+    end
+    else begin
+      if (|state) begin
+        if (_GEN_1) begin
+          if (io_master_wready)
+            state <= 2'h3;
+        end
+        else if (_GEN_3
+                   ? io_master_rvalid & io_master_rready_0
+                   : (&state) & io_master_bvalid & io_master_bready_0)
+          state <= 2'h0;
+      end
+      else if (_GEN) begin
+        if (io_master_awready)
+          state <= 2'h1;
       end
       else if (io_mem_req_valid & io_mem_req_ready_0)
-        state <= 2'h1;
+        state <= 2'h2;
+      if (~(|state) & _GEN & io_master_awready) begin
+        wdata <= io_mem_req_bits_wdata;
+        wstrb <= io_mem_req_bits_wmask;
+      end
     end
-    else if (_GEN_2
-               ? io_M_bus_RVALID & io_M_bus_RREADY_0
-               : _GEN_3 & io_M_bus_BVALID & io_M_bus_BREADY_0)
-      state <= 2'h0;
   end // always @(posedge)
-  assign io_M_bus_AWADDR = _GEN_1 ? io_mem_req_bits_waddr : 32'h0;
-  assign io_M_bus_AWVALID = io_M_bus_WVALID_0;
-  assign io_M_bus_WDATA = _GEN_1 ? io_mem_req_bits_wdata : 32'h0;
-  assign io_M_bus_WSTRB = _GEN_1 ? io_mem_req_bits_wmask : 4'h0;
-  assign io_M_bus_WVALID = io_M_bus_WVALID_0;
-  assign io_M_bus_BREADY = io_M_bus_BREADY_0;
-  assign io_M_bus_ARADDR =
-    ~_GEN | _GEN_0 | ~io_mem_req_valid ? 32'h0 : io_mem_req_bits_raddr;
-  assign io_M_bus_ARVALID = _GEN & ~_GEN_0 & io_mem_req_valid;
-  assign io_M_bus_RREADY = io_M_bus_RREADY_0;
+  assign io_master_awvalid = ~(|state) & _GEN;
+  assign io_master_awaddr = _GEN_0 ? io_mem_req_bits_waddr : 32'h0;
+  assign io_master_awsize =
+    _GEN_0
+      ? {1'h0,
+         {1'h0, {1'h0, io_mem_req_bits_wmask[0]} + {1'h0, io_mem_req_bits_wmask[1]}}
+           + {1'h0,
+              {1'h0, io_mem_req_bits_wmask[2]}
+                + {1'h0, io_mem_req_bits_wmask[3]}} != 3'h1,
+         1'h0}
+      : 3'h0;
+  assign io_master_wvalid = (|state) & _GEN_1;
+  assign io_master_wdata = _GEN_2 ? wdata : 32'h0;
+  assign io_master_wstrb = _GEN_2 ? wstrb : 4'h0;
+  assign io_master_bready = io_master_bready_0;
+  assign io_master_arvalid = ~(|state) & ~_GEN & io_mem_req_valid;
+  assign io_master_araddr =
+    (|state) | _GEN | ~io_mem_req_valid ? 32'h0 : io_mem_req_bits_raddr;
+  assign io_master_arsize = io_mem_req_bits_rsize;
+  assign io_master_rready = io_master_rready_0;
   assign io_mem_req_ready = io_mem_req_ready_0;
   assign io_mem_resp_valid =
-    ~_GEN & (_GEN_2 ? io_M_bus_RVALID : _GEN_3 & io_M_bus_BVALID);
-  assign io_mem_resp_bits_rdata = _GEN | ~_GEN_2 ? 32'h0 : io_M_bus_RDATA;
-endmodule
-
-module DSRAM(
-  input         clock,
-                reset,
-  input  [31:0] io_M_bus_AWADDR,
-  input         io_M_bus_AWVALID,
-  output        io_M_bus_AWREADY,
-  input  [31:0] io_M_bus_WDATA,
-  input  [3:0]  io_M_bus_WSTRB,
-  input         io_M_bus_WVALID,
-  output        io_M_bus_WREADY,
-                io_M_bus_BVALID,
-  input         io_M_bus_BREADY,
-  input  [31:0] io_M_bus_ARADDR,
-  input         io_M_bus_ARVALID,
-  output        io_M_bus_ARREADY,
-  output [31:0] io_M_bus_RDATA,
-  output        io_M_bus_RVALID,
-  input         io_M_bus_RREADY
-);
-
-  wire [31:0] _mem_blackbox_rdata;
-  reg  [1:0]  state;
-  reg  [31:0] rdata_reg;
-  wire        idle = state == 2'h0;
-  wire        write_req = io_M_bus_AWVALID & io_M_bus_WVALID;
-  wire        io_M_bus_WREADY_0 = idle & write_req;
-  wire        io_M_bus_ARREADY_0 = idle & ~write_req;
-  wire        ar_fire = io_M_bus_ARVALID & io_M_bus_ARREADY_0;
-  wire        _GEN = ~idle | io_M_bus_WREADY_0 | ~ar_fire;
-  wire        _GEN_0 = state == 2'h1;
-  wire        io_M_bus_RVALID_0 = ~idle & _GEN_0;
-  wire        _GEN_1 = state == 2'h2;
-  wire        io_M_bus_BVALID_0 = ~(idle | _GEN_0) & _GEN_1;
-  always @(posedge clock) begin
-    if (reset) begin
-      state <= 2'h0;
-      rdata_reg <= 32'h0;
-    end
-    else begin
-      if (idle) begin
-        if (io_M_bus_WREADY_0)
-          state <= 2'h2;
-        else if (ar_fire)
-          state <= 2'h1;
-      end
-      else if (_GEN_0
-                 ? io_M_bus_RVALID_0 & io_M_bus_RREADY
-                 : _GEN_1 & io_M_bus_BVALID_0 & io_M_bus_BREADY)
-        state <= 2'h0;
-      if (_GEN) begin
-      end
-      else
-        rdata_reg <= _mem_blackbox_rdata;
-    end
-  end // always @(posedge)
-  MemBlackBox mem_blackbox (
-    .clk   (clock),
-    .valid (idle & (io_M_bus_WREADY_0 | ar_fire)),
-    .wen   (idle & io_M_bus_WREADY_0),
-    .raddr (_GEN ? 32'h0 : io_M_bus_ARADDR),
-    .waddr (io_M_bus_WREADY_0 ? io_M_bus_AWADDR : 32'h0),
-    .wdata (io_M_bus_WREADY_0 ? io_M_bus_WDATA : 32'h0),
-    .wmask (io_M_bus_WREADY_0 ? io_M_bus_WSTRB : 4'h0),
-    .rdata (_mem_blackbox_rdata)
-  );
-  assign io_M_bus_AWREADY = io_M_bus_WREADY_0;
-  assign io_M_bus_WREADY = io_M_bus_WREADY_0;
-  assign io_M_bus_BVALID = io_M_bus_BVALID_0;
-  assign io_M_bus_ARREADY = io_M_bus_ARREADY_0;
-  assign io_M_bus_RDATA = rdata_reg;
-  assign io_M_bus_RVALID = io_M_bus_RVALID_0;
-endmodule
-
-module ISRAM(
-  input         clock,
-                reset,
-  input  [31:0] io_I_bus_ARADDR,
-  input         io_I_bus_ARVALID,
-  output        io_I_bus_ARREADY,
-  output [31:0] io_I_bus_RDATA,
-  output        io_I_bus_RVALID,
-  input         io_I_bus_RREADY
-);
-
-  wire        _imem_inst_valid;
-  wire [31:0] _imem_inst;
-  reg  [1:0]  state;
-  reg  [31:0] pc_lat;
-  reg  [31:0] mem_inst;
-  wire        io_I_bus_ARREADY_0 = state == 2'h0;
-  wire        _GEN = io_I_bus_ARVALID & io_I_bus_ARREADY_0;
-  wire        _GEN_0 = state == 2'h1;
-  wire        _GEN_1 = state == 2'h2;
-  wire        io_I_bus_RVALID_0 = ~(io_I_bus_ARREADY_0 | _GEN_0) & _GEN_1;
-  always @(posedge clock) begin
-    if (reset) begin
-      state <= 2'h0;
-      pc_lat <= 32'h0;
-      mem_inst <= 32'h0;
-    end
-    else begin
-      if (io_I_bus_ARREADY_0) begin
-        if (_GEN)
-          state <= 2'h1;
-      end
-      else if (_GEN_0) begin
-        if (_imem_inst_valid)
-          state <= 2'h2;
-      end
-      else if (_GEN_1 & io_I_bus_RREADY & io_I_bus_RVALID_0)
-        state <= 2'h0;
-      if (_GEN)
-        pc_lat <= io_I_bus_ARADDR;
-      if (io_I_bus_ARREADY_0 | ~(_GEN_0 & _imem_inst_valid)) begin
-      end
-      else
-        mem_inst <= _imem_inst;
-    end
-  end // always @(posedge)
-  ImemBlackBox imem (
-    .clock      (clock),
-    .reset      (reset),
-    .pc_valid   (io_I_bus_ARREADY_0 & _GEN),
-    .pc         (_GEN ? io_I_bus_ARADDR : pc_lat),
-    .inst_valid (_imem_inst_valid),
-    .inst       (_imem_inst)
-  );
-  assign io_I_bus_ARREADY = io_I_bus_ARREADY_0;
-  assign io_I_bus_RDATA = mem_inst;
-  assign io_I_bus_RVALID = io_I_bus_RVALID_0;
+    ~_GEN_4 & (_GEN_3 ? io_master_rvalid : (&state) & io_master_bvalid);
+  assign io_mem_resp_bits_rdata = _GEN_4 | ~_GEN_3 ? 32'h0 : io_master_rdata;
 endmodule
 
 module AXI_ARB2TO1(
   input         clock,
                 reset,
-  input  [31:0] io_i_master_ARADDR,
-  input         io_i_master_ARVALID,
-  output        io_i_master_ARREADY,
-  output [31:0] io_i_master_RDATA,
-  output        io_i_master_RVALID,
-  input         io_i_master_RREADY,
-  input  [31:0] io_m_master_AWADDR,
-  input         io_m_master_AWVALID,
-  output        io_m_master_AWREADY,
-  input  [31:0] io_m_master_WDATA,
-  input  [3:0]  io_m_master_WSTRB,
-  input         io_m_master_WVALID,
-  output        io_m_master_WREADY,
-                io_m_master_BVALID,
-  input         io_m_master_BREADY,
-  input  [31:0] io_m_master_ARADDR,
-  input         io_m_master_ARVALID,
-  output        io_m_master_ARREADY,
-  output [31:0] io_m_master_RDATA,
-  output        io_m_master_RVALID,
-  input         io_m_master_RREADY,
-  output [31:0] io_slave_AWADDR,
-  output        io_slave_AWVALID,
-  input         io_slave_AWREADY,
-  output [31:0] io_slave_WDATA,
-  output [3:0]  io_slave_WSTRB,
-  output        io_slave_WVALID,
-  input         io_slave_WREADY,
-                io_slave_BVALID,
-  output        io_slave_BREADY,
-  output [31:0] io_slave_ARADDR,
-  output        io_slave_ARVALID,
-  input         io_slave_ARREADY,
-  input  [31:0] io_slave_RDATA,
-  input         io_slave_RVALID,
-  output        io_slave_RREADY,
-                io_is_inst
+  output        io_ifu_master_arready,
+  input         io_ifu_master_arvalid,
+  input  [31:0] io_ifu_master_araddr,
+  input         io_ifu_master_rready,
+  output        io_ifu_master_rvalid,
+  output [31:0] io_ifu_master_rdata,
+  output        io_mem_master_awready,
+  input         io_mem_master_awvalid,
+  input  [31:0] io_mem_master_awaddr,
+  input  [2:0]  io_mem_master_awsize,
+  output        io_mem_master_wready,
+  input         io_mem_master_wvalid,
+  input  [31:0] io_mem_master_wdata,
+  input  [3:0]  io_mem_master_wstrb,
+  input         io_mem_master_bready,
+  output        io_mem_master_bvalid,
+                io_mem_master_arready,
+  input         io_mem_master_arvalid,
+  input  [31:0] io_mem_master_araddr,
+  input  [2:0]  io_mem_master_arsize,
+  input         io_mem_master_rready,
+  output        io_mem_master_rvalid,
+  output [31:0] io_mem_master_rdata,
+  input         io_master_out_awready,
+  output        io_master_out_awvalid,
+  output [31:0] io_master_out_awaddr,
+  output [3:0]  io_master_out_awid,
+  output [2:0]  io_master_out_awsize,
+  output [1:0]  io_master_out_awburst,
+  input         io_master_out_wready,
+  output        io_master_out_wvalid,
+  output [31:0] io_master_out_wdata,
+  output [3:0]  io_master_out_wstrb,
+  output        io_master_out_wlast,
+                io_master_out_bready,
+  input         io_master_out_bvalid,
+                io_master_out_arready,
+  output        io_master_out_arvalid,
+  output [31:0] io_master_out_araddr,
+  output [3:0]  io_master_out_arid,
+  output [2:0]  io_master_out_arsize,
+  output [1:0]  io_master_out_arburst,
+  output        io_master_out_rready,
+  input         io_master_out_rvalid,
+  input  [31:0] io_master_out_rdata,
+  input         io_master_out_rlast
 );
 
   reg  busy;
   reg  using_ifu;
   reg  is_write;
-  wire m_aw_req = io_m_master_AWVALID & io_m_master_WVALID;
-  wire pick_ifu = io_i_master_ARVALID | ~io_m_master_ARVALID & ~m_aw_req;
-  wire awvalid = ~pick_ifu & io_m_master_AWVALID;
-  wire wvalid = ~pick_ifu & io_m_master_WVALID;
-  wire _GEN = ~busy & m_aw_req;
-  wire _GEN_0 = ~_GEN | pick_ifu;
-  wire _GEN_1 = io_i_master_ARVALID | io_m_master_ARVALID;
-  wire arvalid = pick_ifu ? io_i_master_ARVALID : io_m_master_ARVALID;
-  wire io_slave_BREADY_0 = busy & is_write & ~using_ifu & io_m_master_BREADY;
-  wire _GEN_2 = ~busy | is_write;
-  wire io_slave_RREADY_0 =
-    ~_GEN_2 & (using_ifu ? io_i_master_RREADY : io_m_master_RREADY);
-  wire _GEN_3 = ~busy | is_write | using_ifu;
-  wire _GEN_4 = io_slave_AWREADY & io_slave_WREADY & awvalid & wvalid;
-  wire _GEN_5 = _GEN_1 & io_slave_ARREADY & arvalid;
+  reg  w_phase;
+  wire _GEN = ~busy & io_mem_master_awvalid;
+  wire io_master_out_awvalid_0 = _GEN & io_mem_master_awvalid;
+  wire _GEN_0 = io_ifu_master_arvalid | io_mem_master_arvalid;
+  wire _GEN_1 = busy | io_mem_master_awvalid | ~_GEN_0;
+  wire _GEN_2 = busy | io_mem_master_awvalid;
+  wire io_master_out_arvalid_0 =
+    ~busy & ~io_mem_master_awvalid & _GEN_0
+    & (io_ifu_master_arvalid ? io_ifu_master_arvalid : io_mem_master_arvalid);
+  wire _GEN_3 = is_write & w_phase;
+  wire _GEN_4 = ~busy | ~_GEN_3 | using_ifu;
+  wire io_master_out_wvalid_0 = busy & _GEN_3 & ~using_ifu & io_mem_master_wvalid;
+  wire _GEN_5 = w_phase | using_ifu;
+  wire io_master_out_bready_0 = busy & is_write & ~_GEN_5 & io_mem_master_bready;
+  wire _GEN_6 = ~busy | is_write;
+  wire io_master_out_rready_0 =
+    ~_GEN_6 & (using_ifu ? io_ifu_master_rready : io_mem_master_rready);
+  wire _GEN_7 = ~busy | is_write | using_ifu;
+  wire _GEN_8 = _GEN_0 & io_master_out_arvalid_0 & io_master_out_arready;
+  wire _GEN_9 = io_master_out_awvalid_0 & io_master_out_awready;
   always @(posedge clock) begin
     if (reset) begin
       busy <= 1'h0;
       using_ifu <= 1'h0;
       is_write <= 1'h0;
+      w_phase <= 1'h0;
     end
     else begin
       if (busy)
         busy <=
           is_write
-            ? ~(io_slave_BVALID & io_slave_BREADY_0) & busy
-            : ~(io_slave_RVALID & io_slave_RREADY_0) & busy;
-      else
-        busy <= m_aw_req ? _GEN_4 | busy : _GEN_5 | busy;
-      if (busy | ~(m_aw_req ? _GEN_4 : _GEN_5)) begin
+            ? (w_phase | ~(io_master_out_bvalid & io_master_out_bready_0)) & busy
+            : ~(io_master_out_rvalid & io_master_out_rready_0 & io_master_out_rlast)
+              & busy;
+      else begin
+        busy <= io_mem_master_awvalid ? _GEN_9 | busy : _GEN_8 | busy;
+        if (io_mem_master_awvalid)
+          using_ifu <= ~_GEN_9 & using_ifu;
+        else if (_GEN_8)
+          using_ifu <= io_ifu_master_arvalid;
+        is_write <= io_mem_master_awvalid ? _GEN_9 | is_write : ~_GEN_8 & is_write;
       end
-      else
-        using_ifu <= pick_ifu;
-      if (busy) begin
-      end
-      else
-        is_write <= m_aw_req ? _GEN_4 | is_write : ~_GEN_5 & is_write;
+      w_phase <=
+        busy
+          ? ~(is_write & w_phase & io_master_out_wvalid_0 & io_master_out_wready)
+            & w_phase
+          : io_mem_master_awvalid & _GEN_9 | w_phase;
     end
   end // always @(posedge)
-  assign io_i_master_ARREADY = ~busy & ~m_aw_req & _GEN_1 & pick_ifu & io_slave_ARREADY;
-  assign io_i_master_RDATA = _GEN_2 | ~using_ifu ? 32'h0 : io_slave_RDATA;
-  assign io_i_master_RVALID = ~_GEN_2 & using_ifu & io_slave_RVALID;
-  assign io_m_master_AWREADY = _GEN & ~pick_ifu & io_slave_AWREADY;
-  assign io_m_master_WREADY = _GEN & ~pick_ifu & io_slave_WREADY;
-  assign io_m_master_BVALID = busy & is_write & ~using_ifu & io_slave_BVALID;
-  assign io_m_master_ARREADY = ~busy & ~m_aw_req & _GEN_1 & ~pick_ifu & io_slave_ARREADY;
-  assign io_m_master_RDATA = _GEN_3 ? 32'h0 : io_slave_RDATA;
-  assign io_m_master_RVALID = ~_GEN_3 & io_slave_RVALID;
-  assign io_slave_AWADDR = _GEN_0 ? 32'h0 : io_m_master_AWADDR;
-  assign io_slave_AWVALID = _GEN & awvalid;
-  assign io_slave_WDATA = _GEN_0 ? 32'h0 : io_m_master_WDATA;
-  assign io_slave_WSTRB = _GEN_0 ? 4'h0 : io_m_master_WSTRB;
-  assign io_slave_WVALID = _GEN & wvalid;
-  assign io_slave_BREADY = io_slave_BREADY_0;
-  assign io_slave_ARADDR =
-    busy | m_aw_req | ~_GEN_1
-      ? 32'h0
-      : pick_ifu ? io_i_master_ARADDR : io_m_master_ARADDR;
-  assign io_slave_ARVALID = ~busy & ~m_aw_req & _GEN_1 & arvalid;
-  assign io_slave_RREADY = io_slave_RREADY_0;
-  assign io_is_inst = busy ? using_ifu : pick_ifu;
-endmodule
-
-module slaveSel(
-  input  [31:0] io_slave_in_AWADDR,
-  input         io_slave_in_AWVALID,
-  output        io_slave_in_AWREADY,
-  input  [31:0] io_slave_in_WDATA,
-  input  [3:0]  io_slave_in_WSTRB,
-  input         io_slave_in_WVALID,
-  output        io_slave_in_WREADY,
-                io_slave_in_BVALID,
-  input         io_slave_in_BREADY,
-  input  [31:0] io_slave_in_ARADDR,
-  input         io_slave_in_ARVALID,
-  output        io_slave_in_ARREADY,
-  output [31:0] io_slave_in_RDATA,
-  output        io_slave_in_RVALID,
-  input         io_slave_in_RREADY,
-  output [31:0] io_slave_m_AWADDR,
-  output        io_slave_m_AWVALID,
-  input         io_slave_m_AWREADY,
-  output [31:0] io_slave_m_WDATA,
-  output [3:0]  io_slave_m_WSTRB,
-  output        io_slave_m_WVALID,
-  input         io_slave_m_WREADY,
-                io_slave_m_BVALID,
-  output        io_slave_m_BREADY,
-  output [31:0] io_slave_m_ARADDR,
-  output        io_slave_m_ARVALID,
-  input         io_slave_m_ARREADY,
-  input  [31:0] io_slave_m_RDATA,
-  input         io_slave_m_RVALID,
-  output        io_slave_m_RREADY,
-  output [31:0] io_slave_i_ARADDR,
-  output        io_slave_i_ARVALID,
-  input         io_slave_i_ARREADY,
-  input  [31:0] io_slave_i_RDATA,
-  input         io_slave_i_RVALID,
-  output        io_slave_i_RREADY,
-  input         io_is_inst
-);
-
-  assign io_slave_in_AWREADY = ~io_is_inst & io_slave_m_AWREADY;
-  assign io_slave_in_WREADY = ~io_is_inst & io_slave_m_WREADY;
-  assign io_slave_in_BVALID = ~io_is_inst & io_slave_m_BVALID;
-  assign io_slave_in_ARREADY = io_is_inst ? io_slave_i_ARREADY : io_slave_m_ARREADY;
-  assign io_slave_in_RDATA = io_is_inst ? io_slave_i_RDATA : io_slave_m_RDATA;
-  assign io_slave_in_RVALID = io_is_inst ? io_slave_i_RVALID : io_slave_m_RVALID;
-  assign io_slave_m_AWADDR = io_is_inst ? 32'h0 : io_slave_in_AWADDR;
-  assign io_slave_m_AWVALID = ~io_is_inst & io_slave_in_AWVALID;
-  assign io_slave_m_WDATA = io_is_inst ? 32'h0 : io_slave_in_WDATA;
-  assign io_slave_m_WSTRB = io_is_inst ? 4'h0 : io_slave_in_WSTRB;
-  assign io_slave_m_WVALID = ~io_is_inst & io_slave_in_WVALID;
-  assign io_slave_m_BREADY = ~io_is_inst & io_slave_in_BREADY;
-  assign io_slave_m_ARADDR = io_is_inst ? 32'h0 : io_slave_in_ARADDR;
-  assign io_slave_m_ARVALID = ~io_is_inst & io_slave_in_ARVALID;
-  assign io_slave_m_RREADY = ~io_is_inst & io_slave_in_RREADY;
-  assign io_slave_i_ARADDR = io_is_inst ? io_slave_in_ARADDR : 32'h0;
-  assign io_slave_i_ARVALID = io_is_inst & io_slave_in_ARVALID;
-  assign io_slave_i_RREADY = io_is_inst & io_slave_in_RREADY;
+  assign io_ifu_master_arready =
+    ~busy & ~io_mem_master_awvalid & _GEN_0 & io_ifu_master_arvalid
+    & io_master_out_arready;
+  assign io_ifu_master_rvalid = ~_GEN_6 & using_ifu & io_master_out_rvalid;
+  assign io_ifu_master_rdata = _GEN_6 | ~using_ifu ? 32'h0 : io_master_out_rdata;
+  assign io_mem_master_awready = _GEN & io_master_out_awready;
+  assign io_mem_master_wready = busy & _GEN_3 & ~using_ifu & io_master_out_wready;
+  assign io_mem_master_bvalid = busy & is_write & ~_GEN_5 & io_master_out_bvalid;
+  assign io_mem_master_arready =
+    ~busy & ~io_mem_master_awvalid & _GEN_0 & ~io_ifu_master_arvalid
+    & io_master_out_arready;
+  assign io_mem_master_rvalid = ~_GEN_7 & io_master_out_rvalid;
+  assign io_mem_master_rdata = _GEN_7 ? 32'h0 : io_master_out_rdata;
+  assign io_master_out_awvalid = io_master_out_awvalid_0;
+  assign io_master_out_awaddr = _GEN ? io_mem_master_awaddr : 32'h0;
+  assign io_master_out_awid = {3'h0, _GEN};
+  assign io_master_out_awsize = _GEN ? io_mem_master_awsize : 3'h0;
+  assign io_master_out_awburst = {1'h0, _GEN};
+  assign io_master_out_wvalid = io_master_out_wvalid_0;
+  assign io_master_out_wdata = _GEN_4 ? 32'h0 : io_mem_master_wdata;
+  assign io_master_out_wstrb = _GEN_4 ? 4'h0 : io_mem_master_wstrb;
+  assign io_master_out_wlast = busy & _GEN_3 & ~using_ifu;
+  assign io_master_out_bready = io_master_out_bready_0;
+  assign io_master_out_arvalid = io_master_out_arvalid_0;
+  assign io_master_out_araddr =
+    _GEN_1 ? 32'h0 : io_ifu_master_arvalid ? io_ifu_master_araddr : io_mem_master_araddr;
+  assign io_master_out_arid = _GEN_2 ? 4'h0 : {3'h0, _GEN_0};
+  assign io_master_out_arsize =
+    _GEN_1 ? 3'h0 : io_ifu_master_arvalid ? 3'h2 : io_mem_master_arsize;
+  assign io_master_out_arburst = _GEN_2 ? 2'h0 : {1'h0, _GEN_0};
+  assign io_master_out_rready = io_master_out_rready_0;
 endmodule
 
 module CSR(
@@ -1711,16 +1621,45 @@ module CSR(
     end
   end // always @(posedge)
   assign io_csr_rdata =
-    io_csr_raddr == 12'h300
-      ? mstatus
-      : io_csr_raddr == 12'h342
-          ? mcause
-          : io_csr_raddr == 12'h341 ? mepc : io_csr_raddr == 12'h305 ? mtvec : 32'h0;
+    io_csr_raddr == 12'hF12
+      ? 32'h25080212
+      : io_csr_raddr == 12'hF11
+          ? 32'h79737978
+          : io_csr_raddr == 12'h300
+              ? mstatus
+              : io_csr_raddr == 12'h342
+                  ? mcause
+                  : io_csr_raddr == 12'h341
+                      ? mepc
+                      : io_csr_raddr == 12'h305 ? mtvec : 32'h0;
 endmodule
 
-module CPU(
+module NPC_CPU(
   input         clock,
                 reset,
+                io_master_awready,
+  output        io_master_awvalid,
+  output [31:0] io_master_awaddr,
+  output [3:0]  io_master_awid,
+  output [2:0]  io_master_awsize,
+  output [1:0]  io_master_awburst,
+  input         io_master_wready,
+  output        io_master_wvalid,
+  output [31:0] io_master_wdata,
+  output [3:0]  io_master_wstrb,
+  output        io_master_wlast,
+                io_master_bready,
+  input         io_master_bvalid,
+                io_master_arready,
+  output        io_master_arvalid,
+  output [31:0] io_master_araddr,
+  output [3:0]  io_master_arid,
+  output [2:0]  io_master_arsize,
+  output [1:0]  io_master_arburst,
+  output        io_master_rready,
+  input         io_master_rvalid,
+  input  [31:0] io_master_rdata,
+  input         io_master_rlast,
   output [31:0] io_regs_out_1,
                 io_regs_out_2,
                 io_regs_out_3,
@@ -1753,71 +1692,37 @@ module CPU(
                 io_regs_out_30,
                 io_regs_out_31,
                 io_pc_out,
-                io_inst_out
+                io_inst_out,
+  output        io_difftest_valid
 );
 
   wire [31:0] _csr_io_csr_rdata;
-  wire        _slave_selector_io_slave_in_AWREADY;
-  wire        _slave_selector_io_slave_in_WREADY;
-  wire        _slave_selector_io_slave_in_BVALID;
-  wire        _slave_selector_io_slave_in_ARREADY;
-  wire [31:0] _slave_selector_io_slave_in_RDATA;
-  wire        _slave_selector_io_slave_in_RVALID;
-  wire [31:0] _slave_selector_io_slave_m_AWADDR;
-  wire        _slave_selector_io_slave_m_AWVALID;
-  wire [31:0] _slave_selector_io_slave_m_WDATA;
-  wire [3:0]  _slave_selector_io_slave_m_WSTRB;
-  wire        _slave_selector_io_slave_m_WVALID;
-  wire        _slave_selector_io_slave_m_BREADY;
-  wire [31:0] _slave_selector_io_slave_m_ARADDR;
-  wire        _slave_selector_io_slave_m_ARVALID;
-  wire        _slave_selector_io_slave_m_RREADY;
-  wire [31:0] _slave_selector_io_slave_i_ARADDR;
-  wire        _slave_selector_io_slave_i_ARVALID;
-  wire        _slave_selector_io_slave_i_RREADY;
-  wire        _axi_arbiter_io_i_master_ARREADY;
-  wire [31:0] _axi_arbiter_io_i_master_RDATA;
-  wire        _axi_arbiter_io_i_master_RVALID;
-  wire        _axi_arbiter_io_m_master_AWREADY;
-  wire        _axi_arbiter_io_m_master_WREADY;
-  wire        _axi_arbiter_io_m_master_BVALID;
-  wire        _axi_arbiter_io_m_master_ARREADY;
-  wire [31:0] _axi_arbiter_io_m_master_RDATA;
-  wire        _axi_arbiter_io_m_master_RVALID;
-  wire [31:0] _axi_arbiter_io_slave_AWADDR;
-  wire        _axi_arbiter_io_slave_AWVALID;
-  wire [31:0] _axi_arbiter_io_slave_WDATA;
-  wire [3:0]  _axi_arbiter_io_slave_WSTRB;
-  wire        _axi_arbiter_io_slave_WVALID;
-  wire        _axi_arbiter_io_slave_BREADY;
-  wire [31:0] _axi_arbiter_io_slave_ARADDR;
-  wire        _axi_arbiter_io_slave_ARVALID;
-  wire        _axi_arbiter_io_slave_RREADY;
-  wire        _axi_arbiter_io_is_inst;
-  wire        _ISRAM_io_I_bus_ARREADY;
-  wire [31:0] _ISRAM_io_I_bus_RDATA;
-  wire        _ISRAM_io_I_bus_RVALID;
-  wire        _DSRAM_io_M_bus_AWREADY;
-  wire        _DSRAM_io_M_bus_WREADY;
-  wire        _DSRAM_io_M_bus_BVALID;
-  wire        _DSRAM_io_M_bus_ARREADY;
-  wire [31:0] _DSRAM_io_M_bus_RDATA;
-  wire        _DSRAM_io_M_bus_RVALID;
-  wire [31:0] _axi_mem_master_io_M_bus_AWADDR;
-  wire        _axi_mem_master_io_M_bus_AWVALID;
-  wire [31:0] _axi_mem_master_io_M_bus_WDATA;
-  wire [3:0]  _axi_mem_master_io_M_bus_WSTRB;
-  wire        _axi_mem_master_io_M_bus_WVALID;
-  wire        _axi_mem_master_io_M_bus_BREADY;
-  wire [31:0] _axi_mem_master_io_M_bus_ARADDR;
-  wire        _axi_mem_master_io_M_bus_ARVALID;
-  wire        _axi_mem_master_io_M_bus_RREADY;
+  wire        _axi_arbiter_io_ifu_master_arready;
+  wire        _axi_arbiter_io_ifu_master_rvalid;
+  wire [31:0] _axi_arbiter_io_ifu_master_rdata;
+  wire        _axi_arbiter_io_mem_master_awready;
+  wire        _axi_arbiter_io_mem_master_wready;
+  wire        _axi_arbiter_io_mem_master_bvalid;
+  wire        _axi_arbiter_io_mem_master_arready;
+  wire        _axi_arbiter_io_mem_master_rvalid;
+  wire [31:0] _axi_arbiter_io_mem_master_rdata;
+  wire        _axi_mem_master_io_master_awvalid;
+  wire [31:0] _axi_mem_master_io_master_awaddr;
+  wire [2:0]  _axi_mem_master_io_master_awsize;
+  wire        _axi_mem_master_io_master_wvalid;
+  wire [31:0] _axi_mem_master_io_master_wdata;
+  wire [3:0]  _axi_mem_master_io_master_wstrb;
+  wire        _axi_mem_master_io_master_bready;
+  wire        _axi_mem_master_io_master_arvalid;
+  wire [31:0] _axi_mem_master_io_master_araddr;
+  wire [2:0]  _axi_mem_master_io_master_arsize;
+  wire        _axi_mem_master_io_master_rready;
   wire        _axi_mem_master_io_mem_req_ready;
   wire        _axi_mem_master_io_mem_resp_valid;
   wire [31:0] _axi_mem_master_io_mem_resp_bits_rdata;
-  wire [31:0] _axi_ifu_master_io_I_bus_ARADDR;
-  wire        _axi_ifu_master_io_I_bus_ARVALID;
-  wire        _axi_ifu_master_io_I_bus_RREADY;
+  wire        _axi_ifu_master_io_master_arvalid;
+  wire [31:0] _axi_ifu_master_io_master_araddr;
+  wire        _axi_ifu_master_io_master_rready;
   wire        _axi_ifu_master_io_inst_req_ready;
   wire        _axi_ifu_master_io_inst_resp_valid;
   wire [31:0] _axi_ifu_master_io_inst_resp_bits_inst;
@@ -1850,6 +1755,7 @@ module CPU(
   wire        _mem_io_mem_req_valid;
   wire        _mem_io_mem_req_bits_wen;
   wire [31:0] _mem_io_mem_req_bits_raddr;
+  wire [2:0]  _mem_io_mem_req_bits_rsize;
   wire [31:0] _mem_io_mem_req_bits_waddr;
   wire [31:0] _mem_io_mem_req_bits_wdata;
   wire [3:0]  _mem_io_mem_req_bits_wmask;
@@ -2133,6 +2039,7 @@ module CPU(
     .io_mem_req_valid       (_mem_io_mem_req_valid),
     .io_mem_req_bits_wen    (_mem_io_mem_req_bits_wen),
     .io_mem_req_bits_raddr  (_mem_io_mem_req_bits_raddr),
+    .io_mem_req_bits_rsize  (_mem_io_mem_req_bits_rsize),
     .io_mem_req_bits_waddr  (_mem_io_mem_req_bits_waddr),
     .io_mem_req_bits_wdata  (_mem_io_mem_req_bits_wdata),
     .io_mem_req_bits_wmask  (_mem_io_mem_req_bits_wmask),
@@ -2209,15 +2116,15 @@ module CPU(
     .io_regs_out_30 (io_regs_out_30),
     .io_regs_out_31 (io_regs_out_31)
   );
-  AXI_IFU_Master axi_ifu_master (
+  Axi4_IFU_Master axi_ifu_master (
     .clock                  (clock),
     .reset                  (reset),
-    .io_I_bus_ARADDR        (_axi_ifu_master_io_I_bus_ARADDR),
-    .io_I_bus_ARVALID       (_axi_ifu_master_io_I_bus_ARVALID),
-    .io_I_bus_ARREADY       (_axi_arbiter_io_i_master_ARREADY),
-    .io_I_bus_RDATA         (_axi_arbiter_io_i_master_RDATA),
-    .io_I_bus_RVALID        (_axi_arbiter_io_i_master_RVALID),
-    .io_I_bus_RREADY        (_axi_ifu_master_io_I_bus_RREADY),
+    .io_master_arready      (_axi_arbiter_io_ifu_master_arready),
+    .io_master_arvalid      (_axi_ifu_master_io_master_arvalid),
+    .io_master_araddr       (_axi_ifu_master_io_master_araddr),
+    .io_master_rready       (_axi_ifu_master_io_master_rready),
+    .io_master_rvalid       (_axi_arbiter_io_ifu_master_rvalid),
+    .io_master_rdata        (_axi_arbiter_io_ifu_master_rdata),
     .io_inst_req_ready      (_axi_ifu_master_io_inst_req_ready),
     .io_inst_req_valid      (_ifu_io_inst_req_valid),
     .io_inst_req_bits_pc    (_ifu_io_inst_req_bits_pc),
@@ -2226,28 +2133,31 @@ module CPU(
     .io_inst_resp_bits_inst (_axi_ifu_master_io_inst_resp_bits_inst),
     .io_flush               (_ifu_io_flush)
   );
-  AXI_MEM_Master axi_mem_master (
+  Axi4_MEM_Master axi_mem_master (
     .clock                  (clock),
     .reset                  (reset),
-    .io_M_bus_AWADDR        (_axi_mem_master_io_M_bus_AWADDR),
-    .io_M_bus_AWVALID       (_axi_mem_master_io_M_bus_AWVALID),
-    .io_M_bus_AWREADY       (_axi_arbiter_io_m_master_AWREADY),
-    .io_M_bus_WDATA         (_axi_mem_master_io_M_bus_WDATA),
-    .io_M_bus_WSTRB         (_axi_mem_master_io_M_bus_WSTRB),
-    .io_M_bus_WVALID        (_axi_mem_master_io_M_bus_WVALID),
-    .io_M_bus_WREADY        (_axi_arbiter_io_m_master_WREADY),
-    .io_M_bus_BVALID        (_axi_arbiter_io_m_master_BVALID),
-    .io_M_bus_BREADY        (_axi_mem_master_io_M_bus_BREADY),
-    .io_M_bus_ARADDR        (_axi_mem_master_io_M_bus_ARADDR),
-    .io_M_bus_ARVALID       (_axi_mem_master_io_M_bus_ARVALID),
-    .io_M_bus_ARREADY       (_axi_arbiter_io_m_master_ARREADY),
-    .io_M_bus_RDATA         (_axi_arbiter_io_m_master_RDATA),
-    .io_M_bus_RVALID        (_axi_arbiter_io_m_master_RVALID),
-    .io_M_bus_RREADY        (_axi_mem_master_io_M_bus_RREADY),
+    .io_master_awready      (_axi_arbiter_io_mem_master_awready),
+    .io_master_awvalid      (_axi_mem_master_io_master_awvalid),
+    .io_master_awaddr       (_axi_mem_master_io_master_awaddr),
+    .io_master_awsize       (_axi_mem_master_io_master_awsize),
+    .io_master_wready       (_axi_arbiter_io_mem_master_wready),
+    .io_master_wvalid       (_axi_mem_master_io_master_wvalid),
+    .io_master_wdata        (_axi_mem_master_io_master_wdata),
+    .io_master_wstrb        (_axi_mem_master_io_master_wstrb),
+    .io_master_bready       (_axi_mem_master_io_master_bready),
+    .io_master_bvalid       (_axi_arbiter_io_mem_master_bvalid),
+    .io_master_arready      (_axi_arbiter_io_mem_master_arready),
+    .io_master_arvalid      (_axi_mem_master_io_master_arvalid),
+    .io_master_araddr       (_axi_mem_master_io_master_araddr),
+    .io_master_arsize       (_axi_mem_master_io_master_arsize),
+    .io_master_rready       (_axi_mem_master_io_master_rready),
+    .io_master_rvalid       (_axi_arbiter_io_mem_master_rvalid),
+    .io_master_rdata        (_axi_arbiter_io_mem_master_rdata),
     .io_mem_req_ready       (_axi_mem_master_io_mem_req_ready),
     .io_mem_req_valid       (_mem_io_mem_req_valid),
     .io_mem_req_bits_wen    (_mem_io_mem_req_bits_wen),
     .io_mem_req_bits_raddr  (_mem_io_mem_req_bits_raddr),
+    .io_mem_req_bits_rsize  (_mem_io_mem_req_bits_rsize),
     .io_mem_req_bits_waddr  (_mem_io_mem_req_bits_waddr),
     .io_mem_req_bits_wdata  (_mem_io_mem_req_bits_wdata),
     .io_mem_req_bits_wmask  (_mem_io_mem_req_bits_wmask),
@@ -2255,114 +2165,55 @@ module CPU(
     .io_mem_resp_valid      (_axi_mem_master_io_mem_resp_valid),
     .io_mem_resp_bits_rdata (_axi_mem_master_io_mem_resp_bits_rdata)
   );
-  DSRAM DSRAM (
-    .clock            (clock),
-    .reset            (reset),
-    .io_M_bus_AWADDR  (_slave_selector_io_slave_m_AWADDR),
-    .io_M_bus_AWVALID (_slave_selector_io_slave_m_AWVALID),
-    .io_M_bus_AWREADY (_DSRAM_io_M_bus_AWREADY),
-    .io_M_bus_WDATA   (_slave_selector_io_slave_m_WDATA),
-    .io_M_bus_WSTRB   (_slave_selector_io_slave_m_WSTRB),
-    .io_M_bus_WVALID  (_slave_selector_io_slave_m_WVALID),
-    .io_M_bus_WREADY  (_DSRAM_io_M_bus_WREADY),
-    .io_M_bus_BVALID  (_DSRAM_io_M_bus_BVALID),
-    .io_M_bus_BREADY  (_slave_selector_io_slave_m_BREADY),
-    .io_M_bus_ARADDR  (_slave_selector_io_slave_m_ARADDR),
-    .io_M_bus_ARVALID (_slave_selector_io_slave_m_ARVALID),
-    .io_M_bus_ARREADY (_DSRAM_io_M_bus_ARREADY),
-    .io_M_bus_RDATA   (_DSRAM_io_M_bus_RDATA),
-    .io_M_bus_RVALID  (_DSRAM_io_M_bus_RVALID),
-    .io_M_bus_RREADY  (_slave_selector_io_slave_m_RREADY)
-  );
-  ISRAM ISRAM (
-    .clock            (clock),
-    .reset            (reset),
-    .io_I_bus_ARADDR  (_slave_selector_io_slave_i_ARADDR),
-    .io_I_bus_ARVALID (_slave_selector_io_slave_i_ARVALID),
-    .io_I_bus_ARREADY (_ISRAM_io_I_bus_ARREADY),
-    .io_I_bus_RDATA   (_ISRAM_io_I_bus_RDATA),
-    .io_I_bus_RVALID  (_ISRAM_io_I_bus_RVALID),
-    .io_I_bus_RREADY  (_slave_selector_io_slave_i_RREADY)
-  );
   AXI_ARB2TO1 axi_arbiter (
-    .clock               (clock),
-    .reset               (reset),
-    .io_i_master_ARADDR  (_axi_ifu_master_io_I_bus_ARADDR),
-    .io_i_master_ARVALID (_axi_ifu_master_io_I_bus_ARVALID),
-    .io_i_master_ARREADY (_axi_arbiter_io_i_master_ARREADY),
-    .io_i_master_RDATA   (_axi_arbiter_io_i_master_RDATA),
-    .io_i_master_RVALID  (_axi_arbiter_io_i_master_RVALID),
-    .io_i_master_RREADY  (_axi_ifu_master_io_I_bus_RREADY),
-    .io_m_master_AWADDR  (_axi_mem_master_io_M_bus_AWADDR),
-    .io_m_master_AWVALID (_axi_mem_master_io_M_bus_AWVALID),
-    .io_m_master_AWREADY (_axi_arbiter_io_m_master_AWREADY),
-    .io_m_master_WDATA   (_axi_mem_master_io_M_bus_WDATA),
-    .io_m_master_WSTRB   (_axi_mem_master_io_M_bus_WSTRB),
-    .io_m_master_WVALID  (_axi_mem_master_io_M_bus_WVALID),
-    .io_m_master_WREADY  (_axi_arbiter_io_m_master_WREADY),
-    .io_m_master_BVALID  (_axi_arbiter_io_m_master_BVALID),
-    .io_m_master_BREADY  (_axi_mem_master_io_M_bus_BREADY),
-    .io_m_master_ARADDR  (_axi_mem_master_io_M_bus_ARADDR),
-    .io_m_master_ARVALID (_axi_mem_master_io_M_bus_ARVALID),
-    .io_m_master_ARREADY (_axi_arbiter_io_m_master_ARREADY),
-    .io_m_master_RDATA   (_axi_arbiter_io_m_master_RDATA),
-    .io_m_master_RVALID  (_axi_arbiter_io_m_master_RVALID),
-    .io_m_master_RREADY  (_axi_mem_master_io_M_bus_RREADY),
-    .io_slave_AWADDR     (_axi_arbiter_io_slave_AWADDR),
-    .io_slave_AWVALID    (_axi_arbiter_io_slave_AWVALID),
-    .io_slave_AWREADY    (_slave_selector_io_slave_in_AWREADY),
-    .io_slave_WDATA      (_axi_arbiter_io_slave_WDATA),
-    .io_slave_WSTRB      (_axi_arbiter_io_slave_WSTRB),
-    .io_slave_WVALID     (_axi_arbiter_io_slave_WVALID),
-    .io_slave_WREADY     (_slave_selector_io_slave_in_WREADY),
-    .io_slave_BVALID     (_slave_selector_io_slave_in_BVALID),
-    .io_slave_BREADY     (_axi_arbiter_io_slave_BREADY),
-    .io_slave_ARADDR     (_axi_arbiter_io_slave_ARADDR),
-    .io_slave_ARVALID    (_axi_arbiter_io_slave_ARVALID),
-    .io_slave_ARREADY    (_slave_selector_io_slave_in_ARREADY),
-    .io_slave_RDATA      (_slave_selector_io_slave_in_RDATA),
-    .io_slave_RVALID     (_slave_selector_io_slave_in_RVALID),
-    .io_slave_RREADY     (_axi_arbiter_io_slave_RREADY),
-    .io_is_inst          (_axi_arbiter_io_is_inst)
-  );
-  slaveSel slave_selector (
-    .io_slave_in_AWADDR  (_axi_arbiter_io_slave_AWADDR),
-    .io_slave_in_AWVALID (_axi_arbiter_io_slave_AWVALID),
-    .io_slave_in_AWREADY (_slave_selector_io_slave_in_AWREADY),
-    .io_slave_in_WDATA   (_axi_arbiter_io_slave_WDATA),
-    .io_slave_in_WSTRB   (_axi_arbiter_io_slave_WSTRB),
-    .io_slave_in_WVALID  (_axi_arbiter_io_slave_WVALID),
-    .io_slave_in_WREADY  (_slave_selector_io_slave_in_WREADY),
-    .io_slave_in_BVALID  (_slave_selector_io_slave_in_BVALID),
-    .io_slave_in_BREADY  (_axi_arbiter_io_slave_BREADY),
-    .io_slave_in_ARADDR  (_axi_arbiter_io_slave_ARADDR),
-    .io_slave_in_ARVALID (_axi_arbiter_io_slave_ARVALID),
-    .io_slave_in_ARREADY (_slave_selector_io_slave_in_ARREADY),
-    .io_slave_in_RDATA   (_slave_selector_io_slave_in_RDATA),
-    .io_slave_in_RVALID  (_slave_selector_io_slave_in_RVALID),
-    .io_slave_in_RREADY  (_axi_arbiter_io_slave_RREADY),
-    .io_slave_m_AWADDR   (_slave_selector_io_slave_m_AWADDR),
-    .io_slave_m_AWVALID  (_slave_selector_io_slave_m_AWVALID),
-    .io_slave_m_AWREADY  (_DSRAM_io_M_bus_AWREADY),
-    .io_slave_m_WDATA    (_slave_selector_io_slave_m_WDATA),
-    .io_slave_m_WSTRB    (_slave_selector_io_slave_m_WSTRB),
-    .io_slave_m_WVALID   (_slave_selector_io_slave_m_WVALID),
-    .io_slave_m_WREADY   (_DSRAM_io_M_bus_WREADY),
-    .io_slave_m_BVALID   (_DSRAM_io_M_bus_BVALID),
-    .io_slave_m_BREADY   (_slave_selector_io_slave_m_BREADY),
-    .io_slave_m_ARADDR   (_slave_selector_io_slave_m_ARADDR),
-    .io_slave_m_ARVALID  (_slave_selector_io_slave_m_ARVALID),
-    .io_slave_m_ARREADY  (_DSRAM_io_M_bus_ARREADY),
-    .io_slave_m_RDATA    (_DSRAM_io_M_bus_RDATA),
-    .io_slave_m_RVALID   (_DSRAM_io_M_bus_RVALID),
-    .io_slave_m_RREADY   (_slave_selector_io_slave_m_RREADY),
-    .io_slave_i_ARADDR   (_slave_selector_io_slave_i_ARADDR),
-    .io_slave_i_ARVALID  (_slave_selector_io_slave_i_ARVALID),
-    .io_slave_i_ARREADY  (_ISRAM_io_I_bus_ARREADY),
-    .io_slave_i_RDATA    (_ISRAM_io_I_bus_RDATA),
-    .io_slave_i_RVALID   (_ISRAM_io_I_bus_RVALID),
-    .io_slave_i_RREADY   (_slave_selector_io_slave_i_RREADY),
-    .io_is_inst          (_axi_arbiter_io_is_inst)
+    .clock                 (clock),
+    .reset                 (reset),
+    .io_ifu_master_arready (_axi_arbiter_io_ifu_master_arready),
+    .io_ifu_master_arvalid (_axi_ifu_master_io_master_arvalid),
+    .io_ifu_master_araddr  (_axi_ifu_master_io_master_araddr),
+    .io_ifu_master_rready  (_axi_ifu_master_io_master_rready),
+    .io_ifu_master_rvalid  (_axi_arbiter_io_ifu_master_rvalid),
+    .io_ifu_master_rdata   (_axi_arbiter_io_ifu_master_rdata),
+    .io_mem_master_awready (_axi_arbiter_io_mem_master_awready),
+    .io_mem_master_awvalid (_axi_mem_master_io_master_awvalid),
+    .io_mem_master_awaddr  (_axi_mem_master_io_master_awaddr),
+    .io_mem_master_awsize  (_axi_mem_master_io_master_awsize),
+    .io_mem_master_wready  (_axi_arbiter_io_mem_master_wready),
+    .io_mem_master_wvalid  (_axi_mem_master_io_master_wvalid),
+    .io_mem_master_wdata   (_axi_mem_master_io_master_wdata),
+    .io_mem_master_wstrb   (_axi_mem_master_io_master_wstrb),
+    .io_mem_master_bready  (_axi_mem_master_io_master_bready),
+    .io_mem_master_bvalid  (_axi_arbiter_io_mem_master_bvalid),
+    .io_mem_master_arready (_axi_arbiter_io_mem_master_arready),
+    .io_mem_master_arvalid (_axi_mem_master_io_master_arvalid),
+    .io_mem_master_araddr  (_axi_mem_master_io_master_araddr),
+    .io_mem_master_arsize  (_axi_mem_master_io_master_arsize),
+    .io_mem_master_rready  (_axi_mem_master_io_master_rready),
+    .io_mem_master_rvalid  (_axi_arbiter_io_mem_master_rvalid),
+    .io_mem_master_rdata   (_axi_arbiter_io_mem_master_rdata),
+    .io_master_out_awready (io_master_awready),
+    .io_master_out_awvalid (io_master_awvalid),
+    .io_master_out_awaddr  (io_master_awaddr),
+    .io_master_out_awid    (io_master_awid),
+    .io_master_out_awsize  (io_master_awsize),
+    .io_master_out_awburst (io_master_awburst),
+    .io_master_out_wready  (io_master_wready),
+    .io_master_out_wvalid  (io_master_wvalid),
+    .io_master_out_wdata   (io_master_wdata),
+    .io_master_out_wstrb   (io_master_wstrb),
+    .io_master_out_wlast   (io_master_wlast),
+    .io_master_out_bready  (io_master_bready),
+    .io_master_out_bvalid  (io_master_bvalid),
+    .io_master_out_arready (io_master_arready),
+    .io_master_out_arvalid (io_master_arvalid),
+    .io_master_out_araddr  (io_master_araddr),
+    .io_master_out_arid    (io_master_arid),
+    .io_master_out_arsize  (io_master_arsize),
+    .io_master_out_arburst (io_master_arburst),
+    .io_master_out_rready  (io_master_rready),
+    .io_master_out_rvalid  (io_master_rvalid),
+    .io_master_out_rdata   (io_master_rdata),
+    .io_master_out_rlast   (io_master_rlast)
   );
   CSR csr (
     .clock        (clock),
@@ -2377,6 +2228,7 @@ module CPU(
   );
   assign io_pc_out = _ifu_io_out_bits_pc;
   assign io_inst_out = _ifu_io_out_bits_inst;
+  assign io_difftest_valid = _wb_io_commit;
 endmodule
 
 module top(
@@ -2386,6 +2238,65 @@ module top(
                 io_inst,
   output        io_halt_ret,
                 io_non_inst,
+  input         io_interrupt,
+                io_master_awready,
+  output        io_master_awvalid,
+  output [31:0] io_master_awaddr,
+  output [3:0]  io_master_awid,
+  output [7:0]  io_master_awlen,
+  output [2:0]  io_master_awsize,
+  output [1:0]  io_master_awburst,
+  input         io_master_wready,
+  output        io_master_wvalid,
+  output [31:0] io_master_wdata,
+  output [3:0]  io_master_wstrb,
+  output        io_master_wlast,
+                io_master_bready,
+  input         io_master_bvalid,
+  input  [1:0]  io_master_bresp,
+  input  [3:0]  io_master_bid,
+  input         io_master_arready,
+  output        io_master_arvalid,
+  output [31:0] io_master_araddr,
+  output [3:0]  io_master_arid,
+  output [7:0]  io_master_arlen,
+  output [2:0]  io_master_arsize,
+  output [1:0]  io_master_arburst,
+  output        io_master_rready,
+  input         io_master_rvalid,
+  input  [1:0]  io_master_rresp,
+  input  [31:0] io_master_rdata,
+  input         io_master_rlast,
+  input  [3:0]  io_master_rid,
+  output        io_slave_awready,
+  input         io_slave_awvalid,
+  input  [31:0] io_slave_awaddr,
+  input  [3:0]  io_slave_awid,
+  input  [7:0]  io_slave_awlen,
+  input  [2:0]  io_slave_awsize,
+  input  [1:0]  io_slave_awburst,
+  output        io_slave_wready,
+  input         io_slave_wvalid,
+  input  [31:0] io_slave_wdata,
+  input  [3:0]  io_slave_wstrb,
+  input         io_slave_wlast,
+                io_slave_bready,
+  output        io_slave_bvalid,
+  output [1:0]  io_slave_bresp,
+  output [3:0]  io_slave_bid,
+  output        io_slave_arready,
+  input         io_slave_arvalid,
+  input  [31:0] io_slave_araddr,
+  input  [3:0]  io_slave_arid,
+  input  [7:0]  io_slave_arlen,
+  input  [2:0]  io_slave_arsize,
+  input  [1:0]  io_slave_arburst,
+  input         io_slave_rready,
+  output        io_slave_rvalid,
+  output [1:0]  io_slave_rresp,
+  output [31:0] io_slave_rdata,
+  output        io_slave_rlast,
+  output [3:0]  io_slave_rid,
   output [31:0] io_gpr_0,
                 io_gpr_1,
                 io_gpr_2,
@@ -2417,137 +2328,199 @@ module top(
                 io_gpr_28,
                 io_gpr_29,
                 io_gpr_30,
-                io_gpr_31
+                io_gpr_31,
+  output        io_difftest_valid
 );
 
-  wire [31:0] _cpu_io_inst_out;
-  CPU cpu (
-    .clock          (clock),
-    .reset          (reset),
-    .io_regs_out_1  (io_gpr_1),
-    .io_regs_out_2  (io_gpr_2),
-    .io_regs_out_3  (io_gpr_3),
-    .io_regs_out_4  (io_gpr_4),
-    .io_regs_out_5  (io_gpr_5),
-    .io_regs_out_6  (io_gpr_6),
-    .io_regs_out_7  (io_gpr_7),
-    .io_regs_out_8  (io_gpr_8),
-    .io_regs_out_9  (io_gpr_9),
-    .io_regs_out_10 (io_gpr_10),
-    .io_regs_out_11 (io_gpr_11),
-    .io_regs_out_12 (io_gpr_12),
-    .io_regs_out_13 (io_gpr_13),
-    .io_regs_out_14 (io_gpr_14),
-    .io_regs_out_15 (io_gpr_15),
-    .io_regs_out_16 (io_gpr_16),
-    .io_regs_out_17 (io_gpr_17),
-    .io_regs_out_18 (io_gpr_18),
-    .io_regs_out_19 (io_gpr_19),
-    .io_regs_out_20 (io_gpr_20),
-    .io_regs_out_21 (io_gpr_21),
-    .io_regs_out_22 (io_gpr_22),
-    .io_regs_out_23 (io_gpr_23),
-    .io_regs_out_24 (io_gpr_24),
-    .io_regs_out_25 (io_gpr_25),
-    .io_regs_out_26 (io_gpr_26),
-    .io_regs_out_27 (io_gpr_27),
-    .io_regs_out_28 (io_gpr_28),
-    .io_regs_out_29 (io_gpr_29),
-    .io_regs_out_30 (io_gpr_30),
-    .io_regs_out_31 (io_gpr_31),
-    .io_pc_out      (io_pc),
-    .io_inst_out    (_cpu_io_inst_out)
+  wire [31:0] _npc_cpu_io_regs_out_1;
+  wire [31:0] _npc_cpu_io_regs_out_2;
+  wire [31:0] _npc_cpu_io_regs_out_3;
+  wire [31:0] _npc_cpu_io_regs_out_4;
+  wire [31:0] _npc_cpu_io_regs_out_5;
+  wire [31:0] _npc_cpu_io_regs_out_6;
+  wire [31:0] _npc_cpu_io_regs_out_7;
+  wire [31:0] _npc_cpu_io_regs_out_8;
+  wire [31:0] _npc_cpu_io_regs_out_9;
+  wire [31:0] _npc_cpu_io_regs_out_10;
+  wire [31:0] _npc_cpu_io_regs_out_11;
+  wire [31:0] _npc_cpu_io_regs_out_12;
+  wire [31:0] _npc_cpu_io_regs_out_13;
+  wire [31:0] _npc_cpu_io_regs_out_14;
+  wire [31:0] _npc_cpu_io_regs_out_15;
+  wire [31:0] _npc_cpu_io_regs_out_16;
+  wire [31:0] _npc_cpu_io_regs_out_17;
+  wire [31:0] _npc_cpu_io_regs_out_18;
+  wire [31:0] _npc_cpu_io_regs_out_19;
+  wire [31:0] _npc_cpu_io_regs_out_20;
+  wire [31:0] _npc_cpu_io_regs_out_21;
+  wire [31:0] _npc_cpu_io_regs_out_22;
+  wire [31:0] _npc_cpu_io_regs_out_23;
+  wire [31:0] _npc_cpu_io_regs_out_24;
+  wire [31:0] _npc_cpu_io_regs_out_25;
+  wire [31:0] _npc_cpu_io_regs_out_26;
+  wire [31:0] _npc_cpu_io_regs_out_27;
+  wire [31:0] _npc_cpu_io_regs_out_28;
+  wire [31:0] _npc_cpu_io_regs_out_29;
+  wire [31:0] _npc_cpu_io_regs_out_30;
+  wire [31:0] _npc_cpu_io_regs_out_31;
+  wire [31:0] _npc_cpu_io_pc_out;
+  wire [31:0] _npc_cpu_io_inst_out;
+  wire        _npc_cpu_io_difftest_valid;
+  NPC_CPU npc_cpu (
+    .clock             (clock),
+    .reset             (reset),
+    .io_master_awready (io_master_awready),
+    .io_master_awvalid (io_master_awvalid),
+    .io_master_awaddr  (io_master_awaddr),
+    .io_master_awid    (io_master_awid),
+    .io_master_awsize  (io_master_awsize),
+    .io_master_awburst (io_master_awburst),
+    .io_master_wready  (io_master_wready),
+    .io_master_wvalid  (io_master_wvalid),
+    .io_master_wdata   (io_master_wdata),
+    .io_master_wstrb   (io_master_wstrb),
+    .io_master_wlast   (io_master_wlast),
+    .io_master_bready  (io_master_bready),
+    .io_master_bvalid  (io_master_bvalid),
+    .io_master_arready (io_master_arready),
+    .io_master_arvalid (io_master_arvalid),
+    .io_master_araddr  (io_master_araddr),
+    .io_master_arid    (io_master_arid),
+    .io_master_arsize  (io_master_arsize),
+    .io_master_arburst (io_master_arburst),
+    .io_master_rready  (io_master_rready),
+    .io_master_rvalid  (io_master_rvalid),
+    .io_master_rdata   (io_master_rdata),
+    .io_master_rlast   (io_master_rlast),
+    .io_regs_out_1     (_npc_cpu_io_regs_out_1),
+    .io_regs_out_2     (_npc_cpu_io_regs_out_2),
+    .io_regs_out_3     (_npc_cpu_io_regs_out_3),
+    .io_regs_out_4     (_npc_cpu_io_regs_out_4),
+    .io_regs_out_5     (_npc_cpu_io_regs_out_5),
+    .io_regs_out_6     (_npc_cpu_io_regs_out_6),
+    .io_regs_out_7     (_npc_cpu_io_regs_out_7),
+    .io_regs_out_8     (_npc_cpu_io_regs_out_8),
+    .io_regs_out_9     (_npc_cpu_io_regs_out_9),
+    .io_regs_out_10    (_npc_cpu_io_regs_out_10),
+    .io_regs_out_11    (_npc_cpu_io_regs_out_11),
+    .io_regs_out_12    (_npc_cpu_io_regs_out_12),
+    .io_regs_out_13    (_npc_cpu_io_regs_out_13),
+    .io_regs_out_14    (_npc_cpu_io_regs_out_14),
+    .io_regs_out_15    (_npc_cpu_io_regs_out_15),
+    .io_regs_out_16    (_npc_cpu_io_regs_out_16),
+    .io_regs_out_17    (_npc_cpu_io_regs_out_17),
+    .io_regs_out_18    (_npc_cpu_io_regs_out_18),
+    .io_regs_out_19    (_npc_cpu_io_regs_out_19),
+    .io_regs_out_20    (_npc_cpu_io_regs_out_20),
+    .io_regs_out_21    (_npc_cpu_io_regs_out_21),
+    .io_regs_out_22    (_npc_cpu_io_regs_out_22),
+    .io_regs_out_23    (_npc_cpu_io_regs_out_23),
+    .io_regs_out_24    (_npc_cpu_io_regs_out_24),
+    .io_regs_out_25    (_npc_cpu_io_regs_out_25),
+    .io_regs_out_26    (_npc_cpu_io_regs_out_26),
+    .io_regs_out_27    (_npc_cpu_io_regs_out_27),
+    .io_regs_out_28    (_npc_cpu_io_regs_out_28),
+    .io_regs_out_29    (_npc_cpu_io_regs_out_29),
+    .io_regs_out_30    (_npc_cpu_io_regs_out_30),
+    .io_regs_out_31    (_npc_cpu_io_regs_out_31),
+    .io_pc_out         (_npc_cpu_io_pc_out),
+    .io_inst_out       (_npc_cpu_io_inst_out),
+    .io_difftest_valid (_npc_cpu_io_difftest_valid)
   );
   EbreakBlackBox ebreak_box (
-    .is_ebreak (_cpu_io_inst_out == 32'h100073)
+    .is_ebreak (_npc_cpu_io_inst_out == 32'h100073 & _npc_cpu_io_difftest_valid)
   );
-  assign io_inst = _cpu_io_inst_out;
+  DifftestDPI difftest_dpi (
+    .pc             (_npc_cpu_io_pc_out),
+    .inst           (_npc_cpu_io_inst_out),
+    .difftest_valid (_npc_cpu_io_difftest_valid),
+    .non_inst       (1'h0),
+    .gpr0           (32'h0),
+    .gpr1           (_npc_cpu_io_regs_out_1),
+    .gpr2           (_npc_cpu_io_regs_out_2),
+    .gpr3           (_npc_cpu_io_regs_out_3),
+    .gpr4           (_npc_cpu_io_regs_out_4),
+    .gpr5           (_npc_cpu_io_regs_out_5),
+    .gpr6           (_npc_cpu_io_regs_out_6),
+    .gpr7           (_npc_cpu_io_regs_out_7),
+    .gpr8           (_npc_cpu_io_regs_out_8),
+    .gpr9           (_npc_cpu_io_regs_out_9),
+    .gpr10          (_npc_cpu_io_regs_out_10),
+    .gpr11          (_npc_cpu_io_regs_out_11),
+    .gpr12          (_npc_cpu_io_regs_out_12),
+    .gpr13          (_npc_cpu_io_regs_out_13),
+    .gpr14          (_npc_cpu_io_regs_out_14),
+    .gpr15          (_npc_cpu_io_regs_out_15),
+    .gpr16          (_npc_cpu_io_regs_out_16),
+    .gpr17          (_npc_cpu_io_regs_out_17),
+    .gpr18          (_npc_cpu_io_regs_out_18),
+    .gpr19          (_npc_cpu_io_regs_out_19),
+    .gpr20          (_npc_cpu_io_regs_out_20),
+    .gpr21          (_npc_cpu_io_regs_out_21),
+    .gpr22          (_npc_cpu_io_regs_out_22),
+    .gpr23          (_npc_cpu_io_regs_out_23),
+    .gpr24          (_npc_cpu_io_regs_out_24),
+    .gpr25          (_npc_cpu_io_regs_out_25),
+    .gpr26          (_npc_cpu_io_regs_out_26),
+    .gpr27          (_npc_cpu_io_regs_out_27),
+    .gpr28          (_npc_cpu_io_regs_out_28),
+    .gpr29          (_npc_cpu_io_regs_out_29),
+    .gpr30          (_npc_cpu_io_regs_out_30),
+    .gpr31          (_npc_cpu_io_regs_out_31)
+  );
+  assign io_pc = _npc_cpu_io_pc_out;
+  assign io_inst = _npc_cpu_io_inst_out;
   assign io_halt_ret = 1'h0;
   assign io_non_inst = 1'h0;
+  assign io_master_awlen = 8'h0;
+  assign io_master_arlen = 8'h0;
+  assign io_slave_awready = 1'h0;
+  assign io_slave_wready = 1'h0;
+  assign io_slave_bvalid = 1'h0;
+  assign io_slave_bresp = 2'h0;
+  assign io_slave_bid = 4'h0;
+  assign io_slave_arready = 1'h0;
+  assign io_slave_rvalid = 1'h0;
+  assign io_slave_rresp = 2'h0;
+  assign io_slave_rdata = 32'h0;
+  assign io_slave_rlast = 1'h0;
+  assign io_slave_rid = 4'h0;
   assign io_gpr_0 = 32'h0;
+  assign io_gpr_1 = _npc_cpu_io_regs_out_1;
+  assign io_gpr_2 = _npc_cpu_io_regs_out_2;
+  assign io_gpr_3 = _npc_cpu_io_regs_out_3;
+  assign io_gpr_4 = _npc_cpu_io_regs_out_4;
+  assign io_gpr_5 = _npc_cpu_io_regs_out_5;
+  assign io_gpr_6 = _npc_cpu_io_regs_out_6;
+  assign io_gpr_7 = _npc_cpu_io_regs_out_7;
+  assign io_gpr_8 = _npc_cpu_io_regs_out_8;
+  assign io_gpr_9 = _npc_cpu_io_regs_out_9;
+  assign io_gpr_10 = _npc_cpu_io_regs_out_10;
+  assign io_gpr_11 = _npc_cpu_io_regs_out_11;
+  assign io_gpr_12 = _npc_cpu_io_regs_out_12;
+  assign io_gpr_13 = _npc_cpu_io_regs_out_13;
+  assign io_gpr_14 = _npc_cpu_io_regs_out_14;
+  assign io_gpr_15 = _npc_cpu_io_regs_out_15;
+  assign io_gpr_16 = _npc_cpu_io_regs_out_16;
+  assign io_gpr_17 = _npc_cpu_io_regs_out_17;
+  assign io_gpr_18 = _npc_cpu_io_regs_out_18;
+  assign io_gpr_19 = _npc_cpu_io_regs_out_19;
+  assign io_gpr_20 = _npc_cpu_io_regs_out_20;
+  assign io_gpr_21 = _npc_cpu_io_regs_out_21;
+  assign io_gpr_22 = _npc_cpu_io_regs_out_22;
+  assign io_gpr_23 = _npc_cpu_io_regs_out_23;
+  assign io_gpr_24 = _npc_cpu_io_regs_out_24;
+  assign io_gpr_25 = _npc_cpu_io_regs_out_25;
+  assign io_gpr_26 = _npc_cpu_io_regs_out_26;
+  assign io_gpr_27 = _npc_cpu_io_regs_out_27;
+  assign io_gpr_28 = _npc_cpu_io_regs_out_28;
+  assign io_gpr_29 = _npc_cpu_io_regs_out_29;
+  assign io_gpr_30 = _npc_cpu_io_regs_out_30;
+  assign io_gpr_31 = _npc_cpu_io_regs_out_31;
+  assign io_difftest_valid = _npc_cpu_io_difftest_valid;
 endmodule
 
 
-// ----- 8< ----- FILE "./Mem.v" ----- 8< -----
-
-module MemBlackBox(
-    input         clk,
-    input         valid,
-    input         wen,
-    input  [31:0] raddr,
-    input  [31:0] waddr,
-    input  [31:0] wdata,
-    input  [3:0]  wmask,
-    output reg [31:0] rdata
-);
-
-import "DPI-C" function int pmem_read(input int raddr);
-import "DPI-C" function void pmem_write(
-  input int waddr, input int wdata, input int wmask);
-
-// 改为256kb 的寄存器，先跑仿真
-
-reg [31:0] mem_array [0:65535]; // 256KB
-
-always @(*) begin
-  if (valid && !wen) begin    
-    //$display("PMEM_read from addr: %h, clk: %h, valid: %h, wen: %h", raddr, clk, valid, wen);
-    rdata = pmem_read(raddr);    
-    //rdata = mem_array[raddr]; // 256KB
-  end else begin
-    rdata = 32'b0;
-  end
-end
-
-always @(posedge clk) begin
-  if (valid && wen) begin
-    pmem_write(waddr, wdata, {28'b0, wmask});
-    //$display("PMEM_write to addr: %h, clk: %h, valid: %h, wen: %h", waddr, clk, valid, wen);
-    //mem_array[waddr] <= wdata; // 256KB
-  end
-end
-
-endmodule
-// ----- 8< ----- FILE "./Inst_fetch.v" ----- 8< -----
-
-module ImemBlackBox(
-    input         clock,
-    input         reset,
-
-    input         pc_valid,
-    input  [31:0] pc,
-
-    output reg        inst_valid,
-    output reg [31:0] inst
-);
-
-import "DPI-C" function int pmem_read_inst(input int pc);
-
-reg [31:0] pc_r;
-reg        pc_valid_r;
-
-always @(posedge clock) begin
-  if (reset) begin
-    pc_r       <= 32'b0;
-    pc_valid_r <= 1'b0;
-    inst       <= 32'b0;
-    inst_valid <= 1'b0;
-  end else begin
-    // 第 N 拍：锁存取指请求
-    pc_r       <= pc;
-    pc_valid_r <= pc_valid;
-
-    // 第 N+1 拍：返回指令
-    if (pc_valid_r) begin
-      inst       <= pmem_read_inst(pc_r);
-      inst_valid <= 1'b1;
-    end else begin
-      inst_valid <= 1'b0;
-    end
-  end
-end
-
-endmodule
 // ----- 8< ----- FILE "./EbreakBlackBox.v" ----- 8< -----
 
 module EbreakBlackBox(
@@ -2560,5 +2533,107 @@ module EbreakBlackBox(
             ebreak();
         end
     end
+endmodule
+        
+// ----- 8< ----- FILE "./DifftestDPI.v" ----- 8< -----
+
+module DifftestDPI(
+    input  [31:0] pc,
+    input  [31:0] inst,
+    input         difftest_valid,
+    input         non_inst,
+    input  [31:0] gpr0,
+    input  [31:0] gpr1,
+    input  [31:0] gpr2,
+    input  [31:0] gpr3,
+    input  [31:0] gpr4,
+    input  [31:0] gpr5,
+    input  [31:0] gpr6,
+    input  [31:0] gpr7,
+    input  [31:0] gpr8,
+    input  [31:0] gpr9,
+    input  [31:0] gpr10,
+    input  [31:0] gpr11,
+    input  [31:0] gpr12,
+    input  [31:0] gpr13,
+    input  [31:0] gpr14,
+    input  [31:0] gpr15,
+    input  [31:0] gpr16,
+    input  [31:0] gpr17,
+    input  [31:0] gpr18,
+    input  [31:0] gpr19,
+    input  [31:0] gpr20,
+    input  [31:0] gpr21,
+    input  [31:0] gpr22,
+    input  [31:0] gpr23,
+    input  [31:0] gpr24,
+    input  [31:0] gpr25,
+    input  [31:0] gpr26,
+    input  [31:0] gpr27,
+    input  [31:0] gpr28,
+    input  [31:0] gpr29,
+    input  [31:0] gpr30,
+    input  [31:0] gpr31
+);
+
+    function int get_pc();
+        get_pc = pc;
+    endfunction
+    export "DPI-C" function get_pc;
+
+    function int get_inst();
+        get_inst = inst;
+    endfunction
+    export "DPI-C" function get_inst;
+
+    function int get_difftest_valid();
+        get_difftest_valid = {31'b0, difftest_valid};
+    endfunction
+    export "DPI-C" function get_difftest_valid;
+ 
+    function int get_non_inst();
+        get_non_inst = {31'b0, non_inst};
+    endfunction
+    export "DPI-C" function get_non_inst;
+ 
+    function int get_gpr(input int idx);
+        case (idx)
+            0:  get_gpr = gpr0;
+            1:  get_gpr = gpr1;
+            2:  get_gpr = gpr2;
+            3:  get_gpr = gpr3;
+            4:  get_gpr = gpr4;
+            5:  get_gpr = gpr5;
+            6:  get_gpr = gpr6;
+            7:  get_gpr = gpr7;
+            8:  get_gpr = gpr8;
+            9:  get_gpr = gpr9;
+            10: get_gpr = gpr10;
+            11: get_gpr = gpr11;
+            12: get_gpr = gpr12;
+            13: get_gpr = gpr13;
+            14: get_gpr = gpr14;
+            15: get_gpr = gpr15;
+            16: get_gpr = gpr16;
+            17: get_gpr = gpr17;
+            18: get_gpr = gpr18;
+            19: get_gpr = gpr19;
+            20: get_gpr = gpr20;
+            21: get_gpr = gpr21;
+            22: get_gpr = gpr22;
+            23: get_gpr = gpr23;
+            24: get_gpr = gpr24;
+            25: get_gpr = gpr25;
+            26: get_gpr = gpr26;
+            27: get_gpr = gpr27;
+            28: get_gpr = gpr28;
+            29: get_gpr = gpr29;
+            30: get_gpr = gpr30;
+            31: get_gpr = gpr31;
+            default: get_gpr = 0;
+        endcase
+    endfunction
+    export "DPI-C" function get_gpr;
+
 endmodule
         

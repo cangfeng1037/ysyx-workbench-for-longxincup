@@ -3,13 +3,15 @@ import chisel3._
 import chisel3.util._
 
 // 仲裁器：IFU和MEM同时调用总线时，优先级IFU高于MEM
+// 响应路由：根据 bid/rid 判断
+// ysyxSoCFull 侧的bid/rid 统一分配为0了，不能用ID来做总线仲裁
+// 用using_ifu锁定总线归属
+
 class AXI_ARB2TO1 extends Module{
     val io = IO(new Bundle {
-        val i_master = Flipped(new AxiLiteMasterIO())
-        val m_master = Flipped(new AxiLiteMasterIO())
-        // 仲裁后的“下游主设备口”（去接 slaveSel，再到 ISRAM/DSRAM）
-        val slave    = new AxiLiteMasterIO()
-        val is_inst  = Output(Bool()) // 输出当前是哪个主设备在使用总线
+        val ifu_master = Flipped(new Axi4MasterIO()) // IFU 主接口
+        val mem_master = Flipped(new Axi4MasterIO()) // MEM 主接口
+        val master_out = new Axi4MasterIO()      // 输出主接口
     })
 
     // 仅允许单 outstanding
@@ -17,151 +19,191 @@ class AXI_ARB2TO1 extends Module{
     // 锁存一次事务的 owner/type（busy 期间保持）
     val using_ifu = RegInit(false.B)
     val is_write = RegInit(false.B)
+    // 写数据阶段：AW 已握手，等待 W
+    val w_phase = RegInit(false.B)
 
-    val i_ar_req = io.i_master.ARVALID
-    val m_ar_req = io.m_master.ARVALID
-
-    val i_aw_req = io.i_master.AWVALID && io.i_master.WVALID
-    val m_aw_req = io.m_master.AWVALID && io.m_master.WVALID
-
-    val pick_ifu = i_ar_req || i_aw_req || (!m_ar_req && !m_aw_req)
+    val ifu_ar_req = io.ifu_master.arvalid
+    val mem_ar_req = io.mem_master.arvalid
+    val ifu_aw_req = io.ifu_master.awvalid
+    val mem_aw_req = io.mem_master.awvalid
 
     // 当拍用于路由到下游 slave 的选择信号：
     // - busy=0：用 pick_ifu（组合），保证同拍握手能走到正确的 slave
     // - busy=1：用 using_ifu（寄存），保证事务完成前选择不变
-    val owner_sel = WireDefault(using_ifu)
-    when(!busy) {
-        owner_sel := pick_ifu
-    }
 
-    // 默认：不发起下游事务
-    io.slave.AWADDR  := 0.U
-    io.slave.AWPROT  := 0.U
-    io.slave.AWVALID := false.B
-    io.slave.WDATA   := 0.U
-    io.slave.WSTRB   := 0.U
-    io.slave.WVALID  := false.B
-    io.slave.BREADY  := false.B
+    // ========== 默认值：所有输出置零 ==========
+    io.master_out.awaddr  := 0.U
+    io.master_out.awid    := 0.U
+    io.master_out.awlen   := 0.U
+    io.master_out.awsize  := 0.U
+    io.master_out.awburst := 0.U
+    io.master_out.awvalid := false.B
+    
+    io.master_out.wdata   := 0.U
+    io.master_out.wstrb   := 0.U
+    io.master_out.wlast   := false.B
+    io.master_out.wvalid  := false.B
+    
+    io.master_out.bready  := false.B
+    
+    io.master_out.araddr  := 0.U
+    io.master_out.arid    := 0.U
+    io.master_out.arlen   := 0.U
+    io.master_out.arsize  := 0.U
+    io.master_out.arburst := 0.U
+    io.master_out.arvalid := false.B
+    
+    io.master_out.rready  := false.B
 
-    io.slave.ARADDR  := 0.U
-    io.slave.ARPROT  := 0.U
-    io.slave.ARVALID := false.B
-    io.slave.RREADY  := false.B
+    // IFU Master 默认值
+    io.ifu_master.awready := false.B
+    io.ifu_master.wready  := false.B
+    io.ifu_master.bvalid  := false.B
+    io.ifu_master.bresp   := 0.U
+    io.ifu_master.bid     := 0.U
+    io.ifu_master.arready := false.B
+    io.ifu_master.rdata   := 0.U
+    io.ifu_master.rresp   := 0.U
+    io.ifu_master.rvalid  := false.B
+    io.ifu_master.rlast   := false.B
+    io.ifu_master.rid     := 0.U
 
-    // 默认 master 侧 ready/valid
-    io.i_master.AWREADY := false.B
-    io.i_master.WREADY  := false.B
-    io.i_master.BVALID  := false.B
-    io.i_master.BRESP   := 0.U
-    io.i_master.ARREADY := false.B
-    io.i_master.RDATA   := 0.U
-    io.i_master.RRESP   := 0.U
-    io.i_master.RVALID  := false.B
+    // MEM Master 默认值
+    io.mem_master.awready := false.B
+    io.mem_master.wready  := false.B
+    io.mem_master.bvalid  := false.B
+    io.mem_master.bresp   := 0.U
+    io.mem_master.bid     := 0.U
+    io.mem_master.arready := false.B
+    io.mem_master.rdata   := 0.U
+    io.mem_master.rresp   := 0.U
+    io.mem_master.rvalid  := false.B
+    io.mem_master.rlast   := false.B
+    io.mem_master.rid     := 0.U
+    
+   // 仲裁与锁定：写请求和读请求互斥，写请求优先
+   when(!busy) {
+    // 写请求优先处理（仅看 AW）
+    when (ifu_aw_req || mem_aw_req) {
+        val sel = ifu_aw_req  // IFU 发写请求时选 IFU，否则选 MEM
 
-    io.m_master.AWREADY := false.B
-    io.m_master.WREADY  := false.B
-    io.m_master.BVALID  := false.B
-    io.m_master.BRESP   := 0.U
-    io.m_master.ARREADY := false.B
-    io.m_master.RDATA   := 0.U
-    io.m_master.RRESP   := 0.U
-    io.m_master.RVALID  := false.B
+        // 转发写地址通道
+        io.master_out.awaddr  := Mux(sel, io.ifu_master.awaddr, io.mem_master.awaddr)
+        io.master_out.awid    := Mux(sel, io.ifu_master.awid, io.mem_master.awid)
+        io.master_out.awlen   := Mux(sel, io.ifu_master.awlen, io.mem_master.awlen)
+        io.master_out.awsize  := Mux(sel, io.ifu_master.awsize, io.mem_master.awsize)
+        io.master_out.awburst := Mux(sel, io.ifu_master.awburst, io.mem_master.awburst)
+        io.master_out.awvalid := Mux(sel, io.ifu_master.awvalid, io.mem_master.awvalid)
 
-    // 对下游选择输出（给 slaveSel 用）
-    io.is_inst := owner_sel
-
-    // 仲裁与锁定
-
-    when(!busy) {
-        // 发起写 AW/W同拍
-        when(i_aw_req || m_aw_req) {
-            val sel = pick_ifu
-
-            val awaddr = Mux(sel, io.i_master.AWADDR, io.m_master.AWADDR)
-            val awprot = Mux(sel, io.i_master.AWPROT, io.m_master.AWPROT)
-            val wdata  = Mux(sel, io.i_master.WDATA, io.m_master.WDATA)
-            val wstrb  = Mux(sel, io.i_master.WSTRB, io.m_master.WSTRB)
-            val awvalid= Mux(sel, io.i_master.AWVALID, io.m_master.AWVALID)
-            val wvalid = Mux(sel, io.i_master.WVALID, io.m_master.WVALID)
-
-            io.slave.AWADDR  := awaddr
-            io.slave.AWPROT  := awprot
-            io.slave.AWVALID := awvalid
-            io.slave.WDATA   := wdata
-            io.slave.WSTRB   := wstrb
-            io.slave.WVALID  := wvalid
-
-            // 将 ready 返回对应的master
-            when(sel) {
-                io.i_master.AWREADY := io.slave.AWREADY
-                io.i_master.WREADY  := io.slave.WREADY
-            }.otherwise {
-                io.m_master.AWREADY := io.slave.AWREADY
-                io.m_master.WREADY  := io.slave.WREADY
-            }
-
-            // fire 后，总线锁定
-            when(io.slave.AWREADY && io.slave.WREADY && awvalid && wvalid) {
-                using_ifu := sel
-                is_write := true.B
-                busy := true.B
-            }
-        }.elsewhen(i_ar_req || m_ar_req) {
-            // 发起读请求
-            val sel = pick_ifu
-            val araddr = Mux(sel, io.i_master.ARADDR, io.m_master.ARADDR)
-            val arprot = Mux(sel, io.i_master.ARPROT, io.m_master.ARPROT)
-            val arvalid= Mux(sel, io.i_master.ARVALID, io.m_master.ARVALID)
-
-            io.slave.ARADDR  := araddr
-            io.slave.ARPROT  := arprot
-            io.slave.ARVALID := arvalid
-
-            when(sel) {
-                io.i_master.ARREADY := io.slave.ARREADY
-            }.otherwise {
-                io.m_master.ARREADY := io.slave.ARREADY
-            }
-
-            // fire 后，总线锁定
-            when(io.slave.ARREADY && arvalid) {
-                using_ifu := sel
-                is_write := false.B
-                busy := true.B
-            }
+        // Ready 信号回传（仅 AW）
+        when(sel) {
+            io.ifu_master.awready := io.master_out.awready
+        } .otherwise {
+            io.mem_master.awready := io.master_out.awready
         }
-    }.otherwise {
-        // busy: 发送响应给对应的master
+
+        // AW 握手成功，锁定总线并进入写数据阶段
+        when (io.master_out.awvalid && io.master_out.awready) {
+            busy := true.B
+            using_ifu := sel
+            is_write := true.B
+            w_phase := true.B
+        }
+    }
+    // 读请求（写请求优先时，读请求延后）
+    .elsewhen (ifu_ar_req || mem_ar_req) {
+        val sel = ifu_ar_req  // IFU 发读请求时选 IFU，否则选 MEM
+
+        // 转发读地址通道
+        io.master_out.araddr  := Mux(sel, io.ifu_master.araddr, io.mem_master.araddr)
+        io.master_out.arid    := Mux(sel, io.ifu_master.arid, io.mem_master.arid)
+        io.master_out.arlen   := Mux(sel, io.ifu_master.arlen, io.mem_master.arlen)
+        io.master_out.arsize  := Mux(sel, io.ifu_master.arsize, io.mem_master.arsize)
+        io.master_out.arburst := Mux(sel, io.ifu_master.arburst, io.mem_master.arburst)
+        io.master_out.arvalid := Mux(sel, io.ifu_master.arvalid, io.mem_master.arvalid)
+
+        // Ready 信号回传
+        when(sel) {
+            io.ifu_master.arready := io.master_out.arready
+        } .otherwise {
+            io.mem_master.arready := io.master_out.arready
+        }
+
+        // 握手成功，锁定总线
+        when (io.master_out.arvalid && io.master_out.arready) {
+            busy := true.B
+            using_ifu := sel
+            is_write := false.B
+        }
+    }
+   } 
+    // 响应路由
+    .otherwise {
         when(is_write) {
-            // B 写响应
-            io.slave.BREADY := Mux(using_ifu, io.i_master.BREADY, io.m_master.BREADY)
+            // 写数据阶段：只转发 W，等待 W 握手结束
+            when(w_phase) {
+                // 保持aw信号不变，转发w信号
+                /*
+                io.master_out.awaddr  := Mux(using_ifu, io.ifu_master.awaddr, io.mem_master.awaddr)
+                io.master_out.awid    := Mux(using_ifu, io.ifu_master.awid, io.mem_master.awid)
+                io.master_out.awlen   := Mux(using_ifu, io.ifu_master.awlen, io.mem_master.awlen)
+                io.master_out.awsize  := Mux(using_ifu, io.ifu_master.awsize, io.mem_master.awsize)
+                io.master_out.awburst := Mux(using_ifu, io.ifu_master.awburst, io.mem_master.awburst)
+                io.master_out.awvalid := Mux(using_ifu, io.ifu_master.awvalid, io.mem_master.awvalid)
+                */
+                io.master_out.wdata   := Mux(using_ifu, io.ifu_master.wdata, io.mem_master.wdata)
+                io.master_out.wstrb   := Mux(using_ifu, io.ifu_master.wstrb, io.mem_master.wstrb)
+                io.master_out.wlast   := Mux(using_ifu, io.ifu_master.wlast, io.mem_master.wlast)
+                io.master_out.wvalid  := Mux(using_ifu, io.ifu_master.wvalid, io.mem_master.wvalid)
+
+                when(using_ifu) {
+                    io.ifu_master.wready := io.master_out.wready
+                } .otherwise {
+                    io.mem_master.wready := io.master_out.wready
+                }
+
+                when(io.master_out.wvalid && io.master_out.wready) {
+                    w_phase := false.B
+                }
+            } .otherwise {
+                // 写响应：用 using_ifu 锁定的归属路由
+                io.master_out.bready := Mux(using_ifu, io.ifu_master.bready, io.mem_master.bready)
+
+                when(using_ifu) {
+                    io.ifu_master.bvalid := io.master_out.bvalid
+                    io.ifu_master.bresp  := io.master_out.bresp
+                    io.ifu_master.bid    := io.master_out.bid
+                } .otherwise {
+                    io.mem_master.bvalid := io.master_out.bvalid
+                    io.mem_master.bresp  := io.master_out.bresp
+                    io.mem_master.bid    := io.master_out.bid
+                }
+
+                // 响应完成，释放总线
+                when (io.master_out.bvalid && io.master_out.bready) {
+                    busy := false.B
+                }
+            }
+        } .otherwise {
+            // 读响应：用 using_ifu 锁定的归属路由
+            io.master_out.rready := Mux(using_ifu, io.ifu_master.rready, io.mem_master.rready)
+
             when(using_ifu) {
-                io.i_master.BVALID := io.slave.BVALID
-                io.i_master.BRESP  := io.slave.BRESP
-            }.otherwise {
-                io.m_master.BVALID := io.slave.BVALID
-                io.m_master.BRESP  := io.slave.BRESP
+                io.ifu_master.rvalid := io.master_out.rvalid
+                io.ifu_master.rdata  := io.master_out.rdata
+                io.ifu_master.rresp  := io.master_out.rresp
+                io.ifu_master.rlast  := io.master_out.rlast
+                io.ifu_master.rid    := io.master_out.rid
+            } .otherwise {
+                io.mem_master.rvalid := io.master_out.rvalid
+                io.mem_master.rdata  := io.master_out.rdata
+                io.mem_master.rresp  := io.master_out.rresp
+                io.mem_master.rlast  := io.master_out.rlast
+                io.mem_master.rid    := io.master_out.rid
             }
 
             // 响应完成，释放总线
-            when(io.slave.BVALID && io.slave.BREADY) {
-                busy := false.B
-            }
-        }.otherwise {
-            // R 读响应
-            io.slave.RREADY := Mux(using_ifu, io.i_master.RREADY, io.m_master.RREADY)
-            when(using_ifu) {
-                io.i_master.RVALID := io.slave.RVALID
-                io.i_master.RDATA  := io.slave.RDATA
-                io.i_master.RRESP  := io.slave.RRESP
-            }.otherwise {
-                io.m_master.RVALID := io.slave.RVALID
-                io.m_master.RDATA  := io.slave.RDATA
-                io.m_master.RRESP  := io.slave.RRESP
-            }
-
-            // 响应完成，释放总线
-            when(io.slave.RVALID && io.slave.RREADY) {
+            when (io.master_out.rvalid && io.master_out.rready && io.master_out.rlast) {
                 busy := false.B
             }
         }

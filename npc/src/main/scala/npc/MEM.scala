@@ -28,6 +28,19 @@ class MEM2WB extends Bundle {
     val is_csrrs   = Bool()
 }
 
+class MemReq extends Bundle {
+    val wen   = Bool()
+    val raddr = UInt(32.W)
+    val rsize = UInt(3.W)
+    val waddr = UInt(32.W)
+    val wdata = UInt(32.W)
+    val wmask = UInt(4.W)
+}
+
+class MemResp extends Bundle {
+    val rdata = UInt(32.W)
+}
+
 
 class MEM extends Module {
     val io = IO(new Bundle {
@@ -118,6 +131,7 @@ class MEM extends Module {
     val is_load_now  = io.in.bits.is_lw || io.in.bits.is_lb || io.in.bits.is_lbu || io.in.bits.is_lh || io.in.bits.is_lhu
     val is_store_now = io.in.bits.is_sw || io.in.bits.is_sb || io.in.bits.is_sh
 
+
     switch(state) {
         is (s_idle) {
             when (io.in.fire) {
@@ -185,12 +199,23 @@ class MEM extends Module {
         is_sw -> rs2_data
     ))
 
+    // 只对 I/O 地址生效，其他地址rsize设置为2（4字节）也要根据lbu，lu选择数据
+    val is_io = (alu_result(31, 28) === "h1".U) // 0x1xxx_xxxx 视为 MMIO（UART/GPIO）
+    val rsize = Mux(is_io,
+        MuxCase(0.U, Seq(
+            (is_lb || is_lbu) -> 0.U,
+            (is_lh || is_lhu) -> 1.U,
+            is_lw             -> 2.U
+        )),
+        2.U
+    )
     // 内存接口输出
     io.mem_req.bits.wen   := is_sw || is_sh || is_sb
     io.mem_req.bits.raddr := alu_result
     io.mem_req.bits.waddr := alu_result
     io.mem_req.bits.wdata := wdata
     io.mem_req.bits.wmask := wmask
+    io.mem_req.bits.rsize := rsize
 
     // 输出打包
     io.out.bits.pc         := pc

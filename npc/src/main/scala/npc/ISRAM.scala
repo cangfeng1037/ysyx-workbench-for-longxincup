@@ -1,3 +1,4 @@
+/*
 package npc.chisel_src.cpucore
 
 import chisel3._
@@ -80,3 +81,5 @@ class ISRAM extends Module {
     }
   }
 }
+
+*/

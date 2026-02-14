@@ -38,4 +38,26 @@ static inline void host_write(void *addr, int len, word_t data) {
   }
 }
 
+// 从任意内存区域读取
+static inline word_t region_read(void *region_base, uint32_t offset, int len) {
+  switch(len) {
+    case 1: return *(uint8_t  *)((uint8_t *)region_base + offset);
+    case 2: return *(uint16_t *)((uint8_t *)region_base + offset);
+    case 4: return *(uint32_t *)((uint8_t *)region_base + offset);
+    IFDEF(CONFIG_ISA64, case 8: return *(uint64_t *)((uint8_t *)region_base + offset));
+    default: MUXDEF(CONFIG_RT_CHECK, assert(0), return 0);
+  }
+}
+
+// 向任意内存区域写入
+static inline void region_write(void *region_base, uint32_t offset, int len, word_t data) {
+  switch(len) { 
+    case 1: *(uint8_t  *)((uint8_t *)region_base + offset) = data; return;
+    case 2: *(uint16_t *)((uint8_t *)region_base + offset) = data; return;
+    case 4: *(uint32_t *)((uint8_t *)region_base + offset) = data; return;
+    IFDEF(CONFIG_ISA64, case 8: *(uint64_t *)((uint8_t *)region_base + offset) = data; return);
+    IFDEF(CONFIG_RT_CHECK, default: assert(0));
+  } 
+}
+
 #endif
