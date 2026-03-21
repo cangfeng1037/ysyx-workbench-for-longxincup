@@ -924,6 +924,450 @@ module WB(
   assign io_commit = state == 2'h2;
 endmodule
 
+module Axi4_IFU_Master(
+  input         clock,
+                reset,
+                io_master_arready,
+  output        io_master_arvalid,
+  output [31:0] io_master_araddr,
+  output        io_master_rready,
+  input         io_master_rvalid,
+  input  [31:0] io_master_rdata,
+  output        io_inst_req_ready,
+  input         io_inst_req_valid,
+  input  [31:0] io_inst_req_bits_pc,
+  input         io_inst_resp_ready,
+  output        io_inst_resp_valid,
+  output [31:0] io_inst_resp_bits_inst,
+  input         io_flush
+);
+
+  reg  pending;
+  reg  killPending;
+  wire canIssueAr = ~pending & ~killPending;
+  wire io_master_arvalid_0 = ~reset & io_inst_req_valid & canIssueAr;
+  wire io_master_rready_0 = ~reset & (io_inst_resp_ready | killPending);
+  wire ar_fire = io_master_arvalid_0 & io_master_arready;
+  wire r_fire = io_master_rvalid & io_master_rready_0;
+  always @(posedge clock) begin
+    if (reset) begin
+      pending <= 1'h0;
+      killPending <= 1'h0;
+    end
+    else begin
+      pending <= ~r_fire & (ar_fire | pending);
+      killPending <=
+        ~r_fire & (~killPending & io_flush & (pending | ar_fire) | killPending);
+    end
+  end // always @(posedge)
+  assign io_master_arvalid = io_master_arvalid_0;
+  assign io_master_araddr = io_inst_req_bits_pc;
+  assign io_master_rready = io_master_rready_0;
+  assign io_inst_req_ready = io_master_arready & canIssueAr;
+  assign io_inst_resp_valid = io_master_rvalid & ~killPending;
+  assign io_inst_resp_bits_inst = io_master_rdata;
+endmodule
+
+
+// Users can define 'PRINTF_COND' to add an extra gate to prints.
+`ifndef PRINTF_COND_
+  `ifdef PRINTF_COND
+    `define PRINTF_COND_ (`PRINTF_COND)
+  `else  // PRINTF_COND
+    `define PRINTF_COND_ 1
+  `endif // PRINTF_COND
+`endif // not def PRINTF_COND_
+module Axi4_MEM_Master(
+  input         clock,
+                reset,
+                io_master_awready,
+  output        io_master_awvalid,
+  output [31:0] io_master_awaddr,
+  output [2:0]  io_master_awsize,
+  input         io_master_wready,
+  output        io_master_wvalid,
+  output [31:0] io_master_wdata,
+  output [3:0]  io_master_wstrb,
+  output        io_master_bready,
+  input         io_master_bvalid,
+                io_master_arready,
+  output        io_master_arvalid,
+  output [31:0] io_master_araddr,
+  output [2:0]  io_master_arsize,
+  output        io_master_rready,
+  input         io_master_rvalid,
+  input  [31:0] io_master_rdata,
+  output        io_mem_req_ready,
+  input         io_mem_req_valid,
+                io_mem_req_bits_wen,
+  input  [31:0] io_mem_req_bits_raddr,
+  input  [2:0]  io_mem_req_bits_rsize,
+  input  [31:0] io_mem_req_bits_waddr,
+                io_mem_req_bits_wdata,
+  input  [3:0]  io_mem_req_bits_wmask,
+  input         io_mem_resp_ready,
+  output        io_mem_resp_valid,
+  output [31:0] io_mem_resp_bits_rdata
+);
+
+  reg  [1:0]  state;
+  reg  [31:0] wdata;
+  reg  [3:0]  wstrb;
+  wire        _GEN = io_mem_req_valid & io_mem_req_bits_wen;
+  wire        _GEN_0 = ~(|state) & _GEN;
+  wire        io_mem_req_ready_0 =
+    ~(|state) & (_GEN ? io_master_awready : io_mem_req_valid & io_master_arready);
+  wire        _GEN_1 = state == 2'h1;
+  wire        _GEN_2 = (|state) & _GEN_1;
+  wire        _GEN_3 = state == 2'h2;
+  wire        _GEN_4 = ~(|state) | _GEN_1;
+  wire        io_master_rready_0 = ~_GEN_4 & _GEN_3 & io_mem_resp_ready;
+  `ifndef SYNTHESIS
+    always @(posedge clock) begin
+      if ((`PRINTF_COND_) & (|state) & state != 2'h1 & _GEN_3 & io_mem_req_valid
+          & io_mem_req_bits_raddr == 32'h10000005 & ~reset)
+        $fwrite(32'h80000002, "AXI_MEM_Master: Accessing UART LSR = 0x%x\n",
+                io_master_rdata);
+    end // always @(posedge)
+  `endif // not def SYNTHESIS
+  wire        io_master_bready_0 = ~(~(|state) | _GEN_1 | _GEN_3) & (&state);
+  always @(posedge clock) begin
+    if (reset) begin
+      state <= 2'h0;
+      wdata <= 32'h0;
+      wstrb <= 4'h0;
+    end
+    else begin
+      if (|state) begin
+        if (_GEN_1) begin
+          if (io_master_wready)
+            state <= 2'h3;
+        end
+        else if (_GEN_3
+                   ? io_master_rvalid & io_master_rready_0
+                   : (&state) & io_master_bvalid & io_master_bready_0)
+          state <= 2'h0;
+      end
+      else if (_GEN) begin
+        if (io_master_awready)
+          state <= 2'h1;
+      end
+      else if (io_mem_req_valid & io_mem_req_ready_0)
+        state <= 2'h2;
+      if (~(|state) & _GEN & io_master_awready) begin
+        wdata <= io_mem_req_bits_wdata;
+        wstrb <= io_mem_req_bits_wmask;
+      end
+    end
+  end // always @(posedge)
+  assign io_master_awvalid = ~(|state) & _GEN;
+  assign io_master_awaddr = _GEN_0 ? io_mem_req_bits_waddr : 32'h0;
+  assign io_master_awsize =
+    _GEN_0
+      ? {1'h0,
+         {1'h0, {1'h0, io_mem_req_bits_wmask[0]} + {1'h0, io_mem_req_bits_wmask[1]}}
+           + {1'h0,
+              {1'h0, io_mem_req_bits_wmask[2]}
+                + {1'h0, io_mem_req_bits_wmask[3]}} != 3'h1,
+         1'h0}
+      : 3'h0;
+  assign io_master_wvalid = (|state) & _GEN_1;
+  assign io_master_wdata = _GEN_2 ? wdata : 32'h0;
+  assign io_master_wstrb = _GEN_2 ? wstrb : 4'h0;
+  assign io_master_bready = io_master_bready_0;
+  assign io_master_arvalid = ~(|state) & ~_GEN & io_mem_req_valid;
+  assign io_master_araddr =
+    (|state) | _GEN | ~io_mem_req_valid ? 32'h0 : io_mem_req_bits_raddr;
+  assign io_master_arsize = io_mem_req_bits_rsize;
+  assign io_master_rready = io_master_rready_0;
+  assign io_mem_req_ready = io_mem_req_ready_0;
+  assign io_mem_resp_valid =
+    ~_GEN_4 & (_GEN_3 ? io_master_rvalid : (&state) & io_master_bvalid);
+  assign io_mem_resp_bits_rdata = _GEN_4 | ~_GEN_3 ? 32'h0 : io_master_rdata;
+endmodule
+
+module CLINT(
+  input         clock,
+                reset,
+  output        io_clint_bus_arready,
+  input         io_clint_bus_arvalid,
+  input  [31:0] io_clint_bus_araddr,
+  input         io_clint_bus_rready,
+  output        io_clint_bus_rvalid,
+  output [31:0] io_clint_bus_rdata
+);
+
+  reg  [31:0] mtime_low;
+  reg  [31:0] mtime_high;
+  reg         state;
+  reg  [31:0] addr_reg;
+  wire [31:0] _lo_next_T = mtime_low + 32'h1;
+  always @(posedge clock) begin
+    if (reset) begin
+      mtime_low <= 32'h0;
+      mtime_high <= 32'h0;
+      state <= 1'h0;
+      addr_reg <= 32'h0;
+    end
+    else begin
+      mtime_low <= _lo_next_T;
+      if (_lo_next_T == 32'h0)
+        mtime_high <= mtime_high + 32'h1;
+      if (state)
+        state <= ~(state & io_clint_bus_rready);
+      else
+        state <= io_clint_bus_arvalid;
+      if (~state & io_clint_bus_arvalid)
+        addr_reg <= io_clint_bus_araddr;
+    end
+  end // always @(posedge)
+  assign io_clint_bus_arready = ~state;
+  assign io_clint_bus_rvalid = state;
+  assign io_clint_bus_rdata =
+    state
+      ? (addr_reg == 32'h200BFF8
+           ? mtime_low
+           : addr_reg == 32'h200BFFC ? mtime_high : 32'h0)
+      : 32'h0;
+endmodule
+
+module AXI_ARB2TO1(
+  input         clock,
+                reset,
+  output        io_ifu_master_arready,
+  input         io_ifu_master_arvalid,
+  input  [31:0] io_ifu_master_araddr,
+  input         io_ifu_master_rready,
+  output        io_ifu_master_rvalid,
+  output [31:0] io_ifu_master_rdata,
+  output        io_mem_master_awready,
+  input         io_mem_master_awvalid,
+  input  [31:0] io_mem_master_awaddr,
+  input  [2:0]  io_mem_master_awsize,
+  output        io_mem_master_wready,
+  input         io_mem_master_wvalid,
+  input  [31:0] io_mem_master_wdata,
+  input  [3:0]  io_mem_master_wstrb,
+  input         io_mem_master_bready,
+  output        io_mem_master_bvalid,
+                io_mem_master_arready,
+  input         io_mem_master_arvalid,
+  input  [31:0] io_mem_master_araddr,
+  input  [2:0]  io_mem_master_arsize,
+  input         io_mem_master_rready,
+  output        io_mem_master_rvalid,
+  output [31:0] io_mem_master_rdata,
+  input         io_clint_slave_arready,
+  output        io_clint_slave_arvalid,
+  output [31:0] io_clint_slave_araddr,
+  output        io_clint_slave_rready,
+  input         io_clint_slave_rvalid,
+  input  [31:0] io_clint_slave_rdata,
+  input         io_master_out_awready,
+  output        io_master_out_awvalid,
+  output [31:0] io_master_out_awaddr,
+  output [3:0]  io_master_out_awid,
+  output [2:0]  io_master_out_awsize,
+  output [1:0]  io_master_out_awburst,
+  input         io_master_out_wready,
+  output        io_master_out_wvalid,
+  output [31:0] io_master_out_wdata,
+  output [3:0]  io_master_out_wstrb,
+  output        io_master_out_wlast,
+                io_master_out_bready,
+  input         io_master_out_bvalid,
+                io_master_out_arready,
+  output        io_master_out_arvalid,
+  output [31:0] io_master_out_araddr,
+  output [3:0]  io_master_out_arid,
+  output [2:0]  io_master_out_arsize,
+  output [1:0]  io_master_out_arburst,
+  output        io_master_out_rready,
+  input         io_master_out_rvalid,
+  input  [31:0] io_master_out_rdata,
+  input         io_master_out_rlast
+);
+
+  reg         busy;
+  reg         using_ifu;
+  reg         is_write;
+  reg         w_phase;
+  reg         using_clint;
+  wire [31:0] rdAddr =
+    io_ifu_master_arvalid ? io_ifu_master_araddr : io_mem_master_araddr;
+  wire        isClintWrite =
+    (|(io_mem_master_awaddr[31:25])) & io_mem_master_awaddr < 32'h200C000;
+  wire        _GEN = ~busy & io_mem_master_awvalid & ~isClintWrite;
+  wire        io_master_out_awvalid_0 = _GEN & io_mem_master_awvalid;
+  wire        _GEN_0 = io_ifu_master_arvalid | io_mem_master_arvalid;
+  wire        memClintRead =
+    ~io_ifu_master_arvalid & (|(rdAddr[31:25])) & rdAddr < 32'h200C000;
+  wire        _GEN_1 = _GEN_0 & memClintRead;
+  wire        io_clint_slave_arvalid_0 =
+    ~busy & ~io_mem_master_awvalid & _GEN_1 & io_mem_master_arvalid;
+  wire        _GEN_2 = busy | io_mem_master_awvalid | ~_GEN_0 | memClintRead;
+  wire        _GEN_3 = busy | io_mem_master_awvalid | ~_GEN_0;
+  wire        io_master_out_arvalid_0 =
+    ~busy & ~io_mem_master_awvalid & _GEN_0 & ~memClintRead
+    & (io_ifu_master_arvalid ? io_ifu_master_arvalid : io_mem_master_arvalid);
+  wire        _GEN_4 = is_write & w_phase;
+  wire        _GEN_5 = ~busy | ~_GEN_4 | using_ifu;
+  wire        io_master_out_wvalid_0 = busy & _GEN_4 & ~using_ifu & io_mem_master_wvalid;
+  wire        _GEN_6 = w_phase | using_ifu;
+  wire        io_master_out_bready_0 = busy & is_write & ~_GEN_6 & io_mem_master_bready;
+  wire        _GEN_7 = ~busy | is_write;
+  wire        io_clint_slave_rready_0 = ~_GEN_7 & using_clint & io_mem_master_rready;
+  wire        _GEN_8 = ~busy | is_write | using_clint;
+  wire        io_master_out_rready_0 =
+    ~_GEN_8 & (using_ifu ? io_ifu_master_rready : io_mem_master_rready);
+  wire        _GEN_9 = io_clint_slave_rvalid & io_clint_slave_rready_0;
+  wire        _GEN_10 = io_clint_slave_arvalid_0 & io_clint_slave_arready;
+  wire        _GEN_11 = io_master_out_arvalid_0 & io_master_out_arready;
+  wire        _GEN_12 = ~isClintWrite & io_master_out_awvalid_0 & io_master_out_awready;
+  always @(posedge clock) begin
+    if (reset) begin
+      busy <= 1'h0;
+      using_ifu <= 1'h0;
+      is_write <= 1'h0;
+      w_phase <= 1'h0;
+      using_clint <= 1'h0;
+    end
+    else begin
+      if (busy) begin
+        busy <=
+          is_write
+            ? (w_phase | ~(io_master_out_bvalid & io_master_out_bready_0)) & busy
+            : using_clint
+                ? ~_GEN_9 & busy
+                : ~(io_master_out_rvalid & io_master_out_rready_0 & io_master_out_rlast)
+                  & busy;
+        using_clint <= (is_write | ~(using_clint & _GEN_9)) & using_clint;
+      end
+      else if (io_mem_master_awvalid) begin
+        busy <= _GEN_12 | busy;
+        using_ifu <= ~_GEN_12 & using_ifu;
+        is_write <= _GEN_12 | is_write;
+        using_clint <= ~_GEN_12 & using_clint;
+      end
+      else if (_GEN_0) begin
+        busy <= memClintRead ? _GEN_10 | busy : _GEN_11 | busy;
+        if (memClintRead)
+          using_ifu <= ~_GEN_10 & using_ifu;
+        else if (_GEN_11)
+          using_ifu <= io_ifu_master_arvalid;
+        is_write <= memClintRead ? ~_GEN_10 & is_write : ~_GEN_11 & is_write;
+        using_clint <= memClintRead ? _GEN_10 | using_clint : ~_GEN_11 & using_clint;
+      end
+      w_phase <=
+        busy
+          ? ~(is_write & w_phase & io_master_out_wvalid_0 & io_master_out_wready)
+            & w_phase
+          : io_mem_master_awvalid & _GEN_12 | w_phase;
+    end
+  end // always @(posedge)
+  assign io_ifu_master_arready =
+    ~busy & ~io_mem_master_awvalid & _GEN_0 & ~memClintRead & io_ifu_master_arvalid
+    & io_master_out_arready;
+  assign io_ifu_master_rvalid = ~_GEN_8 & using_ifu & io_master_out_rvalid;
+  assign io_ifu_master_rdata = _GEN_8 | ~using_ifu ? 32'h0 : io_master_out_rdata;
+  assign io_mem_master_awready = _GEN & io_master_out_awready;
+  assign io_mem_master_wready = busy & _GEN_4 & ~using_ifu & io_master_out_wready;
+  assign io_mem_master_bvalid = busy & is_write & ~_GEN_6 & io_master_out_bvalid;
+  assign io_mem_master_arready =
+    ~busy & ~io_mem_master_awvalid & _GEN_0
+    & (memClintRead
+         ? io_clint_slave_arready
+         : ~io_ifu_master_arvalid & io_master_out_arready);
+  assign io_mem_master_rvalid =
+    ~_GEN_7 & (using_clint ? io_clint_slave_rvalid : ~using_ifu & io_master_out_rvalid);
+  assign io_mem_master_rdata =
+    _GEN_7
+      ? 32'h0
+      : using_clint ? io_clint_slave_rdata : using_ifu ? 32'h0 : io_master_out_rdata;
+  assign io_clint_slave_arvalid = io_clint_slave_arvalid_0;
+  assign io_clint_slave_araddr =
+    busy | io_mem_master_awvalid | ~_GEN_1 ? 32'h0 : io_mem_master_araddr;
+  assign io_clint_slave_rready = io_clint_slave_rready_0;
+  assign io_master_out_awvalid = io_master_out_awvalid_0;
+  assign io_master_out_awaddr = _GEN ? io_mem_master_awaddr : 32'h0;
+  assign io_master_out_awid = {3'h0, _GEN};
+  assign io_master_out_awsize = _GEN ? io_mem_master_awsize : 3'h0;
+  assign io_master_out_awburst = {1'h0, _GEN};
+  assign io_master_out_wvalid = io_master_out_wvalid_0;
+  assign io_master_out_wdata = _GEN_5 ? 32'h0 : io_mem_master_wdata;
+  assign io_master_out_wstrb = _GEN_5 ? 4'h0 : io_mem_master_wstrb;
+  assign io_master_out_wlast = busy & _GEN_4 & ~using_ifu;
+  assign io_master_out_bready = io_master_out_bready_0;
+  assign io_master_out_arvalid = io_master_out_arvalid_0;
+  assign io_master_out_araddr = _GEN_2 ? 32'h0 : rdAddr;
+  assign io_master_out_arid = _GEN_3 ? 4'h0 : {3'h0, ~memClintRead};
+  assign io_master_out_arsize =
+    _GEN_2 ? 3'h0 : io_ifu_master_arvalid ? 3'h2 : io_mem_master_arsize;
+  assign io_master_out_arburst = _GEN_3 ? 2'h0 : {1'h0, ~memClintRead};
+  assign io_master_out_rready = io_master_out_rready_0;
+endmodule
+
+module CSR(
+  input         clock,
+                reset,
+  input  [11:0] io_csr_raddr,
+  output [31:0] io_csr_rdata,
+  input  [11:0] io_csr_waddr,
+  input  [31:0] io_csr_wdata,
+  input         io_csr_wen,
+                io_is_ecall,
+                io_is_mret
+);
+
+  reg  [31:0] mtvec;
+  reg  [31:0] mepc;
+  reg  [31:0] mcause;
+  reg  [31:0] mstatus;
+  wire        _GEN = io_csr_waddr == 12'h305;
+  wire        _GEN_0 = io_csr_waddr == 12'h341;
+  wire        _GEN_1 = io_csr_waddr == 12'h342;
+  always @(posedge clock) begin
+    if (reset) begin
+      mtvec <= 32'h0;
+      mepc <= 32'h0;
+      mcause <= 32'h0;
+      mstatus <= 32'h0;
+    end
+    else begin
+      if (io_csr_wen & _GEN)
+        mtvec <= io_csr_wdata;
+      if (~io_csr_wen | _GEN | ~_GEN_0) begin
+      end
+      else
+        mepc <= io_csr_wdata;
+      if (~io_csr_wen | _GEN | _GEN_0 | ~_GEN_1) begin
+        if (io_is_ecall)
+          mcause <= 32'hB;
+      end
+      else
+        mcause <= io_csr_wdata;
+      if (~io_csr_wen | _GEN | _GEN_0 | _GEN_1 | io_csr_waddr != 12'h300) begin
+        if (io_is_mret)
+          mstatus <= {mstatus[31:8], 1'h1, mstatus[6:4], mstatus[7], mstatus[2:0]};
+      end
+      else
+        mstatus <= io_csr_wdata;
+    end
+  end // always @(posedge)
+  assign io_csr_rdata =
+    io_csr_raddr == 12'hF12
+      ? 32'h25080212
+      : io_csr_raddr == 12'hF11
+          ? 32'h79737978
+          : io_csr_raddr == 12'h300
+              ? mstatus
+              : io_csr_raddr == 12'h342
+                  ? mcause
+                  : io_csr_raddr == 12'h341
+                      ? mepc
+                      : io_csr_raddr == 12'h305 ? mtvec : 32'h0;
+endmodule
+
 module Regfile(
   input         clock,
                 reset,
@@ -1275,365 +1719,6 @@ module Regfile(
   assign io_regs_out_31 = regs_31;
 endmodule
 
-module Axi4_IFU_Master(
-  input         clock,
-                reset,
-                io_master_arready,
-  output        io_master_arvalid,
-  output [31:0] io_master_araddr,
-  output        io_master_rready,
-  input         io_master_rvalid,
-  input  [31:0] io_master_rdata,
-  output        io_inst_req_ready,
-  input         io_inst_req_valid,
-  input  [31:0] io_inst_req_bits_pc,
-  input         io_inst_resp_ready,
-  output        io_inst_resp_valid,
-  output [31:0] io_inst_resp_bits_inst,
-  input         io_flush
-);
-
-  reg  pending;
-  reg  killPending;
-  wire canIssueAr = ~pending & ~killPending;
-  wire io_master_arvalid_0 = ~reset & io_inst_req_valid & canIssueAr;
-  wire io_master_rready_0 = ~reset & (io_inst_resp_ready | killPending);
-  wire ar_fire = io_master_arvalid_0 & io_master_arready;
-  wire r_fire = io_master_rvalid & io_master_rready_0;
-  always @(posedge clock) begin
-    if (reset) begin
-      pending <= 1'h0;
-      killPending <= 1'h0;
-    end
-    else begin
-      pending <= ~r_fire & (ar_fire | pending);
-      killPending <=
-        ~r_fire & (~killPending & io_flush & (pending | ar_fire) | killPending);
-    end
-  end // always @(posedge)
-  assign io_master_arvalid = io_master_arvalid_0;
-  assign io_master_araddr = io_inst_req_bits_pc;
-  assign io_master_rready = io_master_rready_0;
-  assign io_inst_req_ready = io_master_arready & canIssueAr;
-  assign io_inst_resp_valid = io_master_rvalid & ~killPending;
-  assign io_inst_resp_bits_inst = io_master_rdata;
-endmodule
-
-
-// Users can define 'PRINTF_COND' to add an extra gate to prints.
-`ifndef PRINTF_COND_
-  `ifdef PRINTF_COND
-    `define PRINTF_COND_ (`PRINTF_COND)
-  `else  // PRINTF_COND
-    `define PRINTF_COND_ 1
-  `endif // PRINTF_COND
-`endif // not def PRINTF_COND_
-module Axi4_MEM_Master(
-  input         clock,
-                reset,
-                io_master_awready,
-  output        io_master_awvalid,
-  output [31:0] io_master_awaddr,
-  output [2:0]  io_master_awsize,
-  input         io_master_wready,
-  output        io_master_wvalid,
-  output [31:0] io_master_wdata,
-  output [3:0]  io_master_wstrb,
-  output        io_master_bready,
-  input         io_master_bvalid,
-                io_master_arready,
-  output        io_master_arvalid,
-  output [31:0] io_master_araddr,
-  output [2:0]  io_master_arsize,
-  output        io_master_rready,
-  input         io_master_rvalid,
-  input  [31:0] io_master_rdata,
-  output        io_mem_req_ready,
-  input         io_mem_req_valid,
-                io_mem_req_bits_wen,
-  input  [31:0] io_mem_req_bits_raddr,
-  input  [2:0]  io_mem_req_bits_rsize,
-  input  [31:0] io_mem_req_bits_waddr,
-                io_mem_req_bits_wdata,
-  input  [3:0]  io_mem_req_bits_wmask,
-  input         io_mem_resp_ready,
-  output        io_mem_resp_valid,
-  output [31:0] io_mem_resp_bits_rdata
-);
-
-  reg  [1:0]  state;
-  reg  [31:0] wdata;
-  reg  [3:0]  wstrb;
-  wire        _GEN = io_mem_req_valid & io_mem_req_bits_wen;
-  wire        _GEN_0 = ~(|state) & _GEN;
-  wire        io_mem_req_ready_0 =
-    ~(|state) & (_GEN ? io_master_awready : io_mem_req_valid & io_master_arready);
-  wire        _GEN_1 = state == 2'h1;
-  wire        _GEN_2 = (|state) & _GEN_1;
-  wire        _GEN_3 = state == 2'h2;
-  wire        _GEN_4 = ~(|state) | _GEN_1;
-  wire        io_master_rready_0 = ~_GEN_4 & _GEN_3 & io_mem_resp_ready;
-  `ifndef SYNTHESIS
-    always @(posedge clock) begin
-      if ((`PRINTF_COND_) & (|state) & state != 2'h1 & _GEN_3 & io_mem_req_valid
-          & io_mem_req_bits_raddr == 32'h10000005 & ~reset)
-        $fwrite(32'h80000002, "AXI_MEM_Master: Accessing UART LSR = 0x%x\n",
-                io_master_rdata);
-    end // always @(posedge)
-  `endif // not def SYNTHESIS
-  wire        io_master_bready_0 = ~(~(|state) | _GEN_1 | _GEN_3) & (&state);
-  always @(posedge clock) begin
-    if (reset) begin
-      state <= 2'h0;
-      wdata <= 32'h0;
-      wstrb <= 4'h0;
-    end
-    else begin
-      if (|state) begin
-        if (_GEN_1) begin
-          if (io_master_wready)
-            state <= 2'h3;
-        end
-        else if (_GEN_3
-                   ? io_master_rvalid & io_master_rready_0
-                   : (&state) & io_master_bvalid & io_master_bready_0)
-          state <= 2'h0;
-      end
-      else if (_GEN) begin
-        if (io_master_awready)
-          state <= 2'h1;
-      end
-      else if (io_mem_req_valid & io_mem_req_ready_0)
-        state <= 2'h2;
-      if (~(|state) & _GEN & io_master_awready) begin
-        wdata <= io_mem_req_bits_wdata;
-        wstrb <= io_mem_req_bits_wmask;
-      end
-    end
-  end // always @(posedge)
-  assign io_master_awvalid = ~(|state) & _GEN;
-  assign io_master_awaddr = _GEN_0 ? io_mem_req_bits_waddr : 32'h0;
-  assign io_master_awsize =
-    _GEN_0
-      ? {1'h0,
-         {1'h0, {1'h0, io_mem_req_bits_wmask[0]} + {1'h0, io_mem_req_bits_wmask[1]}}
-           + {1'h0,
-              {1'h0, io_mem_req_bits_wmask[2]}
-                + {1'h0, io_mem_req_bits_wmask[3]}} != 3'h1,
-         1'h0}
-      : 3'h0;
-  assign io_master_wvalid = (|state) & _GEN_1;
-  assign io_master_wdata = _GEN_2 ? wdata : 32'h0;
-  assign io_master_wstrb = _GEN_2 ? wstrb : 4'h0;
-  assign io_master_bready = io_master_bready_0;
-  assign io_master_arvalid = ~(|state) & ~_GEN & io_mem_req_valid;
-  assign io_master_araddr =
-    (|state) | _GEN | ~io_mem_req_valid ? 32'h0 : io_mem_req_bits_raddr;
-  assign io_master_arsize = io_mem_req_bits_rsize;
-  assign io_master_rready = io_master_rready_0;
-  assign io_mem_req_ready = io_mem_req_ready_0;
-  assign io_mem_resp_valid =
-    ~_GEN_4 & (_GEN_3 ? io_master_rvalid : (&state) & io_master_bvalid);
-  assign io_mem_resp_bits_rdata = _GEN_4 | ~_GEN_3 ? 32'h0 : io_master_rdata;
-endmodule
-
-module AXI_ARB2TO1(
-  input         clock,
-                reset,
-  output        io_ifu_master_arready,
-  input         io_ifu_master_arvalid,
-  input  [31:0] io_ifu_master_araddr,
-  input         io_ifu_master_rready,
-  output        io_ifu_master_rvalid,
-  output [31:0] io_ifu_master_rdata,
-  output        io_mem_master_awready,
-  input         io_mem_master_awvalid,
-  input  [31:0] io_mem_master_awaddr,
-  input  [2:0]  io_mem_master_awsize,
-  output        io_mem_master_wready,
-  input         io_mem_master_wvalid,
-  input  [31:0] io_mem_master_wdata,
-  input  [3:0]  io_mem_master_wstrb,
-  input         io_mem_master_bready,
-  output        io_mem_master_bvalid,
-                io_mem_master_arready,
-  input         io_mem_master_arvalid,
-  input  [31:0] io_mem_master_araddr,
-  input  [2:0]  io_mem_master_arsize,
-  input         io_mem_master_rready,
-  output        io_mem_master_rvalid,
-  output [31:0] io_mem_master_rdata,
-  input         io_master_out_awready,
-  output        io_master_out_awvalid,
-  output [31:0] io_master_out_awaddr,
-  output [3:0]  io_master_out_awid,
-  output [2:0]  io_master_out_awsize,
-  output [1:0]  io_master_out_awburst,
-  input         io_master_out_wready,
-  output        io_master_out_wvalid,
-  output [31:0] io_master_out_wdata,
-  output [3:0]  io_master_out_wstrb,
-  output        io_master_out_wlast,
-                io_master_out_bready,
-  input         io_master_out_bvalid,
-                io_master_out_arready,
-  output        io_master_out_arvalid,
-  output [31:0] io_master_out_araddr,
-  output [3:0]  io_master_out_arid,
-  output [2:0]  io_master_out_arsize,
-  output [1:0]  io_master_out_arburst,
-  output        io_master_out_rready,
-  input         io_master_out_rvalid,
-  input  [31:0] io_master_out_rdata,
-  input         io_master_out_rlast
-);
-
-  reg  busy;
-  reg  using_ifu;
-  reg  is_write;
-  reg  w_phase;
-  wire _GEN = ~busy & io_mem_master_awvalid;
-  wire io_master_out_awvalid_0 = _GEN & io_mem_master_awvalid;
-  wire _GEN_0 = io_ifu_master_arvalid | io_mem_master_arvalid;
-  wire _GEN_1 = busy | io_mem_master_awvalid | ~_GEN_0;
-  wire _GEN_2 = busy | io_mem_master_awvalid;
-  wire io_master_out_arvalid_0 =
-    ~busy & ~io_mem_master_awvalid & _GEN_0
-    & (io_ifu_master_arvalid ? io_ifu_master_arvalid : io_mem_master_arvalid);
-  wire _GEN_3 = is_write & w_phase;
-  wire _GEN_4 = ~busy | ~_GEN_3 | using_ifu;
-  wire io_master_out_wvalid_0 = busy & _GEN_3 & ~using_ifu & io_mem_master_wvalid;
-  wire _GEN_5 = w_phase | using_ifu;
-  wire io_master_out_bready_0 = busy & is_write & ~_GEN_5 & io_mem_master_bready;
-  wire _GEN_6 = ~busy | is_write;
-  wire io_master_out_rready_0 =
-    ~_GEN_6 & (using_ifu ? io_ifu_master_rready : io_mem_master_rready);
-  wire _GEN_7 = ~busy | is_write | using_ifu;
-  wire _GEN_8 = _GEN_0 & io_master_out_arvalid_0 & io_master_out_arready;
-  wire _GEN_9 = io_master_out_awvalid_0 & io_master_out_awready;
-  always @(posedge clock) begin
-    if (reset) begin
-      busy <= 1'h0;
-      using_ifu <= 1'h0;
-      is_write <= 1'h0;
-      w_phase <= 1'h0;
-    end
-    else begin
-      if (busy)
-        busy <=
-          is_write
-            ? (w_phase | ~(io_master_out_bvalid & io_master_out_bready_0)) & busy
-            : ~(io_master_out_rvalid & io_master_out_rready_0 & io_master_out_rlast)
-              & busy;
-      else begin
-        busy <= io_mem_master_awvalid ? _GEN_9 | busy : _GEN_8 | busy;
-        if (io_mem_master_awvalid)
-          using_ifu <= ~_GEN_9 & using_ifu;
-        else if (_GEN_8)
-          using_ifu <= io_ifu_master_arvalid;
-        is_write <= io_mem_master_awvalid ? _GEN_9 | is_write : ~_GEN_8 & is_write;
-      end
-      w_phase <=
-        busy
-          ? ~(is_write & w_phase & io_master_out_wvalid_0 & io_master_out_wready)
-            & w_phase
-          : io_mem_master_awvalid & _GEN_9 | w_phase;
-    end
-  end // always @(posedge)
-  assign io_ifu_master_arready =
-    ~busy & ~io_mem_master_awvalid & _GEN_0 & io_ifu_master_arvalid
-    & io_master_out_arready;
-  assign io_ifu_master_rvalid = ~_GEN_6 & using_ifu & io_master_out_rvalid;
-  assign io_ifu_master_rdata = _GEN_6 | ~using_ifu ? 32'h0 : io_master_out_rdata;
-  assign io_mem_master_awready = _GEN & io_master_out_awready;
-  assign io_mem_master_wready = busy & _GEN_3 & ~using_ifu & io_master_out_wready;
-  assign io_mem_master_bvalid = busy & is_write & ~_GEN_5 & io_master_out_bvalid;
-  assign io_mem_master_arready =
-    ~busy & ~io_mem_master_awvalid & _GEN_0 & ~io_ifu_master_arvalid
-    & io_master_out_arready;
-  assign io_mem_master_rvalid = ~_GEN_7 & io_master_out_rvalid;
-  assign io_mem_master_rdata = _GEN_7 ? 32'h0 : io_master_out_rdata;
-  assign io_master_out_awvalid = io_master_out_awvalid_0;
-  assign io_master_out_awaddr = _GEN ? io_mem_master_awaddr : 32'h0;
-  assign io_master_out_awid = {3'h0, _GEN};
-  assign io_master_out_awsize = _GEN ? io_mem_master_awsize : 3'h0;
-  assign io_master_out_awburst = {1'h0, _GEN};
-  assign io_master_out_wvalid = io_master_out_wvalid_0;
-  assign io_master_out_wdata = _GEN_4 ? 32'h0 : io_mem_master_wdata;
-  assign io_master_out_wstrb = _GEN_4 ? 4'h0 : io_mem_master_wstrb;
-  assign io_master_out_wlast = busy & _GEN_3 & ~using_ifu;
-  assign io_master_out_bready = io_master_out_bready_0;
-  assign io_master_out_arvalid = io_master_out_arvalid_0;
-  assign io_master_out_araddr =
-    _GEN_1 ? 32'h0 : io_ifu_master_arvalid ? io_ifu_master_araddr : io_mem_master_araddr;
-  assign io_master_out_arid = _GEN_2 ? 4'h0 : {3'h0, _GEN_0};
-  assign io_master_out_arsize =
-    _GEN_1 ? 3'h0 : io_ifu_master_arvalid ? 3'h2 : io_mem_master_arsize;
-  assign io_master_out_arburst = _GEN_2 ? 2'h0 : {1'h0, _GEN_0};
-  assign io_master_out_rready = io_master_out_rready_0;
-endmodule
-
-module CSR(
-  input         clock,
-                reset,
-  input  [11:0] io_csr_raddr,
-  output [31:0] io_csr_rdata,
-  input  [11:0] io_csr_waddr,
-  input  [31:0] io_csr_wdata,
-  input         io_csr_wen,
-                io_is_ecall,
-                io_is_mret
-);
-
-  reg  [31:0] mtvec;
-  reg  [31:0] mepc;
-  reg  [31:0] mcause;
-  reg  [31:0] mstatus;
-  wire        _GEN = io_csr_waddr == 12'h305;
-  wire        _GEN_0 = io_csr_waddr == 12'h341;
-  wire        _GEN_1 = io_csr_waddr == 12'h342;
-  always @(posedge clock) begin
-    if (reset) begin
-      mtvec <= 32'h0;
-      mepc <= 32'h0;
-      mcause <= 32'h0;
-      mstatus <= 32'h0;
-    end
-    else begin
-      if (io_csr_wen & _GEN)
-        mtvec <= io_csr_wdata;
-      if (~io_csr_wen | _GEN | ~_GEN_0) begin
-      end
-      else
-        mepc <= io_csr_wdata;
-      if (~io_csr_wen | _GEN | _GEN_0 | ~_GEN_1) begin
-        if (io_is_ecall)
-          mcause <= 32'hB;
-      end
-      else
-        mcause <= io_csr_wdata;
-      if (~io_csr_wen | _GEN | _GEN_0 | _GEN_1 | io_csr_waddr != 12'h300) begin
-        if (io_is_mret)
-          mstatus <= {mstatus[31:8], 1'h1, mstatus[6:4], mstatus[7], mstatus[2:0]};
-      end
-      else
-        mstatus <= io_csr_wdata;
-    end
-  end // always @(posedge)
-  assign io_csr_rdata =
-    io_csr_raddr == 12'hF12
-      ? 32'h25080212
-      : io_csr_raddr == 12'hF11
-          ? 32'h79737978
-          : io_csr_raddr == 12'h300
-              ? mstatus
-              : io_csr_raddr == 12'h342
-                  ? mcause
-                  : io_csr_raddr == 12'h341
-                      ? mepc
-                      : io_csr_raddr == 12'h305 ? mtvec : 32'h0;
-endmodule
-
 module NPC_CPU(
   input         clock,
                 reset,
@@ -1696,6 +1781,8 @@ module NPC_CPU(
   output        io_difftest_valid
 );
 
+  wire [31:0] _regfile_io_rs1_data;
+  wire [31:0] _regfile_io_rs2_data;
   wire [31:0] _csr_io_csr_rdata;
   wire        _axi_arbiter_io_ifu_master_arready;
   wire        _axi_arbiter_io_ifu_master_rvalid;
@@ -1706,6 +1793,12 @@ module NPC_CPU(
   wire        _axi_arbiter_io_mem_master_arready;
   wire        _axi_arbiter_io_mem_master_rvalid;
   wire [31:0] _axi_arbiter_io_mem_master_rdata;
+  wire        _axi_arbiter_io_clint_slave_arvalid;
+  wire [31:0] _axi_arbiter_io_clint_slave_araddr;
+  wire        _axi_arbiter_io_clint_slave_rready;
+  wire        _axi_clint_slave_io_clint_bus_arready;
+  wire        _axi_clint_slave_io_clint_bus_rvalid;
+  wire [31:0] _axi_clint_slave_io_clint_bus_rdata;
   wire        _axi_mem_master_io_master_awvalid;
   wire [31:0] _axi_mem_master_io_master_awaddr;
   wire [2:0]  _axi_mem_master_io_master_awsize;
@@ -1726,8 +1819,6 @@ module NPC_CPU(
   wire        _axi_ifu_master_io_inst_req_ready;
   wire        _axi_ifu_master_io_inst_resp_valid;
   wire [31:0] _axi_ifu_master_io_inst_resp_bits_inst;
-  wire [31:0] _regfile_io_rs1_data;
-  wire [31:0] _regfile_io_rs2_data;
   wire        _wb_io_in_ready;
   wire [4:0]  _wb_io_rd_addr;
   wire [31:0] _wb_io_rd_data;
@@ -2074,48 +2165,6 @@ module NPC_CPU(
     .io_csr_wen            (_wb_io_csr_wen),
     .io_commit             (_wb_io_commit)
   );
-  Regfile regfile (
-    .clock          (clock),
-    .reset          (reset),
-    .io_rs1_addr    (_idu_io_reg_rs1_addr),
-    .io_rs2_addr    (_idu_io_reg_rs2_addr),
-    .io_rd_addr     (_wb_io_rd_addr),
-    .io_rd_data     (_wb_io_rd_data),
-    .io_rd_en       (_wb_io_rd_en),
-    .io_rs1_data    (_regfile_io_rs1_data),
-    .io_rs2_data    (_regfile_io_rs2_data),
-    .io_regs_out_1  (io_regs_out_1),
-    .io_regs_out_2  (io_regs_out_2),
-    .io_regs_out_3  (io_regs_out_3),
-    .io_regs_out_4  (io_regs_out_4),
-    .io_regs_out_5  (io_regs_out_5),
-    .io_regs_out_6  (io_regs_out_6),
-    .io_regs_out_7  (io_regs_out_7),
-    .io_regs_out_8  (io_regs_out_8),
-    .io_regs_out_9  (io_regs_out_9),
-    .io_regs_out_10 (io_regs_out_10),
-    .io_regs_out_11 (io_regs_out_11),
-    .io_regs_out_12 (io_regs_out_12),
-    .io_regs_out_13 (io_regs_out_13),
-    .io_regs_out_14 (io_regs_out_14),
-    .io_regs_out_15 (io_regs_out_15),
-    .io_regs_out_16 (io_regs_out_16),
-    .io_regs_out_17 (io_regs_out_17),
-    .io_regs_out_18 (io_regs_out_18),
-    .io_regs_out_19 (io_regs_out_19),
-    .io_regs_out_20 (io_regs_out_20),
-    .io_regs_out_21 (io_regs_out_21),
-    .io_regs_out_22 (io_regs_out_22),
-    .io_regs_out_23 (io_regs_out_23),
-    .io_regs_out_24 (io_regs_out_24),
-    .io_regs_out_25 (io_regs_out_25),
-    .io_regs_out_26 (io_regs_out_26),
-    .io_regs_out_27 (io_regs_out_27),
-    .io_regs_out_28 (io_regs_out_28),
-    .io_regs_out_29 (io_regs_out_29),
-    .io_regs_out_30 (io_regs_out_30),
-    .io_regs_out_31 (io_regs_out_31)
-  );
   Axi4_IFU_Master axi_ifu_master (
     .clock                  (clock),
     .reset                  (reset),
@@ -2165,55 +2214,71 @@ module NPC_CPU(
     .io_mem_resp_valid      (_axi_mem_master_io_mem_resp_valid),
     .io_mem_resp_bits_rdata (_axi_mem_master_io_mem_resp_bits_rdata)
   );
+  CLINT axi_clint_slave (
+    .clock                (clock),
+    .reset                (reset),
+    .io_clint_bus_arready (_axi_clint_slave_io_clint_bus_arready),
+    .io_clint_bus_arvalid (_axi_arbiter_io_clint_slave_arvalid),
+    .io_clint_bus_araddr  (_axi_arbiter_io_clint_slave_araddr),
+    .io_clint_bus_rready  (_axi_arbiter_io_clint_slave_rready),
+    .io_clint_bus_rvalid  (_axi_clint_slave_io_clint_bus_rvalid),
+    .io_clint_bus_rdata   (_axi_clint_slave_io_clint_bus_rdata)
+  );
   AXI_ARB2TO1 axi_arbiter (
-    .clock                 (clock),
-    .reset                 (reset),
-    .io_ifu_master_arready (_axi_arbiter_io_ifu_master_arready),
-    .io_ifu_master_arvalid (_axi_ifu_master_io_master_arvalid),
-    .io_ifu_master_araddr  (_axi_ifu_master_io_master_araddr),
-    .io_ifu_master_rready  (_axi_ifu_master_io_master_rready),
-    .io_ifu_master_rvalid  (_axi_arbiter_io_ifu_master_rvalid),
-    .io_ifu_master_rdata   (_axi_arbiter_io_ifu_master_rdata),
-    .io_mem_master_awready (_axi_arbiter_io_mem_master_awready),
-    .io_mem_master_awvalid (_axi_mem_master_io_master_awvalid),
-    .io_mem_master_awaddr  (_axi_mem_master_io_master_awaddr),
-    .io_mem_master_awsize  (_axi_mem_master_io_master_awsize),
-    .io_mem_master_wready  (_axi_arbiter_io_mem_master_wready),
-    .io_mem_master_wvalid  (_axi_mem_master_io_master_wvalid),
-    .io_mem_master_wdata   (_axi_mem_master_io_master_wdata),
-    .io_mem_master_wstrb   (_axi_mem_master_io_master_wstrb),
-    .io_mem_master_bready  (_axi_mem_master_io_master_bready),
-    .io_mem_master_bvalid  (_axi_arbiter_io_mem_master_bvalid),
-    .io_mem_master_arready (_axi_arbiter_io_mem_master_arready),
-    .io_mem_master_arvalid (_axi_mem_master_io_master_arvalid),
-    .io_mem_master_araddr  (_axi_mem_master_io_master_araddr),
-    .io_mem_master_arsize  (_axi_mem_master_io_master_arsize),
-    .io_mem_master_rready  (_axi_mem_master_io_master_rready),
-    .io_mem_master_rvalid  (_axi_arbiter_io_mem_master_rvalid),
-    .io_mem_master_rdata   (_axi_arbiter_io_mem_master_rdata),
-    .io_master_out_awready (io_master_awready),
-    .io_master_out_awvalid (io_master_awvalid),
-    .io_master_out_awaddr  (io_master_awaddr),
-    .io_master_out_awid    (io_master_awid),
-    .io_master_out_awsize  (io_master_awsize),
-    .io_master_out_awburst (io_master_awburst),
-    .io_master_out_wready  (io_master_wready),
-    .io_master_out_wvalid  (io_master_wvalid),
-    .io_master_out_wdata   (io_master_wdata),
-    .io_master_out_wstrb   (io_master_wstrb),
-    .io_master_out_wlast   (io_master_wlast),
-    .io_master_out_bready  (io_master_bready),
-    .io_master_out_bvalid  (io_master_bvalid),
-    .io_master_out_arready (io_master_arready),
-    .io_master_out_arvalid (io_master_arvalid),
-    .io_master_out_araddr  (io_master_araddr),
-    .io_master_out_arid    (io_master_arid),
-    .io_master_out_arsize  (io_master_arsize),
-    .io_master_out_arburst (io_master_arburst),
-    .io_master_out_rready  (io_master_rready),
-    .io_master_out_rvalid  (io_master_rvalid),
-    .io_master_out_rdata   (io_master_rdata),
-    .io_master_out_rlast   (io_master_rlast)
+    .clock                  (clock),
+    .reset                  (reset),
+    .io_ifu_master_arready  (_axi_arbiter_io_ifu_master_arready),
+    .io_ifu_master_arvalid  (_axi_ifu_master_io_master_arvalid),
+    .io_ifu_master_araddr   (_axi_ifu_master_io_master_araddr),
+    .io_ifu_master_rready   (_axi_ifu_master_io_master_rready),
+    .io_ifu_master_rvalid   (_axi_arbiter_io_ifu_master_rvalid),
+    .io_ifu_master_rdata    (_axi_arbiter_io_ifu_master_rdata),
+    .io_mem_master_awready  (_axi_arbiter_io_mem_master_awready),
+    .io_mem_master_awvalid  (_axi_mem_master_io_master_awvalid),
+    .io_mem_master_awaddr   (_axi_mem_master_io_master_awaddr),
+    .io_mem_master_awsize   (_axi_mem_master_io_master_awsize),
+    .io_mem_master_wready   (_axi_arbiter_io_mem_master_wready),
+    .io_mem_master_wvalid   (_axi_mem_master_io_master_wvalid),
+    .io_mem_master_wdata    (_axi_mem_master_io_master_wdata),
+    .io_mem_master_wstrb    (_axi_mem_master_io_master_wstrb),
+    .io_mem_master_bready   (_axi_mem_master_io_master_bready),
+    .io_mem_master_bvalid   (_axi_arbiter_io_mem_master_bvalid),
+    .io_mem_master_arready  (_axi_arbiter_io_mem_master_arready),
+    .io_mem_master_arvalid  (_axi_mem_master_io_master_arvalid),
+    .io_mem_master_araddr   (_axi_mem_master_io_master_araddr),
+    .io_mem_master_arsize   (_axi_mem_master_io_master_arsize),
+    .io_mem_master_rready   (_axi_mem_master_io_master_rready),
+    .io_mem_master_rvalid   (_axi_arbiter_io_mem_master_rvalid),
+    .io_mem_master_rdata    (_axi_arbiter_io_mem_master_rdata),
+    .io_clint_slave_arready (_axi_clint_slave_io_clint_bus_arready),
+    .io_clint_slave_arvalid (_axi_arbiter_io_clint_slave_arvalid),
+    .io_clint_slave_araddr  (_axi_arbiter_io_clint_slave_araddr),
+    .io_clint_slave_rready  (_axi_arbiter_io_clint_slave_rready),
+    .io_clint_slave_rvalid  (_axi_clint_slave_io_clint_bus_rvalid),
+    .io_clint_slave_rdata   (_axi_clint_slave_io_clint_bus_rdata),
+    .io_master_out_awready  (io_master_awready),
+    .io_master_out_awvalid  (io_master_awvalid),
+    .io_master_out_awaddr   (io_master_awaddr),
+    .io_master_out_awid     (io_master_awid),
+    .io_master_out_awsize   (io_master_awsize),
+    .io_master_out_awburst  (io_master_awburst),
+    .io_master_out_wready   (io_master_wready),
+    .io_master_out_wvalid   (io_master_wvalid),
+    .io_master_out_wdata    (io_master_wdata),
+    .io_master_out_wstrb    (io_master_wstrb),
+    .io_master_out_wlast    (io_master_wlast),
+    .io_master_out_bready   (io_master_bready),
+    .io_master_out_bvalid   (io_master_bvalid),
+    .io_master_out_arready  (io_master_arready),
+    .io_master_out_arvalid  (io_master_arvalid),
+    .io_master_out_araddr   (io_master_araddr),
+    .io_master_out_arid     (io_master_arid),
+    .io_master_out_arsize   (io_master_arsize),
+    .io_master_out_arburst  (io_master_arburst),
+    .io_master_out_rready   (io_master_rready),
+    .io_master_out_rvalid   (io_master_rvalid),
+    .io_master_out_rdata    (io_master_rdata),
+    .io_master_out_rlast    (io_master_rlast)
   );
   CSR csr (
     .clock        (clock),
@@ -2225,6 +2290,48 @@ module NPC_CPU(
     .io_csr_wen   (_wb_io_csr_wen),
     .io_is_ecall  (_idu_io_is_ecall),
     .io_is_mret   (_idu_io_is_mret)
+  );
+  Regfile regfile (
+    .clock          (clock),
+    .reset          (reset),
+    .io_rs1_addr    (_idu_io_reg_rs1_addr),
+    .io_rs2_addr    (_idu_io_reg_rs2_addr),
+    .io_rd_addr     (_wb_io_rd_addr),
+    .io_rd_data     (_wb_io_rd_data),
+    .io_rd_en       (_wb_io_rd_en),
+    .io_rs1_data    (_regfile_io_rs1_data),
+    .io_rs2_data    (_regfile_io_rs2_data),
+    .io_regs_out_1  (io_regs_out_1),
+    .io_regs_out_2  (io_regs_out_2),
+    .io_regs_out_3  (io_regs_out_3),
+    .io_regs_out_4  (io_regs_out_4),
+    .io_regs_out_5  (io_regs_out_5),
+    .io_regs_out_6  (io_regs_out_6),
+    .io_regs_out_7  (io_regs_out_7),
+    .io_regs_out_8  (io_regs_out_8),
+    .io_regs_out_9  (io_regs_out_9),
+    .io_regs_out_10 (io_regs_out_10),
+    .io_regs_out_11 (io_regs_out_11),
+    .io_regs_out_12 (io_regs_out_12),
+    .io_regs_out_13 (io_regs_out_13),
+    .io_regs_out_14 (io_regs_out_14),
+    .io_regs_out_15 (io_regs_out_15),
+    .io_regs_out_16 (io_regs_out_16),
+    .io_regs_out_17 (io_regs_out_17),
+    .io_regs_out_18 (io_regs_out_18),
+    .io_regs_out_19 (io_regs_out_19),
+    .io_regs_out_20 (io_regs_out_20),
+    .io_regs_out_21 (io_regs_out_21),
+    .io_regs_out_22 (io_regs_out_22),
+    .io_regs_out_23 (io_regs_out_23),
+    .io_regs_out_24 (io_regs_out_24),
+    .io_regs_out_25 (io_regs_out_25),
+    .io_regs_out_26 (io_regs_out_26),
+    .io_regs_out_27 (io_regs_out_27),
+    .io_regs_out_28 (io_regs_out_28),
+    .io_regs_out_29 (io_regs_out_29),
+    .io_regs_out_30 (io_regs_out_30),
+    .io_regs_out_31 (io_regs_out_31)
   );
   assign io_pc_out = _ifu_io_out_bits_pc;
   assign io_inst_out = _ifu_io_out_bits_inst;

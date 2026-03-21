@@ -1,6 +1,4 @@
 
-// 写出一个伪代码
-
 package npc.chisel_src.cpucore
 
 import chisel3._
@@ -26,6 +24,7 @@ class NPC_CPU extends Module {
         val difftest_valid = Output(Bool())
     })
 
+/* ====================== 流水段相关 ====================== */
     val ifu = Module(new IFU())
     val idu = Module(new IDU())
     val exu = Module(new EXU())
@@ -38,23 +37,12 @@ class NPC_CPU extends Module {
     exu.io.out <> mem.io.in
     mem.io.out <> wb.io.in
 
-    // 顶层定义寄存器堆
-    val regfile = Module(new Regfile())
-
-    // 连接寄存器堆读端口
-    regfile.io.rs1_addr := idu.io.reg_rs1_addr
-    regfile.io.rs2_addr := idu.io.reg_rs2_addr
-    idu.io.reg_rs1_data := regfile.io.rs1_data
-    idu.io.reg_rs2_data := regfile.io.rs2_data
-
-    // 连接寄存器堆写端口
-    regfile.io.rd_addr := wb.io.rd_addr
-    regfile.io.rd_data := wb.io.rd_data
-    regfile.io.rd_en   := wb.io.rd_en
+/* ====================== AXI4 总线相关 ====================== */
 
     // 实例化总线
     val axi_ifu_master = Module(new Axi4_IFU_Master())
     val axi_mem_master = Module(new Axi4_MEM_Master())
+    val axi_clint_slave = Module(new bus.CLINT())
 
     ifu.io.inst_req <> axi_ifu_master.io.inst_req
     ifu.io.inst_resp<> axi_ifu_master.io.inst_resp
@@ -70,10 +58,12 @@ class NPC_CPU extends Module {
     io.master <> axi_arbiter.io.master_out
     axi_arbiter.io.ifu_master <> axi_ifu_master.io.master
     axi_arbiter.io.mem_master <> axi_mem_master.io.master
-    
+    axi_arbiter.io.clint_slave <> axi_clint_slave.io.clint_bus
     // 连接分支和跳转反馈到IFU
     ifu.io.in <> exu.io.branch
-    
+
+
+/* ====================== CSR 相关 ====================== */
     // 实例化CSR寄存器
     val csr = Module(new CSR())
 
@@ -88,10 +78,28 @@ class NPC_CPU extends Module {
     csr.io.csr_wdata := wb.io.csr_wdata
     csr.io.csr_wen   := wb.io.csr_wen
 
+/* ======================= Regfile 相关 ================== */
+    
+    // 顶层定义寄存器堆
+    val regfile = Module(new Regfile())
+
+    // 连接寄存器堆读端口
+    regfile.io.rs1_addr := idu.io.reg_rs1_addr
+    regfile.io.rs2_addr := idu.io.reg_rs2_addr
+    idu.io.reg_rs1_data := regfile.io.rs1_data
+    idu.io.reg_rs2_data := regfile.io.rs2_data
+
+    // 连接寄存器堆写端口
+    regfile.io.rd_addr := wb.io.rd_addr
+    regfile.io.rd_data := wb.io.rd_data
+    regfile.io.rd_en   := wb.io.rd_en
+
     // 导出寄存器堆的值到顶层IO
     io.regs_out := regfile.io.regs_out
     io.pc_out   := ifu.io.out.bits.pc
     io.inst_out := ifu.io.out.bits.inst
+
+// ======================= Difftest 相关 ================== */
 
     // 在此添加difftest信号，在wb.commit后执行difftest，传到top供cpp调用
     val busy = RegInit(false.B)
@@ -102,7 +110,7 @@ class NPC_CPU extends Module {
     
     io.difftest_valid := wb.io.commit
 
-
+// ======================= 其他接口置零 ================== */
     // slave 接口置零
     io.slave.awready := false.B
     io.slave.wready  := false.B
