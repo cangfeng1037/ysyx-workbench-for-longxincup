@@ -67,8 +67,8 @@ class IDU extends Module {
         val csr_rdata = Input(UInt(32.W))
         val is_ecall  = Output(Bool())
         val is_mret   = Output(Bool())
-
         val busy = Input(Bool())
+
     })
 
     // 状态机

@@ -20,7 +20,9 @@
 // DPI TYPES for DPI Export callbacks (Internal use)
 using VysyxSoCFull__Vcb_get_difftest_valid_t = void (*) (VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_difftest_valid__Vfuncrtn);
 using VysyxSoCFull__Vcb_get_gpr_t = void (*) (VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ idx, IData/*31:0*/ &get_gpr__Vfuncrtn);
+using VysyxSoCFull__Vcb_get_hit_count_t = void (*) (VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_hit_count__Vfuncrtn);
 using VysyxSoCFull__Vcb_get_inst_t = void (*) (VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_inst__Vfuncrtn);
+using VysyxSoCFull__Vcb_get_miss_count_t = void (*) (VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_miss_count__Vfuncrtn);
 using VysyxSoCFull__Vcb_get_non_inst_t = void (*) (VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_non_inst__Vfuncrtn);
 using VysyxSoCFull__Vcb_get_pc_t = void (*) (VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_pc__Vfuncrtn);
 
@@ -41,6 +43,7 @@ class alignas(VL_CACHE_LINE_BYTES)VysyxSoCFull__Syms final : public VerilatedSym
     // SCOPE NAMES
     VerilatedScope __Vscope_ysyxSoCFull__asic__axi42apb;
     VerilatedScope __Vscope_ysyxSoCFull__asic__axi4frag;
+    VerilatedScope __Vscope_ysyxSoCFull__asic__axi4xbar;
     VerilatedScope __Vscope_ysyxSoCFull__asic__axi4xbar_1;
     VerilatedScope __Vscope_ysyxSoCFull__asic__axi4yank;
     VerilatedScope __Vscope_ysyxSoCFull__asic__axi4yank__unnamedblk1;

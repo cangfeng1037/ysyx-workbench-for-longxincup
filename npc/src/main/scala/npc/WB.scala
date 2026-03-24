@@ -6,7 +6,7 @@ import chisel3.util._
 
 class WB extends Module {
     val io = IO(new Bundle {
-        val in = Flipped(Decoupled(new MEM2WB()))
+        val in = Flipped(Decoupled(new MEM22WB()))
         // 不需要给IFU，从CPU中推给Regfile的写接口
         val rd_addr = Output(UInt(5.W))
         val rd_data = Output(UInt(32.W))
@@ -24,7 +24,7 @@ class WB extends Module {
     // 拉取信号并锁存
     val pc         = RegInit(0.U(32.W))
     val inst       = RegInit(0.U(32.W))
-    val alu_result = RegInit(0.U(32.W))
+    val addr = RegInit(0.U(32.W))
     val rd_addr    = RegInit(0.U(5.W))
     val rd_en      = RegInit(false.B)
     val mem_data   = RegInit(0.U(32.W))
@@ -46,7 +46,7 @@ class WB extends Module {
     when (io.in.fire) {
         pc         := io.in.bits.pc
         inst       := io.in.bits.inst
-        alu_result := io.in.bits.alu_result
+        addr       := io.in.bits.addr
         rd_addr    := io.in.bits.rd_addr
         rd_en      := io.in.bits.rd_en
         mem_data   := io.in.bits.mem_data
@@ -110,7 +110,7 @@ class WB extends Module {
     io.rd_addr := rd_addr
     // sw不需要写使能
     io.rd_en   := rd_en
-    io.rd_data := MuxCase(alu_result, Seq(
+    io.rd_data := MuxCase(addr, Seq(
         // CSR read/write instructions write the *old* CSR value to rd
         (is_csrrw || is_csrrs) -> csr_rdata,
         is_load -> mem_data,

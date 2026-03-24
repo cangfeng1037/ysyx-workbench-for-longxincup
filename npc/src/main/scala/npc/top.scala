@@ -66,6 +66,8 @@ class DifftestDPI extends BlackBox with HasBlackBoxInline {
         val gpr29 = Input(UInt(32.W))
         val gpr30 = Input(UInt(32.W))
         val gpr31 = Input(UInt(32.W))
+        val hit_count = Input(UInt(32.W))
+        val miss_count = Input(UInt(32.W))
     })
 
     setInline("DifftestDPI.v",
@@ -105,7 +107,9 @@ class DifftestDPI extends BlackBox with HasBlackBoxInline {
           |    input  [31:0] gpr28,
           |    input  [31:0] gpr29,
           |    input  [31:0] gpr30,
-          |    input  [31:0] gpr31
+          |    input  [31:0] gpr31,
+          |    input  [31:0] hit_count,
+          |    input  [31:0] miss_count
           |);
           |
           |    function int get_pc();
@@ -166,6 +170,16 @@ class DifftestDPI extends BlackBox with HasBlackBoxInline {
           |        endcase
           |    endfunction
           |    export "DPI-C" function get_gpr;
+          |
+          |    function int get_hit_count();
+          |        get_hit_count = hit_count;
+          |    endfunction
+          |    export "DPI-C" function get_hit_count;
+          |
+          |    function int get_miss_count();
+          |        get_miss_count = miss_count;
+          |    endfunction
+          |    export "DPI-C" function get_miss_count;
           |
           |endmodule
         """.stripMargin)
@@ -244,6 +258,8 @@ class top extends Module {
     difftest_dpi.io.gpr29 := io.gpr(29)
     difftest_dpi.io.gpr30 := io.gpr(30)
     difftest_dpi.io.gpr31 := io.gpr(31)
+    difftest_dpi.io.hit_count := npc_cpu.io.hit_count
+    difftest_dpi.io.miss_count := npc_cpu.io.miss_count
 
     // 连接顶层总线
     npc_cpu.io.master <> io.master

@@ -133,19 +133,31 @@ class AXI_ARB2TO1 extends Module{
             io.master_out.awburst := Mux(sel, io.ifu_master.awburst, io.mem_master.awburst)
             io.master_out.awvalid := Mux(sel, io.ifu_master.awvalid, io.mem_master.awvalid)
 
-            // Ready 信号回传（仅 AW）
+            // 在 AW 仲裁当拍同时转发 W，兼容“AWREADY 依赖 WVALID”的下游
+            io.master_out.wdata   := Mux(sel, io.ifu_master.wdata, io.mem_master.wdata)
+            io.master_out.wstrb   := Mux(sel, io.ifu_master.wstrb, io.mem_master.wstrb)
+            io.master_out.wlast   := Mux(sel, io.ifu_master.wlast, io.mem_master.wlast)
+            io.master_out.wvalid  := Mux(sel, io.ifu_master.wvalid, io.mem_master.wvalid)
+
+            // Ready 信号回传（AW/W）
             when(sel) {
                 io.ifu_master.awready := io.master_out.awready
+                io.ifu_master.wready  := io.master_out.wready
             } .otherwise {
                 io.mem_master.awready := io.master_out.awready
+                io.mem_master.wready  := io.master_out.wready
             }
 
-            // AW 握手成功，锁定总线并进入写数据阶段
-            when (io.master_out.awvalid && io.master_out.awready) {
+            val awFire = io.master_out.awvalid && io.master_out.awready
+            val wFire  = io.master_out.wvalid  && io.master_out.wready
+
+            // AW 握手成功，锁定总线；
+            // 若同拍 W 也握手，则直接进入 B 等待，否则进入 W 阶段
+            when (awFire) {
                 busy := true.B
                 using_ifu := sel
                 is_write := true.B
-                w_phase := true.B
+                w_phase := !wFire
                 using_clint := false.B
             }
         }

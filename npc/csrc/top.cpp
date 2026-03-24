@@ -165,6 +165,8 @@ extern "C" int get_pc();
 extern "C" int get_inst();
 extern "C" int get_difftest_valid();
 extern "C" int get_non_inst();
+extern "C" int get_hit_count();
+extern "C" int get_miss_count();
 extern "C" int get_gpr(int idx);
 
 // 注意：这里需要设置 DPI scope 到 DifftestDPI 模块实例
@@ -280,6 +282,14 @@ uint32_t difftest_get_non_inst() {
     return (uint32_t)get_non_inst();
 }
 
+double ptrace_get_miss_rate() {
+    set_dpi_scope();
+    uint32_t hit = get_hit_count();
+    uint32_t miss = get_miss_count();
+    uint32_t total = hit + miss;
+    return total == 0 ? 0.0 : (double)miss / (double)total;
+}
+
 void eval() {
     // 组合阶段
     top -> clock = 0;
@@ -297,8 +307,10 @@ void eval() {
 
     // 打印具体的指令信息
     
-    if(difftest_get_difftest_valid()) inst_cnt ++ ;
-    //printf("Cycle %d: PC = 0x%08x, inst = 0x%08x\n", cnt, difftest_get_pc(), difftest_get_inst());
+    if(difftest_get_difftest_valid()) {
+        inst_cnt ++ ;
+        //printf("Cycle %lld: PC = 0x%08x, inst = 0x%08x\n", cnt, difftest_get_pc(), difftest_get_inst());
+    }
 
     cnt ++ ;
 #ifdef CONFIG_DIFFTEST
@@ -473,7 +485,9 @@ int main(int argc, char** argv) {
     printf("====== Total cycles = %lld =======\n", cnt);
     printf("======  Total inst  = %lld =======\n", inst_cnt);
     printf("======      IPC  = %08lf     =======\n", (double)inst_cnt / cnt);
-    
+    double miss_rate = ptrace_get_miss_rate();
+    printf("======   Miss Rate  = %08lf     =======\n", miss_rate);
+
     delete top;
     free(mem);
     

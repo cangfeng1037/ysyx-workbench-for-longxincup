@@ -16,23 +16,27 @@ extern "C" {
 
 
     // DPI EXPORTS
-    // DPI export at verilog/top.sv:2696:18
+    // DPI export at verilog/top.sv:62224:18
     extern int get_difftest_valid();
-    // DPI export at verilog/top.sv:2706:18
+    // DPI export at verilog/top.sv:62234:18
     extern int get_gpr(int idx);
-    // DPI export at verilog/top.sv:2691:18
+    // DPI export at verilog/top.sv:62273:18
+    extern int get_hit_count();
+    // DPI export at verilog/top.sv:62219:18
     extern int get_inst();
-    // DPI export at verilog/top.sv:2701:18
+    // DPI export at verilog/top.sv:62278:18
+    extern int get_miss_count();
+    // DPI export at verilog/top.sv:62229:18
     extern int get_non_inst();
-    // DPI export at verilog/top.sv:2686:18
+    // DPI export at verilog/top.sv:62214:18
     extern int get_pc();
 
     // DPI IMPORTS
-    // DPI import at verilog/top.sv:2636:34
+    // DPI import at verilog/top.sv:62162:34
     extern void ebreak();
     // DPI import at /home/cangfeng_/ysyx-workbench/ysyxSoC/perip/flash/flash.v:84:30
     extern void flash_read(int addr, int* data);
-    // DPI import at ../ysyxSoC/build/ysyxSoCFull.v:6266:30
+    // DPI import at ../ysyxSoC/build/ysyxSoCFull.v:7556:30
     extern void mrom_read(int raddr, int* rdata);
 
 #ifdef __cplusplus

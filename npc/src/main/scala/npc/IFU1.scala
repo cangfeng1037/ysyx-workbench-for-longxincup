@@ -1,11 +1,13 @@
+// 将IFU分成两个阶段，IFU1负责发送指令和处理分支跳转，IFU2负责接收指令送到ID阶段
+
 package npc.chisel_src.cpucore
 
 import chisel3._
 import chisel3.util._
 
-class IF2ID extends Bundle {
+class IF12IF2 extends Bundle {
     val pc    = UInt(32.W)
-    val inst  = UInt(32.W)
+    val kill  = Bool()
 }
 
 class BranchBus extends Bundle {
@@ -22,21 +24,19 @@ class BranchBus extends Bundle {
 }
 
 // instruction request and response
-class inst_req extends Bundle {
+class ICacheFetchReq extends Bundle {
     val pc = UInt(32.W)
+    val kill = Bool()
 }
 
-class inst_resp extends Bundle {
-    val inst = UInt(32.W)
-}
 
-class IFU extends Module {
+class IFU1 extends Module {
     val io = IO(new Bundle{
-        val out = Decoupled(new IF2ID)
+        val out = Decoupled(new IF12IF2)
         val in  = Flipped(Decoupled(new BranchBus))
 
-        val inst_req = Decoupled(new inst_req)
-        val inst_resp= Flipped(Decoupled(new inst_resp))
+        val inst_req = Decoupled(new ICacheFetchReq)
+        //val inst_resp= Flipped(Decoupled(new ICacheFetchResp))
 
         val flush = Output(Bool())
     })
@@ -44,19 +44,17 @@ class IFU extends Module {
     // 在 flash 中取指令
     val pc = RegInit("h30000000".U(32.W))
 
-    // 锁存pc
+    // 锁存一次发射请求对应的pc
     val pc_reg = RegInit(0.U(32.W))
-    val inst_reg = RegInit(0.U(32.W))
     
     // 实现状态机
-    val s_idle :: wait_inst :: Nil = Enum(2)
+    val s_idle :: s_send :: Nil = Enum(2)
     val state = RegInit(s_idle)
     val out_valid = RegInit(false.B)
 
     when (reset.asBool) {
         pc := "h30000000".U(32.W)
         pc_reg := "h30000000".U(32.W)
-        inst_reg := 0.U
         state := s_idle
         out_valid := false.B
     }
@@ -64,10 +62,7 @@ class IFU extends Module {
     // 给状态机赋初值    
     io.inst_req.valid := false.B
     io.inst_req.bits.pc := pc
-    io.inst_resp.ready := (state === wait_inst) && !out_valid
     io.out.valid := false.B
-
-    
 
     val redirect_valid = io.in.valid && {
         io.in.bits.is_jal || io.in.bits.is_jalr || io.in.bits.is_branch_taken ||
@@ -77,23 +72,17 @@ class IFU extends Module {
     switch(state) {
         is (s_idle) { // S_idle 只发inst_req
         // 在s_idle时锁存pc
-
             // 重定向当拍不发取指请求，避免把“旧pc”的请求送入ISRAM
-            io.inst_req.valid := !redirect_valid
-            when (io.inst_req.fire) {
-                state := wait_inst
-                pc_reg := pc
-            }
+            when(!redirect_valid) { state := s_send }
         }
 
-        is (wait_inst) { // s_wait_inst 只接受inst_resp
-            when (io.inst_resp.fire) {
+        is (s_send) { // s_send 只接受inst_resp
+            io.inst_req.valid := true.B
+            when(io.inst_req.fire) {
+                pc_reg := pc
                 out_valid := true.B
-                // 锁存inst
-                inst_reg := io.inst_resp.bits.inst
-                //io.inst_resp.ready := false.B
+                state := s_idle
             }
-            when (io.out.fire) { out_valid := false.B; state := s_idle}
         }
 }
 
@@ -119,11 +108,10 @@ class IFU extends Module {
     // 设置握手信号, 用锁存值
     io.out.valid := out_valid
     io.out.bits.pc := pc_reg
-    io.out.bits.inst := inst_reg
     io.in.ready := true.B
     io.flush := redirect_valid
+    io.inst_req.bits.kill := redirect_valid
+    io.out.bits.kill := redirect_valid
 
     //printf("IFU: pc=%x, inst=%x, redirect=%d, next_pc=%x, state=%d, inst_req_valid=%d, inst_resp_ready=%d\n", pc, inst_reg, redirect_valid, redirect_pc, state, io.inst_req.valid, io.inst_resp.ready)
 }
-
-

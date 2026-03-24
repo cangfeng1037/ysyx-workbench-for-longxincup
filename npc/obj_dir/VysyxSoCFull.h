@@ -99,7 +99,9 @@ class alignas(VL_CACHE_LINE_BYTES) VysyxSoCFull VL_NOT_FINAL : public VerilatedM
     /// DPI Export functions
     static int get_difftest_valid();
     static int get_gpr(int idx);
+    static int get_hit_count();
     static int get_inst();
+    static int get_miss_count();
     static int get_non_inst();
     static int get_pc();
 
