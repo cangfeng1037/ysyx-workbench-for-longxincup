@@ -10,135 +10,171 @@ import npc.chisel_src.cpucore._
 
 // 不要检查rid和bid，因为ysyxSoCFull侧统一分配为0了
 
+class data_req extends Bundle {
+    val wen = Bool() // true: 写请求，false: 读请求
+    val rsize = UInt(3.W) // 0: byte, 1: half-word, 2: word
+    val raddr = UInt(32.W)
+    val rlen = UInt(3.W) 
+
+    val wdata = UInt(32.W) // 写数据
+    val wmask = UInt(4.W) // 写掩码，按字节使能
+    val wlen = UInt(3.W) // 突发写入的长度，单位为beat（4字节），值为0-7
+    val wsize = UInt(3.W) // 突发传输的大小，单位为字节，值为0-7
+    
+    val waddr = UInt(32.W)
+    val burst = Bool() // true: cache line refill burst(8 beats), false: single beat bypass
+}
+
+class data_resp extends Bundle {
+    val data = UInt(32.W)
+    val last = Bool() // 表示当前响应的数据是一个cache line中的最后一个数据
+}
+
+
 // 修改为axi4的版本
 class Axi4_MEM_Master extends Module {
     val io = IO(new Bundle{
         val master = new Axi4MasterIO()
 
-        val mem_req = Flipped(Decoupled(new npc.chisel_src.cpucore.MemReq))
-        val mem_resp= Decoupled(new npc.chisel_src.cpucore.MemResp)
+        val mem_req = Flipped(Decoupled(new npc.chisel_src.cache.data_req))
+        val mem_resp= Decoupled(new npc.chisel_src.cache.data_resp)
     })
 
-    // 状态机
-    val sIdle :: sWaitW ::sReadWait :: sWriteWait :: Nil = Enum(4)
+    // 状态机：单 outstanding
+    val sIdle :: sReadWait :: sWriteData :: sWriteResp :: Nil = Enum(4)
     val state = RegInit(sIdle)
 
     val MEM_ID = 1.U(4.W) // ysyxSoCFull 侧统一分配为0
 
-    // 锁存写数据信息
-    val wdata = RegInit(0.U(32.W))
-    val wstrb = RegInit(0.U(4.W))
-    val waddr = RegInit(0.U(32.W))
+    // 锁存请求，避免在非 fire 周期读取上游 bits
+    val req_wen   = RegInit(false.B)
+    val req_rsize = RegInit(2.U(3.W))
+    val req_raddr = RegInit(0.U(32.W))
+    val req_rlen  = RegInit(0.U(3.W))
+    val req_wdata = RegInit(0.U(32.W))
+    val req_wmask = RegInit(0.U(4.W))
+    val req_wlen  = RegInit(0.U(3.W))
+    val req_wsize = RegInit(2.U(3.W))
+    val req_waddr = RegInit(0.U(32.W))
+    val req_burst = RegInit(false.B)
 
     // 默认值
     io.master.awaddr  := 0.U; io.master.awvalid := false.B
     io.master.awid   := MEM_ID
     io.master.awlen  := 0.U
-    io.master.awsize := 0.U  // 4字节
-    io.master.awburst:= 1.U  // INCR模式
+    io.master.awsize := 2.U
+    io.master.awburst:= 0.U
     
     io.master.wdata   := 0.U; io.master.wstrb   := 0.U; io.master.wvalid  := false.B
-    io.master.wlast  := true.B // 单次传输
+    io.master.wlast  := true.B
 
     io.master.bready  := false.B
     
     io.master.araddr  := 0.U; io.master.arvalid := false.B
     io.master.arid   := MEM_ID
     io.master.arlen  := 0.U
-    io.master.arsize := io.mem_req.bits.rsize
-    io.master.arburst:= 1.U  // INCR模式
+    io.master.arsize := 2.U
+    io.master.arburst:= 0.U
 
     io.master.rready  := false.B
     
     io.mem_req.ready := false.B
     io.mem_resp.valid := false.B
-    io.mem_resp.bits := 0.U.asTypeOf(new npc.chisel_src.cpucore.MemResp)
-
+    io.mem_resp.bits := 0.U.asTypeOf(new npc.chisel_src.cache.data_resp())
     
+    def normSize(x: UInt): UInt = Mux(x <= 2.U, x, 2.U)
 
     switch(state) {
         is(sIdle) {
-            // 写（AW/W解锁）
             when(io.mem_req.valid && io.mem_req.bits.wen) {
-                // 先发送 AW
+                // 写请求：优先同拍 AW + W，兼容下游 AWREADY 依赖 WVALID
                 io.master.awaddr  := io.mem_req.bits.waddr
                 io.master.awvalid := true.B
-                // awsize按wmask字节选择：单子节设为0，多字节设为2
-                io.master.awsize := Mux(PopCount(io.mem_req.bits.wmask) === 1.U, 0.U, 2.U)
-                /*
+                io.master.awlen   := 0.U
+                io.master.awsize  := normSize(io.mem_req.bits.wsize)
+                io.master.awburst := 0.U
+
                 io.master.wdata   := io.mem_req.bits.wdata
                 io.master.wstrb   := io.mem_req.bits.wmask
                 io.master.wvalid  := true.B
-                */
+                io.master.wlast   := true.B
+                
+                val awFire = io.master.awvalid && io.master.awready
+                val wFire  = io.master.wvalid  && io.master.wready
+                io.mem_req.ready := awFire
 
-                io.mem_req.ready := io.master.awready
-
-                // 如果 AW 握手成功，进入 sWaitW
-                when(io.master.awready) {
-                    wdata := io.mem_req.bits.wdata
-                    wstrb := io.mem_req.bits.wmask
-                    waddr := io.mem_req.bits.waddr
-                    state := sWaitW
+                when(awFire) {
+                    req_wen   := io.mem_req.bits.wen
+                    req_rsize := io.mem_req.bits.rsize
+                    req_raddr := io.mem_req.bits.raddr
+                    req_rlen  := io.mem_req.bits.rlen
+                    req_wdata := io.mem_req.bits.wdata
+                    req_wmask := io.mem_req.bits.wmask
+                    req_wlen  := io.mem_req.bits.wlen
+                    req_wsize := io.mem_req.bits.wsize
+                    req_waddr := io.mem_req.bits.waddr
+                    req_burst := io.mem_req.bits.burst
+                    state := Mux(wFire, sWriteResp, sWriteData)
                 }
-                // 打印写入信息
 
             } .elsewhen(io.mem_req.valid) {
-                // 读
+                // 读请求：支持 burst
                 io.master.araddr  := io.mem_req.bits.raddr
                 io.master.arvalid := true.B 
+                io.master.arlen   := Mux(io.mem_req.bits.burst, io.mem_req.bits.rlen, 0.U)
+                io.master.arsize  := normSize(io.mem_req.bits.rsize)
+                io.master.arburst := Mux(io.mem_req.bits.burst, 1.U, 0.U)
 
-                io.mem_req.ready := io.master.arready
-                when(io.mem_req.ready) { state := sReadWait }
-            }
-        }
-
-        is(sWaitW) {
-            /*
-            // 此时，保持awaddr和awvalid不变
-            io.master.awaddr  := waddr
-            io.master.awvalid := true.B
-            */
-            // 等待 W 通道握手
-            io.master.wdata   := wdata
-            io.master.wstrb   := wstrb
-            io.master.wvalid  := true.B
-
-            when(io.master.wready) {
-                state := sWriteWait
+                val arFire = io.master.arvalid && io.master.arready
+                io.mem_req.ready := arFire
+                when(arFire) {
+                    req_wen   := io.mem_req.bits.wen
+                    req_rsize := io.mem_req.bits.rsize
+                    req_raddr := io.mem_req.bits.raddr
+                    req_rlen  := io.mem_req.bits.rlen
+                    req_wdata := io.mem_req.bits.wdata
+                    req_wmask := io.mem_req.bits.wmask
+                    req_wlen  := io.mem_req.bits.wlen
+                    req_wsize := io.mem_req.bits.wsize
+                    req_waddr := io.mem_req.bits.waddr
+                    req_burst := io.mem_req.bits.burst
+                    state := sReadWait
+                }
             }
         }
 
         is(sReadWait) {
-            io.master.rready := io.mem_resp.ready // 准备接收读响应
-
+            io.master.rready := io.mem_resp.ready
             io.mem_resp.valid := io.master.rvalid
-            io.mem_resp.bits.rdata := io.master.rdata
-            
-            // 检查 对0x10000005 LSR的访问
-            when(io.mem_req.valid && (io.mem_req.bits.raddr === 0x10000005.U)) {
-                printf("AXI_MEM_Master: Accessing UART LSR = 0x%x\n", io.master.rdata)
-            }
+            io.mem_resp.bits.data := io.master.rdata
+            io.mem_resp.bits.last := io.master.rlast
 
-            // 读fire，回到空闲
-            when(io.master.rvalid && io.master.rready) { 
-                // 检查RLAST和rresp
-                //assert(io.master.rlast === true.B, "AXI_MEM_Master: RLAST should be 1 for single beat read")
-                //assert(io.master.rresp === 0.U, "AXI_MEM_Master: RRESP should be OKAY for successful read")
-                state := sIdle 
+            when(io.master.rvalid && io.master.rready && io.master.rlast) {
+                state := sIdle
             }
         }
 
-        is(sWriteWait) {
-            io.master.bready := true.B // 准备接收写响应
+        is(sWriteData) {
+            // AW 已握手，补齐 W
+            io.master.wdata   := req_wdata
+            io.master.wstrb   := req_wmask
+            io.master.wvalid  := true.B
+            io.master.wlast   := true.B
 
-            io.mem_resp.valid := io.master.bvalid
-            
-            // 写fire，回到空闲
-            when(io.master.bvalid && io.master.bready) { 
-                // 检查bresp
-                //assert(io.master.bresp === 0.U, "AXI_MEM_Master: BRESP should be OKAY for successful write")
-                state := sIdle 
+            when(io.master.wvalid && io.master.wready) {
+                state := sWriteResp
             }
+        }
+
+        is(sWriteResp) {
+            io.master.bready := io.mem_resp.ready
+            io.mem_resp.valid := io.master.bvalid
+            io.mem_resp.bits.data := 0.U
+            io.mem_resp.bits.last := true.B
+            
+            when(io.master.bvalid && io.master.bready) {
+                state := sIdle
+            }    
         }
     }
 }

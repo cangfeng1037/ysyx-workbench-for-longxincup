@@ -1,55 +1,53 @@
+// MEM1阶段：发送内存请求，MEM2阶段：等待内存响应并处理数据，最后送到WB阶段
 package npc.chisel_src.cpucore
 
 import chisel3._
 import chisel3.util._
 
-// 通过BlackBox调用DPIC实现内存读写
-
-class MEM2WB extends Bundle {
-    val pc         = UInt(32.W)
+class MEM12MEM2 extends Bundle {
+    val pc        = UInt(32.W)
     val inst       = UInt(32.W)
-    val alu_result = UInt(32.W)
+    val addr       = UInt(32.W)
     val rd_addr    = UInt(5.W)
     val rd_en      = Bool()
-    val mem_data   = UInt(32.W)
 
-    // 控制信号
-    val is_load    = Bool()
-    val is_store   = Bool()
-    val is_jalr    = Bool()
-    val is_jal     = Bool()
-
-    // CSR信号
+    // csr信号
     val csr_wdata  = UInt(32.W)
     val csr_wen    = Bool()
     val csr_waddr  = UInt(12.W)
     val csr_rdata  = UInt(32.W)
     val is_csrrw   = Bool()
     val is_csrrs   = Bool()
+
+    // 控制信号
+    val is_load     = Bool()
+    val is_store    = Bool()
+    val is_lw       = Bool()
+    val is_lb       = Bool()
+    val is_lbu      = Bool()
+    val is_lh       = Bool()
+    val is_lhu      = Bool()
+    val is_jalr     = Bool()
+    val is_jal      = Bool()
 }
 
-class MemReq extends Bundle {
-    val wen   = Bool()
+class dcache_req extends Bundle {
+    val wen = Bool() // true: 写请求，false: 读请求
+    val rsize = UInt(3.W) // 0: byte, 1: half-word, 2: word
+    val wdata = UInt(32.W) // 写数据
+    val wmask = UInt(4.W) // 写掩码，按字节使能
     val raddr = UInt(32.W)
-    val rsize = UInt(3.W)
     val waddr = UInt(32.W)
-    val wdata = UInt(32.W)
-    val wmask = UInt(4.W)
+    val bypass = Bool() // true: 直通写，不走DCache写命中/替换
 }
 
-class MemResp extends Bundle {
-    val rdata = UInt(32.W)
-}
-
-
-class MEM extends Module {
+class MEM1 extends Module {
     val io = IO(new Bundle {
         val in  = Flipped(Decoupled(new EX2MEM()))
-        val out = Decoupled(new MEM2WB())
+        val out = Decoupled(new MEM12MEM2())
         
         // 内存访问接口（连接到 SRAM）
-        val mem_req = Decoupled(new MemReq())
-        val mem_resp= Flipped(Decoupled(new MemResp()))
+        val mem_req = Decoupled(new dcache_req())
     })
 
     // 先拉取所有信号并锁存
@@ -112,74 +110,57 @@ class MEM extends Module {
     }
 
 
-    // 状态机
-    val s_idle :: s_req ::s_wait :: s_send ::Nil = Enum(4)
+    // 状态机：空闲 -> 访存请求 -> 旁路发送
+    val s_idle :: s_req :: s_bypass :: Nil = Enum(3)
     val state = RegInit(s_idle)
     
     val in_ready = (state === s_idle)
-    val out_valid= RegInit(false.B)
-    when (state === s_send && !out_valid) {
-        out_valid := true.B
-    }
+    val req_sent = RegInit(false.B) // mem_req 是否已成功握手
+    val out_sent = RegInit(false.B) // token 是否已发给 MEM2
     
-    val mem_data = RegInit(0.U(32.W))
-
     // 默认赋值
     io.mem_req.valid  := false.B
-    io.mem_resp.ready := (state === s_wait)   // 仅状态驱动
+    io.out.valid := false.B
 
     val is_load_now  = io.in.bits.is_lw || io.in.bits.is_lb || io.in.bits.is_lbu || io.in.bits.is_lh || io.in.bits.is_lhu
     val is_store_now = io.in.bits.is_sw || io.in.bits.is_sb || io.in.bits.is_sh
 
-
     switch(state) {
         is (s_idle) {
             when (io.in.fire) {
-                
                 when (is_load_now || is_store_now) {
+                    req_sent := false.B
+                    out_sent := false.B
                     state := s_req
                 }
-                .otherwise {state := s_send}
+                .otherwise {
+                    state := s_bypass // 非访存指令直接下发
+                }
             }
         }
         
         is (s_req) { // 发出内存请求
-            io.mem_req.valid := true.B
+            io.mem_req.valid := !req_sent
+            io.out.valid := req_sent && !out_sent
+
             when (io.mem_req.fire) {
-                state := Mux(is_load, s_wait, s_send)
+                req_sent := true.B
             }
-        }
-
-        is (s_wait) {
-            // ready 由状态驱动，不再在 fire 分支修改
-            when (io.mem_resp.fire) {
-                state := s_send
-                val mem_data_reg = io.mem_resp.bits.rdata
-                // 根据ADDR选数据（
-                val sel_byte = MuxCase(mem_data_reg(7, 0), Seq(
-                    (alu_result(1,0) === "b00".U) -> mem_data_reg(7, 0),
-                    (alu_result(1,0) === "b01".U) -> mem_data_reg(15, 8),
-                    (alu_result(1,0) === "b10".U) -> mem_data_reg(23, 16),
-                    (alu_result(1,0) === "b11".U) -> mem_data_reg(31, 24)
-                ))
-                val sel_half = Mux(alu_result(1), mem_data_reg(31, 16), mem_data_reg(15, 0))
-
-                mem_data := MuxCase(0.U, Seq(
-                    is_lw  -> mem_data_reg,
-                    is_lbu -> Cat(0.U(24.W), sel_byte),
-                    is_lb  -> Cat(Fill(24, sel_byte(7)), sel_byte),
-                    is_lhu -> Cat(0.U(16.W), sel_half),
-                    is_lh  -> Cat(Fill(16, sel_half(15)), sel_half)
-                ))
-            }
-        }
-
-        is (s_send) {
             when (io.out.fire) {
-                out_valid := false.B
+                out_sent := true.B
+            }
+            when (req_sent && out_sent) {
                 state := s_idle
             }
         }
+
+        is (s_bypass) {
+            io.out.valid := true.B
+            when (io.out.fire) {
+                state := s_idle
+            }
+        }
+
     }
 
     // 写掩码生成
@@ -216,19 +197,29 @@ class MEM extends Module {
     io.mem_req.bits.wdata := wdata
     io.mem_req.bits.wmask := wmask
     io.mem_req.bits.rsize := rsize
+    // bootloader 阶段（pc < 0xa0010000）的访存优先旁路，避免与 DCache 一致性耦合
+    val is_bootloader_phase = pc < "ha0010000".U(32.W)
+    val is_cacheable_addr = (alu_result(31, 26) === "b101000".U) // 0xa0xx_xxxx SDRAM
+    val is_uncacheable_store = is_store && !is_cacheable_addr
+    val is_mem_op = is_load || is_store
+    io.mem_req.bits.bypass := is_uncacheable_store || (is_bootloader_phase && is_mem_op)
 
     // 输出打包
     io.out.bits.pc         := pc
     io.out.bits.inst       := inst
-    io.out.bits.alu_result := alu_result
+    io.out.bits.addr       := alu_result
     io.out.bits.rd_addr    := rd_addr
     io.out.bits.rd_en      := rd_en
-    io.out.bits.mem_data   := mem_data
 
     io.out.bits.is_load    := is_load
     io.out.bits.is_jalr    := is_jalr
     io.out.bits.is_jal     := is_jal
     io.out.bits.is_store   := is_store
+    io.out.bits.is_lw      := is_lw
+    io.out.bits.is_lb      := is_lb
+    io.out.bits.is_lbu     := is_lbu
+    io.out.bits.is_lh      := is_lh
+    io.out.bits.is_lhu     := is_lhu
 
     io.out.bits.csr_wdata  := csr_wdata
     io.out.bits.csr_wen    := csr_wen
@@ -238,5 +229,4 @@ class MEM extends Module {
     io.out.bits.is_csrrs   := is_csrrs
  
     io.in.ready := in_ready
-    io.out.valid:= out_valid
 }

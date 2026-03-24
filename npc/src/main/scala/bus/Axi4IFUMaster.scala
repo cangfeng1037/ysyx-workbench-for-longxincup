@@ -10,8 +10,8 @@ class Axi4_IFU_Master extends Module {
     val io = IO(new Bundle{
         val master = new Axi4MasterIO()
 
-        val inst_req = Flipped(Decoupled(new npc.chisel_src.cpucore.inst_req))
-        val inst_resp= Decoupled(new npc.chisel_src.cpucore.inst_resp)
+        val inst_req = Flipped(Decoupled(new npc.chisel_src.cache.inst_req))
+        val inst_resp= Decoupled(new npc.chisel_src.cache.inst_resp)
 
         val flush = Input(Bool())
     })
@@ -33,9 +33,9 @@ class Axi4_IFU_Master extends Module {
 
     // 读地址通道新增字段
     io.master.arid   := 1.U
-    io.master.arlen  := 0.U
+    io.master.arlen  := Mux(io.inst_req.bits.burst, 7.U, 0.U) // burst:8 beats, bypass:1 beat
     io.master.arsize := 2.U  // 4字节
-    io.master.arburst:= 1.U  // INCR模式
+    io.master.arburst:= Mux(io.inst_req.bits.burst, 1.U, 0.U) // burst: INCR, single-beat bypass: FIXED
 
     // 读数据通道检查 RLAST
 
@@ -45,19 +45,17 @@ class Axi4_IFU_Master extends Module {
     val killPending = RegInit(false.B)
     val ar_fire = io.master.arvalid && io.master.arready
     val r_fire  = io.master.rvalid  && io.master.rready
+    val r_last_fire = r_fire && io.master.rlast
 
-    when (r_fire) {
+    when (ar_fire) {pending := true.B}
+
+    when (!killPending && io.flush && (pending || ar_fire)) {
+        killPending := true.B
+    }
+
+    when (r_last_fire) {
         pending := false.B
         killPending := false.B
-    } .otherwise {
-        when (ar_fire) {
-            pending := true.B
-        }
-        // flush 控制：flush后接回来的rdata不发给inst_resp
-        // ar_fire 同拍 flush 也需要 kill；kill 置位后不重复置位，避免卡高
-        when (!killPending && io.flush && (pending || ar_fire)) {
-            killPending := true.B
-        }
     }
 
     // 读地址通道：只有 pending = 0 才允许发新AR
@@ -70,6 +68,7 @@ class Axi4_IFU_Master extends Module {
     // 读数据通道：用 Decoupled 反压
     io.inst_resp.valid  := io.master.rvalid && !killPending
     io.inst_resp.bits.inst := io.master.rdata
+    io.inst_resp.bits.last := io.master.rlast
     
     // R通道依然要接收，但是排空不传给inst_resp
     io.master.rready    := io.inst_resp.ready || killPending 

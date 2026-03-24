@@ -1,6 +1,4 @@
 
-// 写出一个伪代码
-
 package npc.chisel_src.cpucore
 
 import chisel3._
@@ -8,6 +6,8 @@ import chisel3.util._
 import bus.Axi4_IFU_Master
 import bus.Axi4_MEM_Master
 import bus.AXI_ARB2TO1
+import npc.chisel_src.cache.ICache1
+import npc.chisel_src.cache.DCache1
 
 // 五个步骤：取指，译码，执行，访存，写回
 
@@ -24,44 +24,56 @@ class NPC_CPU extends Module {
 
         // Difftest接口
         val difftest_valid = Output(Bool())
+        
+        // 性能计数器
+        val hit_count = Output(UInt(32.W))
+        val miss_count = Output(UInt(32.W))
     })
 
-    val ifu = Module(new IFU())
+/* ====================== 流水段相关 ====================== */
+    val ifu1 = Module(new IFU1())
+    val ifu2 = Module(new IFU2())
     val idu = Module(new IDU())
     val exu = Module(new EXU())
-    val mem = Module(new MEM())
+    val mem1 = Module(new MEM1())
+    val mem2 = Module(new MEM2())
     val wb  = Module(new WB())
 
     // 处理模块间的通信,用Decoupled接口实现总线
-    ifu.io.out <> idu.io.in
+    ifu1.io.out <> ifu2.io.in
+    ifu2.io.out <> idu.io.in
     idu.io.out <> exu.io.in
-    exu.io.out <> mem.io.in
-    mem.io.out <> wb.io.in
+    exu.io.out <> mem1.io.in
+    mem1.io.out <> mem2.io.in
+    mem2.io.out <> wb.io.in
 
-    // 顶层定义寄存器堆
-    val regfile = Module(new Regfile())
+/* ====================== cache相关 ====================== */
+    val icache1 = Module(new ICache1())
+    val dcache1 = Module(new DCache1())
 
-    // 连接寄存器堆读端口
-    regfile.io.rs1_addr := idu.io.reg_rs1_addr
-    regfile.io.rs2_addr := idu.io.reg_rs2_addr
-    idu.io.reg_rs1_data := regfile.io.rs1_data
-    idu.io.reg_rs2_data := regfile.io.rs2_data
+    ifu1.io.inst_req <> icache1.io.fetch_req
+    ifu2.io.inst_resp <> icache1.io.fetch_resp
+    icache1.io.flush := ifu1.io.flush
 
-    // 连接寄存器堆写端口
-    regfile.io.rd_addr := wb.io.rd_addr
-    regfile.io.rd_data := wb.io.rd_data
-    regfile.io.rd_en   := wb.io.rd_en
+    mem1.io.mem_req  <> dcache1.io.dcache_req
+    mem2.io.mem_resp <> dcache1.io.dcache_resp
+
+    io.hit_count := icache1.io.hit_count
+    io.miss_count := icache1.io.miss_count
+/* ====================== AXI4 总线  ====================== */
 
     // 实例化总线
     val axi_ifu_master = Module(new Axi4_IFU_Master())
     val axi_mem_master = Module(new Axi4_MEM_Master())
+    val axi_clint_slave = Module(new bus.CLINT())
+    
+    icache1.io.inst_req <> axi_ifu_master.io.inst_req
+    axi_ifu_master.io.inst_resp <> icache1.io.inst_resp
+    axi_ifu_master.io.flush := ifu1.io.flush
 
-    ifu.io.inst_req <> axi_ifu_master.io.inst_req
-    ifu.io.inst_resp<> axi_ifu_master.io.inst_resp
-    axi_ifu_master.io.flush := ifu.io.flush
-
-    mem.io.mem_req  <> axi_mem_master.io.mem_req
-    mem.io.mem_resp <> axi_mem_master.io.mem_resp
+    dcache1.io.data_req  <> axi_mem_master.io.mem_req
+    dcache1.io.data_resp <> axi_mem_master.io.mem_resp
+    dcache1.io.flush := false.B
 
     // 实例化仲裁器
     val axi_arbiter = Module(new AXI_ARB2TO1())
@@ -70,10 +82,12 @@ class NPC_CPU extends Module {
     io.master <> axi_arbiter.io.master_out
     axi_arbiter.io.ifu_master <> axi_ifu_master.io.master
     axi_arbiter.io.mem_master <> axi_mem_master.io.master
-    
+    axi_arbiter.io.clint_slave <> axi_clint_slave.io.clint_bus
     // 连接分支和跳转反馈到IFU
-    ifu.io.in <> exu.io.branch
-    
+    ifu1.io.in <> exu.io.branch
+
+
+/* ====================== CSR 相关 ====================== */
     // 实例化CSR寄存器
     val csr = Module(new CSR())
 
@@ -88,21 +102,40 @@ class NPC_CPU extends Module {
     csr.io.csr_wdata := wb.io.csr_wdata
     csr.io.csr_wen   := wb.io.csr_wen
 
+/* ======================= Regfile 相关 ================== */
+    
+    // 顶层定义寄存器堆
+    val regfile = Module(new Regfile())
+
+    // 连接寄存器堆读端口
+    regfile.io.rs1_addr := idu.io.reg_rs1_addr
+    regfile.io.rs2_addr := idu.io.reg_rs2_addr
+    idu.io.reg_rs1_data := regfile.io.rs1_data
+    idu.io.reg_rs2_data := regfile.io.rs2_data
+
+    // 连接寄存器堆写端口
+    regfile.io.rd_addr := wb.io.rd_addr
+    regfile.io.rd_data := wb.io.rd_data
+    regfile.io.rd_en   := wb.io.rd_en
+
     // 导出寄存器堆的值到顶层IO
     io.regs_out := regfile.io.regs_out
-    io.pc_out   := ifu.io.out.bits.pc
-    io.inst_out := ifu.io.out.bits.inst
+    io.pc_out   := ifu1.io.out.bits.pc
+    io.inst_out := ifu2.io.out.bits.inst
+
+// ======================= Difftest 相关 ================== */
 
     // 在此添加difftest信号，在wb.commit后执行difftest，传到top供cpp调用
     val busy = RegInit(false.B)
     idu.io.busy := busy
+    ifu2.io.busy := busy
 
     when(idu.io.in.fire) { busy := true.B }
     when(wb.io.commit) { busy := false.B }
-    
+
     io.difftest_valid := wb.io.commit
 
-
+// ======================= 其他接口置零 ================== */
     // slave 接口置零
     io.slave.awready := false.B
     io.slave.wready  := false.B
@@ -116,21 +149,3 @@ class NPC_CPU extends Module {
     io.slave.rlast   := false.B
     io.slave.rid     := 0.U
 }
-
-/*
-    // 实例化SRAM各模块
-    val DSRAM = Module(new DSRAM())
-    val ISRAM = Module(new ISRAM())
-    // 实例化选择器和从端口
-    val slave_selector = Module(new bus.slaveSel())
-    val uart_slave = Module(new bus.AXI_UART_Slave())
-    val timer_slave = Module(new bus.AXI_TIMER_Slave())   
-    uart_slave.io <> slave_selector.io.uart_slave
-    timer_slave.io <> slave_selector.io.timer_slave
-    slave_selector.io.slave_in <> axi_arbiter.io.slave
-    slave_selector.io.is_inst := axi_arbiter.io.is_inst
-
-    DSRAM.io.M_bus <> slave_selector.io.slave_m
-    ISRAM.io.I_bus <> slave_selector.io.slave_i
-
-*/

@@ -4,7 +4,9 @@ AM_SRCS := riscv/ysyxSoC/start.S \
 		   riscv/ysyxSoC/ioe.c \
 		   riscv/ysyxSoC/trap.S \
 		   riscv/ysyxSoC/uart.c \
-		   riscv/ysyxSoC/spi.c
+		   riscv/ysyxSoC/spi.c \
+		   riscv/ysyxSoC/timer.c \
+		   riscv/ysyxSoC/input.c \
 
 #include $(NPC_HOME)/Makefile
 
