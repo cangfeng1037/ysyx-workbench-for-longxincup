@@ -99,8 +99,8 @@ void putch(char ch) {
 }
 
 void halt(int code) {
-  //printf("---------In halt---------\n");
-  asm volatile("ebreak");
+  // Keep AM/NEMU convention: pass trap code in a0 (x10) before ebreak.
+  asm volatile("mv a0, %0; ebreak" :: "r"(code) : "a0");
   while (1);\
 }
 

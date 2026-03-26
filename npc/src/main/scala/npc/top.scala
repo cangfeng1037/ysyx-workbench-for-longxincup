@@ -66,8 +66,14 @@ class DifftestDPI extends BlackBox with HasBlackBoxInline {
         val gpr29 = Input(UInt(32.W))
         val gpr30 = Input(UInt(32.W))
         val gpr31 = Input(UInt(32.W))
-        val hit_count = Input(UInt(32.W))
-        val miss_count = Input(UInt(32.W))
+        val hit_count = Input(UInt(32.W))      // ICache hit
+        val miss_count = Input(UInt(32.W))     // ICache miss
+        val dcache_hit_count = Input(UInt(32.W))   // DCache hit
+        val dcache_miss_count = Input(UInt(32.W))   // DCache miss
+        val i_cnt = Input(UInt(32.W))  // 取指访存周期总数
+        val d_cnt = Input(UInt(32.W))  // 数据访存周期总数
+        val stall_cnt = Input(UInt(32.W))  // 停顿周期总数
+        val flush_cnt = Input(UInt(32.W))  // 刷新周期总数
     })
 
     setInline("DifftestDPI.v",
@@ -109,7 +115,13 @@ class DifftestDPI extends BlackBox with HasBlackBoxInline {
           |    input  [31:0] gpr30,
           |    input  [31:0] gpr31,
           |    input  [31:0] hit_count,
-          |    input  [31:0] miss_count
+          |    input  [31:0] miss_count,
+          |    input  [31:0] dcache_hit_count,
+          |    input  [31:0] dcache_miss_count,
+          |    input  [31:0] i_cnt,
+          |    input  [31:0] d_cnt,
+          |    input  [31:0] stall_cnt,
+          |    input  [31:0] flush_cnt
           |);
           |
           |    function int get_pc();
@@ -181,6 +193,36 @@ class DifftestDPI extends BlackBox with HasBlackBoxInline {
           |    endfunction
           |    export "DPI-C" function get_miss_count;
           |
+          |    function int get_dcache_hit_count();
+          |        get_dcache_hit_count = dcache_hit_count;
+          |    endfunction
+          |    export "DPI-C" function get_dcache_hit_count;
+          |
+          |    function int get_dcache_miss_count();
+          |        get_dcache_miss_count = dcache_miss_count;
+          |    endfunction
+          |    export "DPI-C" function get_dcache_miss_count;
+          |
+          |    function int get_i_cnt();
+          |        get_i_cnt = i_cnt;
+          |    endfunction
+          |    export "DPI-C" function get_i_cnt;
+          |
+          |    function int get_d_cnt();
+          |        get_d_cnt = d_cnt;
+          |    endfunction
+          |    export "DPI-C" function get_d_cnt;
+          |
+          |    function int get_stall_cnt();
+          |        get_stall_cnt = stall_cnt;
+          |    endfunction
+          |    export "DPI-C" function get_stall_cnt;
+          |
+          |    function int get_flush_cnt();
+          |        get_flush_cnt = flush_cnt;
+          |    endfunction
+          |    export "DPI-C" function get_flush_cnt;
+          |
           |endmodule
         """.stripMargin)
 }
@@ -208,12 +250,12 @@ class top extends Module {
     io.halt_ret := false.B // 先不实现halt指令
     io.non_inst := false.B // 先不实现非指令异常
     io.gpr := npc_cpu.io.regs_out
-    io.pc := npc_cpu.io.pc_out
-    io.inst := npc_cpu.io.inst_out
+    io.pc := npc_cpu.io.commit_pc
+    io.inst := npc_cpu.io.commit_inst
 
     // ebreak 检测和调用
     // ebreak只在提交时触发
-    val is_ebreak = (npc_cpu.io.inst_out === "h00100073".U) && (npc_cpu.io.difftest_valid)
+    val is_ebreak = (npc_cpu.io.commit_inst === "h00100073".U) && (npc_cpu.io.difftest_valid)
     val ebreak_box = Module(new EbreakBlackBox())
     ebreak_box.io.is_ebreak := is_ebreak
 
@@ -260,6 +302,12 @@ class top extends Module {
     difftest_dpi.io.gpr31 := io.gpr(31)
     difftest_dpi.io.hit_count := npc_cpu.io.hit_count
     difftest_dpi.io.miss_count := npc_cpu.io.miss_count
+    difftest_dpi.io.dcache_hit_count := npc_cpu.io.dcache_hit_count
+    difftest_dpi.io.dcache_miss_count := npc_cpu.io.dcache_miss_count
+    difftest_dpi.io.i_cnt := npc_cpu.io.i_cnt
+    difftest_dpi.io.d_cnt := npc_cpu.io.d_cnt
+    difftest_dpi.io.stall_cnt := npc_cpu.io.stall_cnt
+    difftest_dpi.io.flush_cnt := npc_cpu.io.flush_cnt
 
     // 连接顶层总线
     npc_cpu.io.master <> io.master

@@ -17,8 +17,13 @@ class WB extends Module {
         val csr_wen   = Output(Bool())
 
         val commit    = Output(Bool()) // 指令提交信号
+        val commit_pc = Output(UInt(32.W))
+        val commit_inst = Output(UInt(32.W))
 
         // Difftest接口
+
+        // 前递相关信号
+        val wb_fwd = Output(new fwd_info())
     })
     
     // 拉取信号并锁存
@@ -68,18 +73,19 @@ class WB extends Module {
 
     // 状态机
     
-    val s_idle :: s_writeback :: s_writeback_hold :: Nil = Enum(3)
+    val s_idle :: s_writeback :: Nil = Enum(2)
     val state = RegInit(s_idle)
 
     io.in.ready := (state === s_idle)
-    io.commit := (state === s_writeback_hold)
+    io.commit := (state === s_writeback)
+    io.commit_pc := pc
+    io.commit_inst := inst
     // 不使用difftest测试时，请使用两周期代码，三周期会带来约9.3%的周期数增加
 
-    /*
-        val s_idle :: s_writeback :: Nil = Enum(2)
+       // val s_idle :: s_writeback :: Nil = Enum(2)
 
 
-        io.commit = (state === s_writeback)
+        io.commit := (state === s_writeback)
 
         switch(state) {
             is (s_idle) {
@@ -90,9 +96,9 @@ class WB extends Module {
                 state := s_idle
             }
         }
-    */
+    
 
-
+    /*
     switch(state) {
         is (s_idle) {
             when (io.in.fire) { state := s_writeback }
@@ -105,20 +111,29 @@ class WB extends Module {
             state := s_idle
         }
     }
-
-    // 连接regfile
-    io.rd_addr := rd_addr
-    // sw不需要写使能
-    io.rd_en   := rd_en
-    io.rd_data := MuxCase(addr, Seq(
+    */
+    val wb_result = MuxCase(addr, Seq(
         // CSR read/write instructions write the *old* CSR value to rd
         (is_csrrw || is_csrrs) -> csr_rdata,
         is_load -> mem_data,
         (is_jal || is_jalr) -> (pc + 4.U)
     )) // 所有load指令都已经在MEM阶段处理好了
 
+    // 连接regfile
+    io.rd_addr := rd_addr
+    // sw不需要写使能
+    io.rd_en   := rd_en
+    io.rd_data := wb_result
+
     // 连接CSR写端口
     io.csr_waddr := csr_waddr
     io.csr_wdata := csr_wdata
     io.csr_wen   := csr_wen
+
+    // 前递相关信号
+    io.wb_fwd.valid := rd_en && (state =/= s_idle) 
+    io.wb_fwd.rd_addr := rd_addr
+    io.wb_fwd.rd_en := rd_en
+    io.wb_fwd.val_out := wb_result
+    io.wb_fwd.rd_is_load := is_load
 }

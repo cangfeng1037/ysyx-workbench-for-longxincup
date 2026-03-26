@@ -39,6 +39,9 @@ class EXU extends Module {
         val in  = Flipped(Decoupled(new ID2EX()))
         val out = Decoupled(new EX2MEM())
         val branch = Decoupled(new BranchBus())
+
+        // 前递相关信号
+        val exu_fwd = Output(new fwd_info())
     })
 
     // 状态机
@@ -106,6 +109,16 @@ class EXU extends Module {
     val is_bltu  = RegInit(false.B)
     val is_bge   = RegInit(false.B)
     val is_bgeu  = RegInit(false.B)
+
+    when (io.out.fire) {
+        rd_en := false.B
+        rd_addr := 0.U
+        is_lw := false.B
+        is_lbu := false.B
+        is_lh := false.B
+        is_lhu := false.B
+        is_lb := false.B
+    }
 
 
     when (io.in.fire) {
@@ -204,4 +217,11 @@ class EXU extends Module {
     
     // 还需要设置握手信号
     io.branch.valid := out_valid
+
+    // 前递相关信号
+    io.exu_fwd.valid := rd_en && io.out.valid
+    io.exu_fwd.rd_addr := rd_addr
+    io.exu_fwd.rd_en := rd_en
+    io.exu_fwd.val_out := alu_result
+    io.exu_fwd.rd_is_load := is_lw || is_lbu || is_lh || is_lhu || is_lb
 }

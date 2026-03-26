@@ -31,6 +31,7 @@ class dcache_resp extends Bundle {
     val data = UInt(32.W)
 }
 
+
 class MEM2 extends Module {
     val io = IO(new Bundle{
         val in  = Flipped(Decoupled(new MEM12MEM2()))
@@ -38,7 +39,16 @@ class MEM2 extends Module {
         
         // 内存响应接口（连接到 SRAM）
         val mem_resp = Flipped(Decoupled(new dcache_resp()))
+
+        // 前递相关信号
+        val mem2_fwd = Output(new fwd_info())
+
+        val d_cnt = Output(UInt(32.W)) // 性能计数器：记录访存周期总数
     })
+
+    // 访存周期计数器
+    val total_mem_cycles = RegInit(0.U(32.W))
+    io.d_cnt := total_mem_cycles
 
     // 状态机定义
     val s_idle :: s_wait :: s_send :: Nil = Enum(3)
@@ -113,6 +123,9 @@ class MEM2 extends Module {
         is (s_wait) {
             // 等待dcache的内存响应
             io.mem_resp.ready := true.B
+            when(pc >= "ha0010000".U) {
+                total_mem_cycles := total_mem_cycles + 1.U
+            }
             when(io.mem_resp.fire) {
                 // 收到内存响应，准备发送到下一级
                 addr := io.mem_resp.bits.addr
@@ -143,6 +156,9 @@ class MEM2 extends Module {
             io.out.valid := true.B
             when(io.out.fire) {
                 state := s_idle
+                rd_en := false.B
+                rd_addr := 0.U
+                is_load := false.B
             }
         }
     }
@@ -164,4 +180,18 @@ class MEM2 extends Module {
     io.out.bits.csr_rdata  := csr_rdata
     io.out.bits.is_csrrw   := is_csrrw
     io.out.bits.is_csrrs   := is_csrrs
+
+    // 与WB保持一致的结果选择，避免后级前递与最终写回值不一致
+    val mem2_result = MuxCase(addr, Seq(
+        (is_csrrw || is_csrrs) -> csr_rdata,
+        is_load -> mem_data,
+        (is_jal || is_jalr) -> (pc + 4.U)
+    ))
+
+    // 前递相关信号
+    io.mem2_fwd.valid := rd_en && io.out.valid
+    io.mem2_fwd.rd_addr := rd_addr
+    io.mem2_fwd.rd_en := rd_en
+    io.mem2_fwd.rd_is_load := is_load
+    io.mem2_fwd.val_out := mem2_result
 }

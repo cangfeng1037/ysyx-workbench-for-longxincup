@@ -24,7 +24,8 @@ char* img_file = NULL;
 long long cnt = 0;
 int maxn = 1000000000;
 long long inst_cnt = 0;
-
+long long cycle_cnt = 0;
+ 
 VysyxSoCFull* top;
 VerilatedVcdC* tfp = NULL;
 static vluint64_t sim_time = 0;
@@ -167,6 +168,12 @@ extern "C" int get_difftest_valid();
 extern "C" int get_non_inst();
 extern "C" int get_hit_count();
 extern "C" int get_miss_count();
+extern "C" int get_dcache_hit_count();
+extern "C" int get_dcache_miss_count();
+extern "C" int get_i_cnt();
+extern "C" int get_d_cnt();
+extern "C" int get_stall_cnt();
+extern "C" int get_flush_cnt();
 extern "C" int get_gpr(int idx);
 
 // 注意：这里需要设置 DPI scope 到 DifftestDPI 模块实例
@@ -290,6 +297,34 @@ double ptrace_get_miss_rate() {
     return total == 0 ? 0.0 : (double)miss / (double)total;
 }
 
+double ptrace_get_dcache_miss_rate() {
+    set_dpi_scope();
+    uint32_t hit = get_dcache_hit_count();
+    uint32_t miss = get_dcache_miss_count();
+    uint32_t total = hit + miss;
+    return total == 0 ? 0.0 : (double)miss / (double)total;
+}
+
+uint32_t ptrace_get_i_cnt() {
+    set_dpi_scope();
+    return (uint32_t)get_i_cnt();
+}
+
+uint32_t ptrace_get_d_cnt() {
+    set_dpi_scope();
+    return (uint32_t)get_d_cnt();
+}
+
+uint32_t ptrace_get_stall_cnt() {
+    set_dpi_scope();
+    return (uint32_t)get_stall_cnt();
+}
+
+uint32_t ptrace_get_flush_cnt() {
+    set_dpi_scope();
+    return (uint32_t)get_flush_cnt();
+}
+
 void eval() {
     // 组合阶段
     top -> clock = 0;
@@ -308,10 +343,14 @@ void eval() {
     // 打印具体的指令信息
     
     if(difftest_get_difftest_valid()) {
-        inst_cnt ++ ;
-        //printf("Cycle %lld: PC = 0x%08x, inst = 0x%08x\n", cnt, difftest_get_pc(), difftest_get_inst());
+        if(difftest_get_pc() >= 0xa0010000)
+        {
+            inst_cnt ++ ;
+            //printf("Cycle %lld: PC = 0x%08x, inst = 0x%08x\n", cnt, difftest_get_pc(), difftest_get_inst());
+        }
     }
 
+    if(difftest_get_pc() >= 0xa0010000) cycle_cnt ++ ;
     cnt ++ ;
 #ifdef CONFIG_DIFFTEST
     if (!sim_exit_flag && cnt > 3) {
@@ -474,22 +513,42 @@ int main(int argc, char** argv) {
     if(!sim_exit_flag)printf("\n=== Simulation completed without ebreak ===\n");
 
     uint32_t halt_ret = 0;
+    if (sim_exit_flag) {
+        // AM passes program return code in a0 (x10) before ebreak.
+        halt_ret = rf_read(10);
+    }
     if (!sim_exit_flag) {
         printf("\n=== Simulation completed without ebreak ===\n");
     } else if (halt_ret == 0) {
         printf("\033[1;32m===== HIT GOOD TRAP =====\033[0m\n");
     } else {
+        printf("halt_ret (a0/x10) = %u (0x%08x)\n", halt_ret, halt_ret);
         printf("\033[1;31m===== HIT BAD TRAP =====\033[0m\n");
     }
 
-    printf("====== Total cycles = %lld =======\n", cnt);
+    printf("====== Total cycles = %lld =======\n", cycle_cnt);
     printf("======  Total inst  = %lld =======\n", inst_cnt);
-    printf("======      IPC  = %08lf     =======\n", (double)inst_cnt / cnt);
-    double miss_rate = ptrace_get_miss_rate();
-    printf("======   Miss Rate  = %08lf     =======\n", miss_rate);
+    printf("======      IPC  = %08lf     =======\n", (double)inst_cnt / cycle_cnt);
+    double icache_miss_rate = ptrace_get_miss_rate();
+    double dcache_miss_rate = ptrace_get_dcache_miss_rate();
+    printf("======  ICache Miss Rate = %08lf =======\n", icache_miss_rate);
+    printf("======  DCache Miss Rate = %08lf =======\n", dcache_miss_rate);
+    uint32_t ifu_cnt = ptrace_get_i_cnt();
+    uint32_t lsu_cnt = ptrace_get_d_cnt();
+    uint32_t total_mem_cnt = ptrace_get_i_cnt() + ptrace_get_d_cnt();
+    printf("======   IFU Count  = %u     =======\n", ifu_cnt);
+    printf("======   LSU Count  = %u     =======\n", lsu_cnt);
+    printf("======    Mem Cycle Ratio = %08lf     =======\n", (double)total_mem_cnt / cycle_cnt);
+    printf("====== Stall Count = %u     =======\n", ptrace_get_stall_cnt());
+    printf("====== Flush Count = %u     =======\n", ptrace_get_flush_cnt());
+
+    int exit_code = 0;
+    if (!sim_exit_flag || halt_ret != 0) {
+        exit_code = 1;
+    }
 
     delete top;
     free(mem);
-    
-    return 0;
+
+    return exit_code;
 }

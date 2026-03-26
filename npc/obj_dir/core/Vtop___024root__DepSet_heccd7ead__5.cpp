@@ -1,0 +1,11317 @@
+// Verilated -*- C++ -*-
+// DESCRIPTION: Verilator output: Design implementation internals
+// See Vtop.h for the primary calling header
+
+#include "Vtop__pch.h"
+#include "Vtop___024root.h"
+
+VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__9(Vtop___024root* vlSelf) {
+    (void)vlSelf;  // Prevent unused variable warning
+    Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___nba_sequent__TOP__9\n"); );
+    auto& vlSelfRef = std::ref(*vlSelf).get();
+    // Init
+    CData/*0:0*/ top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_9;
+    top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_9 = 0;
+    CData/*0:0*/ top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_12;
+    top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_12 = 0;
+    // Body
+    vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_mem_master_bvalid 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_11) 
+           & (IData)(vlSelfRef.io_master_bvalid));
+    vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_ifu_master_rlast 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_10) 
+           & (IData)(vlSelfRef.io_master_rlast));
+    vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_ifu_master_rvalid 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_10) 
+           & (IData)(vlSelfRef.io_master_rvalid));
+    vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_mem_resp_bits_last 
+        = ((0U != (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state)) 
+           & ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state))
+               ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_mem_master_rlast)
+               : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT____VdfgRegularize_h96986e78_0_5)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___data_array_0_T_3 
+        = (((~ vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__byteMask32) 
+            & ((0x10U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                ? ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                    ? ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                        ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_14
+                        : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_13)
+                    : ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                        ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_12
+                        : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_11))
+                : ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                    ? ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                        ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_10
+                        : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_9)
+                    : ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                        ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_8
+                        : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_7)))) 
+           | vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_4);
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___data_array_1_T_3 
+        = (((~ vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__byteMask32) 
+            & ((0x10U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                ? ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                    ? ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                        ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_23
+                        : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_22)
+                    : ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                        ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_21
+                        : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_20))
+                : ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                    ? ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                        ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_19
+                        : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_18)
+                    : ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                        ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_17
+                        : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_16)))) 
+           | vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_4);
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___data_array_2_T_3 
+        = (((~ vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__byteMask32) 
+            & ((0x10U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                ? ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                    ? ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                        ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_32
+                        : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_31)
+                    : ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                        ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_30
+                        : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_29))
+                : ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                    ? ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                        ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_28
+                        : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_27)
+                    : ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                        ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_26
+                        : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_25)))) 
+           | vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_4);
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___data_array_3_T_3 
+        = (((~ vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__byteMask32) 
+            & ((0x10U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                ? ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                    ? ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                        ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_41
+                        : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_40)
+                    : ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                        ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_39
+                        : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_38))
+                : ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                    ? ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                        ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_37
+                        : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_36)
+                    : ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                        ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_35
+                        : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_34)))) 
+           | vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_4);
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit3 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_6) 
+           & (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_5 
+              == vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_reg));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit2 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_4) 
+           & (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_3 
+              == vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_reg));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit1 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_2) 
+           & (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_1 
+              == vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_reg));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit0 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_0) 
+           & (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp 
+              == vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_reg));
+    if (vlSelfRef.reset) {
+        vlSelfRef.__Vdly__top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state = 0U;
+    } else if (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__io_dcache_req_ready_0) {
+        if (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_76) {
+            vlSelfRef.__Vdly__top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt = 0U;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state 
+                = (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___mem1_io_mem_req_bits_bypass) 
+                    & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___mem1_io_mem_req_bits_wen))
+                    ? 7U : (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___mem1_io_mem_req_bits_bypass) 
+                             & (~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___mem1_io_mem_req_bits_wen)))
+                             ? 4U : 1U));
+        }
+    } else if (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN) {
+        if ((1U & (~ ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit) 
+                      | (~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_77)))))) {
+            vlSelfRef.__Vdly__top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt = 0U;
+        }
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state 
+            = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit)
+                ? 6U : ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_77)
+                         ? 2U : 4U));
+    } else if (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_0) {
+        if (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_74) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state = 3U;
+        }
+    } else if (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_1) {
+        if (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_144) {
+            if ((7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt))) {
+                vlSelfRef.__Vdly__top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt = 0U;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state = 4U;
+            } else {
+                vlSelfRef.__Vdly__top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt 
+                    = (7U & ((IData)(1U) + (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state = 2U;
+            }
+        }
+    } else {
+        if ((1U & (~ ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_2) 
+                      | (~ ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_4) 
+                            & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_144))))))) {
+            vlSelfRef.__Vdly__top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt 
+                = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_73)
+                    ? 0U : (7U & ((IData)(1U) + (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt))));
+        }
+        if (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_2) {
+            if (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_74) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state = 5U;
+            }
+        } else if (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_4) {
+            if (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_144) 
+                 & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_73))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state = 6U;
+            }
+        } else if (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_5) {
+            if (vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT___GEN_2) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state = 0U;
+            }
+        } else if (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_8) {
+            if (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_74) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state = 8U;
+            }
+        } else if (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_1414) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state = 6U;
+        }
+    }
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt 
+        = vlSelfRef.__Vdly__top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt;
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__lfsr_prng__DOT__state_1 
+        = ((1U & (~ (IData)(vlSelfRef.reset))) && (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__lfsr_prng__DOT__state_0));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__lfsr_prng__DOT__state_1 
+        = ((1U & (~ (IData)(vlSelfRef.reset))) && (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__lfsr_prng__DOT__state_0));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_73 
+        = (1U & ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__miss_cacheable_reg)) 
+                 | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_mem_resp_bits_last)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__io_in_ready_0 
+        = (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__state));
+    vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT___GEN 
+        = (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__state));
+    vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT___GEN_0 
+        = (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__state));
+    vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__io_out_valid_0 
+        = ((~ ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__state)) 
+               | (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__state)))) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__state)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___mem1_io_mem_req_bits_wen 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__is_sw) 
+           | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__is_sb) 
+              | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__is_sh)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_141 
+        = (1U & ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__wen_reg)) 
+                 | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit0)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit0) 
+           | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit1) 
+              | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit2) 
+                 | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit3))));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_406 
+        = ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_407 
+        = ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_408 
+        = ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_409 
+        = ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_410 
+        = ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_411 
+        = ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_412 
+        = ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_413 
+        = ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_414 
+        = ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_415 
+        = ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_416 
+        = ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_417 
+        = ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_418 
+        = ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_419 
+        = ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_420 
+        = ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_421 
+        = ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_422 
+        = ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_423 
+        = ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_424 
+        = ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_425 
+        = ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_426 
+        = ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_427 
+        = ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_428 
+        = ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_429 
+        = ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_430 
+        = ((3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_431 
+        = ((3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_432 
+        = ((3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_433 
+        = ((3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_434 
+        = ((3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_435 
+        = ((3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_436 
+        = ((3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_437 
+        = ((3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_438 
+        = ((4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_439 
+        = ((4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_440 
+        = ((4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_441 
+        = ((4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_442 
+        = ((4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_443 
+        = ((4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_444 
+        = ((4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_445 
+        = ((4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_446 
+        = ((5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    if (vlSelfRef.reset) {
+        vlSelfRef.top__DOT__npc_cpu__DOT__ifu1__DOT__pc = 0x30000000U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_csrrs = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_csrrw = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__rd_en = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__rd_addr = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__pc = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__state = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__is_lbu = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__is_lb = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__is_lhu = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__is_lh = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__is_load = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_sb = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_sh = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_sw = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__rs2_data = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_b = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_jalr = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_ecall = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_mret = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_jal = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_a = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__csr_rdata = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__rd_addr = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lw = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lb = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lbu = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lh = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lhu = 0U;
+    } else {
+        if (vlSelfRef.top__DOT__npc_cpu__DOT__ifu1__DOT__io_flush_0) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__ifu1__DOT__pc 
+                = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_jal)
+                    ? vlSelfRef.top__DOT__npc_cpu__DOT___exu_io_branch_bits_pc_branch
+                    : ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_jalr)
+                        ? (0xfffffffeU & (vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_a 
+                                          + vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_b))
+                        : ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___exu_io_branch_bits_is_branch_taken)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT___exu_io_branch_bits_pc_branch
+                            : (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_ecall) 
+                                | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_mret))
+                                ? vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__csr_rdata
+                                : vlSelfRef.top__DOT__npc_cpu__DOT__ifu1__DOT___pc_T))));
+        } else if (vlSelfRef.top__DOT__npc_cpu__DOT__ifu1__DOT___GEN_1) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__ifu1__DOT__pc 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__ifu1__DOT___pc_T;
+        } else if (vlSelfRef.reset) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__ifu1__DOT__pc = 0x30000000U;
+        }
+        if (vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT___GEN_0) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__rd_addr 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__rd_addr;
+            vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__is_lbu 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lbu;
+            vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__is_lb 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lb;
+            vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__is_lhu 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lhu;
+            vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__is_lh 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lh;
+            vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__is_load 
+                = (((((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lw) 
+                      | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lb)) 
+                     | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lbu)) 
+                    | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lh)) 
+                   | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lhu));
+        }
+        if (vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT___GEN) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_csrrs 
+                = vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_csrrs;
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_csrrw 
+                = vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_csrrw;
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__rd_en 
+                = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__is_load) 
+                   | ((0x37U == (0x7fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)) 
+                      | ((0x17U == (0x7fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)) 
+                         | ((0x33U == (0x7fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)) 
+                            | ((0x6fU == (0x7fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)) 
+                               | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_jalr) 
+                                  | ((0x13U == (0x7fU 
+                                                & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)) 
+                                     | (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_csrrw) 
+                                         | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_csrrs)) 
+                                        & (0U != (0x1fU 
+                                                  & (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                                                     >> 7U)))))))))));
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__pc 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__pc;
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_sb 
+                = vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_sb;
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_sh 
+                = vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_sh;
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_sw 
+                = vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_sw;
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__rs2_data 
+                = vlSelfRef.top__DOT__npc_cpu__DOT___regfile_io_rs2_data;
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_b 
+                = vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_alu_b;
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_jalr 
+                = vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_jalr;
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_ecall 
+                = (0x73U == vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst);
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_mret 
+                = (0x30200073U == vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst);
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_jal 
+                = (0x6fU == (0x7fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst));
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_a 
+                = (((0x17U == (0x7fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)) 
+                    | (0x6fU == (0x7fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)))
+                    ? vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__pc
+                    : ((0x37U == (0x7fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst))
+                        ? 0U : vlSelfRef.top__DOT__npc_cpu__DOT___regfile_io_rs1_data));
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__csr_rdata 
+                = ((0xf12U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_csr_raddr))
+                    ? 0x25080212U : ((0xf11U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_csr_raddr))
+                                      ? 0x79737978U
+                                      : ((0x300U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_csr_raddr))
+                                          ? vlSelfRef.top__DOT__npc_cpu__DOT__csr__DOT__mstatus
+                                          : ((0x342U 
+                                              == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_csr_raddr))
+                                              ? vlSelfRef.top__DOT__npc_cpu__DOT__csr__DOT__mcause
+                                              : ((0x341U 
+                                                  == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_csr_raddr))
+                                                  ? vlSelfRef.top__DOT__npc_cpu__DOT__csr__DOT__mepc
+                                                  : 
+                                                 ((0x305U 
+                                                   == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_csr_raddr))
+                                                   ? vlSelfRef.top__DOT__npc_cpu__DOT__csr__DOT__mtvec
+                                                   : 0U))))));
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__rd_addr 
+                = (0x1fU & (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                            >> 7U));
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lw 
+                = vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_lw;
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lb 
+                = vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_lb;
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lbu 
+                = vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_lbu;
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lh 
+                = vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_lh;
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lhu 
+                = vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_lhu;
+        }
+        vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__state 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__casez_tmp;
+    }
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_447 
+        = ((5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_448 
+        = ((5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_449 
+        = ((5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_450 
+        = ((5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_451 
+        = ((5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_452 
+        = ((5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_453 
+        = ((5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_454 
+        = ((6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_455 
+        = ((6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_456 
+        = ((6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_457 
+        = ((6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_458 
+        = ((6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_459 
+        = ((6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_460 
+        = ((6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_461 
+        = ((6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_462 
+        = ((7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_463 
+        = ((7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_464 
+        = ((7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_465 
+        = ((7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_466 
+        = ((7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_467 
+        = ((7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_468 
+        = ((7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_469 
+        = ((7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_470 
+        = ((8U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_471 
+        = ((8U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_472 
+        = ((8U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_473 
+        = ((8U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_474 
+        = ((8U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_475 
+        = ((8U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_476 
+        = ((8U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_477 
+        = ((8U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_478 
+        = ((9U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_479 
+        = ((9U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_480 
+        = ((9U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_481 
+        = ((9U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_482 
+        = ((9U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_483 
+        = ((9U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_484 
+        = ((9U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_485 
+        = ((9U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_486 
+        = ((0xaU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_487 
+        = ((0xaU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_488 
+        = ((0xaU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_489 
+        = ((0xaU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_490 
+        = ((0xaU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_491 
+        = ((0xaU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_492 
+        = ((0xaU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_493 
+        = ((0xaU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_494 
+        = ((0xbU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_495 
+        = ((0xbU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_496 
+        = ((0xbU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_497 
+        = ((0xbU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_498 
+        = ((0xbU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_499 
+        = ((0xbU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_500 
+        = ((0xbU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_501 
+        = ((0xbU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_502 
+        = ((0xcU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_503 
+        = ((0xcU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_504 
+        = ((0xcU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_505 
+        = ((0xcU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_506 
+        = ((0xcU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_507 
+        = ((0xcU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_508 
+        = ((0xcU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_509 
+        = ((0xcU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_510 
+        = ((0xdU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_511 
+        = ((0xdU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_512 
+        = ((0xdU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_513 
+        = ((0xdU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_514 
+        = ((0xdU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_515 
+        = ((0xdU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_516 
+        = ((0xdU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_517 
+        = ((0xdU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_518 
+        = ((0xeU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_519 
+        = ((0xeU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_520 
+        = ((0xeU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_521 
+        = ((0xeU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_522 
+        = ((0xeU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_523 
+        = ((0xeU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_524 
+        = ((0xeU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_525 
+        = ((0xeU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_526 
+        = ((0xfU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_527 
+        = ((0xfU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_528 
+        = ((0xfU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_529 
+        = ((0xfU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_530 
+        = ((0xfU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_531 
+        = ((0xfU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_532 
+        = ((0xfU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_533 
+        = ((0xfU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_534 
+        = ((0x10U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_535 
+        = ((0x10U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_536 
+        = ((0x10U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_537 
+        = ((0x10U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_538 
+        = ((0x10U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_539 
+        = ((0x10U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_540 
+        = ((0x10U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_541 
+        = ((0x10U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_542 
+        = ((0x11U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_543 
+        = ((0x11U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_544 
+        = ((0x11U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_545 
+        = ((0x11U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_546 
+        = ((0x11U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_547 
+        = ((0x11U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_548 
+        = ((0x11U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_549 
+        = ((0x11U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_550 
+        = ((0x12U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_551 
+        = ((0x12U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_552 
+        = ((0x12U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_553 
+        = ((0x12U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_554 
+        = ((0x12U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_555 
+        = ((0x12U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_556 
+        = ((0x12U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_557 
+        = ((0x12U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_558 
+        = ((0x13U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_559 
+        = ((0x13U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_560 
+        = ((0x13U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_561 
+        = ((0x13U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_562 
+        = ((0x13U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_563 
+        = ((0x13U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_564 
+        = ((0x13U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_565 
+        = ((0x13U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_566 
+        = ((0x14U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_567 
+        = ((0x14U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_568 
+        = ((0x14U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_569 
+        = ((0x14U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_570 
+        = ((0x14U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_571 
+        = ((0x14U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_572 
+        = ((0x14U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_573 
+        = ((0x14U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_574 
+        = ((0x15U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_575 
+        = ((0x15U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_576 
+        = ((0x15U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_577 
+        = ((0x15U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_578 
+        = ((0x15U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_579 
+        = ((0x15U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_580 
+        = ((0x15U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_581 
+        = ((0x15U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_582 
+        = ((0x16U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_583 
+        = ((0x16U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_584 
+        = ((0x16U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_585 
+        = ((0x16U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_586 
+        = ((0x16U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_587 
+        = ((0x16U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_588 
+        = ((0x16U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_589 
+        = ((0x16U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_590 
+        = ((0x17U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_591 
+        = ((0x17U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_592 
+        = ((0x17U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_593 
+        = ((0x17U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_594 
+        = ((0x17U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_595 
+        = ((0x17U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_596 
+        = ((0x17U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_597 
+        = ((0x17U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_598 
+        = ((0x18U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_599 
+        = ((0x18U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_600 
+        = ((0x18U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_601 
+        = ((0x18U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_602 
+        = ((0x18U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_603 
+        = ((0x18U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_604 
+        = ((0x18U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_605 
+        = ((0x18U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_606 
+        = ((0x19U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_607 
+        = ((0x19U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_608 
+        = ((0x19U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_609 
+        = ((0x19U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_610 
+        = ((0x19U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_611 
+        = ((0x19U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_612 
+        = ((0x19U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_613 
+        = ((0x19U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_614 
+        = ((0x1aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_615 
+        = ((0x1aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_616 
+        = ((0x1aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_617 
+        = ((0x1aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_618 
+        = ((0x1aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_619 
+        = ((0x1aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_620 
+        = ((0x1aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_621 
+        = ((0x1aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_622 
+        = ((0x1bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_623 
+        = ((0x1bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_624 
+        = ((0x1bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_625 
+        = ((0x1bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_626 
+        = ((0x1bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_627 
+        = ((0x1bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_628 
+        = ((0x1bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_629 
+        = ((0x1bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_630 
+        = ((0x1cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_631 
+        = ((0x1cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_632 
+        = ((0x1cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_633 
+        = ((0x1cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_634 
+        = ((0x1cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_635 
+        = ((0x1cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_636 
+        = ((0x1cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_637 
+        = ((0x1cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_638 
+        = ((0x1dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_639 
+        = ((0x1dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_640 
+        = ((0x1dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_641 
+        = ((0x1dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_642 
+        = ((0x1dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_643 
+        = ((0x1dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_644 
+        = ((0x1dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_645 
+        = ((0x1dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_646 
+        = ((0x1eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_647 
+        = ((0x1eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_648 
+        = ((0x1eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_649 
+        = ((0x1eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_650 
+        = ((0x1eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_651 
+        = ((0x1eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_652 
+        = ((0x1eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_653 
+        = ((0x1eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_654 
+        = ((0x1fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_655 
+        = ((0x1fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_656 
+        = ((0x1fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_657 
+        = ((0x1fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_658 
+        = ((0x1fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_659 
+        = ((0x1fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_660 
+        = ((0x1fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_661 
+        = ((0x1fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_662 
+        = ((0x20U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_663 
+        = ((0x20U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_664 
+        = ((0x20U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_665 
+        = ((0x20U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_666 
+        = ((0x20U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_667 
+        = ((0x20U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_668 
+        = ((0x20U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_669 
+        = ((0x20U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_670 
+        = ((0x21U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_671 
+        = ((0x21U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_672 
+        = ((0x21U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_673 
+        = ((0x21U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_674 
+        = ((0x21U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_675 
+        = ((0x21U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_676 
+        = ((0x21U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_677 
+        = ((0x21U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_678 
+        = ((0x22U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_679 
+        = ((0x22U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_680 
+        = ((0x22U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_681 
+        = ((0x22U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_682 
+        = ((0x22U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_683 
+        = ((0x22U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_684 
+        = ((0x22U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_685 
+        = ((0x22U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_686 
+        = ((0x23U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_687 
+        = ((0x23U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_688 
+        = ((0x23U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_689 
+        = ((0x23U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_690 
+        = ((0x23U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_691 
+        = ((0x23U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_692 
+        = ((0x23U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_693 
+        = ((0x23U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_694 
+        = ((0x24U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_695 
+        = ((0x24U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_696 
+        = ((0x24U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_697 
+        = ((0x24U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_698 
+        = ((0x24U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_699 
+        = ((0x24U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_700 
+        = ((0x24U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_701 
+        = ((0x24U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_702 
+        = ((0x25U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_703 
+        = ((0x25U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_704 
+        = ((0x25U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_705 
+        = ((0x25U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_706 
+        = ((0x25U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_707 
+        = ((0x25U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_708 
+        = ((0x25U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_709 
+        = ((0x25U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_710 
+        = ((0x26U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_711 
+        = ((0x26U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_712 
+        = ((0x26U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_713 
+        = ((0x26U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_714 
+        = ((0x26U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_715 
+        = ((0x26U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_716 
+        = ((0x26U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_717 
+        = ((0x26U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_718 
+        = ((0x27U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_719 
+        = ((0x27U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_720 
+        = ((0x27U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_721 
+        = ((0x27U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_722 
+        = ((0x27U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_723 
+        = ((0x27U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_724 
+        = ((0x27U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_725 
+        = ((0x27U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_726 
+        = ((0x28U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_727 
+        = ((0x28U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_728 
+        = ((0x28U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_729 
+        = ((0x28U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_730 
+        = ((0x28U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_731 
+        = ((0x28U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_732 
+        = ((0x28U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_733 
+        = ((0x28U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_734 
+        = ((0x29U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_735 
+        = ((0x29U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_736 
+        = ((0x29U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_737 
+        = ((0x29U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_738 
+        = ((0x29U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_739 
+        = ((0x29U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_740 
+        = ((0x29U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_741 
+        = ((0x29U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_742 
+        = ((0x2aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_743 
+        = ((0x2aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_744 
+        = ((0x2aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_745 
+        = ((0x2aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_746 
+        = ((0x2aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_747 
+        = ((0x2aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_748 
+        = ((0x2aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_749 
+        = ((0x2aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_750 
+        = ((0x2bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_751 
+        = ((0x2bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_752 
+        = ((0x2bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_753 
+        = ((0x2bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_754 
+        = ((0x2bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_755 
+        = ((0x2bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_756 
+        = ((0x2bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_757 
+        = ((0x2bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_758 
+        = ((0x2cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_759 
+        = ((0x2cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_760 
+        = ((0x2cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_761 
+        = ((0x2cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_762 
+        = ((0x2cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_763 
+        = ((0x2cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_764 
+        = ((0x2cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_765 
+        = ((0x2cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_766 
+        = ((0x2dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_767 
+        = ((0x2dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_768 
+        = ((0x2dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_769 
+        = ((0x2dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_770 
+        = ((0x2dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_771 
+        = ((0x2dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_772 
+        = ((0x2dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_773 
+        = ((0x2dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_774 
+        = ((0x2eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_775 
+        = ((0x2eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_776 
+        = ((0x2eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_777 
+        = ((0x2eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_778 
+        = ((0x2eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_779 
+        = ((0x2eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_780 
+        = ((0x2eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_781 
+        = ((0x2eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_782 
+        = ((0x2fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_783 
+        = ((0x2fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_784 
+        = ((0x2fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_785 
+        = ((0x2fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_786 
+        = ((0x2fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_787 
+        = ((0x2fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_788 
+        = ((0x2fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_789 
+        = ((0x2fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_790 
+        = ((0x30U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_791 
+        = ((0x30U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_792 
+        = ((0x30U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_793 
+        = ((0x30U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_794 
+        = ((0x30U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_795 
+        = ((0x30U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_796 
+        = ((0x30U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_797 
+        = ((0x30U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_798 
+        = ((0x31U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_799 
+        = ((0x31U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_800 
+        = ((0x31U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_801 
+        = ((0x31U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_802 
+        = ((0x31U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_803 
+        = ((0x31U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_804 
+        = ((0x31U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_805 
+        = ((0x31U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_806 
+        = ((0x32U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_807 
+        = ((0x32U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_808 
+        = ((0x32U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_809 
+        = ((0x32U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_810 
+        = ((0x32U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_811 
+        = ((0x32U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_812 
+        = ((0x32U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_813 
+        = ((0x32U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_814 
+        = ((0x33U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_815 
+        = ((0x33U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_816 
+        = ((0x33U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_817 
+        = ((0x33U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_818 
+        = ((0x33U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_819 
+        = ((0x33U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_820 
+        = ((0x33U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_821 
+        = ((0x33U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_822 
+        = ((0x34U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_823 
+        = ((0x34U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_824 
+        = ((0x34U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_825 
+        = ((0x34U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_826 
+        = ((0x34U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_827 
+        = ((0x34U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_828 
+        = ((0x34U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_829 
+        = ((0x34U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_830 
+        = ((0x35U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_831 
+        = ((0x35U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_832 
+        = ((0x35U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_833 
+        = ((0x35U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_834 
+        = ((0x35U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_835 
+        = ((0x35U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_836 
+        = ((0x35U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_837 
+        = ((0x35U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_838 
+        = ((0x36U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_839 
+        = ((0x36U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_840 
+        = ((0x36U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_841 
+        = ((0x36U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_842 
+        = ((0x36U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_843 
+        = ((0x36U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_844 
+        = ((0x36U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_845 
+        = ((0x36U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_846 
+        = ((0x37U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_847 
+        = ((0x37U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_848 
+        = ((0x37U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_849 
+        = ((0x37U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_850 
+        = ((0x37U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_851 
+        = ((0x37U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    if ((0x20U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+        if ((0x10U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                        if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                            if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_63_0;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_63_1;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_63_2;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_63_3;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_63_4;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_63_5;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_63_6;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_63_7;
+                            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_63_0;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_63_1;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_63_2;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_63_3;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_63_4;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_63_5;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_63_6;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_63_7;
+                            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_63_0;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_63_1;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_63_2;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_63_3;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_63_4;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_63_5;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_63_6;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_63_7;
+                            } else {
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_63_0;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_63_1;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_63_2;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_63_3;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_63_4;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_63_5;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_63_6;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_63_7;
+                            }
+                        } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_62_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_62_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_62_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_62_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_62_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_62_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_62_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_62_7;
+                        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_62_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_62_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_62_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_62_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_62_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_62_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_62_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_62_7;
+                        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_62_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_62_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_62_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_62_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_62_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_62_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_62_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_62_7;
+                        } else {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_62_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_62_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_62_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_62_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_62_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_62_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_62_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_62_7;
+                        }
+                    } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                        if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_61_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_61_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_61_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_61_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_61_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_61_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_61_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_61_7;
+                        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_61_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_61_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_61_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_61_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_61_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_61_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_61_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_61_7;
+                        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_61_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_61_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_61_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_61_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_61_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_61_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_61_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_61_7;
+                        } else {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_61_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_61_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_61_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_61_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_61_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_61_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_61_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_61_7;
+                        }
+                    } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_60_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_60_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_60_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_60_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_60_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_60_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_60_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_60_7;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_60_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_60_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_60_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_60_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_60_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_60_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_60_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_60_7;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_60_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_60_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_60_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_60_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_60_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_60_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_60_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_60_7;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_60_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_60_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_60_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_60_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_60_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_60_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_60_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_60_7;
+                    }
+                } else if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                        if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_59_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_59_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_59_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_59_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_59_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_59_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_59_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_59_7;
+                        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_59_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_59_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_59_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_59_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_59_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_59_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_59_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_59_7;
+                        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_59_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_59_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_59_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_59_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_59_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_59_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_59_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_59_7;
+                        } else {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_59_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_59_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_59_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_59_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_59_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_59_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_59_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_59_7;
+                        }
+                    } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_58_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_58_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_58_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_58_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_58_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_58_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_58_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_58_7;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_58_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_58_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_58_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_58_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_58_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_58_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_58_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_58_7;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_58_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_58_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_58_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_58_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_58_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_58_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_58_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_58_7;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_58_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_58_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_58_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_58_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_58_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_58_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_58_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_58_7;
+                    }
+                } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_57_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_57_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_57_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_57_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_57_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_57_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_57_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_57_7;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_57_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_57_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_57_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_57_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_57_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_57_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_57_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_57_7;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_57_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_57_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_57_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_57_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_57_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_57_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_57_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_57_7;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_57_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_57_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_57_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_57_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_57_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_57_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_57_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_57_7;
+                    }
+                } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_56_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_56_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_56_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_56_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_56_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_56_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_56_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_56_7;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_56_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_56_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_56_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_56_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_56_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_56_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_56_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_56_7;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_56_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_56_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_56_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_56_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_56_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_56_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_56_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_56_7;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_56_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_56_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_56_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_56_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_56_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_56_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_56_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_56_7;
+                }
+            } else if ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                        if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_55_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_55_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_55_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_55_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_55_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_55_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_55_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_55_7;
+                        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_55_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_55_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_55_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_55_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_55_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_55_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_55_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_55_7;
+                        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_55_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_55_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_55_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_55_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_55_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_55_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_55_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_55_7;
+                        } else {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_55_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_55_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_55_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_55_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_55_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_55_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_55_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_55_7;
+                        }
+                    } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_54_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_54_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_54_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_54_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_54_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_54_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_54_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_54_7;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_54_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_54_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_54_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_54_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_54_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_54_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_54_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_54_7;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_54_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_54_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_54_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_54_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_54_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_54_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_54_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_54_7;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_54_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_54_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_54_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_54_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_54_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_54_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_54_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_54_7;
+                    }
+                } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_53_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_53_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_53_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_53_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_53_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_53_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_53_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_53_7;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_53_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_53_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_53_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_53_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_53_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_53_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_53_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_53_7;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_53_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_53_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_53_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_53_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_53_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_53_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_53_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_53_7;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_53_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_53_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_53_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_53_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_53_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_53_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_53_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_53_7;
+                    }
+                } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_52_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_52_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_52_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_52_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_52_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_52_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_52_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_52_7;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_52_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_52_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_52_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_52_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_52_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_52_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_52_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_52_7;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_52_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_52_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_52_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_52_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_52_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_52_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_52_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_52_7;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_52_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_52_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_52_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_52_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_52_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_52_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_52_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_52_7;
+                }
+            } else if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_51_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_51_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_51_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_51_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_51_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_51_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_51_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_51_7;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_51_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_51_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_51_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_51_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_51_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_51_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_51_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_51_7;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_51_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_51_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_51_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_51_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_51_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_51_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_51_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_51_7;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_51_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_51_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_51_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_51_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_51_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_51_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_51_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_51_7;
+                    }
+                } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_50_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_50_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_50_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_50_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_50_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_50_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_50_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_50_7;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_50_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_50_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_50_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_50_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_50_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_50_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_50_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_50_7;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_50_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_50_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_50_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_50_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_50_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_50_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_50_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_50_7;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_50_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_50_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_50_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_50_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_50_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_50_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_50_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_50_7;
+                }
+            } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_49_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_49_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_49_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_49_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_49_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_49_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_49_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_49_7;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_49_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_49_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_49_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_49_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_49_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_49_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_49_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_49_7;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_49_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_49_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_49_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_49_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_49_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_49_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_49_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_49_7;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_49_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_49_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_49_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_49_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_49_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_49_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_49_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_49_7;
+                }
+            } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_48_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_48_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_48_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_48_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_48_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_48_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_48_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_48_7;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_48_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_48_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_48_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_48_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_48_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_48_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_48_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_48_7;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_48_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_48_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_48_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_48_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_48_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_48_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_48_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_48_7;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_48_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_48_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_48_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_48_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_48_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_48_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_48_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_48_7;
+            }
+        } else if ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                        if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_47_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_47_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_47_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_47_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_47_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_47_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_47_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_47_7;
+                        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_47_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_47_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_47_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_47_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_47_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_47_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_47_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_47_7;
+                        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_47_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_47_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_47_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_47_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_47_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_47_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_47_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_47_7;
+                        } else {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_47_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_47_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_47_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_47_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_47_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_47_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_47_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_47_7;
+                        }
+                    } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_46_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_46_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_46_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_46_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_46_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_46_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_46_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_46_7;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_46_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_46_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_46_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_46_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_46_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_46_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_46_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_46_7;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_46_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_46_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_46_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_46_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_46_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_46_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_46_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_46_7;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_46_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_46_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_46_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_46_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_46_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_46_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_46_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_46_7;
+                    }
+                } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_45_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_45_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_45_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_45_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_45_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_45_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_45_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_45_7;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_45_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_45_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_45_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_45_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_45_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_45_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_45_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_45_7;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_45_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_45_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_45_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_45_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_45_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_45_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_45_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_45_7;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_45_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_45_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_45_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_45_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_45_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_45_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_45_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_45_7;
+                    }
+                } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_44_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_44_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_44_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_44_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_44_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_44_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_44_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_44_7;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_44_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_44_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_44_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_44_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_44_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_44_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_44_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_44_7;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_44_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_44_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_44_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_44_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_44_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_44_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_44_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_44_7;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_44_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_44_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_44_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_44_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_44_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_44_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_44_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_44_7;
+                }
+            } else if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_43_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_43_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_43_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_43_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_43_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_43_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_43_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_43_7;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_43_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_43_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_43_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_43_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_43_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_43_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_43_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_43_7;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_43_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_43_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_43_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_43_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_43_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_43_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_43_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_43_7;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_43_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_43_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_43_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_43_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_43_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_43_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_43_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_43_7;
+                    }
+                } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_42_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_42_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_42_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_42_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_42_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_42_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_42_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_42_7;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_42_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_42_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_42_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_42_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_42_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_42_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_42_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_42_7;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_42_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_42_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_42_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_42_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_42_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_42_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_42_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_42_7;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_42_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_42_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_42_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_42_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_42_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_42_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_42_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_42_7;
+                }
+            } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_41_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_41_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_41_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_41_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_41_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_41_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_41_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_41_7;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_41_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_41_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_41_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_41_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_41_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_41_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_41_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_41_7;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_41_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_41_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_41_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_41_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_41_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_41_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_41_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_41_7;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_41_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_41_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_41_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_41_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_41_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_41_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_41_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_41_7;
+                }
+            } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_40_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_40_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_40_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_40_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_40_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_40_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_40_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_40_7;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_40_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_40_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_40_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_40_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_40_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_40_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_40_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_40_7;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_40_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_40_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_40_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_40_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_40_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_40_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_40_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_40_7;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_40_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_40_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_40_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_40_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_40_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_40_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_40_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_40_7;
+            }
+        } else if ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_39_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_39_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_39_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_39_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_39_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_39_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_39_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_39_7;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_39_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_39_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_39_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_39_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_39_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_39_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_39_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_39_7;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_39_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_39_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_39_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_39_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_39_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_39_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_39_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_39_7;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_39_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_39_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_39_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_39_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_39_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_39_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_39_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_39_7;
+                    }
+                } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_38_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_38_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_38_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_38_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_38_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_38_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_38_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_38_7;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_38_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_38_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_38_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_38_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_38_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_38_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_38_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_38_7;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_38_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_38_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_38_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_38_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_38_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_38_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_38_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_38_7;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_38_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_38_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_38_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_38_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_38_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_38_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_38_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_38_7;
+                }
+            } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_37_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_37_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_37_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_37_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_37_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_37_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_37_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_37_7;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_37_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_37_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_37_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_37_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_37_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_37_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_37_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_37_7;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_37_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_37_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_37_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_37_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_37_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_37_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_37_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_37_7;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_37_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_37_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_37_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_37_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_37_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_37_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_37_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_37_7;
+                }
+            } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_36_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_36_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_36_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_36_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_36_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_36_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_36_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_36_7;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_36_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_36_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_36_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_36_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_36_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_36_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_36_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_36_7;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_36_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_36_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_36_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_36_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_36_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_36_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_36_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_36_7;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_36_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_36_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_36_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_36_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_36_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_36_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_36_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_36_7;
+            }
+        } else if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_35_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_35_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_35_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_35_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_35_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_35_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_35_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_35_7;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_35_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_35_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_35_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_35_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_35_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_35_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_35_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_35_7;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_35_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_35_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_35_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_35_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_35_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_35_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_35_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_35_7;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_35_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_35_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_35_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_35_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_35_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_35_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_35_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_35_7;
+                }
+            } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_34_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_34_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_34_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_34_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_34_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_34_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_34_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_34_7;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_34_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_34_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_34_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_34_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_34_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_34_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_34_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_34_7;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_34_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_34_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_34_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_34_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_34_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_34_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_34_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_34_7;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_34_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_34_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_34_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_34_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_34_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_34_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_34_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_34_7;
+            }
+        } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_33_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_33_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_33_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_33_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_33_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_33_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_33_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_33_7;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_33_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_33_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_33_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_33_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_33_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_33_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_33_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_33_7;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_33_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_33_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_33_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_33_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_33_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_33_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_33_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_33_7;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_33_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_33_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_33_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_33_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_33_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_33_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_33_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_33_7;
+            }
+        } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_32_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_32_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_32_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_32_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_32_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_32_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_32_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_32_7;
+        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_32_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_32_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_32_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_32_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_32_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_32_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_32_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_32_7;
+        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_32_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_32_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_32_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_32_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_32_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_32_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_32_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_32_7;
+        } else {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_32_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_32_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_32_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_32_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_32_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_32_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_32_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_32_7;
+        }
+    } else if ((0x10U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+        if ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                        if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_31_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_31_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_31_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_31_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_31_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_31_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_31_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_31_7;
+                        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_31_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_31_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_31_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_31_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_31_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_31_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_31_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_31_7;
+                        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_31_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_31_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_31_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_31_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_31_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_31_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_31_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_31_7;
+                        } else {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_31_0;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_31_1;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_31_2;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_31_3;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_31_4;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_31_5;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_31_6;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_31_7;
+                        }
+                    } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_30_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_30_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_30_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_30_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_30_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_30_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_30_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_30_7;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_30_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_30_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_30_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_30_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_30_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_30_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_30_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_30_7;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_30_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_30_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_30_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_30_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_30_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_30_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_30_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_30_7;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_30_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_30_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_30_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_30_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_30_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_30_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_30_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_30_7;
+                    }
+                } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_29_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_29_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_29_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_29_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_29_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_29_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_29_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_29_7;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_29_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_29_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_29_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_29_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_29_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_29_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_29_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_29_7;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_29_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_29_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_29_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_29_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_29_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_29_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_29_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_29_7;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_29_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_29_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_29_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_29_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_29_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_29_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_29_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_29_7;
+                    }
+                } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_28_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_28_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_28_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_28_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_28_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_28_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_28_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_28_7;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_28_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_28_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_28_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_28_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_28_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_28_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_28_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_28_7;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_28_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_28_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_28_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_28_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_28_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_28_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_28_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_28_7;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_28_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_28_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_28_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_28_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_28_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_28_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_28_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_28_7;
+                }
+            } else if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_27_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_27_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_27_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_27_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_27_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_27_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_27_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_27_7;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_27_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_27_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_27_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_27_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_27_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_27_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_27_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_27_7;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_27_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_27_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_27_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_27_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_27_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_27_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_27_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_27_7;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_27_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_27_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_27_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_27_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_27_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_27_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_27_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_27_7;
+                    }
+                } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_26_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_26_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_26_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_26_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_26_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_26_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_26_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_26_7;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_26_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_26_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_26_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_26_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_26_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_26_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_26_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_26_7;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_26_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_26_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_26_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_26_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_26_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_26_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_26_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_26_7;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_26_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_26_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_26_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_26_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_26_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_26_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_26_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_26_7;
+                }
+            } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_25_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_25_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_25_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_25_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_25_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_25_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_25_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_25_7;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_25_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_25_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_25_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_25_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_25_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_25_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_25_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_25_7;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_25_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_25_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_25_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_25_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_25_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_25_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_25_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_25_7;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_25_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_25_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_25_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_25_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_25_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_25_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_25_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_25_7;
+                }
+            } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_24_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_24_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_24_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_24_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_24_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_24_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_24_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_24_7;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_24_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_24_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_24_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_24_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_24_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_24_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_24_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_24_7;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_24_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_24_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_24_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_24_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_24_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_24_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_24_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_24_7;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_24_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_24_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_24_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_24_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_24_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_24_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_24_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_24_7;
+            }
+        } else if ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_23_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_23_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_23_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_23_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_23_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_23_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_23_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_23_7;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_23_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_23_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_23_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_23_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_23_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_23_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_23_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_23_7;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_23_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_23_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_23_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_23_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_23_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_23_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_23_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_23_7;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_23_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_23_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_23_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_23_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_23_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_23_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_23_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_23_7;
+                    }
+                } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_22_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_22_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_22_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_22_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_22_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_22_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_22_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_22_7;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_22_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_22_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_22_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_22_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_22_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_22_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_22_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_22_7;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_22_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_22_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_22_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_22_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_22_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_22_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_22_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_22_7;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_22_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_22_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_22_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_22_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_22_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_22_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_22_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_22_7;
+                }
+            } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_21_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_21_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_21_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_21_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_21_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_21_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_21_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_21_7;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_21_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_21_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_21_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_21_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_21_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_21_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_21_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_21_7;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_21_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_21_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_21_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_21_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_21_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_21_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_21_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_21_7;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_21_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_21_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_21_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_21_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_21_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_21_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_21_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_21_7;
+                }
+            } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_20_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_20_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_20_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_20_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_20_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_20_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_20_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_20_7;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_20_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_20_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_20_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_20_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_20_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_20_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_20_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_20_7;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_20_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_20_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_20_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_20_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_20_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_20_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_20_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_20_7;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_20_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_20_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_20_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_20_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_20_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_20_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_20_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_20_7;
+            }
+        } else if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_19_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_19_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_19_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_19_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_19_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_19_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_19_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_19_7;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_19_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_19_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_19_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_19_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_19_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_19_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_19_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_19_7;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_19_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_19_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_19_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_19_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_19_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_19_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_19_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_19_7;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_19_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_19_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_19_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_19_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_19_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_19_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_19_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_19_7;
+                }
+            } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_18_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_18_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_18_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_18_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_18_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_18_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_18_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_18_7;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_18_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_18_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_18_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_18_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_18_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_18_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_18_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_18_7;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_18_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_18_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_18_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_18_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_18_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_18_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_18_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_18_7;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_18_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_18_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_18_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_18_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_18_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_18_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_18_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_18_7;
+            }
+        } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_17_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_17_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_17_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_17_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_17_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_17_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_17_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_17_7;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_17_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_17_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_17_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_17_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_17_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_17_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_17_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_17_7;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_17_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_17_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_17_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_17_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_17_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_17_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_17_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_17_7;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_17_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_17_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_17_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_17_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_17_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_17_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_17_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_17_7;
+            }
+        } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_16_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_16_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_16_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_16_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_16_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_16_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_16_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_16_7;
+        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_16_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_16_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_16_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_16_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_16_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_16_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_16_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_16_7;
+        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_16_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_16_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_16_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_16_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_16_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_16_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_16_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_16_7;
+        } else {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_16_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_16_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_16_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_16_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_16_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_16_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_16_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_16_7;
+        }
+    } else if ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+        if ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_15_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_15_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_15_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_15_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_15_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_15_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_15_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_15_7;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_15_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_15_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_15_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_15_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_15_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_15_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_15_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_15_7;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_15_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_15_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_15_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_15_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_15_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_15_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_15_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_15_7;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_15_0;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_15_1;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_15_2;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_15_3;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_15_4;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_15_5;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_15_6;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_15_7;
+                    }
+                } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_14_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_14_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_14_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_14_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_14_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_14_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_14_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_14_7;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_14_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_14_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_14_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_14_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_14_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_14_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_14_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_14_7;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_14_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_14_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_14_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_14_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_14_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_14_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_14_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_14_7;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_14_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_14_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_14_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_14_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_14_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_14_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_14_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_14_7;
+                }
+            } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_13_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_13_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_13_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_13_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_13_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_13_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_13_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_13_7;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_13_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_13_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_13_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_13_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_13_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_13_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_13_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_13_7;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_13_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_13_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_13_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_13_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_13_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_13_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_13_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_13_7;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_13_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_13_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_13_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_13_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_13_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_13_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_13_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_13_7;
+                }
+            } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_12_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_12_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_12_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_12_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_12_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_12_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_12_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_12_7;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_12_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_12_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_12_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_12_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_12_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_12_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_12_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_12_7;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_12_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_12_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_12_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_12_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_12_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_12_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_12_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_12_7;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_12_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_12_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_12_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_12_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_12_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_12_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_12_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_12_7;
+            }
+        } else if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_11_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_11_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_11_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_11_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_11_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_11_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_11_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_11_7;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_11_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_11_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_11_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_11_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_11_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_11_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_11_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_11_7;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_11_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_11_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_11_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_11_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_11_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_11_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_11_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_11_7;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_11_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_11_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_11_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_11_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_11_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_11_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_11_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_11_7;
+                }
+            } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_10_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_10_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_10_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_10_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_10_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_10_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_10_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_10_7;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_10_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_10_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_10_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_10_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_10_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_10_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_10_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_10_7;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_10_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_10_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_10_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_10_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_10_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_10_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_10_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_10_7;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_10_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_10_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_10_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_10_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_10_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_10_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_10_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_10_7;
+            }
+        } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_9_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_9_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_9_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_9_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_9_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_9_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_9_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_9_7;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_9_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_9_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_9_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_9_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_9_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_9_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_9_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_9_7;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_9_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_9_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_9_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_9_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_9_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_9_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_9_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_9_7;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_9_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_9_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_9_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_9_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_9_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_9_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_9_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_9_7;
+            }
+        } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_8_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_8_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_8_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_8_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_8_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_8_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_8_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_8_7;
+        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_8_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_8_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_8_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_8_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_8_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_8_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_8_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_8_7;
+        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_8_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_8_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_8_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_8_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_8_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_8_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_8_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_8_7;
+        } else {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_8_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_8_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_8_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_8_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_8_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_8_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_8_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_8_7;
+        }
+    } else if ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+        if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_7_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_7_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_7_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_7_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_7_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_7_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_7_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_7_7;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_7_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_7_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_7_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_7_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_7_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_7_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_7_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_7_7;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_7_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_7_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_7_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_7_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_7_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_7_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_7_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_7_7;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_7_0;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_7_1;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_7_2;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_7_3;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_7_4;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_7_5;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_7_6;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_7_7;
+                }
+            } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_6_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_6_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_6_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_6_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_6_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_6_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_6_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_6_7;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_6_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_6_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_6_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_6_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_6_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_6_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_6_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_6_7;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_6_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_6_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_6_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_6_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_6_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_6_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_6_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_6_7;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_6_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_6_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_6_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_6_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_6_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_6_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_6_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_6_7;
+            }
+        } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_5_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_5_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_5_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_5_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_5_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_5_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_5_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_5_7;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_5_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_5_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_5_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_5_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_5_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_5_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_5_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_5_7;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_5_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_5_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_5_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_5_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_5_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_5_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_5_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_5_7;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_5_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_5_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_5_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_5_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_5_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_5_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_5_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_5_7;
+            }
+        } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_4_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_4_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_4_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_4_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_4_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_4_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_4_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_4_7;
+        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_4_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_4_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_4_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_4_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_4_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_4_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_4_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_4_7;
+        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_4_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_4_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_4_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_4_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_4_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_4_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_4_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_4_7;
+        } else {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_4_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_4_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_4_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_4_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_4_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_4_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_4_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_4_7;
+        }
+    } else if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+        if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_3_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_3_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_3_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_3_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_3_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_3_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_3_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_3_7;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_3_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_3_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_3_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_3_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_3_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_3_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_3_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_3_7;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_3_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_3_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_3_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_3_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_3_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_3_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_3_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_3_7;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_3_0;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_3_1;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_3_2;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_3_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_3_4;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_3_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_3_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_3_7;
+            }
+        } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_2_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_2_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_2_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_2_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_2_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_2_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_2_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_2_7;
+        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_2_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_2_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_2_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_2_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_2_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_2_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_2_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_2_7;
+        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_2_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_2_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_2_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_2_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_2_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_2_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_2_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_2_7;
+        } else {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_2_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_2_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_2_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_2_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_2_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_2_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_2_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_2_7;
+        }
+    } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+        if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_1_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_1_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_1_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_1_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_1_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_1_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_1_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_1_7;
+        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_1_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_1_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_1_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_1_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_1_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_1_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_1_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_1_7;
+        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_1_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_1_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_1_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_1_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_1_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_1_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_1_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_1_7;
+        } else {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_1_0;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_1_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_1_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_1_3;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_1_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_1_5;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_1_6;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_1_7;
+        }
+    } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_0_0;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_0_1;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_0_2;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_0_3;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_0_4;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_0_5;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_0_6;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_0_0_7;
+    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_0_0;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_0_1;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_0_2;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_0_3;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_0_4;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_0_5;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_0_6;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_1_0_7;
+    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way))) {
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_0_0;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_0_1;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_0_2;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_0_3;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_0_4;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_0_5;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_0_6;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_2_0_7;
+    } else {
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_0_0;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_0_1;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_0_2;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_0_3;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_0_4;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_0_5;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_0_6;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__data_array_3_0_7;
+    }
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_852 
+        = ((0x37U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_853 
+        = ((0x37U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_854 
+        = ((0x38U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_855 
+        = ((0x38U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_856 
+        = ((0x38U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_857 
+        = ((0x38U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_858 
+        = ((0x38U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_859 
+        = ((0x38U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_860 
+        = ((0x38U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_861 
+        = ((0x38U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_862 
+        = ((0x39U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_863 
+        = ((0x39U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_864 
+        = ((0x39U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_865 
+        = ((0x39U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_866 
+        = ((0x39U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_867 
+        = ((0x39U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_868 
+        = ((0x39U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_869 
+        = ((0x39U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_870 
+        = ((0x3aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_871 
+        = ((0x3aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_872 
+        = ((0x3aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_873 
+        = ((0x3aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_874 
+        = ((0x3aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_875 
+        = ((0x3aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_876 
+        = ((0x3aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_877 
+        = ((0x3aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_878 
+        = ((0x3bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_879 
+        = ((0x3bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_880 
+        = ((0x3bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_881 
+        = ((0x3bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_882 
+        = ((0x3bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_883 
+        = ((0x3bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_884 
+        = ((0x3bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_885 
+        = ((0x3bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_886 
+        = ((0x3cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_887 
+        = ((0x3cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_888 
+        = ((0x3cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_889 
+        = ((0x3cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_890 
+        = ((0x3cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_891 
+        = ((0x3cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_892 
+        = ((0x3cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_893 
+        = ((0x3cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_894 
+        = ((0x3dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_895 
+        = ((0x3dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_896 
+        = ((0x3dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_897 
+        = ((0x3dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_898 
+        = ((0x3dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_899 
+        = ((0x3dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_900 
+        = ((0x3dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_901 
+        = ((0x3dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_902 
+        = ((0x3eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_903 
+        = ((0x3eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_904 
+        = ((0x3eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_905 
+        = ((0x3eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_906 
+        = ((0x3eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_907 
+        = ((0x3eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_908 
+        = ((0x3eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_909 
+        = ((0x3eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_50 
+        = ((0x3fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_51 
+        = ((0x3fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_52 
+        = ((0x3fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_53 
+        = ((0x3fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_54 
+        = ((0x3fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_55 
+        = ((0x3fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_56 
+        = ((0x3fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_57 
+        = ((0x3fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___data_array_T_3 
+        = (((~ vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__byteMask32) 
+            & (((7U & ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg) 
+                       >> 2U)) == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt))
+                ? vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_mem_resp_bits_data
+                : ((0x10U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                    ? ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                        ? ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760)
+                        : ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758))
+                    : ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                        ? ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756)
+                        : ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754))))) 
+           | vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_4);
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__io_dcache_req_ready_0 
+        = (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN 
+        = (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_4 
+        = (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_5 
+        = (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_8 
+        = (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_0 
+        = (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_1 
+        = (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_2 
+        = (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_76 
+        = ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__io_mem_req_valid_0));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_13 
+        = ((4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__miss_cacheable_reg));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_149 
+        = ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+           | ((3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+              | (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state))));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_14 
+        = ((6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+           | (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)));
+    top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_9 = 
+        ((5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+         | (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_10 
+        = ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+           | (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__lfsr_prng__DOT__state_0 
+        = vlSelfRef.__Vdly__top__DOT__npc_cpu__DOT__icache1__DOT__lfsr_prng__DOT__state_0;
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__lfsr_prng__DOT__state_0 
+        = vlSelfRef.__Vdly__top__DOT__npc_cpu__DOT__dcache1__DOT__lfsr_prng__DOT__state_0;
+    vlSelfRef.top__DOT__npc_cpu__DOT__ifu1__DOT___GEN_1 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__ifu2__DOT__io_in_ready_0) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__ifu1__DOT__out_valid));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_142 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_141) 
+           | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit1));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_6 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_149) 
+           | (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_11 
+        = ((3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+           | ((4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+              | (IData)(top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_9)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_150 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_10) 
+           | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_149));
+    vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_valid 
+        = ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_10)) 
+           & ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+              | ((3U != (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+                 & ((4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+                    | ((~ (IData)(top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_9)) 
+                       & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)))))));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_0 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_10) 
+           | (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__rand_way 
+        = (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__lfsr_prng__DOT__state_1) 
+            << 1U) | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__lfsr_prng__DOT__state_0));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__rand_way 
+        = (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__lfsr_prng__DOT__state_1) 
+            << 1U) | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__lfsr_prng__DOT__state_0));
+    vlSelfRef.top__DOT__npc_cpu__DOT__ifu1__DOT___pc_T 
+        = ((IData)(4U) + vlSelfRef.top__DOT__npc_cpu__DOT__ifu1__DOT__pc);
+    vlSelfRef.io_difftest_valid = (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__state));
+    vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT___GEN_1 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__is_load) 
+           | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__is_store));
+    vlSelfRef.top__DOT__npc_cpu__DOT___exu_io_branch_bits_is_branch_taken 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_beq)
+            ? (vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__rs1_data 
+               == vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__rs2_data)
+            : ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_bne)
+                ? (vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__rs1_data 
+                   != vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__rs2_data)
+                : ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_blt)
+                    ? VL_LTS_III(32, vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__rs1_data, vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__rs2_data)
+                    : ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_bltu)
+                        ? (vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__rs1_data 
+                           < vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__rs2_data)
+                        : ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_bge)
+                            ? VL_GTES_III(32, vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__rs1_data, vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__rs2_data)
+                            : ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_bgeu) 
+                               & (vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__rs1_data 
+                                  >= vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__rs2_data)))))));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_143 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_142) 
+           | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit2));
+    vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT___GEN_2 
+        = (((0U != (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__state)) 
+            & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__state))) 
+           & ((0U != (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+              & ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state))
+                  ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit)
+                  : ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_6)) 
+                     & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state))))));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_7 
+        = ((6U != (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+           | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_6));
+    top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_12 = 
+        ((7U != (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+         | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_11));
+    if (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_10) {
+        vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_bits_wsize = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_bits_wmask = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_bits_wdata = 0U;
+    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state))) {
+        vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_bits_wsize = 2U;
+        vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_bits_wmask = 0xfU;
+        vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_bits_wdata 
+            = ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt))
+                ? ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt))
+                    ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt))
+                        ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_761
+                        : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_760)
+                    : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt))
+                        ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_759
+                        : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_758))
+                : ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt))
+                    ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt))
+                        ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_757
+                        : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_756)
+                    : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt))
+                        ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_755
+                        : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_754)));
+    } else {
+        vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_bits_wsize 
+            = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_11)
+                ? 0U : ((7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+                        << 1U));
+        if (top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_12) {
+            vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_bits_wmask = 0U;
+            vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_bits_wdata = 0U;
+        } else {
+            vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_bits_wmask 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__wmask_reg;
+            vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_bits_wdata 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__wdata_reg;
+        }
+    }
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT___GEN_0 
+        = (((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_10)) 
+            & ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+               | ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_11)) 
+                  & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state))))) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_valid));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_3 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_0) 
+           | (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_resp_ready 
+        = ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_0)) 
+           & ((3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+              | ((4U != (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+                 & ((5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+                    | ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_14)) 
+                       & (8U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)))))));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay 
+        = (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_6) 
+            & ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_4) 
+               & ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_0) 
+                  & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_2))))
+            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__rand_way)
+            : ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_0)
+                ? ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_2)
+                    ? (2U | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_4))
+                    : 1U) : 0U));
+    if ((0x20U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+        if ((0x10U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                        if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                            if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_63;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_63;
+                            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_63;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_63;
+                            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_63;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_63;
+                            } else {
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_63;
+                                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_63;
+                            }
+                        } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_62;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_62;
+                        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_62;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_62;
+                        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_62;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_62;
+                        } else {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_62;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_62;
+                        }
+                    } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                        if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_61;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_61;
+                        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_61;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_61;
+                        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_61;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_61;
+                        } else {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_61;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_61;
+                        }
+                    } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_60;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_60;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_60;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_60;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_60;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_60;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_60;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_60;
+                    }
+                } else if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                        if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_59;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_59;
+                        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_59;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_59;
+                        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_59;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_59;
+                        } else {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_59;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_59;
+                        }
+                    } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_58;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_58;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_58;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_58;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_58;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_58;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_58;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_58;
+                    }
+                } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_57;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_57;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_57;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_57;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_57;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_57;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_57;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_57;
+                    }
+                } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_56;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_56;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_56;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_56;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_56;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_56;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_56;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_56;
+                }
+            } else if ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                        if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_55;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_55;
+                        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_55;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_55;
+                        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_55;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_55;
+                        } else {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_55;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_55;
+                        }
+                    } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_54;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_54;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_54;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_54;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_54;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_54;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_54;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_54;
+                    }
+                } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_53;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_53;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_53;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_53;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_53;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_53;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_53;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_53;
+                    }
+                } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_52;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_52;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_52;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_52;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_52;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_52;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_52;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_52;
+                }
+            } else if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_51;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_51;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_51;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_51;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_51;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_51;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_51;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_51;
+                    }
+                } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_50;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_50;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_50;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_50;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_50;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_50;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_50;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_50;
+                }
+            } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_49;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_49;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_49;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_49;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_49;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_49;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_49;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_49;
+                }
+            } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_48;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_48;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_48;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_48;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_48;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_48;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_48;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_48;
+            }
+        } else if ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                        if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_47;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_47;
+                        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_47;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_47;
+                        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_47;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_47;
+                        } else {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_47;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_47;
+                        }
+                    } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_46;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_46;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_46;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_46;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_46;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_46;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_46;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_46;
+                    }
+                } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_45;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_45;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_45;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_45;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_45;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_45;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_45;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_45;
+                    }
+                } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_44;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_44;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_44;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_44;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_44;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_44;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_44;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_44;
+                }
+            } else if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_43;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_43;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_43;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_43;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_43;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_43;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_43;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_43;
+                    }
+                } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_42;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_42;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_42;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_42;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_42;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_42;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_42;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_42;
+                }
+            } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_41;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_41;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_41;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_41;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_41;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_41;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_41;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_41;
+                }
+            } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_40;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_40;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_40;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_40;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_40;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_40;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_40;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_40;
+            }
+        } else if ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_39;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_39;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_39;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_39;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_39;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_39;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_39;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_39;
+                    }
+                } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_38;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_38;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_38;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_38;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_38;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_38;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_38;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_38;
+                }
+            } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_37;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_37;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_37;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_37;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_37;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_37;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_37;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_37;
+                }
+            } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_36;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_36;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_36;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_36;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_36;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_36;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_36;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_36;
+            }
+        } else if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_35;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_35;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_35;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_35;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_35;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_35;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_35;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_35;
+                }
+            } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_34;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_34;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_34;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_34;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_34;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_34;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_34;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_34;
+            }
+        } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_33;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_33;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_33;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_33;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_33;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_33;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_33;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_33;
+            }
+        } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_32;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_32;
+        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_32;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_32;
+        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_32;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_32;
+        } else {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_32;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_32;
+        }
+    } else if ((0x10U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+        if ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                        if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_31;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_31;
+                        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_31;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_31;
+                        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_31;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_31;
+                        } else {
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_31;
+                            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_31;
+                        }
+                    } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_30;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_30;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_30;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_30;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_30;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_30;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_30;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_30;
+                    }
+                } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_29;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_29;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_29;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_29;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_29;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_29;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_29;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_29;
+                    }
+                } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_28;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_28;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_28;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_28;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_28;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_28;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_28;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_28;
+                }
+            } else if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_27;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_27;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_27;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_27;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_27;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_27;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_27;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_27;
+                    }
+                } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_26;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_26;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_26;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_26;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_26;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_26;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_26;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_26;
+                }
+            } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_25;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_25;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_25;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_25;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_25;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_25;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_25;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_25;
+                }
+            } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_24;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_24;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_24;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_24;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_24;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_24;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_24;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_24;
+            }
+        } else if ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_23;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_23;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_23;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_23;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_23;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_23;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_23;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_23;
+                    }
+                } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_22;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_22;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_22;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_22;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_22;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_22;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_22;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_22;
+                }
+            } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_21;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_21;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_21;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_21;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_21;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_21;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_21;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_21;
+                }
+            } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_20;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_20;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_20;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_20;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_20;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_20;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_20;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_20;
+            }
+        } else if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_19;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_19;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_19;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_19;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_19;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_19;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_19;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_19;
+                }
+            } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_18;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_18;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_18;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_18;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_18;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_18;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_18;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_18;
+            }
+        } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_17;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_17;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_17;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_17;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_17;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_17;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_17;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_17;
+            }
+        } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_16;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_16;
+        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_16;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_16;
+        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_16;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_16;
+        } else {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_16;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_16;
+        }
+    } else if ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+        if ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_15;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_15;
+                    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_15;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_15;
+                    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_15;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_15;
+                    } else {
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_15;
+                        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_15;
+                    }
+                } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_14;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_14;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_14;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_14;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_14;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_14;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_14;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_14;
+                }
+            } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_13;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_13;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_13;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_13;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_13;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_13;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_13;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_13;
+                }
+            } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_12;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_12;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_12;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_12;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_12;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_12;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_12;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_12;
+            }
+        } else if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_11;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_11;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_11;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_11;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_11;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_11;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_11;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_11;
+                }
+            } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_10;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_10;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_10;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_10;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_10;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_10;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_10;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_10;
+            }
+        } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_9;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_9;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_9;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_9;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_9;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_9;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_9;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_9;
+            }
+        } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_8;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_8;
+        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_8;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_8;
+        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_8;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_8;
+        } else {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_8;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_8;
+        }
+    } else if ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+        if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+                if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_7;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_7;
+                } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_7;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_7;
+                } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_7;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_7;
+                } else {
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_7;
+                    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                        = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_7;
+                }
+            } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_6;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_6;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_6;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_6;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_6;
+            }
+        } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_5;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_5;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_5;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_5;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_5;
+            }
+        } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_4;
+        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_4;
+        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_4;
+        } else {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_4;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_4;
+        }
+    } else if ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+        if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+            if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_3;
+            } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_3;
+            } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_3;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_3;
+                vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_3;
+            }
+        } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_2;
+        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_2;
+        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_2;
+        } else {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_2;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_2;
+        }
+    } else if ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))) {
+        if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_1;
+        } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_1;
+        } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_1;
+        } else {
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_1;
+            vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_1;
+        }
+    } else if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_0_0;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_0_0;
+    } else if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_1_0;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_1_0;
+    } else if ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))) {
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_2_0;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_2_0;
+    } else {
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_241 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__tag_array_3_0;
+        vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__valid_array_3_0;
+    }
+    vlSelfRef.top__DOT__npc_cpu__DOT__csr__DOT__mstatus 
+        = vlSelfRef.__Vdly__top__DOT__npc_cpu__DOT__csr__DOT__mstatus;
+    vlSelfRef.top__DOT__npc_cpu__DOT___mem1_io_mem_req_bits_bypass 
+        = (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__is_store) 
+            & (0x28U != (vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__alu_result 
+                         >> 0x1aU))) | ((0xa0010000U 
+                                         > vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__pc) 
+                                        & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT___GEN_1)));
+    if ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state))) {
+        if (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit) {
+            vlSelfRef.__VdfgRegularize_hd87f99a1_0_2 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__req_addr_reg;
+            vlSelfRef.__VdfgRegularize_hd87f99a1_0_3 
+                = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__wen_reg)
+                    ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__wdata_reg
+                    : (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit0)
+                         ? ((0x10U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                             ? ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                 ? ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                     ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_14
+                                     : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_13)
+                                 : ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                     ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_12
+                                     : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_11))
+                             : ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                 ? ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                     ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_10
+                                     : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_9)
+                                 : ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                     ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_8
+                                     : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_7)))
+                         : 0U) | (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit1)
+                                    ? ((0x10U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                        ? ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                            ? ((4U 
+                                                & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_23
+                                                : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_22)
+                                            : ((4U 
+                                                & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_21
+                                                : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_20))
+                                        : ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                            ? ((4U 
+                                                & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_19
+                                                : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_18)
+                                            : ((4U 
+                                                & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_17
+                                                : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_16)))
+                                    : 0U) | (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit2)
+                                               ? ((0x10U 
+                                                   & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                   ? 
+                                                  ((8U 
+                                                    & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                    ? 
+                                                   ((4U 
+                                                     & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                     ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_32
+                                                     : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_31)
+                                                    : 
+                                                   ((4U 
+                                                     & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                     ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_30
+                                                     : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_29))
+                                                   : 
+                                                  ((8U 
+                                                    & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                    ? 
+                                                   ((4U 
+                                                     & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                     ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_28
+                                                     : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_27)
+                                                    : 
+                                                   ((4U 
+                                                     & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                     ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_26
+                                                     : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_25)))
+                                               : 0U) 
+                                             | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit3)
+                                                 ? 
+                                                ((0x10U 
+                                                  & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                  ? 
+                                                 ((8U 
+                                                   & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                   ? 
+                                                  ((4U 
+                                                    & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                    ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_41
+                                                    : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_40)
+                                                   : 
+                                                  ((4U 
+                                                    & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                    ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_39
+                                                    : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_38))
+                                                  : 
+                                                 ((8U 
+                                                   & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                   ? 
+                                                  ((4U 
+                                                    & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                    ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_37
+                                                    : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_36)
+                                                   : 
+                                                  ((4U 
+                                                    & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                    ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_35
+                                                    : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_34)))
+                                                 : 0U)))));
+        } else {
+            vlSelfRef.__VdfgRegularize_hd87f99a1_0_2 = 0U;
+            vlSelfRef.__VdfgRegularize_hd87f99a1_0_3 = 0U;
+        }
+    } else if (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_7) {
+        vlSelfRef.__VdfgRegularize_hd87f99a1_0_2 = 0U;
+        vlSelfRef.__VdfgRegularize_hd87f99a1_0_3 = 0U;
+    } else if (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__resp_is_bypass) {
+        vlSelfRef.__VdfgRegularize_hd87f99a1_0_2 = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__bypass_addr_reg;
+        vlSelfRef.__VdfgRegularize_hd87f99a1_0_3 = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__bypass_data_reg;
+    } else {
+        vlSelfRef.__VdfgRegularize_hd87f99a1_0_2 = vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__req_addr_reg;
+        vlSelfRef.__VdfgRegularize_hd87f99a1_0_3 = 
+            (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit0)
+               ? ((0x10U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                   ? ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                       ? ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                           ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_14
+                           : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_13)
+                       : ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                           ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_12
+                           : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_11))
+                   : ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                       ? ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                           ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_10
+                           : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_9)
+                       : ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                           ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_8
+                           : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_7)))
+               : 0U) | (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit1)
+                          ? ((0x10U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                              ? ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                  ? ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                      ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_23
+                                      : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_22)
+                                  : ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                      ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_21
+                                      : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_20))
+                              : ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                  ? ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                      ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_19
+                                      : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_18)
+                                  : ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                      ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_17
+                                      : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_16)))
+                          : 0U) | (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit2)
+                                     ? ((0x10U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                         ? ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                             ? ((4U 
+                                                 & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                 ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_32
+                                                 : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_31)
+                                             : ((4U 
+                                                 & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                 ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_30
+                                                 : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_29))
+                                         : ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                             ? ((4U 
+                                                 & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                 ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_28
+                                                 : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_27)
+                                             : ((4U 
+                                                 & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                 ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_26
+                                                 : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_25)))
+                                     : 0U) | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__hit3)
+                                               ? ((0x10U 
+                                                   & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                   ? 
+                                                  ((8U 
+                                                    & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                    ? 
+                                                   ((4U 
+                                                     & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                     ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_41
+                                                     : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_40)
+                                                    : 
+                                                   ((4U 
+                                                     & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                     ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_39
+                                                     : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_38))
+                                                   : 
+                                                  ((8U 
+                                                    & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                    ? 
+                                                   ((4U 
+                                                     & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                     ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_37
+                                                     : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_36)
+                                                    : 
+                                                   ((4U 
+                                                     & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__offset_reg))
+                                                     ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_35
+                                                     : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_34)))
+                                               : 0U))));
+    }
+    vlSelfRef.__VdfgRegularize_hd87f99a1_0_4 = ((2U 
+                                                 == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state))
+                                                 ? 
+                                                (vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__wb_addr 
+                                                 + 
+                                                 ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__refill_cnt) 
+                                                  << 2U))
+                                                 : 
+                                                ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_12)
+                                                  ? 0U
+                                                  : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__req_addr_reg));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__io_master_wvalid_0 
+        = ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state))
+            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT___GEN_0)
+            : ((1U != (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state)) 
+               & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state))));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT____VdfgRegularize_h96986e78_0_1 
+        = ((0U != (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state)) 
+           | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT___GEN_0));
+    vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_arvalid 
+        = ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state)) 
+           & ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT___GEN_0)) 
+              & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_valid)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_awvalid 
+        = ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state)) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT___GEN_0));
+    vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_bits_rsize 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_3)
+            ? 0U : ((4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+                    << 1U));
+    vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_bits_burst 
+        = ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_3)) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_13));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__io_master_bready_0 
+        = ((~ ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state)) 
+               | ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state)) 
+                  | (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state))))) 
+           & ((3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state)) 
+              & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_resp_ready)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__io_master_rready_0 
+        = ((0U != (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state)) 
+           & ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state)) 
+              & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_resp_ready)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_144 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_resp_ready) 
+           & ((0U != (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state)) 
+              & ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state))
+                  ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_mem_master_rvalid)
+                  : ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT____VdfgRegularize_h96986e78_0_5) 
+                     & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_mem_master_bvalid)))));
+}
+
+VL_INLINE_OPT void Vtop___024root___nba_sequent__TOP__10(Vtop___024root* vlSelf) {
+    (void)vlSelf;  // Prevent unused variable warning
+    Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___nba_sequent__TOP__10\n"); );
+    auto& vlSelfRef = std::ref(*vlSelf).get();
+    // Init
+    CData/*0:0*/ top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3;
+    top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3 = 0;
+    CData/*0:0*/ top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4;
+    top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4 = 0;
+    CData/*0:0*/ top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5;
+    top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5 = 0;
+    CData/*0:0*/ top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6;
+    top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6 = 0;
+    CData/*0:0*/ top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_8;
+    top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_8 = 0;
+    CData/*0:0*/ top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9;
+    top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9 = 0;
+    CData/*0:0*/ top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10;
+    top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10 = 0;
+    CData/*0:0*/ top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11;
+    top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11 = 0;
+    CData/*0:0*/ top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12;
+    top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12 = 0;
+    CData/*0:0*/ top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_14;
+    top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_14 = 0;
+    CData/*0:0*/ top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN_3;
+    top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN_3 = 0;
+    CData/*0:0*/ top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_13;
+    top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_13 = 0;
+    CData/*0:0*/ top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_14;
+    top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_14 = 0;
+    // Body
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_176 
+        = ((0x20U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+            ? ((0x10U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                ? ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                    ? ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                        ? ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                            ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_63)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_63)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_63)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_63))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_62)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_62)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_62)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_62)))))
+                            : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_61)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_61)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_61)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_61))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_60)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_60)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_60)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_60))))))
+                        : ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                            ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_59)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_59)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_59)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_59))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_58)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_58)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_58)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_58)))))
+                            : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_57)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_57)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_57)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_57))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_56)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_56)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_56)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_56)))))))
+                    : ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                        ? ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                            ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_55)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_55)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_55)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_55))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_54)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_54)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_54)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_54)))))
+                            : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_53)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_53)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_53)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_53))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_52)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_52)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_52)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_52))))))
+                        : ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                            ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_51)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_51)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_51)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_51))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_50)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_50)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_50)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_50)))))
+                            : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_49)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_49)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_49)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_49))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_48)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_48)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_48)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_48))))))))
+                : ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                    ? ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                        ? ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                            ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_47)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_47)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_47)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_47))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_46)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_46)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_46)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_46)))))
+                            : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_45)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_45)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_45)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_45))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_44)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_44)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_44)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_44))))))
+                        : ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                            ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_43)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_43)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_43)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_43))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_42)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_42)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_42)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_42)))))
+                            : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_41)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_41)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_41)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_41))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_40)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_40)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_40)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_40)))))))
+                    : ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                        ? ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                            ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_39)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_39)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_39)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_39))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_38)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_38)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_38)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_38)))))
+                            : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_37)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_37)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_37)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_37))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_36)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_36)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_36)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_36))))))
+                        : ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                            ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_35)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_35)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_35)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_35))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_34)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_34)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_34)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_34)))))
+                            : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_33)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_33)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_33)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_33))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_32)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_32)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_32)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_32)))))))))
+            : ((0x10U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                ? ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                    ? ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                        ? ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                            ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_31)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_31)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_31)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_31))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_30)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_30)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_30)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_30)))))
+                            : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_29)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_29)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_29)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_29))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_28)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_28)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_28)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_28))))))
+                        : ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                            ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_27)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_27)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_27)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_27))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_26)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_26)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_26)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_26)))))
+                            : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_25)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_25)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_25)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_25))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_24)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_24)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_24)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_24)))))))
+                    : ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                        ? ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                            ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_23)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_23)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_23)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_23))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_22)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_22)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_22)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_22)))))
+                            : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_21)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_21)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_21)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_21))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_20)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_20)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_20)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_20))))))
+                        : ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                            ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_19)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_19)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_19)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_19))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_18)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_18)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_18)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_18)))))
+                            : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_17)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_17)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_17)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_17))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_16)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_16)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_16)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_16))))))))
+                : ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                    ? ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                        ? ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                            ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_15)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_15)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_15)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_15))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_14)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_14)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_14)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_14)))))
+                            : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_13)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_13)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_13)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_13))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_12)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_12)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_12)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_12))))))
+                        : ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                            ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_11)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_11)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_11)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_11))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_10)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_10)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_10)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_10)))))
+                            : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_9)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_9)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_9)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_9))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_8)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_8)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_8)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_8)))))))
+                    : ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                        ? ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                            ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_7)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_7)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_7)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_7))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_6)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_6)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_6)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_6)))))
+                            : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_5)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_5)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_5)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_5))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_4)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_4)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_4)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_4))))))
+                        : ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                            ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_3)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_3)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_3)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_3))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_2)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_2)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_2)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_2)))))
+                            : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg))
+                                ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_1)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_1)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_1)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_1))))
+                                : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                    ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_0_0)
+                                    : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                        ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_1_0)
+                                        : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__allocWay))
+                                            ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_2_0)
+                                            : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__dirty_array_3_0))))))))));
+    vlSelfRef.top__DOT__npc_cpu__DOT___exu_io_branch_bits_pc_branch 
+        = (vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_b 
+           + vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__pc);
+    vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu__DOT__casez_tmp 
+        = ((8U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_op))
+            ? ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_op))
+                ? ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_op))
+                    ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_op))
+                        ? 0U : (vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_a 
+                                < vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_b))
+                    : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_op))
+                        ? VL_LTS_III(32, vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_a, vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_b)
+                        : VL_MODDIV_III(32, vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_a, vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_b)))
+                : ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_op))
+                    ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_op))
+                        ? VL_MODDIVS_III(32, vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_a, vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_b)
+                        : VL_DIV_III(32, vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_a, vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_b))
+                    : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_op))
+                        ? (IData)((0x1ffffffffULL & 
+                                   VL_DIVS_QQQ(33, 
+                                               (((QData)((IData)(
+                                                                 (vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_a 
+                                                                  >> 0x1fU))) 
+                                                 << 0x20U) 
+                                                | (QData)((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_a))), 
+                                               (((QData)((IData)(
+                                                                 (vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_b 
+                                                                  >> 0x1fU))) 
+                                                 << 0x20U) 
+                                                | (QData)((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_b))))))
+                        : (vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_a 
+                           * vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_b))))
+            : ((4U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_op))
+                ? ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_op))
+                    ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_op))
+                        ? VL_SHIFTRS_III(32,32,5, vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_a, 
+                                         (0x1fU & vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_b))
+                        : (vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_a 
+                           >> (0x1fU & vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_b)))
+                    : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_op))
+                        ? (vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_a 
+                           << (0x1fU & vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_b))
+                        : (vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_a 
+                           ^ vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_b)))
+                : ((2U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_op))
+                    ? ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_op))
+                        ? (vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_a 
+                           | vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_b)
+                        : (vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_a 
+                           & vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_b))
+                    : ((1U & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_op))
+                        ? (vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_a 
+                           - vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_b)
+                        : (vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_a 
+                           + vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__alu_b)))));
+    if (vlSelfRef.reset) {
+        vlSelfRef.top__DOT__npc_cpu__DOT__csr__DOT__mepc = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__csr__DOT__mtvec = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__csr__DOT__mcause = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__csr_waddr = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__csr_wen = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__csr_wdata = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__csr_waddr = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__csr_wen = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__csr_wdata = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__csr_waddr = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__csr_wen = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__csr_wdata = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__csr_waddr = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__csr_wen = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__csr_wdata = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__pc = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__ifu2__DOT__pc_reg = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state = 0U;
+    } else {
+        if ((1U & (~ (((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__csr_wen)) 
+                       | (0x305U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__csr_waddr))) 
+                      | (0x341U != (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__csr_waddr)))))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__csr__DOT__mepc 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__csr_wdata;
+        }
+        if (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__csr_wen) 
+             & (0x305U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__csr_waddr)))) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__csr__DOT__mtvec 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__csr_wdata;
+        }
+        if ((1U & ((((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__csr_wen)) 
+                     | (0x305U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__csr_waddr))) 
+                    | (0x341U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__csr_waddr))) 
+                   | (0x342U != (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__csr_waddr))))) {
+            if ((0x73U == vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__csr__DOT__mcause = 0xbU;
+            }
+        } else {
+            vlSelfRef.top__DOT__npc_cpu__DOT__csr__DOT__mcause 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__csr_wdata;
+        }
+        if (vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT___GEN) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__csr_waddr 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__csr_waddr;
+            vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__csr_wen 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__csr_wen;
+            vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__csr_wdata 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__csr_wdata;
+        }
+        if (vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT___GEN_4) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__csr_waddr 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__csr_waddr;
+            vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__csr_wen 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__csr_wen;
+            vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__csr_wdata 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__csr_wdata;
+        }
+        if (vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT___GEN_0) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__csr_waddr 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__csr_waddr;
+            vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__csr_wen 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__csr_wen;
+            vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__csr_wdata 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__csr_wdata;
+        }
+        if (vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT___GEN) {
+            if ((0x73U == vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__csr_waddr = 0x341U;
+                vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__csr_wdata 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__pc;
+            } else if ((0x30200073U == vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__csr_waddr = 0x342U;
+                vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__csr_wdata = 0U;
+            } else {
+                vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__csr_waddr 
+                    = (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                       >> 0x14U);
+                vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__csr_wdata 
+                    = vlSelfRef.top__DOT__npc_cpu__DOT___regfile_io_rs1_data;
+            }
+            vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__csr_wen 
+                = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_csrrw) 
+                   | (0x73U == vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst));
+        }
+        if (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT___GEN) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__ifu2__DOT__inst_reg;
+            vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__pc 
+                = vlSelfRef.top__DOT__npc_cpu__DOT__ifu2__DOT__pc_reg;
+        }
+        if (vlSelfRef.top__DOT__npc_cpu__DOT__ifu2__DOT___GEN) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__ifu2__DOT__pc_reg 
+                = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_1)
+                    ? 0U : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state))
+                             ? ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__hit)
+                                 ? vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_7
+                                 : 0U) : ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_9)
+                                           ? 0U : ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__resp_is_bypass)
+                                                    ? vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__bypass_pc_reg
+                                                    : vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_7))));
+        }
+        if (vlSelfRef.top__DOT__npc_cpu__DOT__ifu1__DOT__io_flush_0) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state = 0U;
+        } else if (vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN) {
+            if (vlSelfRef.top__DOT__npc_cpu__DOT__ifu1__DOT___GEN) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state = 1U;
+            }
+        } else if (vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_0) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state 
+                = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__hit)
+                    ? 4U : (2U | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_11)));
+        } else if (vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_3) {
+            if (vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_11) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state = 3U;
+            }
+        } else if (vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_5) {
+            if (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_14) 
+                 & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_10))) {
+                vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state = 4U;
+            }
+        } else if (vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_13) {
+            vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state = 0U;
+        }
+    }
+    vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT___GEN_2 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lb) 
+           | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lw) 
+              | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lbu) 
+                 | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lh) 
+                    | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_lhu) 
+                       | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_sw) 
+                          | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_sb) 
+                             | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_sh))))))));
+    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state))) {
+        vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_dcache_resp_bits_addr = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_dcache_resp_bits_data = 0U;
+    } else {
+        vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_dcache_resp_bits_addr 
+            = vlSelfRef.__VdfgRegularize_hd87f99a1_0_2;
+        vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_dcache_resp_bits_data 
+            = vlSelfRef.__VdfgRegularize_hd87f99a1_0_3;
+    }
+    vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__halfData 
+        = (0xffffU & (((0U != (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+                       & (vlSelfRef.__VdfgRegularize_hd87f99a1_0_2 
+                          >> 1U)) ? ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state))
+                                      ? 0U : (vlSelfRef.__VdfgRegularize_hd87f99a1_0_3 
+                                              >> 0x10U))
+                       : ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state))
+                           ? 0U : vlSelfRef.__VdfgRegularize_hd87f99a1_0_3)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT___GEN_2 
+        = (1U & ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_valid)) 
+                 | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT____VdfgRegularize_h96986e78_0_1)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_4 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__busy) 
+           | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_awvalid));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_3 
+        = (1U & ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__busy)) 
+                 & (~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_awvalid))));
+    vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_awaddr 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_awvalid)
+            ? ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_10)
+                ? 0U : vlSelfRef.__VdfgRegularize_hd87f99a1_0_4)
+            : 0U);
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__io_master_out_bready_0 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_11) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__io_master_bready_0));
+    vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_clint_slave_rready 
+        = ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN_7)) 
+           & ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__io_master_rready_0) 
+              & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__using_clint)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_1414 
+        = ((8U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_144));
+    top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_14 
+        = ((5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+           & ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_144) 
+              & ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_mem_resp_bits_last) 
+                 & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__miss_cacheable_reg))));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_77 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_111) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__casez_tmp_176));
+    vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__casez_tmp 
+        = (0xffU & ((0U == (3U & vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_dcache_resp_bits_addr))
+                     ? vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_dcache_resp_bits_data
+                     : ((1U == (3U & vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_dcache_resp_bits_addr))
+                         ? (vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_dcache_resp_bits_data 
+                            >> 8U) : ((2U == (3U & vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_dcache_resp_bits_addr))
+                                       ? (vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_dcache_resp_bits_data 
+                                          >> 0x10U)
+                                       : (vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_dcache_resp_bits_data 
+                                          >> 0x18U)))));
+    vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_araddr 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT___GEN_2)
+            ? 0U : (((4U != (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__state)) 
+                     | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_3))
+                     ? 0U : ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__miss_cacheable_reg)
+                              ? vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__line_base
+                              : vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__miss_addr_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__isClintWrite 
+        = ((0U != ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_awvalid)
+                    ? ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_10)
+                        ? 0U : (vlSelfRef.__VdfgRegularize_hd87f99a1_0_4 
+                                >> 0x19U)) : 0U)) & 
+           (0x200c000U > vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_awaddr));
+    vlSelfRef.io_master_bready = vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__io_master_out_bready_0;
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN_9 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_clint_slave__DOT__state) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_clint_slave_rready));
+    top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_14) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way)));
+    top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_14) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way)));
+    top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_14) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way)));
+    top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_14) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__victim_way)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN 
+        = ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__isClintWrite)) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_awvalid));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_148 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_151 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_152 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_153 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_154 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_155 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_156 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_157 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_158 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (8U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_159 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (9U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_160 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0xaU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_161 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0xbU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_162 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0xcU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_163 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0xdU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_164 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0xeU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_165 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0xfU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_166 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x10U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_167 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x11U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_168 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x12U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_169 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x13U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_170 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x14U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_171 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x15U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_172 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x16U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_173 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x17U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_174 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x18U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_175 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x19U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_176 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x1aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_177 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x1bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_178 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x1cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_179 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x1dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_180 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x1eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_181 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x1fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_182 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x20U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_183 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x21U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_184 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x22U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_185 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x23U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_186 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x24U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_187 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x25U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_188 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x26U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_189 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x27U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_190 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x28U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_191 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x29U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_192 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x2aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_193 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x2bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_194 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x2cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_195 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x2dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_196 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x2eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_197 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x2fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_198 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x30U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_199 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x31U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_200 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x32U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_201 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x33U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_202 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x34U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_203 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x35U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_204 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x36U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_205 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x37U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_206 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x38U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_207 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x39U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_208 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x3aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_209 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x3bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_210 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x3cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_211 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x3dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_212 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x3eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_213 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_9) 
+           & (0x3fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_214 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_215 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_216 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_217 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_218 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_219 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_220 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_221 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_222 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (8U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_223 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (9U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_224 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0xaU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_225 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0xbU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_226 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0xcU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_227 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0xdU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_228 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0xeU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_229 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0xfU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_230 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x10U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_231 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x11U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_232 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x12U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_233 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x13U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_234 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x14U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_235 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x15U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_236 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x16U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_237 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x17U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_238 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x18U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_239 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x19U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_240 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x1aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_241 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x1bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_242 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x1cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_243 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x1dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_244 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x1eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_245 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x1fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_246 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x20U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_247 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x21U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_248 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x22U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_249 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x23U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_250 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x24U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_251 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x25U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_252 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x26U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_253 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x27U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_254 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x28U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_255 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x29U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_256 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x2aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_257 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x2bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_258 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x2cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_259 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x2dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_260 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x2eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_261 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x2fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_262 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x30U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_263 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x31U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_264 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x32U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_265 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x33U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_266 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x34U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_267 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x35U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_268 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x36U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_269 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x37U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_270 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x38U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_271 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x39U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_272 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x3aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_273 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x3bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_274 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x3cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_275 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x3dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_276 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x3eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_277 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_10) 
+           & (0x3fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_278 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_279 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_280 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_281 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_282 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_283 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_284 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_285 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_286 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (8U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_287 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (9U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_288 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0xaU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_289 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0xbU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_290 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0xcU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_291 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0xdU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_292 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0xeU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_293 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0xfU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_294 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x10U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_295 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x11U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_296 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x12U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_297 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x13U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_298 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x14U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_299 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x15U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_300 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x16U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_301 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x17U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_302 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x18U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_303 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x19U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_304 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x1aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_305 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x1bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_306 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x1cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_307 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x1dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_308 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x1eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_309 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x1fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_310 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x20U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_311 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x21U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_312 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x22U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_313 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x23U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_314 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x24U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_315 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x25U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_316 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x26U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_317 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x27U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_318 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x28U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_319 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x29U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_320 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x2aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_321 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x2bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_322 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x2cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_323 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x2dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_324 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x2eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_325 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x2fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_326 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x30U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_327 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x31U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_328 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x32U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_329 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x33U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_330 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x34U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_331 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x35U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_332 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x36U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_333 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x37U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_334 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x38U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_335 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x39U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_336 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x3aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_337 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x3bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_338 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x3cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_339 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x3dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_340 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x3eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_341 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_11) 
+           & (0x3fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_342 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_343 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_344 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_345 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_346 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_347 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_348 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_349 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_350 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (8U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_351 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (9U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_352 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0xaU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_353 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0xbU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_354 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0xcU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_355 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0xdU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_356 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0xeU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_357 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0xfU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_358 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x10U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_359 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x11U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_360 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x12U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_361 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x13U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_362 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x14U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_363 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x15U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_364 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x16U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_365 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x17U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_366 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x18U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_367 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x19U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_368 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x1aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_369 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x1bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_370 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x1cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_371 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x1dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_372 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x1eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_373 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x1fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_374 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x20U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_375 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x21U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_376 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x22U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_377 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x23U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_378 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x24U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_379 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x25U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_380 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x26U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_381 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x27U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_382 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x28U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_383 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x29U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_384 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x2aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_385 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x2bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_386 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x2cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_387 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x2dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_388 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x2eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_389 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x2fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_390 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x30U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_391 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x31U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_392 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x32U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_393 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x33U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_394 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x34U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_395 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x35U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_396 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x36U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_397 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x37U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_398 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x38U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_399 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x39U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_400 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x3aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_401 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x3bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_402 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x3cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_403 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x3dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_404 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x3eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_405 
+        = ((IData)(top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_12) 
+           & (0x3fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT___GEN 
+        = ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__state)) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__io_out_valid_0));
+    vlSelfRef.io_master_wlast = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__busy)
+                                  ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_12)
+                                  : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN));
+    if ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state))) {
+        if (vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT___GEN_0) {
+            vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_wstrb 
+                = vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_bits_wmask;
+            vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_wdata 
+                = vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_bits_wdata;
+        } else {
+            vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_wstrb = 0U;
+            vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_wdata = 0U;
+        }
+    } else if (vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT___GEN_6) {
+        vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_wstrb = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_wdata = 0U;
+    } else {
+        vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_wstrb 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__req_wmask;
+        vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_wdata 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__req_wdata;
+    }
+    if (vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__busy) {
+        if (vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN_5) {
+            vlSelfRef.io_master_wdata = 0U;
+            vlSelfRef.io_master_wstrb = 0U;
+        } else {
+            vlSelfRef.io_master_wdata = vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_wdata;
+            vlSelfRef.io_master_wstrb = vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_wstrb;
+        }
+        vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__io_master_out_wvalid_0 
+            = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_12) 
+               & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__io_master_wvalid_0));
+        vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_mem_master_wready 
+            = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_12) 
+               & (IData)(vlSelfRef.io_master_wready));
+    } else if (vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN) {
+        vlSelfRef.io_master_wdata = vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_wdata;
+        vlSelfRef.io_master_wstrb = vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_wstrb;
+        vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__io_master_out_wvalid_0 
+            = vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__io_master_wvalid_0;
+        vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_mem_master_wready 
+            = vlSelfRef.io_master_wready;
+    } else {
+        vlSelfRef.io_master_wdata = 0U;
+        vlSelfRef.io_master_wstrb = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__io_master_out_wvalid_0 = 0U;
+        vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_mem_master_wready = 0U;
+    }
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN_0 
+        = ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__busy)) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN));
+    vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__casez_tmp 
+        = ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__state))
+            ? ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT___GEN)
+                ? 1U : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__state))
+            : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__state))
+                ? 2U : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__state))
+                         ? 0U : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__state))));
+    vlSelfRef.io_master_wvalid = vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__io_master_out_wvalid_0;
+    vlSelfRef.io_master_awid = vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN_0;
+    if (vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN_0) {
+        vlSelfRef.io_master_awaddr = vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_awaddr;
+        vlSelfRef.io_master_awsize = (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_awvalid) 
+                                       & (3U > (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_bits_wsize)))
+                                       ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_bits_wsize)
+                                       : 2U);
+        vlSelfRef.io_master_awvalid = vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_awvalid;
+    } else {
+        vlSelfRef.io_master_awaddr = 0U;
+        vlSelfRef.io_master_awsize = 0U;
+        vlSelfRef.io_master_awvalid = 0U;
+    }
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__awFire 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_awvalid) 
+           & ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN_0) 
+              & (IData)(vlSelfRef.io_master_awready)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT___GEN_4 
+        = ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem2__DOT__state)) 
+           & ((0U != (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__state)) 
+              & ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__state))
+                  ? ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__out_sent)) 
+                     & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__req_sent))
+                  : (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__state)))));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN_12 
+        = ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__isClintWrite)) 
+           & ((IData)(vlSelfRef.io_master_awvalid) 
+              & (IData)(vlSelfRef.io_master_awready)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT___GEN_0 
+        = ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT__state)) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__out_valid));
+    vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT___GEN_3 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT___GEN_0) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__mem1__DOT___GEN_2));
+    vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT___GEN 
+        = ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__state)) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__state));
+    vlSelfRef.top__DOT__npc_cpu__DOT__ifu2__DOT__inst_reg 
+        = vlSelfRef.__Vdly__top__DOT__npc_cpu__DOT__ifu2__DOT__inst_reg;
+    vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT___GEN 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_in_ready) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__ifu2__DOT__resp_valid_reg));
+    vlSelfRef.io_inst = vlSelfRef.top__DOT__npc_cpu__DOT__ifu2__DOT__inst_reg;
+    vlSelfRef.top__DOT____Vcellinp__ebreak_box__is_ebreak 
+        = ((0x100073U == vlSelfRef.top__DOT__npc_cpu__DOT__ifu2__DOT__inst_reg) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__wb__DOT__state)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_csrrw 
+        = (IData)((0x1073U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_csrrs 
+        = (IData)((0x2073U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_csr_raddr 
+        = ((0x73U == vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+            ? 0x305U : ((0x30200073U == vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                         ? 0x341U : (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                                     >> 0x14U)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT____VdfgRegularize_hdcfcc17d_1_10 
+        = (IData)((0x33U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT____VdfgRegularize_hdcfcc17d_1_11 
+        = (IData)((0x7033U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT____VdfgRegularize_hdcfcc17d_1_12 
+        = ((0x33U == (0x7fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)) 
+           | (0x13U == (0x7fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT____VdfgRegularize_hdcfcc17d_1_13 
+        = (IData)((0x5033U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_jalr 
+        = (IData)((0x67U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__imm_i 
+        = (((- (IData)((vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                        >> 0x1fU))) << 0xcU) | (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                                                >> 0x14U));
+    vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_sw 
+        = (IData)((0x2023U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_sb 
+        = (IData)((0x23U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_sh 
+        = (IData)((0x1023U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_lw 
+        = (IData)((0x2003U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_lb 
+        = (IData)((3U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_lh 
+        = (IData)((0x1003U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_lbu 
+        = (IData)((0x4003U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_lhu 
+        = (IData)((0x5003U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_beq 
+        = (IData)((0x63U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_bne 
+        = (IData)((0x1063U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_blt 
+        = (IData)((0x4063U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_bltu 
+        = (IData)((0x6063U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_bge 
+        = (IData)((0x5063U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_bgeu 
+        = (IData)((0x7063U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__is_slli 
+        = (IData)((0x1013U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__casez_tmp 
+        = ((0x80000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+            ? ((0x40000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                ? ((0x20000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                    ? ((0x10000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                        ? ((0x8000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_31
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_30)
+                        : ((0x8000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_29
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_28))
+                    : ((0x10000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                        ? ((0x8000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_27
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_26)
+                        : ((0x8000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_25
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_24)))
+                : ((0x20000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                    ? ((0x10000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                        ? ((0x8000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_23
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_22)
+                        : ((0x8000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_21
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_20))
+                    : ((0x10000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                        ? ((0x8000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_19
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_18)
+                        : ((0x8000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_17
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_16))))
+            : ((0x40000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                ? ((0x20000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                    ? ((0x10000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                        ? ((0x8000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_15
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_14)
+                        : ((0x8000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_13
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_12))
+                    : ((0x10000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                        ? ((0x8000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_11
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_10)
+                        : ((0x8000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_9
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_8)))
+                : ((0x20000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                    ? ((0x10000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                        ? ((0x8000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_7
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_6)
+                        : ((0x8000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_5
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_4))
+                    : ((0x10000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                        ? ((0x8000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_3
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_2)
+                        : ((0x8000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_1
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_0)))));
+    vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__casez_tmp_0 
+        = ((0x1000000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+            ? ((0x800000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                ? ((0x400000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                    ? ((0x200000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                        ? ((0x100000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_31
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_30)
+                        : ((0x100000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_29
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_28))
+                    : ((0x200000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                        ? ((0x100000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_27
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_26)
+                        : ((0x100000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_25
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_24)))
+                : ((0x400000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                    ? ((0x200000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                        ? ((0x100000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_23
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_22)
+                        : ((0x100000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_21
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_20))
+                    : ((0x200000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                        ? ((0x100000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_19
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_18)
+                        : ((0x100000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_17
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_16))))
+            : ((0x800000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                ? ((0x400000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                    ? ((0x200000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                        ? ((0x100000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_15
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_14)
+                        : ((0x100000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_13
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_12))
+                    : ((0x200000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                        ? ((0x100000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_11
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_10)
+                        : ((0x100000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_9
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_8)))
+                : ((0x400000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                    ? ((0x200000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                        ? ((0x100000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_7
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_6)
+                        : ((0x100000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_5
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_4))
+                    : ((0x200000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                        ? ((0x100000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_3
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_2)
+                        : ((0x100000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                            ? vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_1
+                            : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__regs_0)))));
+    vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT____VdfgRegularize_hdcfcc17d_1_5 
+        = (IData)((0x5013U == (0x707fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__is_store 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_sw) 
+           | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_sb) 
+              | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_sh)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__is_load 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_lw) 
+           | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_lbu) 
+              | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_lh) 
+                 | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_lhu) 
+                    | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_lb)))));
+    vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__is_branch 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_bne) 
+           | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_beq) 
+              | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_bge) 
+                 | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_bgeu) 
+                    | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_blt) 
+                       | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_bltu))))));
+    vlSelfRef.top__DOT__npc_cpu__DOT___regfile_io_rs1_data 
+        = ((0U == (0x1fU & (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                            >> 0xfU))) ? 0U : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__casez_tmp);
+    vlSelfRef.top__DOT__npc_cpu__DOT___regfile_io_rs2_data 
+        = ((0U == (0x1fU & (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                            >> 0x14U))) ? 0U : vlSelfRef.top__DOT__npc_cpu__DOT__regfile__DOT__casez_tmp_0);
+    vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__is_srli 
+        = ((~ (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+               >> 0x1eU)) & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT____VdfgRegularize_hdcfcc17d_1_5));
+    vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__is_srai 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT____VdfgRegularize_hdcfcc17d_1_5) 
+           & (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+              >> 0x1eU));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__bypass_pc_reg 
+        = vlSelfRef.__Vdly__top__DOT__npc_cpu__DOT__icache1__DOT__bypass_pc_reg;
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_7 
+        = (vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__line_base 
+           + (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__offset_reg));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__resp_is_bypass 
+        = vlSelfRef.__Vdly__top__DOT__npc_cpu__DOT__icache1__DOT__resp_is_bypass;
+    vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_alu_op 
+        = (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT____VdfgRegularize_hdcfcc17d_1_10) 
+            & (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+               >> 0x1eU)) ? 1U : (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT____VdfgRegularize_hdcfcc17d_1_11) 
+                                   | (IData)((0x7013U 
+                                              == (0x707fU 
+                                                  & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst))))
+                                   ? 2U : (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT____VdfgRegularize_hdcfcc17d_1_12) 
+                                            & (0x6000U 
+                                               == (0x7000U 
+                                                   & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)))
+                                            ? 3U : 
+                                           (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT____VdfgRegularize_hdcfcc17d_1_12) 
+                                             & (0x4000U 
+                                                == 
+                                                (0x7000U 
+                                                 & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)))
+                                             ? 4U : 
+                                            (((IData)(
+                                                      (0x1033U 
+                                                       == 
+                                                       (0x4000707fU 
+                                                        & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst))) 
+                                              | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__is_slli))
+                                              ? 5U : 
+                                             ((((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT____VdfgRegularize_hdcfcc17d_1_13) 
+                                                & (IData)(
+                                                          (0U 
+                                                           == 
+                                                           (0xfe000000U 
+                                                            & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)))) 
+                                               | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__is_srli))
+                                               ? 6U
+                                               : ((
+                                                   ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT____VdfgRegularize_hdcfcc17d_1_13) 
+                                                    & (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                                                       >> 0x1eU)) 
+                                                   | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__is_srai))
+                                                   ? 7U
+                                                   : 
+                                                  ((IData)(
+                                                           (0x2033U 
+                                                            == 
+                                                            (0x707fU 
+                                                             & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)))
+                                                    ? 0xdU
+                                                    : 
+                                                   ((IData)(
+                                                            (0x3033U 
+                                                             == 
+                                                             (0x707fU 
+                                                              & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)))
+                                                     ? 0xeU
+                                                     : 
+                                                    ((IData)(
+                                                             (0x2013U 
+                                                              == 
+                                                              (0x707fU 
+                                                               & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)))
+                                                      ? 0xdU
+                                                      : 
+                                                     ((IData)(
+                                                              (0x3013U 
+                                                               == 
+                                                               (0x707fU 
+                                                                & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)))
+                                                       ? 0xeU
+                                                       : 
+                                                      (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT____VdfgRegularize_hdcfcc17d_1_10) 
+                                                        & (1U 
+                                                           == 
+                                                           (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                                                            >> 0x19U)))
+                                                        ? 8U
+                                                        : 
+                                                       ((IData)(
+                                                                (0x2004033U 
+                                                                 == 
+                                                                 (0xfe00707fU 
+                                                                  & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)))
+                                                         ? 9U
+                                                         : 
+                                                        (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT____VdfgRegularize_hdcfcc17d_1_13) 
+                                                          & (1U 
+                                                             == 
+                                                             (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                                                              >> 0x19U)))
+                                                          ? 0xaU
+                                                          : 
+                                                         ((IData)(
+                                                                  (0x2006033U 
+                                                                   == 
+                                                                   (0xfe00707fU 
+                                                                    & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)))
+                                                           ? 0xbU
+                                                           : 
+                                                          (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT____VdfgRegularize_hdcfcc17d_1_11) 
+                                                            & (1U 
+                                                               == 
+                                                               (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                                                                >> 0x19U)))
+                                                            ? 0xcU
+                                                            : 0U))))))))))))))));
+    vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_alu_b 
+        = (((0x13U == (0x7fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)) 
+            | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__is_load) 
+               | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__is_store) 
+                  | ((0x6fU == (0x7fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)) 
+                     | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_jalr) 
+                        | ((0x17U == (0x7fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)) 
+                           | ((0x37U == (0x7fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)) 
+                              | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__is_branch))))))))
+            ? (((0x37U == (0x7fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)) 
+                | (0x17U == (0x7fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)))
+                ? (0xfffff000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst)
+                : ((0x6fU == (0x7fU & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst))
+                    ? (((- (IData)((vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                                    >> 0x1fU))) << 0x14U) 
+                       | (((0xff000U & vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst) 
+                           | (0x800U & (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                                        >> 9U))) | 
+                          (0x7feU & (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                                     >> 0x14U)))) : 
+                   ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___idu_io_out_bits_is_jalr)
+                     ? vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__imm_i
+                     : ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__is_store)
+                         ? (((- (IData)((vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                                         >> 0x1fU))) 
+                             << 0xcU) | ((0xfe0U & 
+                                          (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                                           >> 0x14U)) 
+                                         | (0x1fU & 
+                                            (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                                             >> 7U))))
+                         : ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__is_branch)
+                             ? (((- (IData)((vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                                             >> 0x1fU))) 
+                                 << 0xcU) | ((0x800U 
+                                              & (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                                                 << 4U)) 
+                                             | ((0x7e0U 
+                                                 & (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                                                    >> 0x14U)) 
+                                                | (0x1eU 
+                                                   & (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                                                      >> 7U)))))
+                             : (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__is_slli) 
+                                 | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__is_srli) 
+                                    | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__is_srai)))
+                                 ? (0x1fU & (vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__inst 
+                                             >> 0x14U))
+                                 : vlSelfRef.top__DOT__npc_cpu__DOT__idu__DOT__imm_i))))))
+            : vlSelfRef.top__DOT__npc_cpu__DOT___regfile_io_rs2_data);
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_10 
+        = (1U & ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__miss_cacheable_reg)) 
+                 | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_ifu_master_rlast)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__hit 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__hit0) 
+           | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__hit1) 
+              | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__hit2) 
+                 | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__hit3))));
+    vlSelfRef.top__DOT__npc_cpu__DOT__ifu1__DOT__io_flush_0 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__out_valid) 
+           & ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_jal) 
+              | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___exu_io_branch_bits_is_branch_taken) 
+                 | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_jalr) 
+                    | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_ecall) 
+                       | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__exu__DOT__is_mret))))));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_5 
+        = (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN 
+        = (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_0 
+        = (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_3 
+        = (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_8 
+        = ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state)) 
+           | (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_1 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__ifu1__DOT__io_flush_0) 
+           | (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_9 
+        = ((4U != (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state)) 
+           | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_8));
+    vlSelfRef.top__DOT__npc_cpu__DOT__ifu1__DOT___GEN 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_1) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__ifu1__DOT__state));
+    vlSelfRef.top__DOT__npc_cpu__DOT__ifu2__DOT___GEN 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__ifu2__DOT__io_in_ready_0) 
+           & ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_1)) 
+              & ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state))
+                  ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__hit)
+                  : ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_8)) 
+                     & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state))))));
+    vlSelfRef.top__DOT__npc_cpu__DOT___icache1_io_inst_req_bits_burst 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_1) 
+           | ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state))
+               ? ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__hit) 
+                  | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__miss_cacheable_reg))
+               : ((2U != (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state)) 
+                  | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__miss_cacheable_reg))));
+    vlSelfRef.top__DOT__npc_cpu__DOT___icache1_io_inst_req_valid 
+        = (1U & ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_1)) 
+                 & ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state))
+                     ? (~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__hit))
+                     : (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state)))));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_6 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_1) 
+           | ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state)) 
+              | (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state))));
+    vlSelfRef.top__DOT__npc_cpu__DOT__ifu1__DOT___GEN_0 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__ifu1__DOT__state) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__ifu1__DOT___GEN));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_13 
+        = ((4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state)) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__ifu2__DOT___GEN));
+    vlSelfRef.top__DOT__npc_cpu__DOT___axi_ifu_master_io_master_arvalid 
+        = ((~ (IData)(vlSelfRef.reset)) & ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___icache1_io_inst_req_valid) 
+                                           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_ifu_master__DOT__canIssueAr)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___icache1_io_inst_resp_ready 
+        = ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_6)) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN_1 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_ifu_master_io_master_arvalid) 
+           | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_arvalid));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__rdAddr 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_ifu_master_io_master_arvalid)
+            ? ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___icache1_io_inst_req_bits_burst)
+                ? vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__line_base
+                : vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__miss_pc_reg)
+            : vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_araddr);
+    vlSelfRef.top__DOT__npc_cpu__DOT___axi_ifu_master_io_master_rready 
+        = ((~ (IData)(vlSelfRef.reset)) & ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___icache1_io_inst_resp_ready) 
+                                           | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_ifu_master__DOT__killPending)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_14 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___icache1_io_inst_resp_ready) 
+           & ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_ifu_master__DOT__killPending)) 
+              & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_ifu_master_rvalid)));
+    top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_14 
+        = (1U & ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN_1)) 
+                 | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_4)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_5 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_3) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN_1));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__memClintRead 
+        = ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_ifu_master_io_master_arvalid)) 
+           & ((0U != (vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__rdAddr 
+                      >> 0x19U)) & (0x200c000U > vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__rdAddr)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_ifu_master__DOT__r_last_fire 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_ifu_master_rvalid) 
+           & ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_ifu_master_io_master_rready) 
+              & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_ifu_master_rlast)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__io_master_out_rready_0 
+        = ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN_8)) 
+           & ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__using_ifu)
+               ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_ifu_master_io_master_rready)
+               : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__io_master_rready_0)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_856 
+        = ((3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__state)) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_14));
+    vlSelfRef.io_master_arid = ((IData)(top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_14)
+                                 ? 0U : (1U & (~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__memClintRead))));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN_2 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN_1) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__memClintRead));
+    top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_13 
+        = ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__memClintRead)) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_5));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT___GEN_3 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_valid) 
+           & ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_arvalid) 
+              & ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_5) 
+                 & ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__memClintRead)
+                     ? (~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_clint_slave__DOT__state))
+                     : ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_ifu_master_io_master_arvalid)) 
+                        & (IData)(vlSelfRef.io_master_arready))))));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__casez_tmp 
+        = ((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state))
+            ? ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT___GEN_0)
+                ? ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__awFire)
+                    ? (2U | ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__io_master_wvalid_0) 
+                             & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_mem_master_wready)))
+                    : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state))
+                : ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT___GEN_3)
+                    ? 1U : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state)))
+            : ((1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state))
+                ? ((((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_mem_master_rvalid) 
+                     & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__io_master_rready_0)) 
+                    & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_mem_master_rlast))
+                    ? 0U : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state))
+                : ((2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state))
+                    ? (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__io_master_wvalid_0) 
+                        & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_mem_master_wready))
+                        ? 3U : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state))
+                    : ((((3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state)) 
+                         & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_mem_master_bvalid)) 
+                        & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__io_master_bready_0))
+                        ? 0U : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state)))));
+    top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN_3 
+        = ((IData)(top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_14) 
+           | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__memClintRead));
+    vlSelfRef.io_master_rready = vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__io_master_out_rready_0;
+    top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_8 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_856) 
+           & ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_ifu_master_rlast) 
+              & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__miss_cacheable_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_clint_slave_arvalid 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_3) 
+           & ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN_2) 
+              & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_arvalid)));
+    vlSelfRef.io_master_arvalid = ((IData)(top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_13) 
+                                   & ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_ifu_master_io_master_arvalid)
+                                       ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_ifu_master_io_master_arvalid)
+                                       : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_mem_master_io_master_arvalid)));
+    vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_ifu_master_arready 
+        = ((IData)(top__DOT__npc_cpu__DOT__axi_arbiter__DOT____VdfgRegularize_h24e09026_0_13) 
+           & ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_ifu_master_io_master_arvalid) 
+              & (IData)(vlSelfRef.io_master_arready)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_74 
+        = (((0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__state)) 
+            & ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT___GEN_0)
+                ? (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT__awFire)
+                : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT___GEN_3))) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_valid));
+    if (top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN_3) {
+        vlSelfRef.io_master_araddr = 0U;
+        vlSelfRef.io_master_arsize = 0U;
+        vlSelfRef.io_master_arburst = 0U;
+        vlSelfRef.io_master_arlen = 0U;
+    } else {
+        vlSelfRef.io_master_araddr = vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT__rdAddr;
+        if (vlSelfRef.top__DOT__npc_cpu__DOT___axi_ifu_master_io_master_arvalid) {
+            vlSelfRef.io_master_arsize = 2U;
+            vlSelfRef.io_master_arburst = vlSelfRef.top__DOT__npc_cpu__DOT___icache1_io_inst_req_bits_burst;
+            vlSelfRef.io_master_arlen = (7U & (- (IData)((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___icache1_io_inst_req_bits_burst))));
+        } else {
+            vlSelfRef.io_master_arsize = ((1U & ((~ 
+                                                  ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_valid) 
+                                                   & (3U 
+                                                      > (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_bits_rsize)))) 
+                                                 | (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT____VdfgRegularize_h96986e78_0_1)))
+                                           ? 2U : (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_bits_rsize));
+            if (vlSelfRef.top__DOT__npc_cpu__DOT__axi_mem_master__DOT___GEN_2) {
+                vlSelfRef.io_master_arburst = 0U;
+                vlSelfRef.io_master_arlen = 0U;
+            } else {
+                vlSelfRef.io_master_arburst = vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_bits_burst;
+                vlSelfRef.io_master_arlen = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___dcache1_io_data_req_bits_burst)
+                                              ? ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT___GEN_3)
+                                                  ? 0U
+                                                  : 
+                                                 (7U 
+                                                  & (- (IData)((IData)(vlSelfRef.top__DOT__npc_cpu__DOT__dcache1__DOT____VdfgRegularize_hb5959c1d_0_13)))))
+                                              : 0U);
+            }
+        }
+    }
+    top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_8) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__victim_way)));
+    top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_8) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__victim_way)));
+    top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_8) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__victim_way)));
+    top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_8) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__victim_way)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN_10 
+        = ((~ (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_clint_slave__DOT__state)) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_clint_slave_arvalid));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_arbiter__DOT___GEN_11 
+        = ((IData)(vlSelfRef.io_master_arvalid) & (IData)(vlSelfRef.io_master_arready));
+    vlSelfRef.top__DOT__npc_cpu__DOT__axi_ifu_master__DOT__ar_fire 
+        = ((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_ifu_master_io_master_arvalid) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_ifu_master_arready));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_11 
+        = (((IData)(vlSelfRef.top__DOT__npc_cpu__DOT___axi_arbiter_io_ifu_master_arready) 
+            & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__axi_ifu_master__DOT__canIssueAr)) 
+           & (IData)(vlSelfRef.top__DOT__npc_cpu__DOT___icache1_io_inst_req_valid));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_600 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_601 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_602 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_603 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_604 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_605 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_606 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_607 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_608 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (8U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_609 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (9U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_610 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0xaU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_611 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0xbU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_612 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0xcU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_613 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0xdU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_614 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0xeU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_615 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0xfU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_616 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x10U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_617 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x11U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_618 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x12U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_619 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x13U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_620 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x14U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_621 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x15U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_622 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x16U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_623 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x17U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_624 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x18U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_625 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x19U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_626 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x1aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_627 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x1bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_628 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x1cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_629 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x1dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_630 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x1eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_631 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x1fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_632 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x20U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_633 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x21U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_634 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x22U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_635 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x23U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_636 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x24U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_637 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x25U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_638 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x26U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_639 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x27U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_640 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x28U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_641 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x29U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_642 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x2aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_643 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x2bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_644 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x2cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_645 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x2dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_646 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x2eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_647 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x2fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_648 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x30U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_649 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x31U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_650 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x32U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_651 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x33U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_652 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x34U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_653 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x35U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_654 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x36U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_655 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x37U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_656 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x38U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_657 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x39U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_658 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x3aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_659 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x3bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_660 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x3cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_661 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x3dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_662 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x3eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_663 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_3) 
+           & (0x3fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_664 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_665 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_666 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_667 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_668 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_669 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_670 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_671 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_672 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (8U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_673 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (9U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_674 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0xaU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_675 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0xbU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_676 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0xcU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_677 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0xdU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_678 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0xeU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_679 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0xfU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_680 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x10U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_681 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x11U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_682 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x12U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_683 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x13U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_684 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x14U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_685 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x15U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_686 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x16U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_687 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x17U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_688 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x18U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_689 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x19U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_690 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x1aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_691 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x1bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_692 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x1cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_693 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x1dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_694 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x1eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_695 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x1fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_696 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x20U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_697 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x21U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_698 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x22U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_699 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x23U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_700 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x24U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_701 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x25U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_702 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x26U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_703 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x27U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_704 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x28U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_705 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x29U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_706 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x2aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_707 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x2bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_708 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x2cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_709 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x2dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_710 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x2eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_711 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x2fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_712 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x30U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_713 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x31U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_714 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x32U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_715 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x33U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_716 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x34U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_717 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x35U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_718 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x36U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_719 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x37U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_720 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x38U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_721 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x39U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_722 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x3aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_723 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x3bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_724 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x3cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_725 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x3dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_726 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x3eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_727 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_4) 
+           & (0x3fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_728 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_729 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_730 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_731 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_732 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_733 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_734 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_735 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_736 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (8U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_737 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (9U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_738 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0xaU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_739 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0xbU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_740 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0xcU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_741 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0xdU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_742 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0xeU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_743 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0xfU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_744 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x10U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_745 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x11U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_746 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x12U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_747 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x13U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_748 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x14U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_749 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x15U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_750 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x16U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_751 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x17U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_752 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x18U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_753 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x19U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_754 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x1aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_755 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x1bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_756 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x1cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_757 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x1dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_758 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x1eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_759 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x1fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_760 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x20U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_761 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x21U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_762 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x22U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_763 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x23U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_764 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x24U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_765 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x25U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_766 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x26U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_767 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x27U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_768 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x28U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_769 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x29U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_770 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x2aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_771 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x2bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_772 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x2cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_773 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x2dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_774 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x2eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_775 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x2fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_776 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x30U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_777 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x31U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_778 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x32U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_779 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x33U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_780 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x34U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_781 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x35U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_782 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x36U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_783 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x37U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_784 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x38U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_785 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x39U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_786 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x3aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_787 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x3bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_788 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x3cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_789 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x3dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_790 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x3eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_791 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_5) 
+           & (0x3fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_792 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_793 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (1U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_794 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (2U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_795 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (3U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_796 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (4U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_797 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (5U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_798 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (6U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_799 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (7U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_800 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (8U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_801 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (9U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_802 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0xaU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_803 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0xbU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_804 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0xcU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_805 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0xdU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_806 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0xeU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_807 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0xfU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_808 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x10U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_809 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x11U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_810 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x12U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_811 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x13U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_812 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x14U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_813 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x15U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_814 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x16U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_815 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x17U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_816 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x18U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_817 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x19U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_818 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x1aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_819 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x1bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_820 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x1cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_821 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x1dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_822 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x1eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_823 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x1fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_824 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x20U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_825 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x21U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_826 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x22U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_827 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x23U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_828 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x24U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_829 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x25U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_830 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x26U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_831 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x27U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_832 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x28U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_833 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x29U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_834 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x2aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_835 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x2bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_836 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x2cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_837 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x2dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_838 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x2eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_839 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x2fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_840 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x30U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_841 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x31U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_842 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x32U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_843 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x33U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_844 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x34U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_845 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x35U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_846 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x36U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_847 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x37U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_848 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x38U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_849 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x39U == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_850 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x3aU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_851 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x3bU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_852 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x3cU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_853 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x3dU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_854 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x3eU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+    vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT___GEN_855 
+        = ((IData)(top__DOT__npc_cpu__DOT__icache1__DOT____VdfgRegularize_haa51248d_0_6) 
+           & (0x3fU == (IData)(vlSelfRef.top__DOT__npc_cpu__DOT__icache1__DOT__index_reg)));
+}

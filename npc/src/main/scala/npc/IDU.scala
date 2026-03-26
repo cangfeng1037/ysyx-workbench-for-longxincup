@@ -69,15 +69,28 @@ class IDU extends Module {
         val is_mret   = Output(Bool())
         val busy = Input(Bool())
 
+        // 前递相关信号
+        val fwd_rs1_en = Input(Bool())
+        val fwd_rs2_en = Input(Bool())
+        val fwd_rs1_data = Input(UInt(32.W))
+        val fwd_rs2_data = Input(UInt(32.W))
+
+        val id_rs1 = Output(UInt(5.W))
+        val id_rs2 = Output(UInt(5.W))
+        val use_rs1 = Output(Bool())
+        val use_rs2 = Output(Bool())
+
+        val stall = Input(Bool())
+        val flush = Input(Bool())
     })
 
     // 状态机
     val s_idle :: s_decode :: Nil = Enum(2)
     val state = RegInit(s_idle)
 
-    // 默认信号
-    io.in.ready := (state === s_idle) && !io.busy
-    io.out.valid := (state === s_decode)
+    // 默认信号：stall时保持当前译码态，flush时清空并优先级更高
+    io.in.ready := (state === s_idle) && !io.busy && !io.stall && !io.flush
+    io.out.valid := (state === s_decode) && !io.stall && !io.flush
     
     val inst = RegInit(0.U(32.W))
     val pc = RegInit(0.U(32.W))
@@ -98,6 +111,15 @@ class IDU extends Module {
             }
         }
     }
+
+    // flush 清空当前错误路径指令；stall 不改state，仅靠握手门控保持
+    when (io.flush) {
+        state := s_idle
+        inst := 0.U
+        pc := 0.U
+    }
+
+
 
     // 根据inst译码
     val opcode   = inst(6, 0)
@@ -175,6 +197,8 @@ class IDU extends Module {
     val is_op_imm = opcode === "b0010011".U
     val is_op     = opcode === "b0110011".U
     val is_csr    = opcode === "b1110011".U
+    val use_rs1 = is_op || is_op_imm || is_load || is_store || is_branch || is_jalr || is_csrrw || is_csrrs
+    val use_rs2 = is_op || is_store || is_branch
 
     // 读寄存器
     io.reg_rs1_addr := rs1_addr
@@ -257,8 +281,8 @@ class IDU extends Module {
     io.out.bits.alu_a     := alu_a
     io.out.bits.alu_b     := alu_b
     io.out.bits.alu_op    := alu_op
-    io.out.bits.rs1_data  := rs1_data
-    io.out.bits.rs2_data  := rs2_data
+    io.out.bits.rs1_data  := Mux(io.fwd_rs1_en, io.fwd_rs1_data, rs1_data)
+    io.out.bits.rs2_data  := Mux(io.fwd_rs2_en, io.fwd_rs2_data, rs2_data)
     io.out.bits.rd_en     := rd_en
 
 
@@ -299,6 +323,11 @@ class IDU extends Module {
     io.out.bits.csr_waddr := csr_waddr
     io.out.bits.csr_rdata := csr_rdata
     
+    // 前递相关信号
+    io.id_rs1 := rs1_addr
+    io.id_rs2 := rs2_addr
+    io.use_rs1 := use_rs1
+    io.use_rs2 := use_rs2
     /*
     printf("IDU: inst=%x, in.valid=%d, in.ready=%d, out.valid=%d, out.ready=%d\n",
         inst, io.in.valid, io.in.ready, io.out.valid, io.out.ready)

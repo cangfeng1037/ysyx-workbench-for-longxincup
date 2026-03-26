@@ -48,9 +48,9 @@ class DCache1 extends Module {
     val index_bits = 6 // 64 sets
     val tag_bits = 21
 
-    // 定义cache结构
-    val data_array = Reg(Vec(ways, Vec(sets, Vec(words_per_line, UInt(32.W)))))
-    val tag_array = Reg(Vec(ways, Vec(sets, UInt(tag_bits.W))))
+    // 定义cache结构（data/tag 使用 SyncReadMem，便于综合为 BRAM）
+    val data_array = Seq.fill(ways)(SyncReadMem(sets * words_per_line, UInt(32.W)))
+    val tag_array = Seq.fill(ways)(SyncReadMem(sets, UInt(tag_bits.W)))
     val valid_array = RegInit(
             VecInit(Seq.fill(ways)(
                 VecInit(Seq.fill(sets)(false.B))
@@ -72,6 +72,7 @@ class DCache1 extends Module {
     val bypass_data_reg = RegInit(0.U(32.W)) // 非SDRAM单拍返回数据
     val bypass_addr_reg = RegInit(0.U(32.W))   // 非SDRAM单拍返回地址
     val resp_is_bypass = RegInit(false.B)    // s_resp阶段区分
+    val resp_data_reg = RegInit(0.U(32.W))
     val wen_reg = RegInit(false.B) // 锁存当前请求的读写属性，供后续状态机使用
     val wdata_reg = RegInit(0.U(32.W))
     val wmask_reg = RegInit(0.U(4.W))
@@ -85,7 +86,7 @@ class DCache1 extends Module {
     val refill_cnt = RegInit(0.U(3.W)) // 记录当前正在填充的cache line中的数据数量
 
     // 状态机定义
-    val s_idle :: s_lookup :: s_wb_req :: s_wb_resp :: s_refill_req :: s_refill :: s_resp :: s_bypass_req :: s_bypass_resp :: Nil = Enum(9)
+    val s_idle :: s_lookup_req :: s_lookup_resp :: s_wb_read :: s_wb_req :: s_wb_resp :: s_refill_req :: s_refill :: s_resp :: s_bypass_req :: s_bypass_resp :: Nil = Enum(11)
     val state = RegInit(0.U(4.W))
 
     // 性能计数器
@@ -111,6 +112,17 @@ class DCache1 extends Module {
     io.data_req.bits.waddr := 0.U
     io.data_req.bits.burst := false.B
     io.data_resp.ready := false.B
+
+    // SyncReadMem 读端：lookup 与 writeback-read 复用同一读口
+    val read_en = state === s_lookup_req || state === s_wb_read
+    val read_addr = Mux(state === s_lookup_req, Cat(index_reg, offset_reg(4, 2)), Cat(index_reg, refill_cnt))
+    val read_tags = Wire(Vec(ways, UInt(tag_bits.W)))
+    val read_words = Wire(Vec(ways, UInt(32.W)))
+    for (w <- 0 until ways) {
+        read_words(w) := data_array(w).read(read_addr, read_en)
+        read_tags(w) := tag_array(w).read(index_reg, state === s_lookup_req)
+    }
+    val wb_word_data = Mux1H(Seq.tabulate(ways)(w => (victim_way === w.U) -> read_words(w)))
 
     // 状态机实现
     when (io.flush) {
@@ -149,16 +161,20 @@ class DCache1 extends Module {
                         // 读旁路：直接走下游单拍读，不经过cache lookup
                         state := s_refill_req
                     } .otherwise {
-                        state := s_lookup
+                        state := s_lookup_req
                     }
                 }
             }
 
-            is (s_lookup) {
-                val hit0 = valid_array(0)(index_reg) && tag_array(0)(index_reg) === tag_reg
-                val hit1 = valid_array(1)(index_reg) && tag_array(1)(index_reg) === tag_reg
-                val hit2 = valid_array(2)(index_reg) && tag_array(2)(index_reg) === tag_reg
-                val hit3 = valid_array(3)(index_reg) && tag_array(3)(index_reg) === tag_reg
+            is (s_lookup_req) {
+                state := s_lookup_resp
+            }
+
+            is (s_lookup_resp) {
+                val hit0 = valid_array(0)(index_reg) && read_tags(0) === tag_reg
+                val hit1 = valid_array(1)(index_reg) && read_tags(1) === tag_reg
+                val hit2 = valid_array(2)(index_reg) && read_tags(2) === tag_reg
+                val hit3 = valid_array(3)(index_reg) && read_tags(3) === tag_reg
                 val hit = hit0 || hit1 || hit2 || hit3
                 
                 // 先区分hit/miss再区分读写
@@ -167,40 +183,37 @@ class DCache1 extends Module {
                     // 命中，准备响应数据
                     when (!wen_reg) {
                         // 读命中
-                        io.dcache_resp.valid := true.B
-                        io.dcache_resp.bits.addr := req_addr_reg
-                        io.dcache_resp.bits.data := Mux1H(Seq(
-                            hit0 -> data_array(0)(index_reg)(offset_reg(4, 2)),
-                            hit1 -> data_array(1)(index_reg)(offset_reg(4, 2)),
-                            hit2 -> data_array(2)(index_reg)(offset_reg(4, 2)),
-                            hit3 -> data_array(3)(index_reg)(offset_reg(4, 2))
+                        val hitData = Mux1H(Seq(
+                            hit0 -> read_words(0),
+                            hit1 -> read_words(1),
+                            hit2 -> read_words(2),
+                            hit3 -> read_words(3)
                         ))
+                        resp_data_reg := hitData
                         resp_is_bypass := false.B
                         state := s_resp
                     } .otherwise {
                         // 写命中，直接在缓存中更新数据，并标记dirty
-                        io.dcache_resp.valid := true.B
-                        io.dcache_resp.bits.addr := req_addr_reg
-                        io.dcache_resp.bits.data := wdata_reg
+                        resp_data_reg := wdata_reg
                         val byteMask32 = FillInterleaved(8, wmask_reg)
                         when (hit0) {
-                            val oldWord = data_array(0)(index_reg)(offset_reg(4, 2))
-                            data_array(0)(index_reg)(offset_reg(4, 2)) := (oldWord & ~byteMask32) | (wdata_reg & byteMask32)
+                            val oldWord = read_words(0)
+                            data_array(0).write(Cat(index_reg, offset_reg(4, 2)), (oldWord & ~byteMask32) | (wdata_reg & byteMask32))
                             dirty_array(0)(index_reg) := true.B
                         }
                         .elsewhen (hit1) {
-                            val oldWord = data_array(1)(index_reg)(offset_reg(4, 2))
-                            data_array(1)(index_reg)(offset_reg(4, 2)) := (oldWord & ~byteMask32) | (wdata_reg & byteMask32)
+                            val oldWord = read_words(1)
+                            data_array(1).write(Cat(index_reg, offset_reg(4, 2)), (oldWord & ~byteMask32) | (wdata_reg & byteMask32))
                             dirty_array(1)(index_reg) := true.B
                         }
                         .elsewhen (hit2) {
-                            val oldWord = data_array(2)(index_reg)(offset_reg(4, 2))
-                            data_array(2)(index_reg)(offset_reg(4, 2)) := (oldWord & ~byteMask32) | (wdata_reg & byteMask32)
+                            val oldWord = read_words(2)
+                            data_array(2).write(Cat(index_reg, offset_reg(4, 2)), (oldWord & ~byteMask32) | (wdata_reg & byteMask32))
                             dirty_array(2)(index_reg) := true.B
                         }
                         .otherwise {
-                            val oldWord = data_array(3)(index_reg)(offset_reg(4, 2))
-                            data_array(3)(index_reg)(offset_reg(4, 2)) := (oldWord & ~byteMask32) | (wdata_reg & byteMask32)
+                            val oldWord = read_words(3)
+                            data_array(3).write(Cat(index_reg, offset_reg(4, 2)), (oldWord & ~byteMask32) | (wdata_reg & byteMask32))
                             dirty_array(3)(index_reg) := true.B
                         }
                         resp_is_bypass := false.B
@@ -221,12 +234,17 @@ class DCache1 extends Module {
                     when (victim_valid && victim_dirty) {
                         // 锁存victim line的数据，准备写回
                         refill_cnt := 0.U
-                        wb_addr := Cat(tag_array(allocWay)(index_reg), index_reg, 0.U(offset_bits.W))
-                        state := s_wb_req
+                        wb_addr := Cat(read_tags(allocWay), index_reg, 0.U(offset_bits.W))
+                        state := s_wb_read
                     } .otherwise {
                         state := s_refill_req
                     }
                 }
+            }
+
+            is (s_wb_read) {
+                // 发起 victim line 当前 word 的同步读
+                state := s_wb_req
             }
 
             is (s_wb_req) {
@@ -235,7 +253,7 @@ class DCache1 extends Module {
                 io.data_req.bits.wen := true.B
                 io.data_req.bits.wsize := 2.U // word
                 io.data_req.bits.wlen := 0.U // 单拍写回
-                io.data_req.bits.wdata := data_array(victim_way)(index_reg)(refill_cnt)
+                io.data_req.bits.wdata := wb_word_data
                 io.data_req.bits.wmask := "b1111".U
                 io.data_req.bits.waddr := wb_addr + (refill_cnt << 2)
                 io.data_req.bits.burst := false.B
@@ -256,7 +274,7 @@ class DCache1 extends Module {
                     } .otherwise {
                         // 消费完当前 beat 响应，继续下一个 beat
                         refill_cnt := refill_cnt + 1.U
-                        state := s_wb_req
+                        state := s_wb_read
                     }
                 }
             }
@@ -281,18 +299,27 @@ class DCache1 extends Module {
                 when (io.data_resp.fire) {
                     val data = io.data_resp.bits.data
                     when (miss_cacheable_reg) {
-                        data_array(victim_way)(index_reg)(refill_cnt) := data
+                        val isTargetWord = refill_cnt === offset_reg(4, 2)
+                        val byteMask32 = FillInterleaved(8, wmask_reg)
+                        val mergedWord = (data & ~byteMask32) | (wdata_reg & byteMask32)
+                        val lineWordData = Mux(wen_reg && isTargetWord, mergedWord, data)
+                        for (w <- 0 until ways) {
+                            when (victim_way === w.U) {
+                                data_array(w).write(Cat(index_reg, refill_cnt), lineWordData)
+                            }
+                        }
+                        when (isTargetWord) {
+                            resp_data_reg := Mux(wen_reg, mergedWord, data)
+                        }
                         when (io.data_resp.bits.last) {
                             // 最后一个数据到达，更新标签和有效位，准备响应
-                            tag_array(victim_way)(index_reg) := tag_reg
+                            for (w <- 0 until ways) {
+                                when (victim_way === w.U) {
+                                    tag_array(w).write(index_reg, tag_reg)
+                                }
+                            }
                             valid_array(victim_way)(index_reg) := true.B
                             dirty_array(victim_way)(index_reg) := wen_reg
-                            when (wen_reg) {
-                                val byteMask32 = FillInterleaved(8, wmask_reg)
-                                val offsetWordIdx = offset_reg(4, 2)
-                                val refilledWord = Mux(offsetWordIdx === refill_cnt, data, data_array(victim_way)(index_reg)(offsetWordIdx))
-                                data_array(victim_way)(index_reg)(offsetWordIdx) := (refilledWord & ~byteMask32) | (wdata_reg & byteMask32)
-                            }
                             refill_cnt := 0.U
                             resp_is_bypass := false.B
                             state := s_resp
@@ -303,6 +330,7 @@ class DCache1 extends Module {
                         // 非SDRAM: 单拍响应，直接透传给前端，不写入cache
                         bypass_data_reg := data
                         bypass_addr_reg := miss_addr_reg
+                        resp_data_reg := data
                         resp_is_bypass := true.B
                         refill_cnt := 0.U
                         state := s_resp
@@ -315,12 +343,7 @@ class DCache1 extends Module {
                 when (!resp_is_bypass) {
                     io.dcache_resp.valid := true.B
                     io.dcache_resp.bits.addr := req_addr_reg
-                    io.dcache_resp.bits.data := Mux1H(Seq(
-                        ((valid_array(0)(index_reg) && (tag_array(0)(index_reg) === tag_reg))) -> data_array(0)(index_reg)(offset_reg(4, 2)),
-                        ((valid_array(1)(index_reg) && (tag_array(1)(index_reg) === tag_reg))) -> data_array(1)(index_reg)(offset_reg(4, 2)),
-                        ((valid_array(2)(index_reg) && (tag_array(2)(index_reg) === tag_reg))) -> data_array(2)(index_reg)(offset_reg(4, 2)),
-                        ((valid_array(3)(index_reg) && (tag_array(3)(index_reg) === tag_reg))) -> data_array(3)(index_reg)(offset_reg(4, 2))
-                    ))
+                    io.dcache_resp.bits.data := resp_data_reg
                 } .otherwise {
                     io.dcache_resp.valid := true.B
                     io.dcache_resp.bits.addr := bypass_addr_reg

@@ -1,5 +1,13 @@
 # 基本配置
+SIM_MODE ?= soc
+
+ifeq ($(SIM_MODE),core)
+TOP_MODULE = top
+else ifeq ($(SIM_MODE),soc)
 TOP_MODULE = ysyxSoCFull
+else
+$(error Unsupported SIM_MODE '$(SIM_MODE)'; expected 'soc' or 'core')
+endif
 TOPNAME = $(TOP_MODULE)
 
 
@@ -25,7 +33,7 @@ SBT = sbt
 GEN_SCRIPT = ./gen_verilog.sh
 
 # 目录配置
-BUILD_DIR = ./obj_dir
+BUILD_DIR = ./obj_dir/$(SIM_MODE)
 OBJ_DIR = $(BUILD_DIR)
 VSRC_DIR = ./verilog
 CSRC_DIR = ./csrc
@@ -35,7 +43,12 @@ BIN = $(BUILD_DIR)/V$(TOPNAME)
 
 # 源文件搜索
 GEN_VSRCS = $(VSRC_DIR)/top.sv
-CSRCS = $(shell find $(abspath ./csrc) -name "*.cpp" | grep -v char-test.cpp)
+
+ifeq ($(SIM_MODE),core)
+CSRCS = $(shell find $(abspath ./csrc) -name "*.cpp" | grep -v char-test.cpp | grep -v top.cpp)
+else
+CSRCS = $(shell find $(abspath ./csrc) -name "*.cpp" | grep -v char-test.cpp | grep -v top_core.cpp)
+endif
 
 # 外部 Verilog 源文件 （ysyxSoC/perip）
 PERIP_VSRCS = $(shell find $(abspath ../ysyxSoC/perip) -name "*.v" 2>/dev/null)
@@ -43,7 +56,11 @@ PERIP_INC_PATHS = $(abspath ../ysyxSoC/perip/uart16550/rtl) \
                  $(abspath ../ysyxSoC/perip/spi/rtl) 
 YSYXSOC_VSRCS = ../ysyxSoC/build/ysyxSoCFull.v
 
+ifeq ($(SIM_MODE),core)
+EXT_VSRCS =
+else
 EXT_VSRCS = $(PERIP_VSRCS) $(YSYXSOC_VSRCS)
+endif
 VSRCS = $(GEN_VSRCS) $(EXT_VSRCS)
 
 # 编译标志
@@ -85,6 +102,9 @@ gen-verilog:
 # 构建规则 - 依赖 Verilog 生成
 $(BIN): $(VSRCS) $(CSRCS)
 	@echo "Building simulation with Verilator..."
+	@echo "Simulation mode: $(SIM_MODE)"
+	@echo "Top module: $(TOPNAME)"
+	@echo "Image: $(IMAGE)"
 	@echo "Verilog sources: $(VSRCS)"
 	@echo "C++ sources: $(CSRCS)"
 	@rm -rf $(OBJ_DIR)
@@ -103,6 +123,7 @@ sim: $(BIN)
 # 快速运行
 run: $(BIN)
 	@echo "Running simulation (quick)..."
+	@echo "Simulation mode: $(SIM_MODE), top: $(TOPNAME)"
 	@$(BIN) $(IMAGE) # 快速运行
 
 

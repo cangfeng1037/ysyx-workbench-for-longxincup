@@ -38,6 +38,7 @@ class IFU1 extends Module {
         val inst_req = Decoupled(new ICacheFetchReq)
         //val inst_resp= Flipped(Decoupled(new ICacheFetchResp))
 
+        val stall = Input(Bool()) 
         val flush = Output(Bool())
     })
 
@@ -73,18 +74,19 @@ class IFU1 extends Module {
         is (s_idle) { // S_idle 只发inst_req
         // 在s_idle时锁存pc
             // 重定向当拍不发取指请求，避免把“旧pc”的请求送入ISRAM
-            when(!redirect_valid) { state := s_send }
+            when(!redirect_valid && !io.stall) { state := s_send }
         }
 
         is (s_send) { // s_send 只接受inst_resp
-            io.inst_req.valid := true.B
+            io.inst_req.valid := !io.stall
             when(io.inst_req.fire) {
                 pc_reg := pc
                 out_valid := true.B
                 state := s_idle
             }
         }
-}
+    }
+
 
     val redirect_pc = MuxCase(pc + 4.U, Seq(
         io.in.bits.is_jal    -> io.in.bits.pc_jal,

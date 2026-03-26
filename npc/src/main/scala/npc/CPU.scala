@@ -21,16 +21,25 @@ class NPC_CPU extends Module {
         val regs_out = Output(Vec(32, UInt(32.W)))
         val pc_out   = Output(UInt(32.W))
         val inst_out = Output(UInt(32.W))
+        val commit_pc = Output(UInt(32.W))
+        val commit_inst = Output(UInt(32.W))
 
         // Difftest接口
         val difftest_valid = Output(Bool())
         
         // 性能计数器
-        val hit_count = Output(UInt(32.W))
-        val miss_count = Output(UInt(32.W))
+        val hit_count = Output(UInt(32.W))    // ICache hit
+        val miss_count = Output(UInt(32.W))  // ICache miss
+        val dcache_hit_count = Output(UInt(32.W))  // DCache hit
+        val dcache_miss_count = Output(UInt(32.W))  // DCache miss
+        val i_cnt = Output(UInt(32.W))  // 取指访存周期总数
+        val d_cnt = Output(UInt(32.W))  // 数据访存周期总数
+
+        val stall_cnt = Output(UInt(32.W))
+        val flush_cnt = Output(UInt(32.W))
     })
 
-/* ====================== 流水段相关 ====================== */
+/* ======================= 流水段相关 ====================== */
     val ifu1 = Module(new IFU1())
     val ifu2 = Module(new IFU2())
     val idu = Module(new IDU())
@@ -47,6 +56,39 @@ class NPC_CPU extends Module {
     mem1.io.out <> mem2.io.in
     mem2.io.out <> wb.io.in
 
+    val frontend_flush = ifu1.io.flush
+    ifu2.io.flush := frontend_flush
+    idu.io.flush := frontend_flush
+
+/* ====================== 流水段前递相关 =======================*/
+    val hazard_unit = Module(new HazardUnit())
+    exu.io.exu_fwd <> hazard_unit.io.exu_fwd
+    mem2.io.mem2_fwd <> hazard_unit.io.mem2_fwd
+    wb.io.wb_fwd <> hazard_unit.io.wb_fwd
+    idu.io.fwd_rs1_en := hazard_unit.io.fs1_fwd_en
+    idu.io.fwd_rs2_en := hazard_unit.io.fs2_fwd_en
+    idu.io.fwd_rs1_data := hazard_unit.io.fs1_fwd_data
+    idu.io.fwd_rs2_data := hazard_unit.io.fs2_fwd_data
+    hazard_unit.io.id_rs1 := idu.io.id_rs1
+    hazard_unit.io.id_rs2 := idu.io.id_rs2
+    hazard_unit.io.use_rs1 := idu.io.use_rs1
+    hazard_unit.io.use_rs2 := idu.io.use_rs2
+
+    val frontend_stall = hazard_unit.io.stall && !frontend_flush
+    ifu1.io.stall := frontend_stall
+    ifu2.io.stall := frontend_stall
+    idu.io.stall := frontend_stall
+
+/* ======================= 性能计数器 ====================== */
+    val stall_cnt = RegInit(0.U(32.W))
+    val flush_cnt = RegInit(0.U(32.W))
+    when (frontend_stall && wb.io.commit_pc >= "ha0010000".U) { stall_cnt := stall_cnt + 1.U }
+    when (frontend_flush && wb.io.commit_pc >= "ha0010000".U) { flush_cnt := flush_cnt + 1.U }
+
+    io.stall_cnt := stall_cnt
+    io.flush_cnt := flush_cnt
+
+
 /* ====================== cache相关 ====================== */
     val icache1 = Module(new ICache1())
     val dcache1 = Module(new DCache1())
@@ -60,6 +102,10 @@ class NPC_CPU extends Module {
 
     io.hit_count := icache1.io.hit_count
     io.miss_count := icache1.io.miss_count
+    io.dcache_hit_count := dcache1.io.hit_count
+    io.dcache_miss_count := dcache1.io.miss_count
+    io.i_cnt := ifu2.io.i_cnt
+    io.d_cnt := mem2.io.d_cnt
 /* ====================== AXI4 总线  ====================== */
 
     // 实例化总线
@@ -122,6 +168,8 @@ class NPC_CPU extends Module {
     io.regs_out := regfile.io.regs_out
     io.pc_out   := ifu1.io.out.bits.pc
     io.inst_out := ifu2.io.out.bits.inst
+    io.commit_pc := wb.io.commit_pc
+    io.commit_inst := wb.io.commit_inst
 
 // ======================= Difftest 相关 ================== */
 

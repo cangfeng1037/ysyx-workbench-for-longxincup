@@ -1,0 +1,83 @@
+// Verilated -*- C++ -*-
+// DESCRIPTION: Verilator output: Symbol table implementation internals
+
+#include "VysyxSoCFull__pch.h"
+#include "VysyxSoCFull.h"
+#include "VysyxSoCFull___024root.h"
+#include "VysyxSoCFull___024unit.h"
+
+void VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_d_cnt_TOP(VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_d_cnt__Vfuncrtn);
+void VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_dcache_hit_count_TOP(VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_dcache_hit_count__Vfuncrtn);
+void VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_dcache_miss_count_TOP(VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_dcache_miss_count__Vfuncrtn);
+void VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_difftest_valid_TOP(VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_difftest_valid__Vfuncrtn);
+void VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_flush_cnt_TOP(VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_flush_cnt__Vfuncrtn);
+void VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_gpr_TOP(VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ idx, IData/*31:0*/ &get_gpr__Vfuncrtn);
+void VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_hit_count_TOP(VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_hit_count__Vfuncrtn);
+void VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_i_cnt_TOP(VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_i_cnt__Vfuncrtn);
+void VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_inst_TOP(VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_inst__Vfuncrtn);
+void VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_miss_count_TOP(VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_miss_count__Vfuncrtn);
+void VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_non_inst_TOP(VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_non_inst__Vfuncrtn);
+void VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_pc_TOP(VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_pc__Vfuncrtn);
+void VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_stall_cnt_TOP(VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_stall_cnt__Vfuncrtn);
+
+// FUNCTIONS
+VysyxSoCFull__Syms::~VysyxSoCFull__Syms()
+{
+
+    // Tear down scope hierarchy
+    __Vhier.remove(&__Vscope_ysyxSoCFull__asic__axi4yank, &__Vscope_ysyxSoCFull__asic__axi4yank__unnamedblk1);
+    __Vhier.remove(&__Vscope_ysyxSoCFull__flash, &__Vscope_ysyxSoCFull__flash__flash_cmd_i);
+
+}
+
+VysyxSoCFull__Syms::VysyxSoCFull__Syms(VerilatedContext* contextp, const char* namep, VysyxSoCFull* modelp)
+    : VerilatedSyms{contextp}
+    // Setup internal state of the Syms class
+    , __Vm_modelp{modelp}
+    // Setup module instances
+    , TOP{this, namep}
+    , TOP____024unit{this, Verilated::catName(namep, "$unit")}
+{
+        // Check resources
+        Verilated::stackCheck(667);
+    // Configure time unit / time precision
+    _vm_contextp__->timeunit(-9);
+    _vm_contextp__->timeprecision(-12);
+    // Setup each module's pointers to their submodules
+    TOP.__PVT____024unit = &TOP____024unit;
+    // Setup each module's pointer back to symbol table (for public functions)
+    TOP.__Vconfigure(true);
+    TOP____024unit.__Vconfigure(true);
+    // Setup scopes
+    __Vscope_ysyxSoCFull__asic__axi42apb.configure(this, name(), "ysyxSoCFull.asic.axi42apb", "axi42apb", "<null>", -9, VerilatedScope::SCOPE_OTHER);
+    __Vscope_ysyxSoCFull__asic__axi4frag.configure(this, name(), "ysyxSoCFull.asic.axi4frag", "axi4frag", "<null>", -9, VerilatedScope::SCOPE_OTHER);
+    __Vscope_ysyxSoCFull__asic__axi4xbar.configure(this, name(), "ysyxSoCFull.asic.axi4xbar", "axi4xbar", "<null>", -9, VerilatedScope::SCOPE_OTHER);
+    __Vscope_ysyxSoCFull__asic__axi4xbar_1.configure(this, name(), "ysyxSoCFull.asic.axi4xbar_1", "axi4xbar_1", "<null>", -9, VerilatedScope::SCOPE_OTHER);
+    __Vscope_ysyxSoCFull__asic__axi4yank.configure(this, name(), "ysyxSoCFull.asic.axi4yank", "axi4yank", "<null>", -9, VerilatedScope::SCOPE_OTHER);
+    __Vscope_ysyxSoCFull__asic__axi4yank__unnamedblk1.configure(this, name(), "ysyxSoCFull.asic.axi4yank.unnamedblk1", "unnamedblk1", "<null>", -9, VerilatedScope::SCOPE_OTHER);
+    __Vscope_ysyxSoCFull__asic__cpu__cpu__difftest_dpi.configure(this, name(), "ysyxSoCFull.asic.cpu.cpu.difftest_dpi", "difftest_dpi", "<null>", -9, VerilatedScope::SCOPE_OTHER);
+    __Vscope_ysyxSoCFull__asic__lmrom.configure(this, name(), "ysyxSoCFull.asic.lmrom", "lmrom", "<null>", -9, VerilatedScope::SCOPE_OTHER);
+    __Vscope_ysyxSoCFull__flash.configure(this, name(), "ysyxSoCFull.flash", "flash", "<null>", -9, VerilatedScope::SCOPE_OTHER);
+    __Vscope_ysyxSoCFull__flash__flash_cmd_i.configure(this, name(), "ysyxSoCFull.flash.flash_cmd_i", "flash_cmd_i", "<null>", -9, VerilatedScope::SCOPE_OTHER);
+
+    // Set up scope hierarchy
+    __Vhier.add(&__Vscope_ysyxSoCFull__asic__axi4yank, &__Vscope_ysyxSoCFull__asic__axi4yank__unnamedblk1);
+    __Vhier.add(&__Vscope_ysyxSoCFull__flash, &__Vscope_ysyxSoCFull__flash__flash_cmd_i);
+
+    // Setup export functions
+    for (int __Vfinal = 0; __Vfinal < 2; ++__Vfinal) {
+        __Vscope_ysyxSoCFull__asic__cpu__cpu__difftest_dpi.exportInsert(__Vfinal, "get_d_cnt", (void*)(&VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_d_cnt_TOP));
+        __Vscope_ysyxSoCFull__asic__cpu__cpu__difftest_dpi.exportInsert(__Vfinal, "get_dcache_hit_count", (void*)(&VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_dcache_hit_count_TOP));
+        __Vscope_ysyxSoCFull__asic__cpu__cpu__difftest_dpi.exportInsert(__Vfinal, "get_dcache_miss_count", (void*)(&VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_dcache_miss_count_TOP));
+        __Vscope_ysyxSoCFull__asic__cpu__cpu__difftest_dpi.exportInsert(__Vfinal, "get_difftest_valid", (void*)(&VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_difftest_valid_TOP));
+        __Vscope_ysyxSoCFull__asic__cpu__cpu__difftest_dpi.exportInsert(__Vfinal, "get_flush_cnt", (void*)(&VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_flush_cnt_TOP));
+        __Vscope_ysyxSoCFull__asic__cpu__cpu__difftest_dpi.exportInsert(__Vfinal, "get_gpr", (void*)(&VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_gpr_TOP));
+        __Vscope_ysyxSoCFull__asic__cpu__cpu__difftest_dpi.exportInsert(__Vfinal, "get_hit_count", (void*)(&VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_hit_count_TOP));
+        __Vscope_ysyxSoCFull__asic__cpu__cpu__difftest_dpi.exportInsert(__Vfinal, "get_i_cnt", (void*)(&VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_i_cnt_TOP));
+        __Vscope_ysyxSoCFull__asic__cpu__cpu__difftest_dpi.exportInsert(__Vfinal, "get_inst", (void*)(&VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_inst_TOP));
+        __Vscope_ysyxSoCFull__asic__cpu__cpu__difftest_dpi.exportInsert(__Vfinal, "get_miss_count", (void*)(&VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_miss_count_TOP));
+        __Vscope_ysyxSoCFull__asic__cpu__cpu__difftest_dpi.exportInsert(__Vfinal, "get_non_inst", (void*)(&VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_non_inst_TOP));
+        __Vscope_ysyxSoCFull__asic__cpu__cpu__difftest_dpi.exportInsert(__Vfinal, "get_pc", (void*)(&VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_pc_TOP));
+        __Vscope_ysyxSoCFull__asic__cpu__cpu__difftest_dpi.exportInsert(__Vfinal, "get_stall_cnt", (void*)(&VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_stall_cnt_TOP));
+    }
+}
