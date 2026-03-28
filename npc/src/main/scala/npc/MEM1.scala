@@ -38,6 +38,7 @@ class dcache_req extends Bundle {
     val wmask = UInt(4.W) // 写掩码，按字节使能
     val raddr = UInt(32.W)
     val waddr = UInt(32.W)
+    val wsize = UInt(3.W) // 写传输大小，0=byte, 1=half, 2=word
     val bypass = Bool() // true: 直通写，不走DCache写命中/替换
 }
 
@@ -180,16 +181,12 @@ class MEM1 extends Module {
         is_sw -> rs2_data
     ))
 
-    // 只对 I/O 地址生效，其他地址rsize设置为2（4字节）也要根据lbu，lu选择数据
-    val is_io = (alu_result(31, 28) === "h1".U) // 0x1xxx_xxxx 视为 MMIO（UART/GPIO）
-    val rsize = Mux(is_io,
-        MuxCase(0.U, Seq(
-            (is_lb || is_lbu) -> 0.U,
-            (is_lh || is_lhu) -> 1.U,
-            is_lw             -> 2.U
-        )),
-        2.U
-    )
+    // 按访存指令语义生成请求宽度：byte/half/word
+    val rsize = MuxCase(2.U, Seq(
+        (is_lb || is_lbu) -> 0.U,
+        (is_lh || is_lhu) -> 1.U,
+        is_lw             -> 2.U
+    ))
     // 内存接口输出
     io.mem_req.bits.wen   := is_sw || is_sh || is_sb
     io.mem_req.bits.raddr := alu_result
@@ -197,6 +194,11 @@ class MEM1 extends Module {
     io.mem_req.bits.wdata := wdata
     io.mem_req.bits.wmask := wmask
     io.mem_req.bits.rsize := rsize
+    io.mem_req.bits.wsize := MuxCase(2.U, Seq(
+        is_sb -> 0.U,
+        is_sh -> 1.U,
+        is_sw -> 2.U
+    ))
     // bootloader 阶段（pc < 0xa0010000）的访存优先旁路，避免与 DCache 一致性耦合
     val is_bootloader_phase = pc < "ha0010000".U(32.W)
     val is_cacheable_addr = (alu_result(31, 26) === "b101000".U) // 0xa0xx_xxxx SDRAM

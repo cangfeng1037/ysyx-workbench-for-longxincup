@@ -17,7 +17,7 @@
 #ifndef VL_DPIDECL_get_d_cnt_
 #define VL_DPIDECL_get_d_cnt_
 int get_d_cnt() {
-    // DPI export at verilog/top.sv:11965:18
+    // DPI export at verilog/top.sv:11981:18
     return VysyxSoCFull::get_d_cnt();
 }
 #endif
@@ -25,7 +25,7 @@ int get_d_cnt() {
 #ifndef VL_DPIDECL_get_dcache_hit_count_
 #define VL_DPIDECL_get_dcache_hit_count_
 int get_dcache_hit_count() {
-    // DPI export at verilog/top.sv:11950:18
+    // DPI export at verilog/top.sv:11966:18
     return VysyxSoCFull::get_dcache_hit_count();
 }
 #endif
@@ -33,7 +33,7 @@ int get_dcache_hit_count() {
 #ifndef VL_DPIDECL_get_dcache_miss_count_
 #define VL_DPIDECL_get_dcache_miss_count_
 int get_dcache_miss_count() {
-    // DPI export at verilog/top.sv:11955:18
+    // DPI export at verilog/top.sv:11971:18
     return VysyxSoCFull::get_dcache_miss_count();
 }
 #endif
@@ -41,7 +41,7 @@ int get_dcache_miss_count() {
 #ifndef VL_DPIDECL_get_difftest_valid_
 #define VL_DPIDECL_get_difftest_valid_
 int get_difftest_valid() {
-    // DPI export at verilog/top.sv:11891:18
+    // DPI export at verilog/top.sv:11907:18
     return VysyxSoCFull::get_difftest_valid();
 }
 #endif
@@ -49,7 +49,7 @@ int get_difftest_valid() {
 #ifndef VL_DPIDECL_get_flush_cnt_
 #define VL_DPIDECL_get_flush_cnt_
 int get_flush_cnt() {
-    // DPI export at verilog/top.sv:11975:18
+    // DPI export at verilog/top.sv:11991:18
     return VysyxSoCFull::get_flush_cnt();
 }
 #endif
@@ -57,7 +57,7 @@ int get_flush_cnt() {
 #ifndef VL_DPIDECL_get_gpr_
 #define VL_DPIDECL_get_gpr_
 int get_gpr(int idx) {
-    // DPI export at verilog/top.sv:11901:18
+    // DPI export at verilog/top.sv:11917:18
     return VysyxSoCFull::get_gpr(idx);
 }
 #endif
@@ -65,7 +65,7 @@ int get_gpr(int idx) {
 #ifndef VL_DPIDECL_get_hit_count_
 #define VL_DPIDECL_get_hit_count_
 int get_hit_count() {
-    // DPI export at verilog/top.sv:11940:18
+    // DPI export at verilog/top.sv:11956:18
     return VysyxSoCFull::get_hit_count();
 }
 #endif
@@ -73,7 +73,7 @@ int get_hit_count() {
 #ifndef VL_DPIDECL_get_i_cnt_
 #define VL_DPIDECL_get_i_cnt_
 int get_i_cnt() {
-    // DPI export at verilog/top.sv:11960:18
+    // DPI export at verilog/top.sv:11976:18
     return VysyxSoCFull::get_i_cnt();
 }
 #endif
@@ -81,7 +81,7 @@ int get_i_cnt() {
 #ifndef VL_DPIDECL_get_inst_
 #define VL_DPIDECL_get_inst_
 int get_inst() {
-    // DPI export at verilog/top.sv:11886:18
+    // DPI export at verilog/top.sv:11902:18
     return VysyxSoCFull::get_inst();
 }
 #endif
@@ -89,7 +89,7 @@ int get_inst() {
 #ifndef VL_DPIDECL_get_miss_count_
 #define VL_DPIDECL_get_miss_count_
 int get_miss_count() {
-    // DPI export at verilog/top.sv:11945:18
+    // DPI export at verilog/top.sv:11961:18
     return VysyxSoCFull::get_miss_count();
 }
 #endif
@@ -97,7 +97,7 @@ int get_miss_count() {
 #ifndef VL_DPIDECL_get_non_inst_
 #define VL_DPIDECL_get_non_inst_
 int get_non_inst() {
-    // DPI export at verilog/top.sv:11896:18
+    // DPI export at verilog/top.sv:11912:18
     return VysyxSoCFull::get_non_inst();
 }
 #endif
@@ -105,7 +105,7 @@ int get_non_inst() {
 #ifndef VL_DPIDECL_get_pc_
 #define VL_DPIDECL_get_pc_
 int get_pc() {
-    // DPI export at verilog/top.sv:11881:18
+    // DPI export at verilog/top.sv:11897:18
     return VysyxSoCFull::get_pc();
 }
 #endif
@@ -113,7 +113,7 @@ int get_pc() {
 #ifndef VL_DPIDECL_get_stall_cnt_
 #define VL_DPIDECL_get_stall_cnt_
 int get_stall_cnt() {
-    // DPI export at verilog/top.sv:11970:18
+    // DPI export at verilog/top.sv:11986:18
     return VysyxSoCFull::get_stall_cnt();
 }
 #endif

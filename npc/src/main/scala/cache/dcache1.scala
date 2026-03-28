@@ -78,6 +78,7 @@ class DCache1 extends Module {
     val wmask_reg = RegInit(0.U(4.W))
     val bypass_write_reg = RegInit(false.B)
     val wb_addr = RegInit(0.U(32.W)) // 锁存需要写回的地址
+    val rsize_reg = RegInit(0.U(3.W)) // 锁存当前请求的读大小，供后续状态机使用
 
     // 伪随机替换算法
     val lfsr = chisel3.util.random.LFSR(8)
@@ -150,6 +151,7 @@ class DCache1 extends Module {
                     wen_reg := io.dcache_req.bits.wen
                     wdata_reg := io.dcache_req.bits.wdata
                     wmask_reg := io.dcache_req.bits.wmask
+                    rsize_reg := io.dcache_req.bits.rsize
                     bypass_write_reg := io.dcache_req.bits.bypass && io.dcache_req.bits.wen
                     // 仅SDRAM且非旁路访问才走cache refill
                     miss_cacheable_reg := (addr(31, 26) === "b101000".U) && !io.dcache_req.bits.bypass
@@ -283,7 +285,8 @@ class DCache1 extends Module {
                 // 发 refill 请求
                 io.data_req.valid := true.B
                 io.data_req.bits.wen := false.B
-                io.data_req.bits.rsize := 2.U // word
+                // cache line refill 固定按 word 传输；旁路单拍读使用原始指令宽度
+                io.data_req.bits.rsize := Mux(miss_cacheable_reg, 2.U, rsize_reg)
                 io.data_req.bits.raddr := Mux(miss_cacheable_reg, line_base, miss_addr_reg)
                 io.data_req.bits.burst := miss_cacheable_reg
                 io.data_req.bits.rlen := Mux(miss_cacheable_reg, (words_per_line - 1).U, 0.U)
@@ -361,7 +364,7 @@ class DCache1 extends Module {
                 // 直通写：不访问 DCache 数组，直接发单拍写请求到下游
                 io.data_req.valid := true.B
                 io.data_req.bits.wen := true.B
-                io.data_req.bits.wsize := 2.U
+                io.data_req.bits.wsize := io.dcache_req.bits.wsize
                 io.data_req.bits.wlen := 0.U
                 io.data_req.bits.wdata := wdata_reg
                 io.data_req.bits.wmask := wmask_reg

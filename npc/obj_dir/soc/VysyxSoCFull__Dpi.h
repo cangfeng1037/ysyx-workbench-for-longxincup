@@ -16,35 +16,35 @@ extern "C" {
 
 
     // DPI EXPORTS
-    // DPI export at verilog/top.sv:11965:18
+    // DPI export at verilog/top.sv:11981:18
     extern int get_d_cnt();
-    // DPI export at verilog/top.sv:11950:18
+    // DPI export at verilog/top.sv:11966:18
     extern int get_dcache_hit_count();
-    // DPI export at verilog/top.sv:11955:18
+    // DPI export at verilog/top.sv:11971:18
     extern int get_dcache_miss_count();
-    // DPI export at verilog/top.sv:11891:18
+    // DPI export at verilog/top.sv:11907:18
     extern int get_difftest_valid();
-    // DPI export at verilog/top.sv:11975:18
+    // DPI export at verilog/top.sv:11991:18
     extern int get_flush_cnt();
-    // DPI export at verilog/top.sv:11901:18
+    // DPI export at verilog/top.sv:11917:18
     extern int get_gpr(int idx);
-    // DPI export at verilog/top.sv:11940:18
+    // DPI export at verilog/top.sv:11956:18
     extern int get_hit_count();
-    // DPI export at verilog/top.sv:11960:18
+    // DPI export at verilog/top.sv:11976:18
     extern int get_i_cnt();
-    // DPI export at verilog/top.sv:11886:18
+    // DPI export at verilog/top.sv:11902:18
     extern int get_inst();
-    // DPI export at verilog/top.sv:11945:18
+    // DPI export at verilog/top.sv:11961:18
     extern int get_miss_count();
-    // DPI export at verilog/top.sv:11896:18
+    // DPI export at verilog/top.sv:11912:18
     extern int get_non_inst();
-    // DPI export at verilog/top.sv:11881:18
+    // DPI export at verilog/top.sv:11897:18
     extern int get_pc();
-    // DPI export at verilog/top.sv:11970:18
+    // DPI export at verilog/top.sv:11986:18
     extern int get_stall_cnt();
 
     // DPI IMPORTS
-    // DPI import at verilog/top.sv:11823:34
+    // DPI import at verilog/top.sv:11839:34
     extern void ebreak();
     // DPI import at /home/cangfeng_/ysyx-workbench/ysyxSoC/perip/flash/flash.v:84:30
     extern void flash_read(int addr, int* data);

@@ -29,6 +29,8 @@ long long cycle_cnt = 0;
 VysyxSoCFull* top;
 VerilatedVcdC* tfp = NULL;
 static vluint64_t sim_time = 0;
+static bool wave_started = false;
+static const uint32_t WAVE_START_PC = 0xa0010000;
 
 const uint32_t START_ADDR = 0x20000000;
 const uint32_t Flash_start_addr = 0x30000000;
@@ -325,23 +327,36 @@ uint32_t ptrace_get_flush_cnt() {
     return (uint32_t)get_flush_cnt();
 }
 
+static inline void start_wave_recording() {
+    if (tfp && !wave_started) {
+        wave_started = true;
+        sim_time = 0;
+        printf("[Wave] Recording started at cycle %lld\n", cnt);
+    }
+}
+
 void eval() {
     // 组合阶段
     top -> clock = 0;
     top -> eval();
-    if(tfp) tfp -> dump(sim_time ++);
+    if(tfp && wave_started) tfp -> dump(sim_time ++);
 
     // 上升沿：写回，更新pc
     top -> clock = 1;
     top -> eval();
-    if (tfp) tfp -> dump(sim_time ++);
+    if (tfp && wave_started) tfp -> dump(sim_time ++);
 
     if(cnt == 20) {
         top -> reset = 0;
     }
 
+    // 检查是否需要开始波形记录
+    if (!wave_started && difftest_get_difftest_valid() && difftest_get_pc() >= WAVE_START_PC) {
+        start_wave_recording();
+    }
+
     // 打印具体的指令信息
-    
+
     if(difftest_get_difftest_valid()) {
         if(difftest_get_pc() >= 0xa0010000)
         {
@@ -349,6 +364,8 @@ void eval() {
             //printf("Cycle %lld: PC = 0x%08x, inst = 0x%08x\n", cnt, difftest_get_pc(), difftest_get_inst());
         }
     }
+
+    //if(difftest_get_pc() == 0xa00155b0) printf("before putch a0 reg= %08x\n", rf_read(10));
 
     if(difftest_get_pc() >= 0xa0010000) cycle_cnt ++ ;
     cnt ++ ;
@@ -394,7 +411,7 @@ void init_sim() {
     tfp = new VerilatedVcdC;
     top->trace(tfp, 99);
 
-#ifdef CONFIG_WAVE
+#ifndef CONFIG_WAVE
     tfp->open("wave.vcd");
 #endif
 
@@ -444,7 +461,7 @@ void sdb_mainloop() {
 
     while(true) {
         printf("\n\033[1;34m(npc.sdb)\033[0m ");
-#ifndef CONFIG_PATCH
+#ifdef CONFIG_PATCH
         if(!getline(cin, cmd)) break;
 #else   
         cmd = "c";
