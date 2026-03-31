@@ -19,6 +19,13 @@ class HazardUnit extends Module {
         val mem2_fwd = Input(new fwd_info())
         val wb_fwd = Input(new fwd_info())
 
+        val load_tag_alloc_valid = Input(Bool())
+        val load_tag_alloc_rd = Input(UInt(5.W))
+        val load_tag_alloc_tag = Input(UInt(6.W))
+        val load_tag_commit_valid = Input(Bool())
+        val load_tag_commit_rd = Input(UInt(5.W))
+        val load_tag_commit_tag = Input(UInt(6.W))
+
         val id_rs1 = Input(UInt(5.W))
         val id_rs2 = Input(UInt(5.W))
         val use_rs1 = Input(Bool())
@@ -41,13 +48,28 @@ class HazardUnit extends Module {
     io.fs1_fwd_data := 0.U
     io.fs2_fwd_en := false.B
     io.fs2_fwd_data := 0.U
+
+    val pendingValid = RegInit(VecInit(Seq.fill(32)(false.B)))
+    val pendingTag = RegInit(VecInit(Seq.fill(32)(0.U(6.W))))
+
+    when (io.load_tag_alloc_valid && io.load_tag_alloc_rd =/= 0.U) {
+        pendingValid(io.load_tag_alloc_rd) := true.B
+        pendingTag(io.load_tag_alloc_rd) := io.load_tag_alloc_tag
+    }
+
+    when (io.load_tag_commit_valid && io.load_tag_commit_rd =/= 0.U) {
+        when (pendingValid(io.load_tag_commit_rd) && (pendingTag(io.load_tag_commit_rd) === io.load_tag_commit_tag)) {
+            pendingValid(io.load_tag_commit_rd) := false.B
+        }
+    }
     
     // 先判断依赖关系，再判断该级前递值是否就绪(valid)
     val rs1_exu_dep = io.use_rs1 && io.exu_fwd.rd_en && io.exu_fwd.rd_addr === io.id_rs1 && io.id_rs1 =/= 0.U
     val rs1_mem2_dep = io.use_rs1 && io.mem2_fwd.rd_en && io.mem2_fwd.rd_addr === io.id_rs1 && io.id_rs1 =/= 0.U
     val rs1_wb_dep = io.use_rs1 && io.wb_fwd.rd_en && io.wb_fwd.rd_addr === io.id_rs1 && io.id_rs1 =/= 0.U
 
-    val rs1_exu_ready = rs1_exu_dep && io.exu_fwd.valid
+    // EXU 阶段的 load 结果还不可用于前递，避免把地址当作数据前递
+    val rs1_exu_ready = rs1_exu_dep && io.exu_fwd.valid && !io.exu_fwd.rd_is_load
     val rs1_mem2_ready = rs1_mem2_dep && io.mem2_fwd.valid
     val rs1_wb_ready = rs1_wb_dep && io.wb_fwd.valid
 
@@ -70,7 +92,7 @@ class HazardUnit extends Module {
     val rs2_mem2_dep = io.use_rs2 && io.mem2_fwd.rd_en && io.mem2_fwd.rd_addr === io.id_rs2 && io.id_rs2 =/= 0.U
     val rs2_wb_dep =  io.use_rs2 && io.wb_fwd.rd_en && io.wb_fwd.rd_addr === io.id_rs2 && io.id_rs2 =/= 0.U
 
-    val rs2_exu_ready = rs2_exu_dep && io.exu_fwd.valid
+    val rs2_exu_ready = rs2_exu_dep && io.exu_fwd.valid && !io.exu_fwd.rd_is_load
     val rs2_mem2_ready = rs2_mem2_dep && io.mem2_fwd.valid
     val rs2_wb_ready = rs2_wb_dep && io.wb_fwd.valid
 
@@ -88,8 +110,11 @@ class HazardUnit extends Module {
         io.fs2_fwd_en := false.B
     }
 
-    // load_use stall: 依赖存在但load数据尚未ready时继续停顿
-    val stall_exu_load = (rs1_exu_dep || rs2_exu_dep) && io.exu_fwd.rd_is_load && !io.exu_fwd.valid
+    // load_use stall: 仅当 EXU 前递信息有效且为 load 时才停顿，避免旧元数据导致假停顿
+    val stall_exu_load = (rs1_exu_dep || rs2_exu_dep) && io.exu_fwd.valid && io.exu_fwd.rd_is_load
     val stall_mem2_load = (rs1_mem2_dep || rs2_mem2_dep) && io.mem2_fwd.rd_is_load && !io.mem2_fwd.valid
-    io.stall := stall_exu_load || stall_mem2_load
+    val stall_tag_pending = (io.use_rs1 && io.id_rs1 =/= 0.U && pendingValid(io.id_rs1)) ||
+        (io.use_rs2 && io.id_rs2 =/= 0.U && pendingValid(io.id_rs2))
+    io.stall := stall_tag_pending || stall_exu_load || stall_mem2_load
+
 }

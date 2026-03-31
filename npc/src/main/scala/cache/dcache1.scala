@@ -259,6 +259,19 @@ class DCache1 extends Module {
                 io.data_req.bits.wmask := "b1111".U
                 io.data_req.bits.waddr := wb_addr + (refill_cnt << 2)
                 io.data_req.bits.burst := false.B
+
+                // DEBUG_DCACHE_WB_TEXT_BEGIN: 仅观测写回是否命中 printf 热点代码窗口
+                val dbgDcacheWbCnt = RegInit(0.U(8.W))
+                val dbgDcacheWbHot = io.data_req.fire &&
+                    (io.data_req.bits.waddr >= "ha0015d80".U) && (io.data_req.bits.waddr <= "ha0015db0".U)
+                when (false.B && dbgDcacheWbHot && dbgDcacheWbCnt < 16.U) {
+                    printf(
+                        p"[DBG_DCACHE_WB_TEXT] wb_addr=0x${Hexadecimal(io.data_req.bits.waddr)} wb_data=0x${Hexadecimal(io.data_req.bits.wdata)} refill_cnt=${refill_cnt} victim_way=${victim_way}\n"
+                    )
+                    dbgDcacheWbCnt := dbgDcacheWbCnt + 1.U
+                }
+                // DEBUG_DCACHE_WB_TEXT_END
+
                 when (io.data_req.fire) {
                     // 每发出一个 beat，都进入响应状态等待该 beat 的写响应
                     state := s_wb_resp
@@ -301,6 +314,14 @@ class DCache1 extends Module {
 
                 when (io.data_resp.fire) {
                     val data = io.data_resp.bits.data
+                    // DEBUG_DCACHE_TRACE_BEGIN: DCache读数据通路观测点（删除时搜索此标记整段移除）
+                    // val debugHotAddr = !wen_reg && (req_addr_reg >= "ha001a600".U) && (req_addr_reg <= "ha001a900".U)
+                    // when (debugHotAddr) {
+                    //     printf(
+                    //         p"[DBG_DCACHE_IN] req_addr=0x${Hexadecimal(req_addr_reg)} miss_addr=0x${Hexadecimal(miss_addr_reg)} line_base=0x${Hexadecimal(line_base)} refill_cnt=${refill_cnt} data=0x${Hexadecimal(data)} last=${io.data_resp.bits.last} miss_cacheable=${miss_cacheable_reg} bypass_write=${bypass_write_reg}\n"
+                    //     )
+                    // }
+                    // DEBUG_DCACHE_TRACE_END
                     when (miss_cacheable_reg) {
                         val isTargetWord = refill_cnt === offset_reg(4, 2)
                         val byteMask32 = FillInterleaved(8, wmask_reg)
@@ -352,6 +373,15 @@ class DCache1 extends Module {
                     io.dcache_resp.bits.addr := bypass_addr_reg
                     io.dcache_resp.bits.data := bypass_data_reg
                 }
+
+                // DEBUG_DCACHE_TRACE_BEGIN: DCache响应出口观测点（删除时搜索此标记整段移除）
+                // val debugRespAddr = io.dcache_resp.bits.addr >= "ha001a600".U && io.dcache_resp.bits.addr <= "ha001a900".U
+                // when (io.dcache_resp.valid && debugRespAddr) {
+                //     printf(
+                //         p"[DBG_DCACHE_OUT] resp_addr=0x${Hexadecimal(io.dcache_resp.bits.addr)} resp_data=0x${Hexadecimal(io.dcache_resp.bits.data)} resp_is_bypass=${resp_is_bypass} req_addr=0x${Hexadecimal(req_addr_reg)} bypass_addr=0x${Hexadecimal(bypass_addr_reg)}\n"
+                //     )
+                // }
+                // DEBUG_DCACHE_TRACE_END
 
                 when (io.dcache_resp.fire) {
                     resp_is_bypass := false.B

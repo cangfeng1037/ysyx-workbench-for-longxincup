@@ -97,6 +97,8 @@ class alignas(VL_CACHE_LINE_BYTES) VysyxSoCFull VL_NOT_FINAL : public VerilatedM
     const char* name() const;
 
     /// DPI Export functions
+    static int get_bp_hit_count();
+    static int get_bp_total_count();
     static int get_d_cnt();
     static int get_dcache_hit_count();
     static int get_dcache_miss_count();

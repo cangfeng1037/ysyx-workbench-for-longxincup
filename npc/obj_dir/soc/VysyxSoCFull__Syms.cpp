@@ -6,6 +6,8 @@
 #include "VysyxSoCFull___024root.h"
 #include "VysyxSoCFull___024unit.h"
 
+void VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_bp_hit_count_TOP(VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_bp_hit_count__Vfuncrtn);
+void VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_bp_total_count_TOP(VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_bp_total_count__Vfuncrtn);
 void VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_d_cnt_TOP(VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_d_cnt__Vfuncrtn);
 void VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_dcache_hit_count_TOP(VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_dcache_hit_count__Vfuncrtn);
 void VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_dcache_miss_count_TOP(VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_dcache_miss_count__Vfuncrtn);
@@ -39,7 +41,7 @@ VysyxSoCFull__Syms::VysyxSoCFull__Syms(VerilatedContext* contextp, const char* n
     , TOP____024unit{this, Verilated::catName(namep, "$unit")}
 {
         // Check resources
-        Verilated::stackCheck(667);
+        Verilated::stackCheck(683);
     // Configure time unit / time precision
     _vm_contextp__->timeunit(-9);
     _vm_contextp__->timeprecision(-12);
@@ -66,6 +68,8 @@ VysyxSoCFull__Syms::VysyxSoCFull__Syms(VerilatedContext* contextp, const char* n
 
     // Setup export functions
     for (int __Vfinal = 0; __Vfinal < 2; ++__Vfinal) {
+        __Vscope_ysyxSoCFull__asic__cpu__cpu__difftest_dpi.exportInsert(__Vfinal, "get_bp_hit_count", (void*)(&VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_bp_hit_count_TOP));
+        __Vscope_ysyxSoCFull__asic__cpu__cpu__difftest_dpi.exportInsert(__Vfinal, "get_bp_total_count", (void*)(&VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_bp_total_count_TOP));
         __Vscope_ysyxSoCFull__asic__cpu__cpu__difftest_dpi.exportInsert(__Vfinal, "get_d_cnt", (void*)(&VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_d_cnt_TOP));
         __Vscope_ysyxSoCFull__asic__cpu__cpu__difftest_dpi.exportInsert(__Vfinal, "get_dcache_hit_count", (void*)(&VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_dcache_hit_count_TOP));
         __Vscope_ysyxSoCFull__asic__cpu__cpu__difftest_dpi.exportInsert(__Vfinal, "get_dcache_miss_count", (void*)(&VysyxSoCFull___024root____Vdpiexp_ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__difftest_dpi__DOT__get_dcache_miss_count_TOP));

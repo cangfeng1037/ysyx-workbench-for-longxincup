@@ -70,17 +70,29 @@ SECTIONS {
     *(.text.app_entry*)
     *(.text*)
     *(.rodata*)
+    *(.srodata*)
 
     . = ALIGN(4);
     _sdata = .;
+    _data = .;
     *(.data*)
-  *(.sdata*)
-  *(.sdata.*)
-  *(.gnu.linkonce.s.*)
+    *(.sdata*)
+    *(.sdata.*)
+    *(.gnu.linkonce.s.*)
     _edata = .;
   } > sdram AT> flash : app
-  _app_vma_end = .;
   _app_lma_start = LOADADDR(.app);
+
+  /* 兼容 extra.ld 的 .data 锚点（内容已在 .app 中收集） */
+  /* 空的 .data 段，仅作为插入点使用 */
+  .data : ALIGN(4) {
+  } > sdram AT> flash : app
+  /*
+   * APP 拷贝上界放在 .data 锚点之后：
+   * 这样 extra.ld 通过 INSERT BEFORE .data 注入的 .data.extra
+   * 也会被 SSBL 一并从 flash 拷贝到 sdram。
+   */
+  _app_vma_end = .;
 
   /*
    * 兼容旧符号：
@@ -99,12 +111,18 @@ SECTIONS {
    * 由 bootloader 在跳转前手动清零。
    */
   .bss (NOLOAD) : ALIGN(4) {
-    _bss_start = .;
     *(.bss*)
     *(.sbss*)
     *(.scommon)
-    _bss_end = .;
   } > sdram : bss
+
+  /*
+   * 兼容 extra.ld 的 .bss.extra 插入：
+   * - 若存在 __am_apps_bss_start/__am_apps_bss_end，则清零区间覆盖它；
+   * - 否则退化为主 .bss 区间。
+   */
+  _bss_start = DEFINED(__am_apps_bss_start) ? __am_apps_bss_start : ADDR(.bss);
+  _bss_end = MAX(., DEFINED(__am_apps_bss_end) ? __am_apps_bss_end : .);
 
   _heap_start = ALIGN(8);
   _app_heap_start = _heap_start;

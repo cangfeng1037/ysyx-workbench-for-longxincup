@@ -10,6 +10,7 @@ class MEM12MEM2 extends Bundle {
     val addr       = UInt(32.W)
     val rd_addr    = UInt(5.W)
     val rd_en      = Bool()
+    val load_tag   = UInt(6.W)
 
     // csr信号
     val csr_wdata  = UInt(32.W)
@@ -58,6 +59,7 @@ class MEM1 extends Module {
     val rs2_data  = RegInit(0.U(32.W))
     val rd_addr   = RegInit(0.U(5.W))
     val rd_en     = RegInit(false.B)
+    val load_tag  = RegInit(0.U(6.W))
 
     // csr信号
     val csr_wdata = RegInit(0.U(32.W))
@@ -88,6 +90,7 @@ class MEM1 extends Module {
         rs2_data   := io.in.bits.rs2_data
         rd_addr    := io.in.bits.rd_addr
         rd_en      := io.in.bits.rd_en
+        load_tag   := io.in.bits.load_tag
 
         csr_wdata  := io.in.bits.csr_wdata
         csr_wen    := io.in.bits.csr_wen
@@ -205,13 +208,13 @@ class MEM1 extends Module {
     val is_uncacheable_store = is_store && !is_cacheable_addr
     val is_mem_op = is_load || is_store
     io.mem_req.bits.bypass := is_uncacheable_store || (is_bootloader_phase && is_mem_op)
-
     // 输出打包
     io.out.bits.pc         := pc
     io.out.bits.inst       := inst
     io.out.bits.addr       := alu_result
     io.out.bits.rd_addr    := rd_addr
     io.out.bits.rd_en      := rd_en
+    io.out.bits.load_tag   := load_tag
 
     io.out.bits.is_load    := is_load
     io.out.bits.is_jalr    := is_jalr

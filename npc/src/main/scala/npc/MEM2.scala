@@ -9,6 +9,7 @@ class MEM22WB extends Bundle {
     val addr       = UInt(32.W)
     val rd_addr    = UInt(5.W)
     val rd_en      = Bool()
+    val load_tag   = UInt(6.W)
     val mem_data   = UInt(32.W)
 
     // 控制信号
@@ -43,6 +44,11 @@ class MEM2 extends Module {
         // 前递相关信号
         val mem2_fwd = Output(new fwd_info())
 
+        // load tag 提交接口
+        val load_tag_commit_valid = Output(Bool())
+        val load_tag_commit_rd = Output(UInt(5.W))
+        val load_tag_commit_tag = Output(UInt(6.W))
+
         val d_cnt = Output(UInt(32.W)) // 性能计数器：记录访存周期总数
     })
 
@@ -60,6 +66,7 @@ class MEM2 extends Module {
     val addr      = RegInit(0.U(32.W))
     val rd_addr   = RegInit(0.U(5.W))
     val rd_en     = RegInit(false.B)
+    val load_tag  = RegInit(0.U(6.W))
     val is_load   = RegInit(false.B)
     val is_store  = RegInit(false.B)
     val is_lw     = RegInit(false.B)
@@ -93,6 +100,7 @@ class MEM2 extends Module {
                 addr       := io.in.bits.addr
                 rd_addr    := io.in.bits.rd_addr
                 rd_en      := io.in.bits.rd_en
+                load_tag   := io.in.bits.load_tag
                 is_load    := io.in.bits.is_load
                 is_store   := io.in.bits.is_store
                 is_lw      := io.in.bits.is_lw
@@ -169,6 +177,7 @@ class MEM2 extends Module {
     io.out.bits.addr       := addr
     io.out.bits.rd_addr    := rd_addr
     io.out.bits.rd_en      := rd_en
+    io.out.bits.load_tag   := load_tag
     io.out.bits.mem_data   := mem_data
     io.out.bits.is_load    := is_load
     io.out.bits.is_store   := is_store
@@ -194,4 +203,8 @@ class MEM2 extends Module {
     io.mem2_fwd.rd_en := rd_en
     io.mem2_fwd.rd_is_load := is_load
     io.mem2_fwd.val_out := mem2_result
+
+    io.load_tag_commit_valid := io.out.fire && is_load && rd_en && (rd_addr =/= 0.U)
+    io.load_tag_commit_rd := rd_addr
+    io.load_tag_commit_tag := load_tag
 }

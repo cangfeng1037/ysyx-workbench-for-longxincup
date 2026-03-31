@@ -216,3 +216,35 @@ int VysyxSoCFull::get_flush_cnt() {
     for (size_t get_flush_cnt__Vfuncrtn__Vidx = 0; get_flush_cnt__Vfuncrtn__Vidx < 1; ++get_flush_cnt__Vfuncrtn__Vidx) get_flush_cnt__Vfuncrtn = get_flush_cnt__Vfuncrtn__Vcvt;
     return get_flush_cnt__Vfuncrtn;
 }
+
+int VysyxSoCFull::get_bp_total_count() {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    VysyxSoCFull___024root::get_bp_total_count\n"); );
+    // Init
+    IData/*31:0*/ get_bp_total_count__Vfuncrtn__Vcvt;
+    get_bp_total_count__Vfuncrtn__Vcvt = 0;
+    // Body
+    static int __Vfuncnum = -1;
+    if (VL_UNLIKELY(__Vfuncnum == -1)) __Vfuncnum = Verilated::exportFuncNum("get_bp_total_count");
+    const VerilatedScope* __Vscopep = Verilated::dpiScope();
+    VysyxSoCFull__Vcb_get_bp_total_count_t __Vcb = (VysyxSoCFull__Vcb_get_bp_total_count_t)(VerilatedScope::exportFind(__Vscopep, __Vfuncnum));
+    (*__Vcb)((VysyxSoCFull__Syms*)(__Vscopep->symsp()), get_bp_total_count__Vfuncrtn__Vcvt);
+    int get_bp_total_count__Vfuncrtn;
+    for (size_t get_bp_total_count__Vfuncrtn__Vidx = 0; get_bp_total_count__Vfuncrtn__Vidx < 1; ++get_bp_total_count__Vfuncrtn__Vidx) get_bp_total_count__Vfuncrtn = get_bp_total_count__Vfuncrtn__Vcvt;
+    return get_bp_total_count__Vfuncrtn;
+}
+
+int VysyxSoCFull::get_bp_hit_count() {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    VysyxSoCFull___024root::get_bp_hit_count\n"); );
+    // Init
+    IData/*31:0*/ get_bp_hit_count__Vfuncrtn__Vcvt;
+    get_bp_hit_count__Vfuncrtn__Vcvt = 0;
+    // Body
+    static int __Vfuncnum = -1;
+    if (VL_UNLIKELY(__Vfuncnum == -1)) __Vfuncnum = Verilated::exportFuncNum("get_bp_hit_count");
+    const VerilatedScope* __Vscopep = Verilated::dpiScope();
+    VysyxSoCFull__Vcb_get_bp_hit_count_t __Vcb = (VysyxSoCFull__Vcb_get_bp_hit_count_t)(VerilatedScope::exportFind(__Vscopep, __Vfuncnum));
+    (*__Vcb)((VysyxSoCFull__Syms*)(__Vscopep->symsp()), get_bp_hit_count__Vfuncrtn__Vcvt);
+    int get_bp_hit_count__Vfuncrtn;
+    for (size_t get_bp_hit_count__Vfuncrtn__Vidx = 0; get_bp_hit_count__Vfuncrtn__Vidx < 1; ++get_bp_hit_count__Vfuncrtn__Vidx) get_bp_hit_count__Vfuncrtn = get_bp_hit_count__Vfuncrtn__Vcvt;
+    return get_bp_hit_count__Vfuncrtn;
+}

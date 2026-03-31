@@ -176,6 +176,8 @@ extern "C" int get_i_cnt();
 extern "C" int get_d_cnt();
 extern "C" int get_stall_cnt();
 extern "C" int get_flush_cnt();
+extern "C" int get_bp_total_count();
+extern "C" int get_bp_hit_count();
 extern "C" int get_gpr(int idx);
 
 // 注意：这里需要设置 DPI scope 到 DifftestDPI 模块实例
@@ -222,11 +224,13 @@ static void load_img() {
 
     if(img_file == NULL) return;
 
-    //mem = (uint8_t*)malloc(MAX_SIZE);
-    //flash_mem = (uint8_t*)malloc(flash_size);
-
     if(flash_mem == NULL) {
         printf("Error: cannot allocate flash memory\n");
+        exit(-1);
+    }
+
+    if(mem == NULL) {
+        printf("Error: PMEM buffer is not initialized\n");
         exit(-1);
     }
 
@@ -236,7 +240,6 @@ static void load_img() {
         exit(-1);
     }
 
-    //n = fread(mem, 1, MAX_SIZE, fp);
     n = fread(flash_mem, 1, flash_size, fp);
 
     if(n == 0) {
@@ -245,10 +248,19 @@ static void load_img() {
     }
 
     fclose(fp);
+
+    size_t copy_n = n < (size_t)MAX_SIZE ? n : (size_t)MAX_SIZE;
+    memcpy(mem, flash_mem, copy_n);
+
     printf("Loaded image file '%s', %lu bytes\n", img_file, n);
 }
 
 uint32_t pmem_read_inst(uint32_t pc) {
+    if (mem == NULL) {
+        printf("pmem_read_inst error: PMEM buffer is null, pc = 0x%08x\n", pc);
+        assert(0);
+    }
+
     uint32_t addr = pc - mrom_start_addr;
     if(addr >= MAX_SIZE){
         printf("Pmem_read_inst error: out of range\n pc = %08x\n", pc);
@@ -327,6 +339,16 @@ uint32_t ptrace_get_flush_cnt() {
     return (uint32_t)get_flush_cnt();
 }
 
+uint32_t ptrace_get_bp_total_count() {
+    set_dpi_scope();
+    return (uint32_t)get_bp_total_count();
+}
+
+uint32_t ptrace_get_bp_hit_count() {
+    set_dpi_scope();
+    return (uint32_t)get_bp_hit_count();
+}
+
 static inline void start_wave_recording() {
     if (tfp && !wave_started) {
         wave_started = true;
@@ -358,14 +380,14 @@ void eval() {
     // 打印具体的指令信息
 
     if(difftest_get_difftest_valid()) {
+
         if(difftest_get_pc() >= 0xa0010000)
-        {
-            inst_cnt ++ ;
+        {                
             //printf("Cycle %lld: PC = 0x%08x, inst = 0x%08x\n", cnt, difftest_get_pc(), difftest_get_inst());
+
+            inst_cnt ++ ;
         }
     }
-
-    //if(difftest_get_pc() == 0xa00155b0) printf("before putch a0 reg= %08x\n", rf_read(10));
 
     if(difftest_get_pc() >= 0xa0010000) cycle_cnt ++ ;
     cnt ++ ;
@@ -461,7 +483,7 @@ void sdb_mainloop() {
 
     while(true) {
         printf("\n\033[1;34m(npc.sdb)\033[0m ");
-#ifdef CONFIG_PATCH
+#ifndef CONFIG_PATCH
         if(!getline(cin, cmd)) break;
 #else   
         cmd = "c";
@@ -507,6 +529,15 @@ void init_flash() {
 
 }
 
+void init_pmem() {
+    mem = (uint8_t*)malloc(MAX_SIZE);
+    if(mem == NULL) {
+        printf("Error: cannot allocate PMEM buffer (%u bytes)\n", MAX_SIZE);
+        exit(-1);
+    }
+    memset(mem, 0, MAX_SIZE);
+}
+
 int main(int argc, char** argv) {
 
     setvbuf(stdout, NULL, _IONBF, 0);
@@ -516,6 +547,7 @@ int main(int argc, char** argv) {
     
     parse_args(argc, argv);
     
+    init_pmem();
     init_flash();
     
     load_img();
@@ -558,6 +590,10 @@ int main(int argc, char** argv) {
     printf("======    Mem Cycle Ratio = %08lf     =======\n", (double)total_mem_cnt / cycle_cnt);
     printf("====== Stall Count = %u     =======\n", ptrace_get_stall_cnt());
     printf("====== Flush Count = %u     =======\n", ptrace_get_flush_cnt());
+    uint32_t bp_total_count = ptrace_get_bp_total_count();
+    uint32_t bp_hit_count = ptrace_get_bp_hit_count();
+    double bp_hit_rate = (bp_total_count == 0) ? 0.0 : (double)bp_hit_count / (double)bp_total_count;
+    printf("====== BP Hit Rate = %08lf     =======\n", bp_hit_rate);
 
     int exit_code = 0;
     if (!sim_exit_flag || halt_ret != 0) {

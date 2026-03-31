@@ -18,6 +18,8 @@
 #include "VysyxSoCFull___024unit.h"
 
 // DPI TYPES for DPI Export callbacks (Internal use)
+using VysyxSoCFull__Vcb_get_bp_hit_count_t = void (*) (VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_bp_hit_count__Vfuncrtn);
+using VysyxSoCFull__Vcb_get_bp_total_count_t = void (*) (VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_bp_total_count__Vfuncrtn);
 using VysyxSoCFull__Vcb_get_d_cnt_t = void (*) (VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_d_cnt__Vfuncrtn);
 using VysyxSoCFull__Vcb_get_dcache_hit_count_t = void (*) (VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_dcache_hit_count__Vfuncrtn);
 using VysyxSoCFull__Vcb_get_dcache_miss_count_t = void (*) (VysyxSoCFull__Syms* __restrict vlSymsp, IData/*31:0*/ &get_dcache_miss_count__Vfuncrtn);

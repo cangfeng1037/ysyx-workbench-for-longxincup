@@ -3,9 +3,9 @@ package npc.chisel_src.cache
 import chisel3._
 import chisel3.util._
 
-// ICache : 8KB, 32B/line, 2-way, 128 lines/way, 7-bit index, 5-bit offset, 20-bit tag
+// ICache : 8KB, 32B/line, 4-way, 64 sets
 
-// instruction request and response
+// instruction request and response (AXI master)
 class inst_req extends Bundle {
     val pc = UInt(32.W)
     val burst = Bool() // true: cache line refill burst(8 beats), false: single beat bypass
@@ -53,9 +53,9 @@ class ICache1 extends Module {
         )
 
 
-    val tag_reg = RegInit(0.U(21.W)) // 存储当前访问的地址的 tag、index、offset
-    val index_reg = RegInit(0.U(6.W))   
-    val offset_reg = RegInit(0.U(5.W)) 
+    val tag_reg = RegInit(0.U(21.W)) // 存储当前访问地址的 tag[31:11]
+    val index_reg = RegInit(0.U(6.W))
+    val offset_reg = RegInit(0.U(5.W))
     val line_base = RegInit(0.U(32.W)) // 存储当前行的基地址
     val miss_pc_reg = RegInit(0.U(32.W)) // 锁存本次请求PC（用于bypass响应）
     val miss_cacheable_reg = RegInit(false.B) // 当前miss是否可缓存（SDRAM）
@@ -101,6 +101,19 @@ class ICache1 extends Module {
         lookup_words(w) := data_array(w).read(lookup_word_addr, lookup_en)
     }
 
+    def latchFetchAddr(addr: UInt): Unit = {
+        // 4-way, 64 sets, 32B line: tag 必须是 addr[31:11]
+        tag_reg := addr(31, 11)
+        index_reg := addr(10, 5)
+        offset_reg := addr(4, 0)
+        line_base := addr & "hffffffe0".U // 行基地址，低5位清零
+        miss_pc_reg := addr
+        // 仅SDRAM区域(0xa0000000~0xa3ffffff)走cache，其他地址单拍bypass
+        miss_cacheable_reg := addr(31, 26) === "b101000".U
+        victim_way := rand_way // 记录当前被替换的路径，供下一次替换使用
+        refill_cnt := 0.U
+    }
+
 // ============== 状态机实现  ===================
 
     when (io.flush) {
@@ -116,18 +129,9 @@ class ICache1 extends Module {
                 // 等待 fetch_req，有效时进入 lookup 状态，并锁存地址信息
                 io.fetch_req.ready := true.B
                 when (io.fetch_req.fire) {
-                    val addr = io.fetch_req.bits.pc
-                    tag_reg := addr(31, 12)
-                    index_reg := addr(10, 5)
-                    offset_reg := addr(4, 0)
-                    line_base := addr & "hffffffe0".U // 行基地址，低5位清零
-                    miss_pc_reg := addr
-                    // 仅SDRAM区域(0xa0000000~0xa3ffffff)走cache，其他地址单拍bypass
-                    miss_cacheable_reg := addr(31, 26) === "b101000".U
-                    victim_way := rand_way // 记录当前被替换的路径，供下一次替换使用
-                    refill_cnt := 0.U
+                    latchFetchAddr(io.fetch_req.bits.pc)
                     state := s_lookup_req
-                }        
+                }
             }
 
             is (s_lookup_req) {
@@ -164,7 +168,7 @@ class ICache1 extends Module {
                     // 锁存rand_way到victim_way，确保在missreq和refill阶段使用同一路径进行替换
                     victim_way := rand_way
                     refill_cnt := 0.U
-                    // 如果当拍已经握手成功，直接进入refill，避免“请求已发出但状态还停在missreq”
+                    // 如果当拍已经握手成功，直接进入refill，避免"请求已发出但状态还停在missreq"
                     when (io.inst_req.fire) {
                         state := s_refill
                     } .otherwise {
@@ -229,9 +233,16 @@ class ICache1 extends Module {
                 io.fetch_resp.bits.pc := resp_pc_reg
                 io.fetch_resp.bits.inst := resp_inst_reg
                 io.fetch_resp.bits.miss := false.B
+                // 若本拍响应被前端消费，允许同拍接收下一条请求
+                io.fetch_req.ready := io.fetch_resp.ready
 
                 when (io.fetch_resp.fire) {
-                    state := s_idle
+                    when (io.fetch_req.fire) {
+                        latchFetchAddr(io.fetch_req.bits.pc)
+                        state := s_lookup_req
+                    } .otherwise {
+                        state := s_idle
+                    }
                 }
             }
         }

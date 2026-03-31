@@ -4,7 +4,7 @@ module IFU1(
                 reset,
                 io_out_ready,
   output        io_out_valid,
-                io_out_bits_kill,
+  output [31:0] io_out_bits_pc,
   input         io_in_valid,
   input  [31:0] io_in_bits_pc_branch,
                 io_in_bits_pc_jal,
@@ -15,56 +15,82 @@ module IFU1(
                 io_in_bits_is_ecall,
                 io_in_bits_is_mret,
   input  [31:0] io_in_bits_pc_csr,
+  input         io_in_bits_is_redirect,
+  input  [31:0] io_in_bits_redirect_pc,
   input         io_inst_req_ready,
   output        io_inst_req_valid,
   output [31:0] io_inst_req_bits_pc,
+                io_bpu_pred_pc,
+  input  [31:0] io_bpu_pred_next_pc,
   input         io_stall,
   output        io_flush
 );
 
   reg  [31:0] pc;
-  reg         state;
+  reg  [31:0] pc_reg;
+  reg         req_valid;
   reg         out_valid;
+  reg  [31:0] pred_next_pc_reg;
+  reg         wait_pred;
+  reg         pred_valid;
+  wire        redirect_valid = io_in_valid & io_in_bits_is_redirect;
+  wire        io_inst_req_valid_0 = req_valid & ~io_stall & ~redirect_valid;
   wire        io_flush_0 =
-    io_in_valid
+    redirect_valid | io_in_valid
     & (io_in_bits_is_jal | io_in_bits_is_jalr | io_in_bits_is_branch_taken
        | io_in_bits_is_ecall | io_in_bits_is_mret);
-  wire        io_inst_req_valid_0 = state & ~io_stall;
-  wire        _GEN = io_inst_req_ready & io_inst_req_valid_0;
-  wire [31:0] _pc_T = pc + 32'h4;
-  wire        _GEN_0 = io_out_ready & out_valid;
+  wire        _GEN = ~req_valid & ~out_valid & ~io_stall;
+  wire        _GEN_0 = io_inst_req_ready & io_inst_req_valid_0;
+  wire        _GEN_1 = io_out_ready & out_valid;
   always @(posedge clock) begin
     if (reset) begin
       pc <= 32'h30000000;
-      state <= 1'h0;
+      pc_reg <= 32'h0;
+      req_valid <= 1'h0;
       out_valid <= 1'h0;
+      pred_next_pc_reg <= 32'h0;
+      wait_pred <= 1'h0;
+      pred_valid <= 1'h0;
     end
     else begin
       if (io_flush_0)
         pc <=
-          io_in_bits_is_jal
-            ? io_in_bits_pc_jal
-            : io_in_bits_is_jalr
-                ? io_in_bits_pc_jalr
-                : io_in_bits_is_branch_taken
-                    ? io_in_bits_pc_branch
-                    : io_in_bits_is_ecall | io_in_bits_is_mret
-                        ? io_in_bits_pc_csr
-                        : _pc_T;
-      else if (_GEN_0)
-        pc <= _pc_T;
+          redirect_valid
+            ? io_in_bits_redirect_pc
+            : io_in_bits_is_jal
+                ? io_in_bits_pc_jal
+                : io_in_bits_is_jalr
+                    ? io_in_bits_pc_jalr
+                    : io_in_bits_is_branch_taken
+                        ? io_in_bits_pc_branch
+                        : io_in_bits_is_ecall | io_in_bits_is_mret
+                            ? io_in_bits_pc_csr
+                            : 32'h0;
+      else if (_GEN_1)
+        pc <= pred_valid ? pred_next_pc_reg : pc + 32'h4;
       else if (reset)
         pc <= 32'h30000000;
-      state <=
-        ~io_flush_0
-        & (state ? ~(_GEN | reset) : ~io_flush_0 & ~io_stall | ~reset & state);
-      out_valid <= ~(io_flush_0 | _GEN_0) & (state & _GEN | ~reset & out_valid);
+      if (io_flush_0 | ~_GEN) begin
+        if (reset)
+          pc_reg <= 32'h30000000;
+      end
+      else
+        pc_reg <= pc;
+      req_valid <= ~(io_flush_0 | _GEN_0) & (_GEN | ~reset & req_valid);
+      out_valid <= ~(io_flush_0 | _GEN_1) & (_GEN_0 | ~reset & out_valid);
+      if (wait_pred)
+        pred_next_pc_reg <= io_bpu_pred_next_pc;
+      else if (reset)
+        pred_next_pc_reg <= 32'h0;
+      wait_pred <= ~io_flush_0 & (_GEN | ~(wait_pred | reset) & wait_pred);
+      pred_valid <= ~(io_flush_0 | _GEN) & (wait_pred | ~reset & pred_valid);
     end
   end // always @(posedge)
   assign io_out_valid = out_valid;
-  assign io_out_bits_kill = io_flush_0;
+  assign io_out_bits_pc = pc_reg;
   assign io_inst_req_valid = io_inst_req_valid_0;
-  assign io_inst_req_bits_pc = pc;
+  assign io_inst_req_bits_pc = pc_reg;
+  assign io_bpu_pred_pc = pc;
   assign io_flush = io_flush_0;
 endmodule
 
@@ -73,8 +99,8 @@ module IFU2(
                 reset,
   output        io_in_ready,
   input         io_in_valid,
-                io_in_bits_kill,
-                io_out_ready,
+  input  [31:0] io_in_bits_pc,
+  input         io_out_ready,
   output        io_out_valid,
   output [31:0] io_out_bits_pc,
                 io_out_bits_inst,
@@ -87,48 +113,33 @@ module IFU2(
   output [31:0] io_i_cnt
 );
 
-  reg  [31:0] pc_reg;
-  reg  [31:0] inst_reg;
-  reg         kill_reg;
-  reg         resp_valid_reg;
   reg         waiting;
+  reg  [31:0] wait_pc_reg;
   reg  [31:0] i_cnt;
-  wire        io_in_ready_0 = (~resp_valid_reg | io_out_ready) & ~io_stall & ~io_flush;
-  wire        io_inst_resp_ready_0 =
-    (~resp_valid_reg | io_out_ready) & ~io_stall & ~io_flush;
-  wire        io_out_valid_0 = resp_valid_reg & ~io_flush;
+  wire        io_in_ready_0 = ~io_stall & ~io_flush;
+  wire        io_inst_resp_ready_0 = io_out_ready & ~io_stall & ~io_flush;
   wire        _GEN = io_in_ready_0 & io_in_valid;
-  wire        _GEN_0 = io_inst_resp_ready_0 & io_inst_resp_valid;
   always @(posedge clock) begin
     if (reset) begin
-      pc_reg <= 32'h0;
-      inst_reg <= 32'h0;
-      kill_reg <= 1'h0;
-      resp_valid_reg <= 1'h0;
       waiting <= 1'h0;
+      wait_pc_reg <= 32'h0;
       i_cnt <= 32'h0;
     end
     else begin
-      if (io_flush | ~_GEN_0) begin
+      waiting <=
+        ~io_flush & (_GEN | ~(io_inst_resp_ready_0 & io_inst_resp_valid) & waiting);
+      if (io_flush | ~_GEN) begin
       end
-      else begin
-        pc_reg <= io_inst_resp_bits_pc;
-        inst_reg <= io_inst_resp_bits_inst;
-      end
-      if (_GEN)
-        kill_reg <= io_in_bits_kill;
-      resp_valid_reg <=
-        ~io_flush
-        & (_GEN_0 ? ~kill_reg : ~(io_out_ready & io_out_valid_0) & resp_valid_reg);
-      waiting <= ~io_flush & (_GEN | ~_GEN_0 & waiting);
-      if (waiting & ~io_flush & pc_reg > 32'hA000FFFF)
+      else
+        wait_pc_reg <= io_in_bits_pc;
+      if (waiting & ~io_flush & wait_pc_reg > 32'hA000FFFF)
         i_cnt <= i_cnt + 32'h1;
     end
   end // always @(posedge)
   assign io_in_ready = io_in_ready_0;
-  assign io_out_valid = io_out_valid_0;
-  assign io_out_bits_pc = pc_reg;
-  assign io_out_bits_inst = inst_reg;
+  assign io_out_valid = io_inst_resp_valid & ~io_flush;
+  assign io_out_bits_pc = io_inst_resp_bits_pc;
+  assign io_out_bits_inst = io_inst_resp_bits_inst;
   assign io_inst_resp_ready = io_inst_resp_ready_0;
   assign io_i_cnt = i_cnt;
 endmodule
@@ -183,8 +194,7 @@ module IDU(
   input  [31:0] io_csr_rdata,
   output        io_is_ecall,
                 io_is_mret,
-  input         io_busy,
-                io_fwd_rs1_en,
+  input         io_fwd_rs1_en,
                 io_fwd_rs2_en,
   input  [31:0] io_fwd_rs1_data,
                 io_fwd_rs2_data,
@@ -197,7 +207,7 @@ module IDU(
 );
 
   reg         state;
-  wire        io_in_ready_0 = ~state & ~io_busy & ~io_stall & ~io_flush;
+  wire        io_in_ready_0 = ~state & ~io_stall & ~io_flush;
   wire        io_out_valid_0 = state & ~io_stall & ~io_flush;
   reg  [31:0] inst;
   reg  [31:0] pc;
@@ -244,6 +254,8 @@ module IDU(
   wire        is_csr = inst[6:0] == 7'h73;
   wire        is_csrrw = is_csr & _is_csrrw_T_1;
   wire        is_csrrs = is_csr & _is_csrrs_T_1;
+  wire [31:0] rs1_selected = io_fwd_rs1_en ? io_fwd_rs1_data : io_reg_rs1_data;
+  wire [31:0] rs2_selected = io_fwd_rs2_en ? io_fwd_rs2_data : io_reg_rs2_data;
   wire        _GEN = io_in_ready_0 & io_in_valid;
   always @(posedge clock) begin
     if (reset) begin
@@ -271,7 +283,7 @@ module IDU(
   assign io_out_bits_rd_en =
     is_load | is_lui | is_auipc | is_op | is_jal | is_jalr | is_op_imm
     | (is_csrrw | is_csrrs) & (|(inst[11:7]));
-  assign io_out_bits_alu_a = is_auipc | is_jal ? pc : is_lui ? 32'h0 : io_reg_rs1_data;
+  assign io_out_bits_alu_a = is_auipc | is_jal ? pc : is_lui ? 32'h0 : rs1_selected;
   assign io_out_bits_alu_b =
     is_op_imm | is_load | is_store | is_jal | is_jalr | is_auipc | is_lui | is_branch
       ? (is_lui | is_auipc
@@ -285,7 +297,7 @@ module IDU(
                        : is_branch
                            ? {{20{inst[31]}}, inst[7], inst[30:25], inst[11:8], 1'h0}
                            : is_slli | is_srli | is_srai ? {27'h0, inst[24:20]} : imm_i)
-      : io_reg_rs2_data;
+      : rs2_selected;
   assign io_out_bits_alu_op =
     is_op & _is_sb_T_1 & inst[30]
       ? 4'h1
@@ -322,9 +334,9 @@ module IDU(
                                                                 & _is_remu_T_3
                                                                   ? 4'hC
                                                                   : 4'h0;
-  assign io_out_bits_rs1_data = io_fwd_rs1_en ? io_fwd_rs1_data : io_reg_rs1_data;
-  assign io_out_bits_rs2_data = io_fwd_rs2_en ? io_fwd_rs2_data : io_reg_rs2_data;
-  assign io_out_bits_csr_wdata = is_ecall ? pc : is_mret ? 32'h0 : io_reg_rs1_data;
+  assign io_out_bits_rs1_data = rs1_selected;
+  assign io_out_bits_rs2_data = rs2_selected;
+  assign io_out_bits_csr_wdata = is_ecall ? pc : is_mret ? 32'h0 : rs1_selected;
   assign io_out_bits_csr_wen = is_csrrw | is_ecall;
   assign io_out_bits_csr_waddr = is_ecall ? 12'h341 : is_mret ? 12'h342 : inst[31:20];
   assign io_out_bits_csr_rdata = io_csr_rdata;
@@ -456,6 +468,7 @@ module EXU(
                 io_out_bits_rs2_data,
   output [4:0]  io_out_bits_rd_addr,
   output        io_out_bits_rd_en,
+  output [5:0]  io_out_bits_load_tag,
   output [31:0] io_out_bits_csr_wdata,
   output        io_out_bits_csr_wen,
   output [11:0] io_out_bits_csr_waddr,
@@ -482,13 +495,26 @@ module EXU(
                 io_branch_bits_is_ecall,
                 io_branch_bits_is_mret,
   output [31:0] io_branch_bits_pc_csr,
+  output        io_branch_bits_is_redirect,
+  output [31:0] io_branch_bits_redirect_pc,
   output        io_exu_fwd_valid,
   output [4:0]  io_exu_fwd_rd_addr,
   output        io_exu_fwd_rd_en,
                 io_exu_fwd_rd_is_load,
-  output [31:0] io_exu_fwd_val_out
+  output [31:0] io_exu_fwd_val_out,
+  output        io_load_tag_alloc_valid,
+  output [4:0]  io_load_tag_alloc_rd,
+  output [5:0]  io_load_tag_alloc_tag,
+  output        io_bpu_update_valid,
+  output [31:0] io_bpu_update_pc,
+  output        io_bpu_update_taken,
+  output [31:0] io_bpu_update_target,
+  output        io_bpu_update_is_branch,
+  output [31:0] io_bp_total_count,
+                io_bp_hit_count
 );
 
+  wire        io_out_valid_0;
   wire [31:0] _alu_io_out;
   reg         state;
   reg         out_valid;
@@ -525,10 +551,48 @@ module EXU(
   reg         is_bltu;
   reg         is_bge;
   reg         is_bgeu;
+  reg  [4:0]  fwd_hold_rd_addr;
+  reg         fwd_hold_rd_en;
+  reg         fwd_hold_rd_is_load;
+  reg  [31:0] fwd_hold_val_out;
+  reg  [5:0]  nextLoadTag;
+  reg  [31:0] expected_next_pc_reg;
+  reg         first_inst_reg;
+  reg         bp_expect_valid_reg;
+  reg  [31:0] bp_total_count_reg;
+  reg  [31:0] bp_hit_count_reg;
+  wire        redirect_now =
+    state & out_valid & ~first_inst_reg & pc != expected_next_pc_reg;
+  wire        _io_bpu_update_valid_T = io_out_ready & io_out_valid_0;
+  wire        is_branch_taken =
+    is_beq
+      ? rs1_data == rs2_data
+      : is_bne
+          ? rs1_data != rs2_data
+          : is_blt
+              ? $signed(rs1_data) < $signed(rs2_data)
+              : is_bltu
+                  ? rs1_data < rs2_data
+                  : is_bge
+                      ? $signed(rs1_data) >= $signed(rs2_data)
+                      : is_bgeu & rs1_data >= rs2_data;
   wire [31:0] _pc_jal_T = pc + alu_b;
   wire [31:0] _pc_jalr_T = alu_a + alu_b;
+  wire        is_branch = is_beq | is_bne | is_blt | is_bltu | is_bge | is_bgeu;
+  wire        exu_fwd_live_valid = (rd_en | fwd_hold_rd_en) & state & ~redirect_now;
+  reg         exu_fwd_hold_valid_1;
+  reg         exu_fwd_hold_valid_2;
+  assign io_out_valid_0 = out_valid & ~redirect_now;
+  wire        _curIsLoad_T = is_lw | is_lbu;
+  wire        io_load_tag_alloc_valid_0 =
+    _io_bpu_update_valid_T & (_curIsLoad_T | is_lh | is_lhu | is_lb) & rd_en & (|rd_addr);
+  wire [31:0] _cur_pc_jal_T = pc + alu_b;
+  wire [31:0] _cur_pc_jalr_T = alu_a + alu_b;
+  wire        bp_check_now = state & out_valid & bp_expect_valid_reg;
   wire        _GEN = ~state & io_in_valid;
-  wire        _GEN_0 = io_out_ready & out_valid;
+  wire        _GEN_0 = io_out_ready & io_out_valid_0;
+  wire        _GEN_1 = redirect_now | _GEN_0;
+  wire        _GEN_2 = ~state | redirect_now | ~_GEN_0;
   always @(posedge clock) begin
     if (reset) begin
       state <= 1'h0;
@@ -566,13 +630,25 @@ module EXU(
       is_bltu <= 1'h0;
       is_bge <= 1'h0;
       is_bgeu <= 1'h0;
+      fwd_hold_rd_addr <= 5'h0;
+      fwd_hold_rd_en <= 1'h0;
+      fwd_hold_rd_is_load <= 1'h0;
+      fwd_hold_val_out <= 32'h0;
+      nextLoadTag <= 6'h1;
+      expected_next_pc_reg <= 32'h30000000;
+      first_inst_reg <= 1'h1;
+      bp_expect_valid_reg <= 1'h0;
+      bp_total_count_reg <= 32'h0;
+      bp_hit_count_reg <= 32'h0;
+      exu_fwd_hold_valid_1 <= 1'h0;
+      exu_fwd_hold_valid_2 <= 1'h0;
     end
     else begin
       if (state)
-        state <= ~(state & _GEN_0);
+        state <= ~(state & _GEN_1);
       else
         state <= _GEN;
-      out_valid <= state & (state ? ~_GEN_0 : out_valid);
+      out_valid <= state & (state ? ~_GEN_1 & ~redirect_now : out_valid);
       if (_GEN) begin
         alu_a <= io_in_bits_alu_a;
         alu_b <= io_in_bits_alu_b;
@@ -582,7 +658,6 @@ module EXU(
         csr_rdata <= io_in_bits_csr_rdata;
         pc <= io_in_bits_pc;
         inst <= io_in_bits_inst;
-        rd_addr <= io_in_bits_rd_addr;
         csr_wdata <= io_in_bits_csr_wdata;
         csr_wen <= io_in_bits_csr_wen;
         csr_waddr <= io_in_bits_csr_waddr;
@@ -602,14 +677,56 @@ module EXU(
         is_bge <= io_in_bits_is_bge;
         is_bgeu <= io_in_bits_is_bgeu;
       end
-      else if (_GEN_0)
+      if (_io_bpu_update_valid_T)
         rd_addr <= 5'h0;
-      rd_en <= _GEN ? io_in_bits_rd_en : ~_GEN_0 & rd_en;
-      is_lw <= _GEN ? io_in_bits_is_lw : ~_GEN_0 & is_lw;
-      is_lbu <= _GEN ? io_in_bits_is_lbu : ~_GEN_0 & is_lbu;
-      is_lh <= _GEN ? io_in_bits_is_lh : ~_GEN_0 & is_lh;
-      is_lhu <= _GEN ? io_in_bits_is_lhu : ~_GEN_0 & is_lhu;
-      is_lb <= _GEN ? io_in_bits_is_lb : ~_GEN_0 & is_lb;
+      else if (_GEN)
+        rd_addr <= io_in_bits_rd_addr;
+      rd_en <=
+        ~_io_bpu_update_valid_T
+        & (_GEN ? io_in_bits_rd_en : (~state | ~redirect_now) & rd_en);
+      is_lw <= ~_io_bpu_update_valid_T & (_GEN ? io_in_bits_is_lw : is_lw);
+      is_lbu <= ~_io_bpu_update_valid_T & (_GEN ? io_in_bits_is_lbu : is_lbu);
+      is_lh <= ~_io_bpu_update_valid_T & (_GEN ? io_in_bits_is_lh : is_lh);
+      is_lhu <= ~_io_bpu_update_valid_T & (_GEN ? io_in_bits_is_lhu : is_lhu);
+      is_lb <= ~_io_bpu_update_valid_T & (_GEN ? io_in_bits_is_lb : is_lb);
+      if (_io_bpu_update_valid_T & exu_fwd_live_valid) begin
+        fwd_hold_rd_addr <= rd_addr;
+        fwd_hold_rd_en <= rd_en;
+        fwd_hold_rd_is_load <= is_lw | is_lbu | is_lh | is_lhu | is_lb;
+        fwd_hold_val_out <= _alu_io_out;
+      end
+      if (io_load_tag_alloc_valid_0)
+        nextLoadTag <= nextLoadTag + 6'h1;
+      if (_GEN_2) begin
+      end
+      else
+        expected_next_pc_reg <=
+          is_jal | is_jalr
+            ? (is_jalr ? {_cur_pc_jalr_T[31:1], 1'h0} : _cur_pc_jal_T)
+            : (is_beq
+                 ? rs1_data == rs2_data
+                 : is_bne
+                     ? rs1_data != rs2_data
+                     : is_blt
+                         ? $signed(rs1_data) < $signed(rs2_data)
+                         : is_bltu
+                             ? rs1_data < rs2_data
+                             : is_bge
+                                 ? $signed(rs1_data) >= $signed(rs2_data)
+                                 : is_bgeu & rs1_data >= rs2_data)
+                ? _cur_pc_jal_T
+                : pc + 32'h4;
+      first_inst_reg <= _GEN_2 & first_inst_reg;
+      bp_expect_valid_reg <=
+        _GEN_2
+          ? ~bp_check_now & bp_expect_valid_reg
+          : is_beq | is_bne | is_blt | is_bltu | is_bge | is_bgeu;
+      if (bp_check_now)
+        bp_total_count_reg <= bp_total_count_reg + 32'h1;
+      if (bp_check_now & pc == expected_next_pc_reg)
+        bp_hit_count_reg <= bp_hit_count_reg + 32'h1;
+      exu_fwd_hold_valid_1 <= _io_bpu_update_valid_T & exu_fwd_live_valid;
+      exu_fwd_hold_valid_2 <= exu_fwd_hold_valid_1;
     end
   end // always @(posedge)
   ALU alu (
@@ -619,13 +736,15 @@ module EXU(
     .io_out   (_alu_io_out)
   );
   assign io_in_ready = ~state;
-  assign io_out_valid = out_valid;
+  assign io_out_valid = io_out_valid_0;
   assign io_out_bits_pc = pc;
   assign io_out_bits_inst = inst;
   assign io_out_bits_alu_result = _alu_io_out;
   assign io_out_bits_rs2_data = rs2_data;
   assign io_out_bits_rd_addr = rd_addr;
   assign io_out_bits_rd_en = rd_en;
+  assign io_out_bits_load_tag =
+    (_curIsLoad_T | is_lh | is_lhu | is_lb) & rd_en ? nextLoadTag : 6'h0;
   assign io_out_bits_csr_wdata = csr_wdata;
   assign io_out_bits_csr_wen = csr_wen;
   assign io_out_bits_csr_waddr = csr_waddr;
@@ -642,32 +761,35 @@ module EXU(
   assign io_out_bits_is_sh = is_sh;
   assign io_out_bits_is_jalr = is_jalr;
   assign io_out_bits_is_jal = is_jal;
-  assign io_branch_valid = out_valid;
+  assign io_branch_valid = redirect_now | _io_bpu_update_valid_T;
   assign io_branch_bits_pc_branch = _pc_jal_T;
   assign io_branch_bits_pc_jal = _pc_jal_T;
   assign io_branch_bits_pc_jalr = {_pc_jalr_T[31:1], 1'h0};
-  assign io_branch_bits_is_branch_taken =
-    is_beq
-      ? rs1_data == rs2_data
-      : is_bne
-          ? rs1_data != rs2_data
-          : is_blt
-              ? $signed(rs1_data) < $signed(rs2_data)
-              : is_bltu
-                  ? rs1_data < rs2_data
-                  : is_bge
-                      ? $signed(rs1_data) >= $signed(rs2_data)
-                      : is_bgeu & rs1_data >= rs2_data;
+  assign io_branch_bits_is_branch_taken = is_branch_taken & is_branch;
   assign io_branch_bits_is_jal = is_jal;
   assign io_branch_bits_is_jalr = is_jalr;
   assign io_branch_bits_is_ecall = is_ecall;
   assign io_branch_bits_is_mret = is_mret;
   assign io_branch_bits_pc_csr = csr_rdata;
-  assign io_exu_fwd_valid = rd_en & out_valid;
-  assign io_exu_fwd_rd_addr = rd_addr;
-  assign io_exu_fwd_rd_en = rd_en;
-  assign io_exu_fwd_rd_is_load = is_lw | is_lbu | is_lh | is_lhu | is_lb;
-  assign io_exu_fwd_val_out = _alu_io_out;
+  assign io_branch_bits_is_redirect = redirect_now;
+  assign io_branch_bits_redirect_pc = expected_next_pc_reg;
+  assign io_exu_fwd_valid =
+    exu_fwd_live_valid | exu_fwd_hold_valid_1 | exu_fwd_hold_valid_2;
+  assign io_exu_fwd_rd_addr = exu_fwd_live_valid ? rd_addr : fwd_hold_rd_addr;
+  assign io_exu_fwd_rd_en = exu_fwd_live_valid ? rd_en : fwd_hold_rd_en;
+  assign io_exu_fwd_rd_is_load =
+    exu_fwd_live_valid ? _curIsLoad_T | is_lh | is_lhu | is_lb : fwd_hold_rd_is_load;
+  assign io_exu_fwd_val_out = exu_fwd_live_valid ? _alu_io_out : fwd_hold_val_out;
+  assign io_load_tag_alloc_valid = io_load_tag_alloc_valid_0;
+  assign io_load_tag_alloc_rd = rd_addr;
+  assign io_load_tag_alloc_tag = nextLoadTag;
+  assign io_bpu_update_valid = _io_bpu_update_valid_T & is_branch;
+  assign io_bpu_update_pc = pc;
+  assign io_bpu_update_taken = is_branch_taken;
+  assign io_bpu_update_target = _pc_jal_T;
+  assign io_bpu_update_is_branch = is_branch;
+  assign io_bp_total_count = bp_total_count_reg;
+  assign io_bp_hit_count = bp_hit_count_reg;
 endmodule
 
 module MEM1(
@@ -681,6 +803,7 @@ module MEM1(
                 io_in_bits_rs2_data,
   input  [4:0]  io_in_bits_rd_addr,
   input         io_in_bits_rd_en,
+  input  [5:0]  io_in_bits_load_tag,
   input  [31:0] io_in_bits_csr_wdata,
   input         io_in_bits_csr_wen,
   input  [11:0] io_in_bits_csr_waddr,
@@ -704,6 +827,7 @@ module MEM1(
                 io_out_bits_addr,
   output [4:0]  io_out_bits_rd_addr,
   output        io_out_bits_rd_en,
+  output [5:0]  io_out_bits_load_tag,
   output [31:0] io_out_bits_csr_wdata,
   output        io_out_bits_csr_wen,
   output [11:0] io_out_bits_csr_waddr,
@@ -736,6 +860,7 @@ module MEM1(
   reg  [31:0] rs2_data;
   reg  [4:0]  rd_addr;
   reg         rd_en;
+  reg  [5:0]  load_tag;
   reg  [31:0] csr_wdata;
   reg         csr_wen;
   reg  [11:0] csr_waddr;
@@ -777,6 +902,7 @@ module MEM1(
       rs2_data <= 32'h0;
       rd_addr <= 5'h0;
       rd_en <= 1'h0;
+      load_tag <= 6'h0;
       csr_wdata <= 32'h0;
       csr_wen <= 1'h0;
       csr_waddr <= 12'h0;
@@ -806,6 +932,7 @@ module MEM1(
         rs2_data <= io_in_bits_rs2_data;
         rd_addr <= io_in_bits_rd_addr;
         rd_en <= io_in_bits_rd_en;
+        load_tag <= io_in_bits_load_tag;
         csr_wdata <= io_in_bits_csr_wdata;
         csr_wen <= io_in_bits_csr_wen;
         csr_waddr <= io_in_bits_csr_waddr;
@@ -846,6 +973,7 @@ module MEM1(
   assign io_out_bits_addr = alu_result;
   assign io_out_bits_rd_addr = rd_addr;
   assign io_out_bits_rd_en = rd_en;
+  assign io_out_bits_load_tag = load_tag;
   assign io_out_bits_csr_wdata = csr_wdata;
   assign io_out_bits_csr_wen = csr_wen;
   assign io_out_bits_csr_waddr = csr_waddr;
@@ -885,6 +1013,7 @@ module MEM2(
                 io_in_bits_addr,
   input  [4:0]  io_in_bits_rd_addr,
   input         io_in_bits_rd_en,
+  input  [5:0]  io_in_bits_load_tag,
   input  [31:0] io_in_bits_csr_wdata,
   input         io_in_bits_csr_wen,
   input  [11:0] io_in_bits_csr_waddr,
@@ -925,7 +1054,10 @@ module MEM2(
   output        io_mem2_fwd_rd_en,
                 io_mem2_fwd_rd_is_load,
   output [31:0] io_mem2_fwd_val_out,
-                io_d_cnt
+  output        io_load_tag_commit_valid,
+  output [4:0]  io_load_tag_commit_rd,
+  output [5:0]  io_load_tag_commit_tag,
+  output [31:0] io_d_cnt
 );
 
   reg  [31:0] total_mem_cycles;
@@ -935,6 +1067,7 @@ module MEM2(
   reg  [31:0] addr;
   reg  [4:0]  rd_addr;
   reg         rd_en;
+  reg  [5:0]  load_tag;
   reg         is_load;
   reg         is_lb;
   reg         is_lbu;
@@ -983,6 +1116,7 @@ module MEM2(
       addr <= 32'h0;
       rd_addr <= 5'h0;
       rd_en <= 1'h0;
+      load_tag <= 6'h0;
       is_load <= 1'h0;
       is_lb <= 1'h0;
       is_lbu <= 1'h0;
@@ -1048,6 +1182,7 @@ module MEM2(
       if (_GEN_5) begin
         pc <= io_in_bits_pc;
         inst <= io_in_bits_inst;
+        load_tag <= io_in_bits_load_tag;
         is_lb <= io_in_bits_is_lb;
         is_lbu <= io_in_bits_is_lbu;
         is_lh <= io_in_bits_is_lh;
@@ -1089,6 +1224,10 @@ module MEM2(
     is_csrrw | is_csrrs
       ? csr_rdata
       : is_load ? mem_data : is_jal | is_jalr ? pc + 32'h4 : addr;
+  assign io_load_tag_commit_valid =
+    io_out_ready & io_out_valid_0 & is_load & rd_en & (|rd_addr);
+  assign io_load_tag_commit_rd = rd_addr;
+  assign io_load_tag_commit_tag = load_tag;
   assign io_d_cnt = total_mem_cycles;
 endmodule
 
@@ -1205,7 +1344,9 @@ module WB(
 endmodule
 
 module HazardUnit(
-  input         io_exu_fwd_valid,
+  input         clock,
+                reset,
+                io_exu_fwd_valid,
   input  [4:0]  io_exu_fwd_rd_addr,
   input         io_exu_fwd_rd_en,
                 io_exu_fwd_rd_is_load,
@@ -1219,6 +1360,12 @@ module HazardUnit(
   input  [4:0]  io_wb_fwd_rd_addr,
   input         io_wb_fwd_rd_en,
   input  [31:0] io_wb_fwd_val_out,
+  input         io_load_tag_alloc_valid,
+  input  [4:0]  io_load_tag_alloc_rd,
+  input  [5:0]  io_load_tag_alloc_tag,
+  input         io_load_tag_commit_valid,
+  input  [4:0]  io_load_tag_commit_rd,
+  input  [5:0]  io_load_tag_commit_tag,
   input  [4:0]  io_id_rs1,
                 io_id_rs2,
   input         io_use_rs1,
@@ -1230,24 +1377,618 @@ module HazardUnit(
   output        io_stall
 );
 
-  wire rs1_exu_dep =
+  reg        pendingValid_0;
+  reg        pendingValid_1;
+  reg        pendingValid_2;
+  reg        pendingValid_3;
+  reg        pendingValid_4;
+  reg        pendingValid_5;
+  reg        pendingValid_6;
+  reg        pendingValid_7;
+  reg        pendingValid_8;
+  reg        pendingValid_9;
+  reg        pendingValid_10;
+  reg        pendingValid_11;
+  reg        pendingValid_12;
+  reg        pendingValid_13;
+  reg        pendingValid_14;
+  reg        pendingValid_15;
+  reg        pendingValid_16;
+  reg        pendingValid_17;
+  reg        pendingValid_18;
+  reg        pendingValid_19;
+  reg        pendingValid_20;
+  reg        pendingValid_21;
+  reg        pendingValid_22;
+  reg        pendingValid_23;
+  reg        pendingValid_24;
+  reg        pendingValid_25;
+  reg        pendingValid_26;
+  reg        pendingValid_27;
+  reg        pendingValid_28;
+  reg        pendingValid_29;
+  reg        pendingValid_30;
+  reg        pendingValid_31;
+  reg  [5:0] pendingTag_0;
+  reg  [5:0] pendingTag_1;
+  reg  [5:0] pendingTag_2;
+  reg  [5:0] pendingTag_3;
+  reg  [5:0] pendingTag_4;
+  reg  [5:0] pendingTag_5;
+  reg  [5:0] pendingTag_6;
+  reg  [5:0] pendingTag_7;
+  reg  [5:0] pendingTag_8;
+  reg  [5:0] pendingTag_9;
+  reg  [5:0] pendingTag_10;
+  reg  [5:0] pendingTag_11;
+  reg  [5:0] pendingTag_12;
+  reg  [5:0] pendingTag_13;
+  reg  [5:0] pendingTag_14;
+  reg  [5:0] pendingTag_15;
+  reg  [5:0] pendingTag_16;
+  reg  [5:0] pendingTag_17;
+  reg  [5:0] pendingTag_18;
+  reg  [5:0] pendingTag_19;
+  reg  [5:0] pendingTag_20;
+  reg  [5:0] pendingTag_21;
+  reg  [5:0] pendingTag_22;
+  reg  [5:0] pendingTag_23;
+  reg  [5:0] pendingTag_24;
+  reg  [5:0] pendingTag_25;
+  reg  [5:0] pendingTag_26;
+  reg  [5:0] pendingTag_27;
+  reg  [5:0] pendingTag_28;
+  reg  [5:0] pendingTag_29;
+  reg  [5:0] pendingTag_30;
+  reg  [5:0] pendingTag_31;
+  reg  [5:0] casez_tmp;
+  always_comb begin
+    casez (io_load_tag_commit_rd)
+      5'b00000:
+        casez_tmp = pendingTag_0;
+      5'b00001:
+        casez_tmp = pendingTag_1;
+      5'b00010:
+        casez_tmp = pendingTag_2;
+      5'b00011:
+        casez_tmp = pendingTag_3;
+      5'b00100:
+        casez_tmp = pendingTag_4;
+      5'b00101:
+        casez_tmp = pendingTag_5;
+      5'b00110:
+        casez_tmp = pendingTag_6;
+      5'b00111:
+        casez_tmp = pendingTag_7;
+      5'b01000:
+        casez_tmp = pendingTag_8;
+      5'b01001:
+        casez_tmp = pendingTag_9;
+      5'b01010:
+        casez_tmp = pendingTag_10;
+      5'b01011:
+        casez_tmp = pendingTag_11;
+      5'b01100:
+        casez_tmp = pendingTag_12;
+      5'b01101:
+        casez_tmp = pendingTag_13;
+      5'b01110:
+        casez_tmp = pendingTag_14;
+      5'b01111:
+        casez_tmp = pendingTag_15;
+      5'b10000:
+        casez_tmp = pendingTag_16;
+      5'b10001:
+        casez_tmp = pendingTag_17;
+      5'b10010:
+        casez_tmp = pendingTag_18;
+      5'b10011:
+        casez_tmp = pendingTag_19;
+      5'b10100:
+        casez_tmp = pendingTag_20;
+      5'b10101:
+        casez_tmp = pendingTag_21;
+      5'b10110:
+        casez_tmp = pendingTag_22;
+      5'b10111:
+        casez_tmp = pendingTag_23;
+      5'b11000:
+        casez_tmp = pendingTag_24;
+      5'b11001:
+        casez_tmp = pendingTag_25;
+      5'b11010:
+        casez_tmp = pendingTag_26;
+      5'b11011:
+        casez_tmp = pendingTag_27;
+      5'b11100:
+        casez_tmp = pendingTag_28;
+      5'b11101:
+        casez_tmp = pendingTag_29;
+      5'b11110:
+        casez_tmp = pendingTag_30;
+      default:
+        casez_tmp = pendingTag_31;
+    endcase
+  end // always_comb
+  reg        casez_tmp_0;
+  always_comb begin
+    casez (io_load_tag_commit_rd)
+      5'b00000:
+        casez_tmp_0 = pendingValid_0;
+      5'b00001:
+        casez_tmp_0 = pendingValid_1;
+      5'b00010:
+        casez_tmp_0 = pendingValid_2;
+      5'b00011:
+        casez_tmp_0 = pendingValid_3;
+      5'b00100:
+        casez_tmp_0 = pendingValid_4;
+      5'b00101:
+        casez_tmp_0 = pendingValid_5;
+      5'b00110:
+        casez_tmp_0 = pendingValid_6;
+      5'b00111:
+        casez_tmp_0 = pendingValid_7;
+      5'b01000:
+        casez_tmp_0 = pendingValid_8;
+      5'b01001:
+        casez_tmp_0 = pendingValid_9;
+      5'b01010:
+        casez_tmp_0 = pendingValid_10;
+      5'b01011:
+        casez_tmp_0 = pendingValid_11;
+      5'b01100:
+        casez_tmp_0 = pendingValid_12;
+      5'b01101:
+        casez_tmp_0 = pendingValid_13;
+      5'b01110:
+        casez_tmp_0 = pendingValid_14;
+      5'b01111:
+        casez_tmp_0 = pendingValid_15;
+      5'b10000:
+        casez_tmp_0 = pendingValid_16;
+      5'b10001:
+        casez_tmp_0 = pendingValid_17;
+      5'b10010:
+        casez_tmp_0 = pendingValid_18;
+      5'b10011:
+        casez_tmp_0 = pendingValid_19;
+      5'b10100:
+        casez_tmp_0 = pendingValid_20;
+      5'b10101:
+        casez_tmp_0 = pendingValid_21;
+      5'b10110:
+        casez_tmp_0 = pendingValid_22;
+      5'b10111:
+        casez_tmp_0 = pendingValid_23;
+      5'b11000:
+        casez_tmp_0 = pendingValid_24;
+      5'b11001:
+        casez_tmp_0 = pendingValid_25;
+      5'b11010:
+        casez_tmp_0 = pendingValid_26;
+      5'b11011:
+        casez_tmp_0 = pendingValid_27;
+      5'b11100:
+        casez_tmp_0 = pendingValid_28;
+      5'b11101:
+        casez_tmp_0 = pendingValid_29;
+      5'b11110:
+        casez_tmp_0 = pendingValid_30;
+      default:
+        casez_tmp_0 = pendingValid_31;
+    endcase
+  end // always_comb
+  wire       rs1_exu_dep =
     io_use_rs1 & io_exu_fwd_rd_en & io_exu_fwd_rd_addr == io_id_rs1 & (|io_id_rs1);
-  wire rs1_mem2_dep =
+  wire       rs1_mem2_dep =
     io_use_rs1 & io_mem2_fwd_rd_en & io_mem2_fwd_rd_addr == io_id_rs1 & (|io_id_rs1);
-  wire rs1_exu_ready = rs1_exu_dep & io_exu_fwd_valid;
-  wire rs1_mem2_ready = rs1_mem2_dep & io_mem2_fwd_valid;
-  wire rs1_wb_ready =
+  wire       rs1_exu_ready = rs1_exu_dep & io_exu_fwd_valid & ~io_exu_fwd_rd_is_load;
+  wire       rs1_mem2_ready = rs1_mem2_dep & io_mem2_fwd_valid;
+  wire       rs1_wb_ready =
     io_use_rs1 & io_wb_fwd_rd_en & io_wb_fwd_rd_addr == io_id_rs1 & (|io_id_rs1)
     & io_wb_fwd_valid;
-  wire rs2_exu_dep =
+  wire       rs2_exu_dep =
     io_use_rs2 & io_exu_fwd_rd_en & io_exu_fwd_rd_addr == io_id_rs2 & (|io_id_rs2);
-  wire rs2_mem2_dep =
+  wire       rs2_mem2_dep =
     io_use_rs2 & io_mem2_fwd_rd_en & io_mem2_fwd_rd_addr == io_id_rs2 & (|io_id_rs2);
-  wire rs2_exu_ready = rs2_exu_dep & io_exu_fwd_valid;
-  wire rs2_mem2_ready = rs2_mem2_dep & io_mem2_fwd_valid;
-  wire rs2_wb_ready =
+  wire       rs2_exu_ready = rs2_exu_dep & io_exu_fwd_valid & ~io_exu_fwd_rd_is_load;
+  wire       rs2_mem2_ready = rs2_mem2_dep & io_mem2_fwd_valid;
+  wire       rs2_wb_ready =
     io_use_rs2 & io_wb_fwd_rd_en & io_wb_fwd_rd_addr == io_id_rs2 & (|io_id_rs2)
     & io_wb_fwd_valid;
+  reg        casez_tmp_1;
+  always_comb begin
+    casez (io_id_rs1)
+      5'b00000:
+        casez_tmp_1 = pendingValid_0;
+      5'b00001:
+        casez_tmp_1 = pendingValid_1;
+      5'b00010:
+        casez_tmp_1 = pendingValid_2;
+      5'b00011:
+        casez_tmp_1 = pendingValid_3;
+      5'b00100:
+        casez_tmp_1 = pendingValid_4;
+      5'b00101:
+        casez_tmp_1 = pendingValid_5;
+      5'b00110:
+        casez_tmp_1 = pendingValid_6;
+      5'b00111:
+        casez_tmp_1 = pendingValid_7;
+      5'b01000:
+        casez_tmp_1 = pendingValid_8;
+      5'b01001:
+        casez_tmp_1 = pendingValid_9;
+      5'b01010:
+        casez_tmp_1 = pendingValid_10;
+      5'b01011:
+        casez_tmp_1 = pendingValid_11;
+      5'b01100:
+        casez_tmp_1 = pendingValid_12;
+      5'b01101:
+        casez_tmp_1 = pendingValid_13;
+      5'b01110:
+        casez_tmp_1 = pendingValid_14;
+      5'b01111:
+        casez_tmp_1 = pendingValid_15;
+      5'b10000:
+        casez_tmp_1 = pendingValid_16;
+      5'b10001:
+        casez_tmp_1 = pendingValid_17;
+      5'b10010:
+        casez_tmp_1 = pendingValid_18;
+      5'b10011:
+        casez_tmp_1 = pendingValid_19;
+      5'b10100:
+        casez_tmp_1 = pendingValid_20;
+      5'b10101:
+        casez_tmp_1 = pendingValid_21;
+      5'b10110:
+        casez_tmp_1 = pendingValid_22;
+      5'b10111:
+        casez_tmp_1 = pendingValid_23;
+      5'b11000:
+        casez_tmp_1 = pendingValid_24;
+      5'b11001:
+        casez_tmp_1 = pendingValid_25;
+      5'b11010:
+        casez_tmp_1 = pendingValid_26;
+      5'b11011:
+        casez_tmp_1 = pendingValid_27;
+      5'b11100:
+        casez_tmp_1 = pendingValid_28;
+      5'b11101:
+        casez_tmp_1 = pendingValid_29;
+      5'b11110:
+        casez_tmp_1 = pendingValid_30;
+      default:
+        casez_tmp_1 = pendingValid_31;
+    endcase
+  end // always_comb
+  reg        casez_tmp_2;
+  always_comb begin
+    casez (io_id_rs2)
+      5'b00000:
+        casez_tmp_2 = pendingValid_0;
+      5'b00001:
+        casez_tmp_2 = pendingValid_1;
+      5'b00010:
+        casez_tmp_2 = pendingValid_2;
+      5'b00011:
+        casez_tmp_2 = pendingValid_3;
+      5'b00100:
+        casez_tmp_2 = pendingValid_4;
+      5'b00101:
+        casez_tmp_2 = pendingValid_5;
+      5'b00110:
+        casez_tmp_2 = pendingValid_6;
+      5'b00111:
+        casez_tmp_2 = pendingValid_7;
+      5'b01000:
+        casez_tmp_2 = pendingValid_8;
+      5'b01001:
+        casez_tmp_2 = pendingValid_9;
+      5'b01010:
+        casez_tmp_2 = pendingValid_10;
+      5'b01011:
+        casez_tmp_2 = pendingValid_11;
+      5'b01100:
+        casez_tmp_2 = pendingValid_12;
+      5'b01101:
+        casez_tmp_2 = pendingValid_13;
+      5'b01110:
+        casez_tmp_2 = pendingValid_14;
+      5'b01111:
+        casez_tmp_2 = pendingValid_15;
+      5'b10000:
+        casez_tmp_2 = pendingValid_16;
+      5'b10001:
+        casez_tmp_2 = pendingValid_17;
+      5'b10010:
+        casez_tmp_2 = pendingValid_18;
+      5'b10011:
+        casez_tmp_2 = pendingValid_19;
+      5'b10100:
+        casez_tmp_2 = pendingValid_20;
+      5'b10101:
+        casez_tmp_2 = pendingValid_21;
+      5'b10110:
+        casez_tmp_2 = pendingValid_22;
+      5'b10111:
+        casez_tmp_2 = pendingValid_23;
+      5'b11000:
+        casez_tmp_2 = pendingValid_24;
+      5'b11001:
+        casez_tmp_2 = pendingValid_25;
+      5'b11010:
+        casez_tmp_2 = pendingValid_26;
+      5'b11011:
+        casez_tmp_2 = pendingValid_27;
+      5'b11100:
+        casez_tmp_2 = pendingValid_28;
+      5'b11101:
+        casez_tmp_2 = pendingValid_29;
+      5'b11110:
+        casez_tmp_2 = pendingValid_30;
+      default:
+        casez_tmp_2 = pendingValid_31;
+    endcase
+  end // always_comb
+  wire       _GEN = io_load_tag_alloc_valid & (|io_load_tag_alloc_rd);
+  wire       _GEN_0 = _GEN & ~(|io_load_tag_alloc_rd);
+  wire       _GEN_1 = _GEN & io_load_tag_alloc_rd == 5'h1;
+  wire       _GEN_2 = _GEN & io_load_tag_alloc_rd == 5'h2;
+  wire       _GEN_3 = _GEN & io_load_tag_alloc_rd == 5'h3;
+  wire       _GEN_4 = _GEN & io_load_tag_alloc_rd == 5'h4;
+  wire       _GEN_5 = _GEN & io_load_tag_alloc_rd == 5'h5;
+  wire       _GEN_6 = _GEN & io_load_tag_alloc_rd == 5'h6;
+  wire       _GEN_7 = _GEN & io_load_tag_alloc_rd == 5'h7;
+  wire       _GEN_8 = _GEN & io_load_tag_alloc_rd == 5'h8;
+  wire       _GEN_9 = _GEN & io_load_tag_alloc_rd == 5'h9;
+  wire       _GEN_10 = _GEN & io_load_tag_alloc_rd == 5'hA;
+  wire       _GEN_11 = _GEN & io_load_tag_alloc_rd == 5'hB;
+  wire       _GEN_12 = _GEN & io_load_tag_alloc_rd == 5'hC;
+  wire       _GEN_13 = _GEN & io_load_tag_alloc_rd == 5'hD;
+  wire       _GEN_14 = _GEN & io_load_tag_alloc_rd == 5'hE;
+  wire       _GEN_15 = _GEN & io_load_tag_alloc_rd == 5'hF;
+  wire       _GEN_16 = _GEN & io_load_tag_alloc_rd == 5'h10;
+  wire       _GEN_17 = _GEN & io_load_tag_alloc_rd == 5'h11;
+  wire       _GEN_18 = _GEN & io_load_tag_alloc_rd == 5'h12;
+  wire       _GEN_19 = _GEN & io_load_tag_alloc_rd == 5'h13;
+  wire       _GEN_20 = _GEN & io_load_tag_alloc_rd == 5'h14;
+  wire       _GEN_21 = _GEN & io_load_tag_alloc_rd == 5'h15;
+  wire       _GEN_22 = _GEN & io_load_tag_alloc_rd == 5'h16;
+  wire       _GEN_23 = _GEN & io_load_tag_alloc_rd == 5'h17;
+  wire       _GEN_24 = _GEN & io_load_tag_alloc_rd == 5'h18;
+  wire       _GEN_25 = _GEN & io_load_tag_alloc_rd == 5'h19;
+  wire       _GEN_26 = _GEN & io_load_tag_alloc_rd == 5'h1A;
+  wire       _GEN_27 = _GEN & io_load_tag_alloc_rd == 5'h1B;
+  wire       _GEN_28 = _GEN & io_load_tag_alloc_rd == 5'h1C;
+  wire       _GEN_29 = _GEN & io_load_tag_alloc_rd == 5'h1D;
+  wire       _GEN_30 = _GEN & io_load_tag_alloc_rd == 5'h1E;
+  wire       _GEN_31 = _GEN & (&io_load_tag_alloc_rd);
+  wire       _GEN_32 = io_load_tag_commit_valid & (|io_load_tag_commit_rd);
+  wire       _GEN_33 = casez_tmp_0 & casez_tmp == io_load_tag_commit_tag;
+  always @(posedge clock) begin
+    if (reset) begin
+      pendingValid_0 <= 1'h0;
+      pendingValid_1 <= 1'h0;
+      pendingValid_2 <= 1'h0;
+      pendingValid_3 <= 1'h0;
+      pendingValid_4 <= 1'h0;
+      pendingValid_5 <= 1'h0;
+      pendingValid_6 <= 1'h0;
+      pendingValid_7 <= 1'h0;
+      pendingValid_8 <= 1'h0;
+      pendingValid_9 <= 1'h0;
+      pendingValid_10 <= 1'h0;
+      pendingValid_11 <= 1'h0;
+      pendingValid_12 <= 1'h0;
+      pendingValid_13 <= 1'h0;
+      pendingValid_14 <= 1'h0;
+      pendingValid_15 <= 1'h0;
+      pendingValid_16 <= 1'h0;
+      pendingValid_17 <= 1'h0;
+      pendingValid_18 <= 1'h0;
+      pendingValid_19 <= 1'h0;
+      pendingValid_20 <= 1'h0;
+      pendingValid_21 <= 1'h0;
+      pendingValid_22 <= 1'h0;
+      pendingValid_23 <= 1'h0;
+      pendingValid_24 <= 1'h0;
+      pendingValid_25 <= 1'h0;
+      pendingValid_26 <= 1'h0;
+      pendingValid_27 <= 1'h0;
+      pendingValid_28 <= 1'h0;
+      pendingValid_29 <= 1'h0;
+      pendingValid_30 <= 1'h0;
+      pendingValid_31 <= 1'h0;
+      pendingTag_0 <= 6'h0;
+      pendingTag_1 <= 6'h0;
+      pendingTag_2 <= 6'h0;
+      pendingTag_3 <= 6'h0;
+      pendingTag_4 <= 6'h0;
+      pendingTag_5 <= 6'h0;
+      pendingTag_6 <= 6'h0;
+      pendingTag_7 <= 6'h0;
+      pendingTag_8 <= 6'h0;
+      pendingTag_9 <= 6'h0;
+      pendingTag_10 <= 6'h0;
+      pendingTag_11 <= 6'h0;
+      pendingTag_12 <= 6'h0;
+      pendingTag_13 <= 6'h0;
+      pendingTag_14 <= 6'h0;
+      pendingTag_15 <= 6'h0;
+      pendingTag_16 <= 6'h0;
+      pendingTag_17 <= 6'h0;
+      pendingTag_18 <= 6'h0;
+      pendingTag_19 <= 6'h0;
+      pendingTag_20 <= 6'h0;
+      pendingTag_21 <= 6'h0;
+      pendingTag_22 <= 6'h0;
+      pendingTag_23 <= 6'h0;
+      pendingTag_24 <= 6'h0;
+      pendingTag_25 <= 6'h0;
+      pendingTag_26 <= 6'h0;
+      pendingTag_27 <= 6'h0;
+      pendingTag_28 <= 6'h0;
+      pendingTag_29 <= 6'h0;
+      pendingTag_30 <= 6'h0;
+      pendingTag_31 <= 6'h0;
+    end
+    else begin
+      pendingValid_0 <=
+        ~(_GEN_32 & _GEN_33 & ~(|io_load_tag_commit_rd)) & (_GEN_0 | pendingValid_0);
+      pendingValid_1 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h1) & (_GEN_1 | pendingValid_1);
+      pendingValid_2 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h2) & (_GEN_2 | pendingValid_2);
+      pendingValid_3 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h3) & (_GEN_3 | pendingValid_3);
+      pendingValid_4 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h4) & (_GEN_4 | pendingValid_4);
+      pendingValid_5 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h5) & (_GEN_5 | pendingValid_5);
+      pendingValid_6 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h6) & (_GEN_6 | pendingValid_6);
+      pendingValid_7 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h7) & (_GEN_7 | pendingValid_7);
+      pendingValid_8 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h8) & (_GEN_8 | pendingValid_8);
+      pendingValid_9 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h9) & (_GEN_9 | pendingValid_9);
+      pendingValid_10 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'hA)
+        & (_GEN_10 | pendingValid_10);
+      pendingValid_11 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'hB)
+        & (_GEN_11 | pendingValid_11);
+      pendingValid_12 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'hC)
+        & (_GEN_12 | pendingValid_12);
+      pendingValid_13 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'hD)
+        & (_GEN_13 | pendingValid_13);
+      pendingValid_14 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'hE)
+        & (_GEN_14 | pendingValid_14);
+      pendingValid_15 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'hF)
+        & (_GEN_15 | pendingValid_15);
+      pendingValid_16 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h10)
+        & (_GEN_16 | pendingValid_16);
+      pendingValid_17 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h11)
+        & (_GEN_17 | pendingValid_17);
+      pendingValid_18 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h12)
+        & (_GEN_18 | pendingValid_18);
+      pendingValid_19 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h13)
+        & (_GEN_19 | pendingValid_19);
+      pendingValid_20 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h14)
+        & (_GEN_20 | pendingValid_20);
+      pendingValid_21 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h15)
+        & (_GEN_21 | pendingValid_21);
+      pendingValid_22 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h16)
+        & (_GEN_22 | pendingValid_22);
+      pendingValid_23 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h17)
+        & (_GEN_23 | pendingValid_23);
+      pendingValid_24 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h18)
+        & (_GEN_24 | pendingValid_24);
+      pendingValid_25 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h19)
+        & (_GEN_25 | pendingValid_25);
+      pendingValid_26 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h1A)
+        & (_GEN_26 | pendingValid_26);
+      pendingValid_27 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h1B)
+        & (_GEN_27 | pendingValid_27);
+      pendingValid_28 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h1C)
+        & (_GEN_28 | pendingValid_28);
+      pendingValid_29 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h1D)
+        & (_GEN_29 | pendingValid_29);
+      pendingValid_30 <=
+        ~(_GEN_32 & _GEN_33 & io_load_tag_commit_rd == 5'h1E)
+        & (_GEN_30 | pendingValid_30);
+      pendingValid_31 <=
+        ~(_GEN_32 & _GEN_33 & (&io_load_tag_commit_rd)) & (_GEN_31 | pendingValid_31);
+      if (_GEN_0)
+        pendingTag_0 <= io_load_tag_alloc_tag;
+      if (_GEN_1)
+        pendingTag_1 <= io_load_tag_alloc_tag;
+      if (_GEN_2)
+        pendingTag_2 <= io_load_tag_alloc_tag;
+      if (_GEN_3)
+        pendingTag_3 <= io_load_tag_alloc_tag;
+      if (_GEN_4)
+        pendingTag_4 <= io_load_tag_alloc_tag;
+      if (_GEN_5)
+        pendingTag_5 <= io_load_tag_alloc_tag;
+      if (_GEN_6)
+        pendingTag_6 <= io_load_tag_alloc_tag;
+      if (_GEN_7)
+        pendingTag_7 <= io_load_tag_alloc_tag;
+      if (_GEN_8)
+        pendingTag_8 <= io_load_tag_alloc_tag;
+      if (_GEN_9)
+        pendingTag_9 <= io_load_tag_alloc_tag;
+      if (_GEN_10)
+        pendingTag_10 <= io_load_tag_alloc_tag;
+      if (_GEN_11)
+        pendingTag_11 <= io_load_tag_alloc_tag;
+      if (_GEN_12)
+        pendingTag_12 <= io_load_tag_alloc_tag;
+      if (_GEN_13)
+        pendingTag_13 <= io_load_tag_alloc_tag;
+      if (_GEN_14)
+        pendingTag_14 <= io_load_tag_alloc_tag;
+      if (_GEN_15)
+        pendingTag_15 <= io_load_tag_alloc_tag;
+      if (_GEN_16)
+        pendingTag_16 <= io_load_tag_alloc_tag;
+      if (_GEN_17)
+        pendingTag_17 <= io_load_tag_alloc_tag;
+      if (_GEN_18)
+        pendingTag_18 <= io_load_tag_alloc_tag;
+      if (_GEN_19)
+        pendingTag_19 <= io_load_tag_alloc_tag;
+      if (_GEN_20)
+        pendingTag_20 <= io_load_tag_alloc_tag;
+      if (_GEN_21)
+        pendingTag_21 <= io_load_tag_alloc_tag;
+      if (_GEN_22)
+        pendingTag_22 <= io_load_tag_alloc_tag;
+      if (_GEN_23)
+        pendingTag_23 <= io_load_tag_alloc_tag;
+      if (_GEN_24)
+        pendingTag_24 <= io_load_tag_alloc_tag;
+      if (_GEN_25)
+        pendingTag_25 <= io_load_tag_alloc_tag;
+      if (_GEN_26)
+        pendingTag_26 <= io_load_tag_alloc_tag;
+      if (_GEN_27)
+        pendingTag_27 <= io_load_tag_alloc_tag;
+      if (_GEN_28)
+        pendingTag_28 <= io_load_tag_alloc_tag;
+      if (_GEN_29)
+        pendingTag_29 <= io_load_tag_alloc_tag;
+      if (_GEN_30)
+        pendingTag_30 <= io_load_tag_alloc_tag;
+      if (_GEN_31)
+        pendingTag_31 <= io_load_tag_alloc_tag;
+    end
+  end // always @(posedge)
   assign io_fs1_fwd_en = rs1_exu_ready | rs1_mem2_ready | rs1_wb_ready;
   assign io_fs1_fwd_data =
     rs1_exu_ready
@@ -1259,8 +2000,156 @@ module HazardUnit(
       ? io_exu_fwd_val_out
       : rs2_mem2_ready ? io_mem2_fwd_val_out : rs2_wb_ready ? io_wb_fwd_val_out : 32'h0;
   assign io_stall =
-    (rs1_exu_dep | rs2_exu_dep) & io_exu_fwd_rd_is_load & ~io_exu_fwd_valid
+    io_use_rs1 & (|io_id_rs1) & casez_tmp_1 | io_use_rs2 & (|io_id_rs2) & casez_tmp_2
+    | (rs1_exu_dep | rs2_exu_dep) & io_exu_fwd_valid & io_exu_fwd_rd_is_load
     | (rs1_mem2_dep | rs2_mem2_dep) & io_mem2_fwd_rd_is_load & ~io_mem2_fwd_valid;
+endmodule
+
+// VCS coverage exclude_file
+module pht_1024x2(
+  input  [9:0] R0_addr,
+  input        R0_en,
+               R0_clk,
+  output [1:0] R0_data,
+  input  [9:0] R1_addr,
+  input        R1_en,
+               R1_clk,
+  output [1:0] R1_data,
+  input  [9:0] W0_addr,
+  input        W0_en,
+               W0_clk,
+  input  [1:0] W0_data
+);
+
+  reg [1:0] Memory[0:1023];
+  reg       _R0_en_d0;
+  reg [9:0] _R0_addr_d0;
+  always @(posedge R0_clk) begin
+    _R0_en_d0 <= R0_en;
+    _R0_addr_d0 <= R0_addr;
+  end // always @(posedge)
+  reg       _R1_en_d0;
+  reg [9:0] _R1_addr_d0;
+  always @(posedge R1_clk) begin
+    _R1_en_d0 <= R1_en;
+    _R1_addr_d0 <= R1_addr;
+  end // always @(posedge)
+  always @(posedge W0_clk) begin
+    if (W0_en)
+      Memory[W0_addr] <= W0_data;
+  end // always @(posedge)
+  assign R0_data = _R0_en_d0 ? Memory[_R0_addr_d0] : 2'bx;
+  assign R1_data = _R1_en_d0 ? Memory[_R1_addr_d0] : 2'bx;
+endmodule
+
+// VCS coverage exclude_file
+module btb_1024x33(
+  input  [9:0]  R0_addr,
+  input         R0_en,
+                R0_clk,
+  output [32:0] R0_data,
+  input  [9:0]  W0_addr,
+  input         W0_en,
+                W0_clk,
+  input  [32:0] W0_data
+);
+
+  reg [32:0] Memory[0:1023];
+  reg        _R0_en_d0;
+  reg [9:0]  _R0_addr_d0;
+  always @(posedge R0_clk) begin
+    _R0_en_d0 <= R0_en;
+    _R0_addr_d0 <= R0_addr;
+  end // always @(posedge)
+  always @(posedge W0_clk) begin
+    if (W0_en)
+      Memory[W0_addr] <= W0_data;
+  end // always @(posedge)
+  assign R0_data = _R0_en_d0 ? Memory[_R0_addr_d0] : 33'bx;
+endmodule
+
+module BPU(
+  input         clock,
+                reset,
+  input  [31:0] io_pred_pc,
+  output [31:0] io_pred_next_pc,
+  input         io_update_valid,
+  input  [31:0] io_update_pc,
+  input         io_update_taken,
+  input  [31:0] io_update_target,
+  input         io_update_is_branch
+);
+
+  wire [32:0] _btb_ext_R0_data;
+  wire [1:0]  _pht_ext_R0_data;
+  wire [1:0]  _pht_ext_R1_data;
+  reg  [9:0]  ghr;
+  reg  [31:0] pred_pc_s1;
+  wire        update_fire = io_update_valid & io_update_is_branch;
+  reg  [31:0] update_pc_s0;
+  reg         update_taken_s0;
+  reg  [31:0] update_target_s0;
+  reg  [9:0]  update_ghr_s0;
+  wire [9:0]  update_idx_s0 = update_pc_s0[9:0] ^ update_ghr_s0;
+  reg         update_fire_s1;
+  reg  [9:0]  update_idx_s1;
+  reg  [9:0]  update_btb_idx_s1;
+  reg         update_taken_s1;
+  reg  [31:0] update_target_s1;
+  always @(posedge clock) begin
+    if (reset) begin
+      ghr <= 10'h0;
+      pred_pc_s1 <= 32'h0;
+      update_fire_s1 <= 1'h0;
+    end
+    else begin
+      if (update_fire)
+        ghr <= {ghr[8:0], io_update_taken};
+      pred_pc_s1 <= io_pred_pc;
+      update_fire_s1 <= update_fire;
+    end
+    if (update_fire) begin
+      update_pc_s0 <= io_update_pc;
+      update_taken_s0 <= io_update_taken;
+      update_target_s0 <= io_update_target;
+      update_ghr_s0 <= ghr;
+      update_idx_s1 <= update_idx_s0;
+      update_btb_idx_s1 <= update_pc_s0[9:0];
+      update_taken_s1 <= update_taken_s0;
+      update_target_s1 <= update_target_s0;
+    end
+  end // always @(posedge)
+  pht_1024x2 pht_ext (
+    .R0_addr (io_pred_pc[9:0] ^ ghr),
+    .R0_en   (1'h1),
+    .R0_clk  (clock),
+    .R0_data (_pht_ext_R0_data),
+    .R1_addr (update_idx_s0),
+    .R1_en   (update_fire),
+    .R1_clk  (clock),
+    .R1_data (_pht_ext_R1_data),
+    .W0_addr (update_idx_s1),
+    .W0_en   (update_fire_s1),
+    .W0_clk  (clock),
+    .W0_data
+      (update_taken_s1
+         ? ((&_pht_ext_R1_data) ? 2'h3 : _pht_ext_R1_data + 2'h1)
+         : _pht_ext_R1_data == 2'h0 ? 2'h0 : _pht_ext_R1_data - 2'h1)
+  );
+  btb_1024x33 btb_ext (
+    .R0_addr (io_pred_pc[9:0]),
+    .R0_en   (1'h1),
+    .R0_clk  (clock),
+    .R0_data (_btb_ext_R0_data),
+    .W0_addr (update_btb_idx_s1),
+    .W0_en   (update_fire_s1 & update_taken_s1),
+    .W0_clk  (clock),
+    .W0_data ({1'h1, update_target_s1})
+  );
+  assign io_pred_next_pc =
+    _btb_ext_R0_data[32] & _pht_ext_R0_data[1]
+      ? _btb_ext_R0_data[31:0]
+      : pred_pc_s1 + 32'h4;
 endmodule
 
 module MaxPeriodFibonacciLFSR(
@@ -1391,6 +2280,7 @@ module ICache1(
                 io_miss_count
 );
 
+  wire        io_fetch_req_ready_0;
   wire        _lfsr_prng_io_out_0;
   wire        _lfsr_prng_io_out_1;
   wire [20:0] _tag_array_3_ext_R0_data;
@@ -1673,7 +2563,6 @@ module ICache1(
   wire        lookup_en = state == 3'h1;
   wire [8:0]  lookup_word_addr = {index_reg, offset_reg[4:2]};
   wire        _GEN = state == 3'h0;
-  wire        io_fetch_req_ready_0 = io_flush | _GEN;
   wire        _GEN_0 = io_fetch_req_ready_0 & io_fetch_req_valid;
   wire        _GEN_1 = state == 3'h2;
   reg         casez_tmp;
@@ -2215,115 +3104,277 @@ module ICache1(
   wire        hit = hit0 | hit1 | hit2 | hit3;
   wire        _GEN_2 = io_flush | _GEN | lookup_en;
   wire        _GEN_3 = state == 3'h3;
-  wire        io_inst_req_valid_0 = ~_GEN_2 & (_GEN_1 ? ~hit : _GEN_3);
-  wire        _GEN_4 = ~_GEN_3 | miss_cacheable_reg;
-  wire        _GEN_5 = state == 3'h4;
-  wire        _GEN_6 = _GEN_2 | _GEN_1 | _GEN_3;
-  wire        io_inst_resp_ready_0 = ~_GEN_6 & _GEN_5;
-  wire        _GEN_7 = io_inst_resp_ready_0 & io_inst_resp_valid;
-  wire        _GEN_8 = victim_way == 2'h0;
-  wire [8:0]  _GEN_9 = {index_reg, refill_cnt};
-  wire        _GEN_10 = _GEN_5 & _GEN_7 & miss_cacheable_reg;
-  wire        _GEN_11 = io_flush | _GEN | lookup_en | _GEN_1 | _GEN_3;
-  wire        _GEN_12 = victim_way == 2'h1;
-  wire        _GEN_13 = victim_way == 2'h2;
-  wire        _GEN_14 = _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last;
-  wire        _GEN_15 = ~miss_cacheable_reg | io_inst_resp_bits_last;
-  wire        _GEN_16 = state == 3'h5;
-  wire        io_fetch_resp_valid_0 = ~(_GEN_6 | _GEN_5) & _GEN_16;
-  wire        _GEN_17 = io_flush | _GEN | lookup_en | _GEN_1 | _GEN_3 | _GEN_5 | ~_GEN_16;
-  reg  [2:0]  casez_tmp_3;
-  wire        _GEN_18 = io_inst_req_ready & io_inst_req_valid_0;
-  wire [2:0]  _GEN_19 =
-    _GEN_16 & io_fetch_resp_ready & io_fetch_resp_valid_0 ? 3'h0 : state;
+  wire        _GEN_4 = io_flush | _GEN;
+  wire        _GEN_5 = _GEN_4 | lookup_en;
+  wire        io_inst_req_valid_0 = ~_GEN_5 & (_GEN_1 ? ~hit : _GEN_3);
+  wire        _GEN_6 = ~_GEN_3 | miss_cacheable_reg;
+  wire        _GEN_7 = state == 3'h4;
+  wire        _GEN_8 = _GEN_5 | _GEN_1 | _GEN_3;
+  wire        io_inst_resp_ready_0 = ~_GEN_8 & _GEN_7;
+  wire        _GEN_9 = io_inst_resp_ready_0 & io_inst_resp_valid;
+  wire        _GEN_10 = victim_way == 2'h0;
+  wire [8:0]  _GEN_11 = {index_reg, refill_cnt};
+  wire        _GEN_12 = _GEN_7 & _GEN_9 & miss_cacheable_reg;
+  wire        _GEN_13 = io_flush | _GEN | lookup_en | _GEN_1 | _GEN_3;
+  wire        _GEN_14 = victim_way == 2'h1;
+  wire        _GEN_15 = victim_way == 2'h2;
+  wire        _GEN_16 = _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last;
+  wire        _GEN_17 = ~miss_cacheable_reg | io_inst_resp_bits_last;
+  wire        _GEN_18 = state == 3'h5;
+  wire        io_fetch_resp_valid_0 = ~(_GEN_8 | _GEN_7) & _GEN_18;
+  wire        _GEN_19 = _GEN_3 | _GEN_7;
+  wire        _GEN_20 = lookup_en | _GEN_1 | _GEN_19;
+  wire        _GEN_21 = io_flush | _GEN | _GEN_20 | ~_GEN_18;
+  assign io_fetch_req_ready_0 =
+    _GEN_4 | ~(lookup_en | _GEN_1 | _GEN_3 | _GEN_7) & _GEN_18 & io_fetch_resp_ready;
+  wire        _GEN_22 = io_fetch_resp_ready & io_fetch_resp_valid_0;
+  wire        _GEN_23 = _GEN_18 & _GEN_22 & _GEN_0;
+  wire        _GEN_24 = _GEN_20 | ~_GEN_23;
+  reg  [20:0] casez_tmp_3;
+  wire [20:0] _GEN_25 = _GEN_24 ? tag_reg : io_fetch_req_bits_pc[31:11];
   always_comb begin
     casez (state)
       3'b000:
-        casez_tmp_3 = _GEN_0 ? 3'h1 : state;
+        casez_tmp_3 = _GEN_0 ? io_fetch_req_bits_pc[31:11] : tag_reg;
       3'b001:
-        casez_tmp_3 = 3'h2;
+        casez_tmp_3 = tag_reg;
       3'b010:
-        casez_tmp_3 = hit ? 3'h5 : _GEN_18 ? 3'h4 : 3'h3;
+        casez_tmp_3 = tag_reg;
       3'b011:
-        casez_tmp_3 = _GEN_18 ? 3'h4 : state;
+        casez_tmp_3 = tag_reg;
       3'b100:
-        casez_tmp_3 = _GEN_7 & _GEN_15 ? 3'h5 : state;
+        casez_tmp_3 = tag_reg;
       3'b101:
-        casez_tmp_3 = _GEN_19;
+        casez_tmp_3 = _GEN_25;
       3'b110:
-        casez_tmp_3 = _GEN_19;
+        casez_tmp_3 = _GEN_25;
       default:
-        casez_tmp_3 = _GEN_19;
+        casez_tmp_3 = _GEN_25;
     endcase
   end // always_comb
-  wire        _GEN_20 = refill_cnt == offset_reg[4:2];
-  wire [31:0] _GEN_21 = {27'h0, offset_reg};
+  reg  [5:0]  casez_tmp_4;
+  wire [5:0]  _GEN_26 = _GEN_24 ? index_reg : io_fetch_req_bits_pc[10:5];
+  always_comb begin
+    casez (state)
+      3'b000:
+        casez_tmp_4 = _GEN_0 ? io_fetch_req_bits_pc[10:5] : index_reg;
+      3'b001:
+        casez_tmp_4 = index_reg;
+      3'b010:
+        casez_tmp_4 = index_reg;
+      3'b011:
+        casez_tmp_4 = index_reg;
+      3'b100:
+        casez_tmp_4 = index_reg;
+      3'b101:
+        casez_tmp_4 = _GEN_26;
+      3'b110:
+        casez_tmp_4 = _GEN_26;
+      default:
+        casez_tmp_4 = _GEN_26;
+    endcase
+  end // always_comb
+  reg  [4:0]  casez_tmp_5;
+  wire [4:0]  _GEN_27 = _GEN_24 ? offset_reg : io_fetch_req_bits_pc[4:0];
+  always_comb begin
+    casez (state)
+      3'b000:
+        casez_tmp_5 = _GEN_0 ? io_fetch_req_bits_pc[4:0] : offset_reg;
+      3'b001:
+        casez_tmp_5 = offset_reg;
+      3'b010:
+        casez_tmp_5 = offset_reg;
+      3'b011:
+        casez_tmp_5 = offset_reg;
+      3'b100:
+        casez_tmp_5 = offset_reg;
+      3'b101:
+        casez_tmp_5 = _GEN_27;
+      3'b110:
+        casez_tmp_5 = _GEN_27;
+      default:
+        casez_tmp_5 = _GEN_27;
+    endcase
+  end // always_comb
+  reg  [31:0] casez_tmp_6;
+  wire [31:0] _GEN_28 = _GEN_24 ? line_base : {io_fetch_req_bits_pc[31:5], 5'h0};
+  always_comb begin
+    casez (state)
+      3'b000:
+        casez_tmp_6 = _GEN_0 ? {io_fetch_req_bits_pc[31:5], 5'h0} : line_base;
+      3'b001:
+        casez_tmp_6 = line_base;
+      3'b010:
+        casez_tmp_6 = line_base;
+      3'b011:
+        casez_tmp_6 = line_base;
+      3'b100:
+        casez_tmp_6 = line_base;
+      3'b101:
+        casez_tmp_6 = _GEN_28;
+      3'b110:
+        casez_tmp_6 = _GEN_28;
+      default:
+        casez_tmp_6 = _GEN_28;
+    endcase
+  end // always_comb
+  reg  [31:0] casez_tmp_7;
+  wire [31:0] _GEN_29 = _GEN_24 ? miss_pc_reg : io_fetch_req_bits_pc;
+  always_comb begin
+    casez (state)
+      3'b000:
+        casez_tmp_7 = _GEN_0 ? io_fetch_req_bits_pc : miss_pc_reg;
+      3'b001:
+        casez_tmp_7 = miss_pc_reg;
+      3'b010:
+        casez_tmp_7 = miss_pc_reg;
+      3'b011:
+        casez_tmp_7 = miss_pc_reg;
+      3'b100:
+        casez_tmp_7 = miss_pc_reg;
+      3'b101:
+        casez_tmp_7 = _GEN_29;
+      3'b110:
+        casez_tmp_7 = _GEN_29;
+      default:
+        casez_tmp_7 = _GEN_29;
+    endcase
+  end // always_comb
+  reg         casez_tmp_8;
+  wire        _GEN_30 =
+    _GEN_24 ? miss_cacheable_reg : io_fetch_req_bits_pc[31:26] == 6'h28;
+  always_comb begin
+    casez (state)
+      3'b000:
+        casez_tmp_8 = _GEN_0 ? io_fetch_req_bits_pc[31:26] == 6'h28 : miss_cacheable_reg;
+      3'b001:
+        casez_tmp_8 = miss_cacheable_reg;
+      3'b010:
+        casez_tmp_8 = miss_cacheable_reg;
+      3'b011:
+        casez_tmp_8 = miss_cacheable_reg;
+      3'b100:
+        casez_tmp_8 = miss_cacheable_reg;
+      3'b101:
+        casez_tmp_8 = _GEN_30;
+      3'b110:
+        casez_tmp_8 = _GEN_30;
+      default:
+        casez_tmp_8 = _GEN_30;
+    endcase
+  end // always_comb
+  reg  [2:0]  casez_tmp_9;
+  wire [2:0]  _GEN_31 = _GEN_23 ? 3'h0 : refill_cnt;
+  always_comb begin
+    casez (state)
+      3'b000:
+        casez_tmp_9 = _GEN_0 ? 3'h0 : refill_cnt;
+      3'b001:
+        casez_tmp_9 = refill_cnt;
+      3'b010:
+        casez_tmp_9 = hit ? refill_cnt : 3'h0;
+      3'b011:
+        casez_tmp_9 = refill_cnt;
+      3'b100:
+        casez_tmp_9 = _GEN_9 ? (_GEN_17 ? 3'h0 : refill_cnt + 3'h1) : refill_cnt;
+      3'b101:
+        casez_tmp_9 = _GEN_31;
+      3'b110:
+        casez_tmp_9 = _GEN_31;
+      default:
+        casez_tmp_9 = _GEN_31;
+    endcase
+  end // always_comb
+  reg  [2:0]  casez_tmp_10;
+  wire        _GEN_32 = io_inst_req_ready & io_inst_req_valid_0;
+  wire [2:0]  _GEN_33 = _GEN_18 & _GEN_22 ? {2'h0, _GEN_0} : state;
+  always_comb begin
+    casez (state)
+      3'b000:
+        casez_tmp_10 = _GEN_0 ? 3'h1 : state;
+      3'b001:
+        casez_tmp_10 = 3'h2;
+      3'b010:
+        casez_tmp_10 = hit ? 3'h5 : _GEN_32 ? 3'h4 : 3'h3;
+      3'b011:
+        casez_tmp_10 = _GEN_32 ? 3'h4 : state;
+      3'b100:
+        casez_tmp_10 = _GEN_9 & _GEN_17 ? 3'h5 : state;
+      3'b101:
+        casez_tmp_10 = _GEN_33;
+      3'b110:
+        casez_tmp_10 = _GEN_33;
+      default:
+        casez_tmp_10 = _GEN_33;
+    endcase
+  end // always_comb
   wire [1:0]  rand_way = {_lfsr_prng_io_out_1, _lfsr_prng_io_out_0};
-  wire        _GEN_22 = index_reg == 6'h0;
-  wire        _GEN_23 = index_reg == 6'h1;
-  wire        _GEN_24 = index_reg == 6'h2;
-  wire        _GEN_25 = index_reg == 6'h3;
-  wire        _GEN_26 = index_reg == 6'h4;
-  wire        _GEN_27 = index_reg == 6'h5;
-  wire        _GEN_28 = index_reg == 6'h6;
-  wire        _GEN_29 = index_reg == 6'h7;
-  wire        _GEN_30 = index_reg == 6'h8;
-  wire        _GEN_31 = index_reg == 6'h9;
-  wire        _GEN_32 = index_reg == 6'hA;
-  wire        _GEN_33 = index_reg == 6'hB;
-  wire        _GEN_34 = index_reg == 6'hC;
-  wire        _GEN_35 = index_reg == 6'hD;
-  wire        _GEN_36 = index_reg == 6'hE;
-  wire        _GEN_37 = index_reg == 6'hF;
-  wire        _GEN_38 = index_reg == 6'h10;
-  wire        _GEN_39 = index_reg == 6'h11;
-  wire        _GEN_40 = index_reg == 6'h12;
-  wire        _GEN_41 = index_reg == 6'h13;
-  wire        _GEN_42 = index_reg == 6'h14;
-  wire        _GEN_43 = index_reg == 6'h15;
-  wire        _GEN_44 = index_reg == 6'h16;
-  wire        _GEN_45 = index_reg == 6'h17;
-  wire        _GEN_46 = index_reg == 6'h18;
-  wire        _GEN_47 = index_reg == 6'h19;
-  wire        _GEN_48 = index_reg == 6'h1A;
-  wire        _GEN_49 = index_reg == 6'h1B;
-  wire        _GEN_50 = index_reg == 6'h1C;
-  wire        _GEN_51 = index_reg == 6'h1D;
-  wire        _GEN_52 = index_reg == 6'h1E;
-  wire        _GEN_53 = index_reg == 6'h1F;
-  wire        _GEN_54 = index_reg == 6'h20;
-  wire        _GEN_55 = index_reg == 6'h21;
-  wire        _GEN_56 = index_reg == 6'h22;
-  wire        _GEN_57 = index_reg == 6'h23;
-  wire        _GEN_58 = index_reg == 6'h24;
-  wire        _GEN_59 = index_reg == 6'h25;
-  wire        _GEN_60 = index_reg == 6'h26;
-  wire        _GEN_61 = index_reg == 6'h27;
-  wire        _GEN_62 = index_reg == 6'h28;
-  wire        _GEN_63 = index_reg == 6'h29;
-  wire        _GEN_64 = index_reg == 6'h2A;
-  wire        _GEN_65 = index_reg == 6'h2B;
-  wire        _GEN_66 = index_reg == 6'h2C;
-  wire        _GEN_67 = index_reg == 6'h2D;
-  wire        _GEN_68 = index_reg == 6'h2E;
-  wire        _GEN_69 = index_reg == 6'h2F;
-  wire        _GEN_70 = index_reg == 6'h30;
-  wire        _GEN_71 = index_reg == 6'h31;
-  wire        _GEN_72 = index_reg == 6'h32;
-  wire        _GEN_73 = index_reg == 6'h33;
-  wire        _GEN_74 = index_reg == 6'h34;
-  wire        _GEN_75 = index_reg == 6'h35;
-  wire        _GEN_76 = index_reg == 6'h36;
-  wire        _GEN_77 = index_reg == 6'h37;
-  wire        _GEN_78 = index_reg == 6'h38;
-  wire        _GEN_79 = index_reg == 6'h39;
-  wire        _GEN_80 = index_reg == 6'h3A;
-  wire        _GEN_81 = index_reg == 6'h3B;
-  wire        _GEN_82 = index_reg == 6'h3C;
-  wire        _GEN_83 = index_reg == 6'h3D;
-  wire        _GEN_84 = index_reg == 6'h3E;
-  wire        _GEN_85 = _GEN_5 & _GEN_7;
-  wire        _GEN_86 = _GEN_3 | ~_GEN_85;
+  wire        _GEN_34 = refill_cnt == offset_reg[4:2];
+  wire        _GEN_35 = _GEN_7 & _GEN_9;
+  wire [31:0] _GEN_36 = {27'h0, offset_reg};
+  wire        _GEN_37 = index_reg == 6'h0;
+  wire        _GEN_38 = index_reg == 6'h1;
+  wire        _GEN_39 = index_reg == 6'h2;
+  wire        _GEN_40 = index_reg == 6'h3;
+  wire        _GEN_41 = index_reg == 6'h4;
+  wire        _GEN_42 = index_reg == 6'h5;
+  wire        _GEN_43 = index_reg == 6'h6;
+  wire        _GEN_44 = index_reg == 6'h7;
+  wire        _GEN_45 = index_reg == 6'h8;
+  wire        _GEN_46 = index_reg == 6'h9;
+  wire        _GEN_47 = index_reg == 6'hA;
+  wire        _GEN_48 = index_reg == 6'hB;
+  wire        _GEN_49 = index_reg == 6'hC;
+  wire        _GEN_50 = index_reg == 6'hD;
+  wire        _GEN_51 = index_reg == 6'hE;
+  wire        _GEN_52 = index_reg == 6'hF;
+  wire        _GEN_53 = index_reg == 6'h10;
+  wire        _GEN_54 = index_reg == 6'h11;
+  wire        _GEN_55 = index_reg == 6'h12;
+  wire        _GEN_56 = index_reg == 6'h13;
+  wire        _GEN_57 = index_reg == 6'h14;
+  wire        _GEN_58 = index_reg == 6'h15;
+  wire        _GEN_59 = index_reg == 6'h16;
+  wire        _GEN_60 = index_reg == 6'h17;
+  wire        _GEN_61 = index_reg == 6'h18;
+  wire        _GEN_62 = index_reg == 6'h19;
+  wire        _GEN_63 = index_reg == 6'h1A;
+  wire        _GEN_64 = index_reg == 6'h1B;
+  wire        _GEN_65 = index_reg == 6'h1C;
+  wire        _GEN_66 = index_reg == 6'h1D;
+  wire        _GEN_67 = index_reg == 6'h1E;
+  wire        _GEN_68 = index_reg == 6'h1F;
+  wire        _GEN_69 = index_reg == 6'h20;
+  wire        _GEN_70 = index_reg == 6'h21;
+  wire        _GEN_71 = index_reg == 6'h22;
+  wire        _GEN_72 = index_reg == 6'h23;
+  wire        _GEN_73 = index_reg == 6'h24;
+  wire        _GEN_74 = index_reg == 6'h25;
+  wire        _GEN_75 = index_reg == 6'h26;
+  wire        _GEN_76 = index_reg == 6'h27;
+  wire        _GEN_77 = index_reg == 6'h28;
+  wire        _GEN_78 = index_reg == 6'h29;
+  wire        _GEN_79 = index_reg == 6'h2A;
+  wire        _GEN_80 = index_reg == 6'h2B;
+  wire        _GEN_81 = index_reg == 6'h2C;
+  wire        _GEN_82 = index_reg == 6'h2D;
+  wire        _GEN_83 = index_reg == 6'h2E;
+  wire        _GEN_84 = index_reg == 6'h2F;
+  wire        _GEN_85 = index_reg == 6'h30;
+  wire        _GEN_86 = index_reg == 6'h31;
+  wire        _GEN_87 = index_reg == 6'h32;
+  wire        _GEN_88 = index_reg == 6'h33;
+  wire        _GEN_89 = index_reg == 6'h34;
+  wire        _GEN_90 = index_reg == 6'h35;
+  wire        _GEN_91 = index_reg == 6'h36;
+  wire        _GEN_92 = index_reg == 6'h37;
+  wire        _GEN_93 = index_reg == 6'h38;
+  wire        _GEN_94 = index_reg == 6'h39;
+  wire        _GEN_95 = index_reg == 6'h3A;
+  wire        _GEN_96 = index_reg == 6'h3B;
+  wire        _GEN_97 = index_reg == 6'h3C;
+  wire        _GEN_98 = index_reg == 6'h3D;
+  wire        _GEN_99 = index_reg == 6'h3E;
   always @(posedge clock) begin
     if (reset) begin
       valid_array_0_0 <= 1'h0;
@@ -2598,782 +3649,794 @@ module ICache1(
     end
     else begin
       valid_array_0_0 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_22 | valid_array_0_0;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_37 | valid_array_0_0;
       valid_array_0_1 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_23 | valid_array_0_1;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_38 | valid_array_0_1;
       valid_array_0_2 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_24 | valid_array_0_2;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_39 | valid_array_0_2;
       valid_array_0_3 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_25 | valid_array_0_3;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_40 | valid_array_0_3;
       valid_array_0_4 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_26 | valid_array_0_4;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_41 | valid_array_0_4;
       valid_array_0_5 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_27 | valid_array_0_5;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_42 | valid_array_0_5;
       valid_array_0_6 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_28 | valid_array_0_6;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_43 | valid_array_0_6;
       valid_array_0_7 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_29 | valid_array_0_7;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_44 | valid_array_0_7;
       valid_array_0_8 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_30 | valid_array_0_8;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_45 | valid_array_0_8;
       valid_array_0_9 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_31 | valid_array_0_9;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_46 | valid_array_0_9;
       valid_array_0_10 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_32 | valid_array_0_10;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_47 | valid_array_0_10;
       valid_array_0_11 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_33 | valid_array_0_11;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_48 | valid_array_0_11;
       valid_array_0_12 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_34 | valid_array_0_12;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_49 | valid_array_0_12;
       valid_array_0_13 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_35 | valid_array_0_13;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_50 | valid_array_0_13;
       valid_array_0_14 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_36 | valid_array_0_14;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_51 | valid_array_0_14;
       valid_array_0_15 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_37 | valid_array_0_15;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_52 | valid_array_0_15;
       valid_array_0_16 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_38 | valid_array_0_16;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_53 | valid_array_0_16;
       valid_array_0_17 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_39 | valid_array_0_17;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_54 | valid_array_0_17;
       valid_array_0_18 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_40 | valid_array_0_18;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_55 | valid_array_0_18;
       valid_array_0_19 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_41 | valid_array_0_19;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_56 | valid_array_0_19;
       valid_array_0_20 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_42 | valid_array_0_20;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_57 | valid_array_0_20;
       valid_array_0_21 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_43 | valid_array_0_21;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_58 | valid_array_0_21;
       valid_array_0_22 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_44 | valid_array_0_22;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_59 | valid_array_0_22;
       valid_array_0_23 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_45 | valid_array_0_23;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_60 | valid_array_0_23;
       valid_array_0_24 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_46 | valid_array_0_24;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_61 | valid_array_0_24;
       valid_array_0_25 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_47 | valid_array_0_25;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_62 | valid_array_0_25;
       valid_array_0_26 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_48 | valid_array_0_26;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_63 | valid_array_0_26;
       valid_array_0_27 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_49 | valid_array_0_27;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_64 | valid_array_0_27;
       valid_array_0_28 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_50 | valid_array_0_28;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_65 | valid_array_0_28;
       valid_array_0_29 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_51 | valid_array_0_29;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_66 | valid_array_0_29;
       valid_array_0_30 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_52 | valid_array_0_30;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_67 | valid_array_0_30;
       valid_array_0_31 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_53 | valid_array_0_31;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_68 | valid_array_0_31;
       valid_array_0_32 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_54 | valid_array_0_32;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_69 | valid_array_0_32;
       valid_array_0_33 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_55 | valid_array_0_33;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_70 | valid_array_0_33;
       valid_array_0_34 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_56 | valid_array_0_34;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_71 | valid_array_0_34;
       valid_array_0_35 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_57 | valid_array_0_35;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_72 | valid_array_0_35;
       valid_array_0_36 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_58 | valid_array_0_36;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_73 | valid_array_0_36;
       valid_array_0_37 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_59 | valid_array_0_37;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_74 | valid_array_0_37;
       valid_array_0_38 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_60 | valid_array_0_38;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_75 | valid_array_0_38;
       valid_array_0_39 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_61 | valid_array_0_39;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_76 | valid_array_0_39;
       valid_array_0_40 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_62 | valid_array_0_40;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_77 | valid_array_0_40;
       valid_array_0_41 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_63 | valid_array_0_41;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_78 | valid_array_0_41;
       valid_array_0_42 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_64 | valid_array_0_42;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_79 | valid_array_0_42;
       valid_array_0_43 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_65 | valid_array_0_43;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_80 | valid_array_0_43;
       valid_array_0_44 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_66 | valid_array_0_44;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_81 | valid_array_0_44;
       valid_array_0_45 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_67 | valid_array_0_45;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_82 | valid_array_0_45;
       valid_array_0_46 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_68 | valid_array_0_46;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_83 | valid_array_0_46;
       valid_array_0_47 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_69 | valid_array_0_47;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_84 | valid_array_0_47;
       valid_array_0_48 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_70 | valid_array_0_48;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_85 | valid_array_0_48;
       valid_array_0_49 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_71 | valid_array_0_49;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_86 | valid_array_0_49;
       valid_array_0_50 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_72 | valid_array_0_50;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_87 | valid_array_0_50;
       valid_array_0_51 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_73 | valid_array_0_51;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_88 | valid_array_0_51;
       valid_array_0_52 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_74 | valid_array_0_52;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_89 | valid_array_0_52;
       valid_array_0_53 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_75 | valid_array_0_53;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_90 | valid_array_0_53;
       valid_array_0_54 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_76 | valid_array_0_54;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_91 | valid_array_0_54;
       valid_array_0_55 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_77 | valid_array_0_55;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_92 | valid_array_0_55;
       valid_array_0_56 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_78 | valid_array_0_56;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_93 | valid_array_0_56;
       valid_array_0_57 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_79 | valid_array_0_57;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_94 | valid_array_0_57;
       valid_array_0_58 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_80 | valid_array_0_58;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_95 | valid_array_0_58;
       valid_array_0_59 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_81 | valid_array_0_59;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_96 | valid_array_0_59;
       valid_array_0_60 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_82 | valid_array_0_60;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_97 | valid_array_0_60;
       valid_array_0_61 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_83 | valid_array_0_61;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_98 | valid_array_0_61;
       valid_array_0_62 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
-        & _GEN_84 | valid_array_0_62;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
+        & _GEN_99 | valid_array_0_62;
       valid_array_0_63 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_8
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_10
         & (&index_reg) | valid_array_0_63;
       valid_array_1_0 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_22 | valid_array_1_0;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_37 | valid_array_1_0;
       valid_array_1_1 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_23 | valid_array_1_1;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_38 | valid_array_1_1;
       valid_array_1_2 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_24 | valid_array_1_2;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_39 | valid_array_1_2;
       valid_array_1_3 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_25 | valid_array_1_3;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_40 | valid_array_1_3;
       valid_array_1_4 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_26 | valid_array_1_4;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_41 | valid_array_1_4;
       valid_array_1_5 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_27 | valid_array_1_5;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_42 | valid_array_1_5;
       valid_array_1_6 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_28 | valid_array_1_6;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_43 | valid_array_1_6;
       valid_array_1_7 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_29 | valid_array_1_7;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_44 | valid_array_1_7;
       valid_array_1_8 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_30 | valid_array_1_8;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_45 | valid_array_1_8;
       valid_array_1_9 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_31 | valid_array_1_9;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_46 | valid_array_1_9;
       valid_array_1_10 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_32 | valid_array_1_10;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_47 | valid_array_1_10;
       valid_array_1_11 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_33 | valid_array_1_11;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_48 | valid_array_1_11;
       valid_array_1_12 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_34 | valid_array_1_12;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_49 | valid_array_1_12;
       valid_array_1_13 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_35 | valid_array_1_13;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_50 | valid_array_1_13;
       valid_array_1_14 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_36 | valid_array_1_14;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_51 | valid_array_1_14;
       valid_array_1_15 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_37 | valid_array_1_15;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_52 | valid_array_1_15;
       valid_array_1_16 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_38 | valid_array_1_16;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_53 | valid_array_1_16;
       valid_array_1_17 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_39 | valid_array_1_17;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_54 | valid_array_1_17;
       valid_array_1_18 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_40 | valid_array_1_18;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_55 | valid_array_1_18;
       valid_array_1_19 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_41 | valid_array_1_19;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_56 | valid_array_1_19;
       valid_array_1_20 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_42 | valid_array_1_20;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_57 | valid_array_1_20;
       valid_array_1_21 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_43 | valid_array_1_21;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_58 | valid_array_1_21;
       valid_array_1_22 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_44 | valid_array_1_22;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_59 | valid_array_1_22;
       valid_array_1_23 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_45 | valid_array_1_23;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_60 | valid_array_1_23;
       valid_array_1_24 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_46 | valid_array_1_24;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_61 | valid_array_1_24;
       valid_array_1_25 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_47 | valid_array_1_25;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_62 | valid_array_1_25;
       valid_array_1_26 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_48 | valid_array_1_26;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_63 | valid_array_1_26;
       valid_array_1_27 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_49 | valid_array_1_27;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_64 | valid_array_1_27;
       valid_array_1_28 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_50 | valid_array_1_28;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_65 | valid_array_1_28;
       valid_array_1_29 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_51 | valid_array_1_29;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_66 | valid_array_1_29;
       valid_array_1_30 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_52 | valid_array_1_30;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_67 | valid_array_1_30;
       valid_array_1_31 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_53 | valid_array_1_31;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_68 | valid_array_1_31;
       valid_array_1_32 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_54 | valid_array_1_32;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_69 | valid_array_1_32;
       valid_array_1_33 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_55 | valid_array_1_33;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_70 | valid_array_1_33;
       valid_array_1_34 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_56 | valid_array_1_34;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_71 | valid_array_1_34;
       valid_array_1_35 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_57 | valid_array_1_35;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_72 | valid_array_1_35;
       valid_array_1_36 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_58 | valid_array_1_36;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_73 | valid_array_1_36;
       valid_array_1_37 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_59 | valid_array_1_37;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_74 | valid_array_1_37;
       valid_array_1_38 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_60 | valid_array_1_38;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_75 | valid_array_1_38;
       valid_array_1_39 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_61 | valid_array_1_39;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_76 | valid_array_1_39;
       valid_array_1_40 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_62 | valid_array_1_40;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_77 | valid_array_1_40;
       valid_array_1_41 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_63 | valid_array_1_41;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_78 | valid_array_1_41;
       valid_array_1_42 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_64 | valid_array_1_42;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_79 | valid_array_1_42;
       valid_array_1_43 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_65 | valid_array_1_43;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_80 | valid_array_1_43;
       valid_array_1_44 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_66 | valid_array_1_44;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_81 | valid_array_1_44;
       valid_array_1_45 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_67 | valid_array_1_45;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_82 | valid_array_1_45;
       valid_array_1_46 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_68 | valid_array_1_46;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_83 | valid_array_1_46;
       valid_array_1_47 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_69 | valid_array_1_47;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_84 | valid_array_1_47;
       valid_array_1_48 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_70 | valid_array_1_48;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_85 | valid_array_1_48;
       valid_array_1_49 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_71 | valid_array_1_49;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_86 | valid_array_1_49;
       valid_array_1_50 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_72 | valid_array_1_50;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_87 | valid_array_1_50;
       valid_array_1_51 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_73 | valid_array_1_51;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_88 | valid_array_1_51;
       valid_array_1_52 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_74 | valid_array_1_52;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_89 | valid_array_1_52;
       valid_array_1_53 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_75 | valid_array_1_53;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_90 | valid_array_1_53;
       valid_array_1_54 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_76 | valid_array_1_54;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_91 | valid_array_1_54;
       valid_array_1_55 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_77 | valid_array_1_55;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_92 | valid_array_1_55;
       valid_array_1_56 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_78 | valid_array_1_56;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_93 | valid_array_1_56;
       valid_array_1_57 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_79 | valid_array_1_57;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_94 | valid_array_1_57;
       valid_array_1_58 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_80 | valid_array_1_58;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_95 | valid_array_1_58;
       valid_array_1_59 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_81 | valid_array_1_59;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_96 | valid_array_1_59;
       valid_array_1_60 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_82 | valid_array_1_60;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_97 | valid_array_1_60;
       valid_array_1_61 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_83 | valid_array_1_61;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_98 | valid_array_1_61;
       valid_array_1_62 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
-        & _GEN_84 | valid_array_1_62;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
+        & _GEN_99 | valid_array_1_62;
       valid_array_1_63 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_12
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_14
         & (&index_reg) | valid_array_1_63;
       valid_array_2_0 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_22 | valid_array_2_0;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_37 | valid_array_2_0;
       valid_array_2_1 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_23 | valid_array_2_1;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_38 | valid_array_2_1;
       valid_array_2_2 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_24 | valid_array_2_2;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_39 | valid_array_2_2;
       valid_array_2_3 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_25 | valid_array_2_3;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_40 | valid_array_2_3;
       valid_array_2_4 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_26 | valid_array_2_4;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_41 | valid_array_2_4;
       valid_array_2_5 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_27 | valid_array_2_5;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_42 | valid_array_2_5;
       valid_array_2_6 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_28 | valid_array_2_6;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_43 | valid_array_2_6;
       valid_array_2_7 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_29 | valid_array_2_7;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_44 | valid_array_2_7;
       valid_array_2_8 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_30 | valid_array_2_8;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_45 | valid_array_2_8;
       valid_array_2_9 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_31 | valid_array_2_9;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_46 | valid_array_2_9;
       valid_array_2_10 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_32 | valid_array_2_10;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_47 | valid_array_2_10;
       valid_array_2_11 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_33 | valid_array_2_11;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_48 | valid_array_2_11;
       valid_array_2_12 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_34 | valid_array_2_12;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_49 | valid_array_2_12;
       valid_array_2_13 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_35 | valid_array_2_13;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_50 | valid_array_2_13;
       valid_array_2_14 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_36 | valid_array_2_14;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_51 | valid_array_2_14;
       valid_array_2_15 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_37 | valid_array_2_15;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_52 | valid_array_2_15;
       valid_array_2_16 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_38 | valid_array_2_16;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_53 | valid_array_2_16;
       valid_array_2_17 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_39 | valid_array_2_17;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_54 | valid_array_2_17;
       valid_array_2_18 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_40 | valid_array_2_18;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_55 | valid_array_2_18;
       valid_array_2_19 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_41 | valid_array_2_19;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_56 | valid_array_2_19;
       valid_array_2_20 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_42 | valid_array_2_20;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_57 | valid_array_2_20;
       valid_array_2_21 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_43 | valid_array_2_21;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_58 | valid_array_2_21;
       valid_array_2_22 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_44 | valid_array_2_22;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_59 | valid_array_2_22;
       valid_array_2_23 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_45 | valid_array_2_23;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_60 | valid_array_2_23;
       valid_array_2_24 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_46 | valid_array_2_24;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_61 | valid_array_2_24;
       valid_array_2_25 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_47 | valid_array_2_25;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_62 | valid_array_2_25;
       valid_array_2_26 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_48 | valid_array_2_26;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_63 | valid_array_2_26;
       valid_array_2_27 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_49 | valid_array_2_27;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_64 | valid_array_2_27;
       valid_array_2_28 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_50 | valid_array_2_28;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_65 | valid_array_2_28;
       valid_array_2_29 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_51 | valid_array_2_29;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_66 | valid_array_2_29;
       valid_array_2_30 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_52 | valid_array_2_30;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_67 | valid_array_2_30;
       valid_array_2_31 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_53 | valid_array_2_31;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_68 | valid_array_2_31;
       valid_array_2_32 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_54 | valid_array_2_32;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_69 | valid_array_2_32;
       valid_array_2_33 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_55 | valid_array_2_33;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_70 | valid_array_2_33;
       valid_array_2_34 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_56 | valid_array_2_34;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_71 | valid_array_2_34;
       valid_array_2_35 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_57 | valid_array_2_35;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_72 | valid_array_2_35;
       valid_array_2_36 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_58 | valid_array_2_36;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_73 | valid_array_2_36;
       valid_array_2_37 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_59 | valid_array_2_37;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_74 | valid_array_2_37;
       valid_array_2_38 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_60 | valid_array_2_38;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_75 | valid_array_2_38;
       valid_array_2_39 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_61 | valid_array_2_39;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_76 | valid_array_2_39;
       valid_array_2_40 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_62 | valid_array_2_40;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_77 | valid_array_2_40;
       valid_array_2_41 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_63 | valid_array_2_41;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_78 | valid_array_2_41;
       valid_array_2_42 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_64 | valid_array_2_42;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_79 | valid_array_2_42;
       valid_array_2_43 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_65 | valid_array_2_43;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_80 | valid_array_2_43;
       valid_array_2_44 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_66 | valid_array_2_44;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_81 | valid_array_2_44;
       valid_array_2_45 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_67 | valid_array_2_45;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_82 | valid_array_2_45;
       valid_array_2_46 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_68 | valid_array_2_46;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_83 | valid_array_2_46;
       valid_array_2_47 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_69 | valid_array_2_47;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_84 | valid_array_2_47;
       valid_array_2_48 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_70 | valid_array_2_48;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_85 | valid_array_2_48;
       valid_array_2_49 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_71 | valid_array_2_49;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_86 | valid_array_2_49;
       valid_array_2_50 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_72 | valid_array_2_50;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_87 | valid_array_2_50;
       valid_array_2_51 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_73 | valid_array_2_51;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_88 | valid_array_2_51;
       valid_array_2_52 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_74 | valid_array_2_52;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_89 | valid_array_2_52;
       valid_array_2_53 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_75 | valid_array_2_53;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_90 | valid_array_2_53;
       valid_array_2_54 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_76 | valid_array_2_54;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_91 | valid_array_2_54;
       valid_array_2_55 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_77 | valid_array_2_55;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_92 | valid_array_2_55;
       valid_array_2_56 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_78 | valid_array_2_56;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_93 | valid_array_2_56;
       valid_array_2_57 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_79 | valid_array_2_57;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_94 | valid_array_2_57;
       valid_array_2_58 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_80 | valid_array_2_58;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_95 | valid_array_2_58;
       valid_array_2_59 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_81 | valid_array_2_59;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_96 | valid_array_2_59;
       valid_array_2_60 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_82 | valid_array_2_60;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_97 | valid_array_2_60;
       valid_array_2_61 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_83 | valid_array_2_61;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_98 | valid_array_2_61;
       valid_array_2_62 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
-        & _GEN_84 | valid_array_2_62;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
+        & _GEN_99 | valid_array_2_62;
       valid_array_2_63 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_13
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last & _GEN_15
         & (&index_reg) | valid_array_2_63;
       valid_array_3_0 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_22 | valid_array_3_0;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_37 | valid_array_3_0;
       valid_array_3_1 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_23 | valid_array_3_1;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_38 | valid_array_3_1;
       valid_array_3_2 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_24 | valid_array_3_2;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_39 | valid_array_3_2;
       valid_array_3_3 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_25 | valid_array_3_3;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_40 | valid_array_3_3;
       valid_array_3_4 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_26 | valid_array_3_4;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_41 | valid_array_3_4;
       valid_array_3_5 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_27 | valid_array_3_5;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_42 | valid_array_3_5;
       valid_array_3_6 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_28 | valid_array_3_6;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_43 | valid_array_3_6;
       valid_array_3_7 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_29 | valid_array_3_7;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_44 | valid_array_3_7;
       valid_array_3_8 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_30 | valid_array_3_8;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_45 | valid_array_3_8;
       valid_array_3_9 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_31 | valid_array_3_9;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_46 | valid_array_3_9;
       valid_array_3_10 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_32 | valid_array_3_10;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_47 | valid_array_3_10;
       valid_array_3_11 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_33 | valid_array_3_11;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_48 | valid_array_3_11;
       valid_array_3_12 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_34 | valid_array_3_12;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_49 | valid_array_3_12;
       valid_array_3_13 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_35 | valid_array_3_13;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_50 | valid_array_3_13;
       valid_array_3_14 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_36 | valid_array_3_14;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_51 | valid_array_3_14;
       valid_array_3_15 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_37 | valid_array_3_15;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_52 | valid_array_3_15;
       valid_array_3_16 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_38 | valid_array_3_16;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_53 | valid_array_3_16;
       valid_array_3_17 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_39 | valid_array_3_17;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_54 | valid_array_3_17;
       valid_array_3_18 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_40 | valid_array_3_18;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_55 | valid_array_3_18;
       valid_array_3_19 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_41 | valid_array_3_19;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_56 | valid_array_3_19;
       valid_array_3_20 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_42 | valid_array_3_20;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_57 | valid_array_3_20;
       valid_array_3_21 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_43 | valid_array_3_21;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_58 | valid_array_3_21;
       valid_array_3_22 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_44 | valid_array_3_22;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_59 | valid_array_3_22;
       valid_array_3_23 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_45 | valid_array_3_23;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_60 | valid_array_3_23;
       valid_array_3_24 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_46 | valid_array_3_24;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_61 | valid_array_3_24;
       valid_array_3_25 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_47 | valid_array_3_25;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_62 | valid_array_3_25;
       valid_array_3_26 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_48 | valid_array_3_26;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_63 | valid_array_3_26;
       valid_array_3_27 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_49 | valid_array_3_27;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_64 | valid_array_3_27;
       valid_array_3_28 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_50 | valid_array_3_28;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_65 | valid_array_3_28;
       valid_array_3_29 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_51 | valid_array_3_29;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_66 | valid_array_3_29;
       valid_array_3_30 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_52 | valid_array_3_30;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_67 | valid_array_3_30;
       valid_array_3_31 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_53 | valid_array_3_31;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_68 | valid_array_3_31;
       valid_array_3_32 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_54 | valid_array_3_32;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_69 | valid_array_3_32;
       valid_array_3_33 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_55 | valid_array_3_33;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_70 | valid_array_3_33;
       valid_array_3_34 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_56 | valid_array_3_34;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_71 | valid_array_3_34;
       valid_array_3_35 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_57 | valid_array_3_35;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_72 | valid_array_3_35;
       valid_array_3_36 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_58 | valid_array_3_36;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_73 | valid_array_3_36;
       valid_array_3_37 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_59 | valid_array_3_37;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_74 | valid_array_3_37;
       valid_array_3_38 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_60 | valid_array_3_38;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_75 | valid_array_3_38;
       valid_array_3_39 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_61 | valid_array_3_39;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_76 | valid_array_3_39;
       valid_array_3_40 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_62 | valid_array_3_40;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_77 | valid_array_3_40;
       valid_array_3_41 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_63 | valid_array_3_41;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_78 | valid_array_3_41;
       valid_array_3_42 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_64 | valid_array_3_42;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_79 | valid_array_3_42;
       valid_array_3_43 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_65 | valid_array_3_43;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_80 | valid_array_3_43;
       valid_array_3_44 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_66 | valid_array_3_44;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_81 | valid_array_3_44;
       valid_array_3_45 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_67 | valid_array_3_45;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_82 | valid_array_3_45;
       valid_array_3_46 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_68 | valid_array_3_46;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_83 | valid_array_3_46;
       valid_array_3_47 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_69 | valid_array_3_47;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_84 | valid_array_3_47;
       valid_array_3_48 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_70 | valid_array_3_48;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_85 | valid_array_3_48;
       valid_array_3_49 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_71 | valid_array_3_49;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_86 | valid_array_3_49;
       valid_array_3_50 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_72 | valid_array_3_50;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_87 | valid_array_3_50;
       valid_array_3_51 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_73 | valid_array_3_51;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_88 | valid_array_3_51;
       valid_array_3_52 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_74 | valid_array_3_52;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_89 | valid_array_3_52;
       valid_array_3_53 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_75 | valid_array_3_53;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_90 | valid_array_3_53;
       valid_array_3_54 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_76 | valid_array_3_54;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_91 | valid_array_3_54;
       valid_array_3_55 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_77 | valid_array_3_55;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_92 | valid_array_3_55;
       valid_array_3_56 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_78 | valid_array_3_56;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_93 | valid_array_3_56;
       valid_array_3_57 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_79 | valid_array_3_57;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_94 | valid_array_3_57;
       valid_array_3_58 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_80 | valid_array_3_58;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_95 | valid_array_3_58;
       valid_array_3_59 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_81 | valid_array_3_59;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_96 | valid_array_3_59;
       valid_array_3_60 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_82 | valid_array_3_60;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_97 | valid_array_3_60;
       valid_array_3_61 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_83 | valid_array_3_61;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_98 | valid_array_3_61;
       valid_array_3_62 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
-        & (&victim_way) & _GEN_84 | valid_array_3_62;
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
+        & (&victim_way) & _GEN_99 | valid_array_3_62;
       valid_array_3_63 <=
-        ~_GEN_11 & _GEN_5 & _GEN_7 & miss_cacheable_reg & io_inst_resp_bits_last
+        ~_GEN_13 & _GEN_7 & _GEN_9 & miss_cacheable_reg & io_inst_resp_bits_last
         & (&victim_way) & (&index_reg) | valid_array_3_63;
-      if (io_flush | ~(_GEN & _GEN_0)) begin
+      if (io_flush) begin
+        refill_cnt <= 3'h0;
+        state <= 3'h0;
       end
       else begin
-        tag_reg <= {1'h0, io_fetch_req_bits_pc[31:12]};
-        index_reg <= io_fetch_req_bits_pc[10:5];
-        offset_reg <= io_fetch_req_bits_pc[4:0];
-        line_base <= {io_fetch_req_bits_pc[31:5], 5'h0};
-        miss_pc_reg <= io_fetch_req_bits_pc;
-        miss_cacheable_reg <= io_fetch_req_bits_pc[31:26] == 6'h28;
+        tag_reg <= casez_tmp_3;
+        index_reg <= casez_tmp_4;
+        offset_reg <= casez_tmp_5;
+        line_base <= casez_tmp_6;
+        miss_pc_reg <= casez_tmp_7;
+        miss_cacheable_reg <= casez_tmp_8;
+        if (_GEN) begin
+          if (_GEN_0)
+            victim_way <= rand_way;
+        end
+        else if (lookup_en | (_GEN_1 ? hit : _GEN_19 | ~_GEN_23)) begin
+        end
+        else
+          victim_way <= rand_way;
+        refill_cnt <= casez_tmp_9;
+        state <= casez_tmp_10;
       end
       if (~_GEN_2) begin
         if (_GEN_1) begin
@@ -3383,52 +4446,23 @@ module ICache1(
               | (hit1 ? _data_array_1_ext_R0_data : 32'h0)
               | (hit2 ? _data_array_2_ext_R0_data : 32'h0)
               | (hit3 ? _data_array_3_ext_R0_data : 32'h0);
-            resp_pc_reg <= line_base + _GEN_21;
+            resp_pc_reg <= line_base + _GEN_36;
           end
         end
         else begin
-          if (_GEN_3 | ~(_GEN_85 & (~miss_cacheable_reg | _GEN_20))) begin
+          if (_GEN_3 | ~(_GEN_35 & (~miss_cacheable_reg | _GEN_34))) begin
           end
           else
             resp_inst_reg <= io_inst_resp_bits_inst;
-          if (_GEN_86) begin
+          if (_GEN_3 | ~_GEN_35) begin
           end
           else if (miss_cacheable_reg) begin
-            if (_GEN_20)
-              resp_pc_reg <= line_base + _GEN_21;
+            if (_GEN_34)
+              resp_pc_reg <= line_base + _GEN_36;
           end
           else
             resp_pc_reg <= miss_pc_reg;
         end
-      end
-      if (io_flush) begin
-        refill_cnt <= 3'h0;
-        state <= 3'h0;
-      end
-      else begin
-        if (_GEN) begin
-          if (_GEN_0) begin
-            victim_way <= rand_way;
-            refill_cnt <= 3'h0;
-          end
-        end
-        else begin
-          if (lookup_en | ~_GEN_1 | hit) begin
-          end
-          else
-            victim_way <= rand_way;
-          if (~lookup_en) begin
-            if (_GEN_1) begin
-              if (~hit)
-                refill_cnt <= 3'h0;
-            end
-            else if (_GEN_86) begin
-            end
-            else
-              refill_cnt <= _GEN_15 ? 3'h0 : refill_cnt + 3'h1;
-          end
-        end
-        state <= casez_tmp_3;
       end
       if (_GEN_2 | ~(_GEN_1 & hit)) begin
       end
@@ -3445,8 +4479,8 @@ module ICache1(
     .R0_en   (lookup_en),
     .R0_clk  (clock),
     .R0_data (_data_array_0_ext_R0_data),
-    .W0_addr (_GEN_9),
-    .W0_en   (~_GEN_11 & _GEN_10 & _GEN_8),
+    .W0_addr (_GEN_11),
+    .W0_en   (~_GEN_13 & _GEN_12 & _GEN_10),
     .W0_clk  (clock),
     .W0_data (io_inst_resp_bits_inst)
   );
@@ -3455,8 +4489,8 @@ module ICache1(
     .R0_en   (lookup_en),
     .R0_clk  (clock),
     .R0_data (_data_array_1_ext_R0_data),
-    .W0_addr (_GEN_9),
-    .W0_en   (~_GEN_11 & _GEN_10 & _GEN_12),
+    .W0_addr (_GEN_11),
+    .W0_en   (~_GEN_13 & _GEN_12 & _GEN_14),
     .W0_clk  (clock),
     .W0_data (io_inst_resp_bits_inst)
   );
@@ -3465,8 +4499,8 @@ module ICache1(
     .R0_en   (lookup_en),
     .R0_clk  (clock),
     .R0_data (_data_array_2_ext_R0_data),
-    .W0_addr (_GEN_9),
-    .W0_en   (~_GEN_11 & _GEN_10 & _GEN_13),
+    .W0_addr (_GEN_11),
+    .W0_en   (~_GEN_13 & _GEN_12 & _GEN_15),
     .W0_clk  (clock),
     .W0_data (io_inst_resp_bits_inst)
   );
@@ -3475,8 +4509,8 @@ module ICache1(
     .R0_en   (lookup_en),
     .R0_clk  (clock),
     .R0_data (_data_array_3_ext_R0_data),
-    .W0_addr (_GEN_9),
-    .W0_en   (~_GEN_11 & _GEN_10 & (&victim_way)),
+    .W0_addr (_GEN_11),
+    .W0_en   (~_GEN_13 & _GEN_12 & (&victim_way)),
     .W0_clk  (clock),
     .W0_data (io_inst_resp_bits_inst)
   );
@@ -3486,7 +4520,7 @@ module ICache1(
     .R0_clk  (clock),
     .R0_data (_tag_array_0_ext_R0_data),
     .W0_addr (index_reg),
-    .W0_en   (~_GEN_11 & _GEN_14 & _GEN_8),
+    .W0_en   (~_GEN_13 & _GEN_16 & _GEN_10),
     .W0_clk  (clock),
     .W0_data (tag_reg)
   );
@@ -3496,7 +4530,7 @@ module ICache1(
     .R0_clk  (clock),
     .R0_data (_tag_array_1_ext_R0_data),
     .W0_addr (index_reg),
-    .W0_en   (~_GEN_11 & _GEN_14 & _GEN_12),
+    .W0_en   (~_GEN_13 & _GEN_16 & _GEN_14),
     .W0_clk  (clock),
     .W0_data (tag_reg)
   );
@@ -3506,7 +4540,7 @@ module ICache1(
     .R0_clk  (clock),
     .R0_data (_tag_array_2_ext_R0_data),
     .W0_addr (index_reg),
-    .W0_en   (~_GEN_11 & _GEN_14 & _GEN_13),
+    .W0_en   (~_GEN_13 & _GEN_16 & _GEN_15),
     .W0_clk  (clock),
     .W0_data (tag_reg)
   );
@@ -3516,7 +4550,7 @@ module ICache1(
     .R0_clk  (clock),
     .R0_data (_tag_array_3_ext_R0_data),
     .W0_addr (index_reg),
-    .W0_en   (~_GEN_11 & _GEN_14 & (&victim_way)),
+    .W0_en   (~_GEN_13 & _GEN_16 & (&victim_way)),
     .W0_clk  (clock),
     .W0_data (tag_reg)
   );
@@ -3534,12 +4568,12 @@ module ICache1(
   );
   assign io_fetch_req_ready = io_fetch_req_ready_0;
   assign io_fetch_resp_valid = io_fetch_resp_valid_0;
-  assign io_fetch_resp_bits_inst = _GEN_17 ? 32'h0 : resp_inst_reg;
-  assign io_fetch_resp_bits_pc = _GEN_17 ? 32'h0 : resp_pc_reg;
+  assign io_fetch_resp_bits_inst = _GEN_21 ? 32'h0 : resp_inst_reg;
+  assign io_fetch_resp_bits_pc = _GEN_21 ? 32'h0 : resp_pc_reg;
   assign io_inst_req_valid = io_inst_req_valid_0;
   assign io_inst_req_bits_pc =
-    _GEN_2 | (_GEN_1 ? hit | miss_cacheable_reg : _GEN_4) ? line_base : miss_pc_reg;
-  assign io_inst_req_bits_burst = _GEN_2 | (_GEN_1 ? hit | miss_cacheable_reg : _GEN_4);
+    _GEN_2 | (_GEN_1 ? hit | miss_cacheable_reg : _GEN_6) ? line_base : miss_pc_reg;
+  assign io_inst_req_bits_burst = _GEN_5 | (_GEN_1 ? hit | miss_cacheable_reg : _GEN_6);
   assign io_inst_resp_ready = io_inst_resp_ready_0;
   assign io_hit_count = hit_count;
   assign io_miss_count = miss_count;
@@ -3577,6 +4611,15 @@ module data_array_512x32_0(
   assign R0_data = _R0_en_d0 ? Memory[_R0_addr_d0] : 32'bx;
 endmodule
 
+
+// Users can define 'PRINTF_COND' to add an extra gate to prints.
+`ifndef PRINTF_COND_
+  `ifdef PRINTF_COND
+    `define PRINTF_COND_ (`PRINTF_COND)
+  `else  // PRINTF_COND
+    `define PRINTF_COND_ 1
+  `endif // PRINTF_COND
+`endif // not def PRINTF_COND_
 module DCache1(
   input         clock,
                 reset,
@@ -6720,7 +7763,7 @@ module DCache1(
       4'b0011:
         casez_tmp_134 = 4'h4;
       4'b0100:
-        casez_tmp_134 = _GEN_34 ? 4'h5 : state;
+        casez_tmp_134 = io_data_req_ready & io_data_req_valid_0 ? 4'h5 : state;
       4'b0101:
         casez_tmp_134 = _GEN_10 ? ((&refill_cnt) ? 4'h6 : 4'h3) : state;
       4'b0110:
@@ -9875,6 +10918,7 @@ module Axi4_MEM_Master(
   reg  [1:0]  state;
   reg  [31:0] req_wdata;
   reg  [3:0]  req_wmask;
+  reg  [31:0] req_waddr;
   wire        _GEN = state == 2'h0;
   wire        _GEN_0 = io_mem_req_valid & io_mem_req_bits_wen;
   wire        _GEN_1 = _GEN & _GEN_0;
@@ -9913,12 +10957,14 @@ module Axi4_MEM_Master(
       state <= 2'h0;
       req_wdata <= 32'h0;
       req_wmask <= 4'h0;
+      req_waddr <= 32'h0;
     end
     else begin
       state <= casez_tmp;
       if (_GEN & (_GEN_0 ? awFire : _GEN_3)) begin
         req_wdata <= io_mem_req_bits_wdata;
         req_wmask <= io_mem_req_bits_wmask;
+        req_waddr <= io_mem_req_bits_waddr;
       end
     end
   end // always @(posedge)
@@ -10663,7 +11709,9 @@ module NPC_CPU(
                 io_i_cnt,
                 io_d_cnt,
                 io_stall_cnt,
-                io_flush_cnt
+                io_flush_cnt,
+                io_bp_total_count,
+                io_bp_hit_count
 );
 
   wire [31:0] _regfile_io_rs1_data;
@@ -10735,6 +11783,7 @@ module NPC_CPU(
   wire [31:0] _icache1_io_inst_req_bits_pc;
   wire        _icache1_io_inst_req_bits_burst;
   wire        _icache1_io_inst_resp_ready;
+  wire [31:0] _bpu_io_pred_next_pc;
   wire        _hazard_unit_io_fs1_fwd_en;
   wire [31:0] _hazard_unit_io_fs1_fwd_data;
   wire        _hazard_unit_io_fs2_fwd_en;
@@ -10747,7 +11796,6 @@ module NPC_CPU(
   wire [11:0] _wb_io_csr_waddr;
   wire [31:0] _wb_io_csr_wdata;
   wire        _wb_io_csr_wen;
-  wire        _wb_io_commit;
   wire [31:0] _wb_io_commit_pc;
   wire        _wb_io_wb_fwd_valid;
   wire [4:0]  _wb_io_wb_fwd_rd_addr;
@@ -10776,6 +11824,9 @@ module NPC_CPU(
   wire        _mem2_io_mem2_fwd_rd_en;
   wire        _mem2_io_mem2_fwd_rd_is_load;
   wire [31:0] _mem2_io_mem2_fwd_val_out;
+  wire        _mem2_io_load_tag_commit_valid;
+  wire [4:0]  _mem2_io_load_tag_commit_rd;
+  wire [5:0]  _mem2_io_load_tag_commit_tag;
   wire        _mem1_io_in_ready;
   wire        _mem1_io_out_valid;
   wire [31:0] _mem1_io_out_bits_pc;
@@ -10783,6 +11834,7 @@ module NPC_CPU(
   wire [31:0] _mem1_io_out_bits_addr;
   wire [4:0]  _mem1_io_out_bits_rd_addr;
   wire        _mem1_io_out_bits_rd_en;
+  wire [5:0]  _mem1_io_out_bits_load_tag;
   wire [31:0] _mem1_io_out_bits_csr_wdata;
   wire        _mem1_io_out_bits_csr_wen;
   wire [11:0] _mem1_io_out_bits_csr_waddr;
@@ -10814,6 +11866,7 @@ module NPC_CPU(
   wire [31:0] _exu_io_out_bits_rs2_data;
   wire [4:0]  _exu_io_out_bits_rd_addr;
   wire        _exu_io_out_bits_rd_en;
+  wire [5:0]  _exu_io_out_bits_load_tag;
   wire [31:0] _exu_io_out_bits_csr_wdata;
   wire        _exu_io_out_bits_csr_wen;
   wire [11:0] _exu_io_out_bits_csr_waddr;
@@ -10840,11 +11893,21 @@ module NPC_CPU(
   wire        _exu_io_branch_bits_is_ecall;
   wire        _exu_io_branch_bits_is_mret;
   wire [31:0] _exu_io_branch_bits_pc_csr;
+  wire        _exu_io_branch_bits_is_redirect;
+  wire [31:0] _exu_io_branch_bits_redirect_pc;
   wire        _exu_io_exu_fwd_valid;
   wire [4:0]  _exu_io_exu_fwd_rd_addr;
   wire        _exu_io_exu_fwd_rd_en;
   wire        _exu_io_exu_fwd_rd_is_load;
   wire [31:0] _exu_io_exu_fwd_val_out;
+  wire        _exu_io_load_tag_alloc_valid;
+  wire [4:0]  _exu_io_load_tag_alloc_rd;
+  wire [5:0]  _exu_io_load_tag_alloc_tag;
+  wire        _exu_io_bpu_update_valid;
+  wire [31:0] _exu_io_bpu_update_pc;
+  wire        _exu_io_bpu_update_taken;
+  wire [31:0] _exu_io_bpu_update_target;
+  wire        _exu_io_bpu_update_is_branch;
   wire        _idu_io_in_ready;
   wire        _idu_io_out_valid;
   wire [31:0] _idu_io_out_bits_pc;
@@ -10895,27 +11958,25 @@ module NPC_CPU(
   wire [31:0] _ifu2_io_out_bits_inst;
   wire        _ifu2_io_inst_resp_ready;
   wire        _ifu1_io_out_valid;
-  wire        _ifu1_io_out_bits_kill;
+  wire [31:0] _ifu1_io_out_bits_pc;
   wire        _ifu1_io_inst_req_valid;
   wire [31:0] _ifu1_io_inst_req_bits_pc;
+  wire [31:0] _ifu1_io_bpu_pred_pc;
   wire        _ifu1_io_flush;
   wire        idu_io_stall = _hazard_unit_io_stall & ~_ifu1_io_flush;
   reg  [31:0] stall_cnt;
   reg  [31:0] flush_cnt;
-  reg         busy;
   wire        _GEN = _wb_io_commit_pc > 32'hA000FFFF;
   always @(posedge clock) begin
     if (reset) begin
       stall_cnt <= 32'h0;
       flush_cnt <= 32'h0;
-      busy <= 1'h0;
     end
     else begin
       if (idu_io_stall & _GEN)
         stall_cnt <= stall_cnt + 32'h1;
       if (_ifu1_io_flush & _GEN)
         flush_cnt <= flush_cnt + 32'h1;
-      busy <= ~_wb_io_commit & (_idu_io_in_ready & _ifu2_io_out_valid | busy);
     end
   end // always @(posedge)
   IFU1 ifu1 (
@@ -10923,7 +11984,7 @@ module NPC_CPU(
     .reset                      (reset),
     .io_out_ready               (_ifu2_io_in_ready),
     .io_out_valid               (_ifu1_io_out_valid),
-    .io_out_bits_kill           (_ifu1_io_out_bits_kill),
+    .io_out_bits_pc             (_ifu1_io_out_bits_pc),
     .io_in_valid                (_exu_io_branch_valid),
     .io_in_bits_pc_branch       (_exu_io_branch_bits_pc_branch),
     .io_in_bits_pc_jal          (_exu_io_branch_bits_pc_jal),
@@ -10934,9 +11995,13 @@ module NPC_CPU(
     .io_in_bits_is_ecall        (_exu_io_branch_bits_is_ecall),
     .io_in_bits_is_mret         (_exu_io_branch_bits_is_mret),
     .io_in_bits_pc_csr          (_exu_io_branch_bits_pc_csr),
+    .io_in_bits_is_redirect     (_exu_io_branch_bits_is_redirect),
+    .io_in_bits_redirect_pc     (_exu_io_branch_bits_redirect_pc),
     .io_inst_req_ready          (_icache1_io_fetch_req_ready),
     .io_inst_req_valid          (_ifu1_io_inst_req_valid),
     .io_inst_req_bits_pc        (_ifu1_io_inst_req_bits_pc),
+    .io_bpu_pred_pc             (_ifu1_io_bpu_pred_pc),
+    .io_bpu_pred_next_pc        (_bpu_io_pred_next_pc),
     .io_stall                   (idu_io_stall),
     .io_flush                   (_ifu1_io_flush)
   );
@@ -10945,7 +12010,7 @@ module NPC_CPU(
     .reset                  (reset),
     .io_in_ready            (_ifu2_io_in_ready),
     .io_in_valid            (_ifu1_io_out_valid),
-    .io_in_bits_kill        (_ifu1_io_out_bits_kill),
+    .io_in_bits_pc          (_ifu1_io_out_bits_pc),
     .io_out_ready           (_idu_io_in_ready),
     .io_out_valid           (_ifu2_io_out_valid),
     .io_out_bits_pc         (_ifu2_io_out_bits_pc),
@@ -11008,7 +12073,6 @@ module NPC_CPU(
     .io_csr_rdata          (_csr_io_csr_rdata),
     .io_is_ecall           (_idu_io_is_ecall),
     .io_is_mret            (_idu_io_is_mret),
-    .io_busy               (busy),
     .io_fwd_rs1_en         (_hazard_unit_io_fs1_fwd_en),
     .io_fwd_rs2_en         (_hazard_unit_io_fs2_fwd_en),
     .io_fwd_rs1_data       (_hazard_unit_io_fs1_fwd_data),
@@ -11066,6 +12130,7 @@ module NPC_CPU(
     .io_out_bits_rs2_data           (_exu_io_out_bits_rs2_data),
     .io_out_bits_rd_addr            (_exu_io_out_bits_rd_addr),
     .io_out_bits_rd_en              (_exu_io_out_bits_rd_en),
+    .io_out_bits_load_tag           (_exu_io_out_bits_load_tag),
     .io_out_bits_csr_wdata          (_exu_io_out_bits_csr_wdata),
     .io_out_bits_csr_wen            (_exu_io_out_bits_csr_wen),
     .io_out_bits_csr_waddr          (_exu_io_out_bits_csr_waddr),
@@ -11092,11 +12157,23 @@ module NPC_CPU(
     .io_branch_bits_is_ecall        (_exu_io_branch_bits_is_ecall),
     .io_branch_bits_is_mret         (_exu_io_branch_bits_is_mret),
     .io_branch_bits_pc_csr          (_exu_io_branch_bits_pc_csr),
+    .io_branch_bits_is_redirect     (_exu_io_branch_bits_is_redirect),
+    .io_branch_bits_redirect_pc     (_exu_io_branch_bits_redirect_pc),
     .io_exu_fwd_valid               (_exu_io_exu_fwd_valid),
     .io_exu_fwd_rd_addr             (_exu_io_exu_fwd_rd_addr),
     .io_exu_fwd_rd_en               (_exu_io_exu_fwd_rd_en),
     .io_exu_fwd_rd_is_load          (_exu_io_exu_fwd_rd_is_load),
-    .io_exu_fwd_val_out             (_exu_io_exu_fwd_val_out)
+    .io_exu_fwd_val_out             (_exu_io_exu_fwd_val_out),
+    .io_load_tag_alloc_valid        (_exu_io_load_tag_alloc_valid),
+    .io_load_tag_alloc_rd           (_exu_io_load_tag_alloc_rd),
+    .io_load_tag_alloc_tag          (_exu_io_load_tag_alloc_tag),
+    .io_bpu_update_valid            (_exu_io_bpu_update_valid),
+    .io_bpu_update_pc               (_exu_io_bpu_update_pc),
+    .io_bpu_update_taken            (_exu_io_bpu_update_taken),
+    .io_bpu_update_target           (_exu_io_bpu_update_target),
+    .io_bpu_update_is_branch        (_exu_io_bpu_update_is_branch),
+    .io_bp_total_count              (io_bp_total_count),
+    .io_bp_hit_count                (io_bp_hit_count)
   );
   MEM1 mem1 (
     .clock                  (clock),
@@ -11109,6 +12186,7 @@ module NPC_CPU(
     .io_in_bits_rs2_data    (_exu_io_out_bits_rs2_data),
     .io_in_bits_rd_addr     (_exu_io_out_bits_rd_addr),
     .io_in_bits_rd_en       (_exu_io_out_bits_rd_en),
+    .io_in_bits_load_tag    (_exu_io_out_bits_load_tag),
     .io_in_bits_csr_wdata   (_exu_io_out_bits_csr_wdata),
     .io_in_bits_csr_wen     (_exu_io_out_bits_csr_wen),
     .io_in_bits_csr_waddr   (_exu_io_out_bits_csr_waddr),
@@ -11132,6 +12210,7 @@ module NPC_CPU(
     .io_out_bits_addr       (_mem1_io_out_bits_addr),
     .io_out_bits_rd_addr    (_mem1_io_out_bits_rd_addr),
     .io_out_bits_rd_en      (_mem1_io_out_bits_rd_en),
+    .io_out_bits_load_tag   (_mem1_io_out_bits_load_tag),
     .io_out_bits_csr_wdata  (_mem1_io_out_bits_csr_wdata),
     .io_out_bits_csr_wen    (_mem1_io_out_bits_csr_wen),
     .io_out_bits_csr_waddr  (_mem1_io_out_bits_csr_waddr),
@@ -11158,56 +12237,60 @@ module NPC_CPU(
     .io_mem_req_bits_bypass (_mem1_io_mem_req_bits_bypass)
   );
   MEM2 mem2 (
-    .clock                  (clock),
-    .reset                  (reset),
-    .io_in_ready            (_mem2_io_in_ready),
-    .io_in_valid            (_mem1_io_out_valid),
-    .io_in_bits_pc          (_mem1_io_out_bits_pc),
-    .io_in_bits_inst        (_mem1_io_out_bits_inst),
-    .io_in_bits_addr        (_mem1_io_out_bits_addr),
-    .io_in_bits_rd_addr     (_mem1_io_out_bits_rd_addr),
-    .io_in_bits_rd_en       (_mem1_io_out_bits_rd_en),
-    .io_in_bits_csr_wdata   (_mem1_io_out_bits_csr_wdata),
-    .io_in_bits_csr_wen     (_mem1_io_out_bits_csr_wen),
-    .io_in_bits_csr_waddr   (_mem1_io_out_bits_csr_waddr),
-    .io_in_bits_csr_rdata   (_mem1_io_out_bits_csr_rdata),
-    .io_in_bits_is_csrrw    (_mem1_io_out_bits_is_csrrw),
-    .io_in_bits_is_csrrs    (_mem1_io_out_bits_is_csrrs),
-    .io_in_bits_is_load     (_mem1_io_out_bits_is_load),
-    .io_in_bits_is_store    (_mem1_io_out_bits_is_store),
-    .io_in_bits_is_lb       (_mem1_io_out_bits_is_lb),
-    .io_in_bits_is_lbu      (_mem1_io_out_bits_is_lbu),
-    .io_in_bits_is_lh       (_mem1_io_out_bits_is_lh),
-    .io_in_bits_is_lhu      (_mem1_io_out_bits_is_lhu),
-    .io_in_bits_is_jalr     (_mem1_io_out_bits_is_jalr),
-    .io_in_bits_is_jal      (_mem1_io_out_bits_is_jal),
-    .io_out_ready           (_wb_io_in_ready),
-    .io_out_valid           (_mem2_io_out_valid),
-    .io_out_bits_pc         (_mem2_io_out_bits_pc),
-    .io_out_bits_inst       (_mem2_io_out_bits_inst),
-    .io_out_bits_addr       (_mem2_io_out_bits_addr),
-    .io_out_bits_rd_addr    (_mem2_io_out_bits_rd_addr),
-    .io_out_bits_rd_en      (_mem2_io_out_bits_rd_en),
-    .io_out_bits_mem_data   (_mem2_io_out_bits_mem_data),
-    .io_out_bits_is_load    (_mem2_io_out_bits_is_load),
-    .io_out_bits_is_jalr    (_mem2_io_out_bits_is_jalr),
-    .io_out_bits_is_jal     (_mem2_io_out_bits_is_jal),
-    .io_out_bits_csr_wdata  (_mem2_io_out_bits_csr_wdata),
-    .io_out_bits_csr_wen    (_mem2_io_out_bits_csr_wen),
-    .io_out_bits_csr_waddr  (_mem2_io_out_bits_csr_waddr),
-    .io_out_bits_csr_rdata  (_mem2_io_out_bits_csr_rdata),
-    .io_out_bits_is_csrrw   (_mem2_io_out_bits_is_csrrw),
-    .io_out_bits_is_csrrs   (_mem2_io_out_bits_is_csrrs),
-    .io_mem_resp_ready      (_mem2_io_mem_resp_ready),
-    .io_mem_resp_valid      (_dcache1_io_dcache_resp_valid),
-    .io_mem_resp_bits_addr  (_dcache1_io_dcache_resp_bits_addr),
-    .io_mem_resp_bits_data  (_dcache1_io_dcache_resp_bits_data),
-    .io_mem2_fwd_valid      (_mem2_io_mem2_fwd_valid),
-    .io_mem2_fwd_rd_addr    (_mem2_io_mem2_fwd_rd_addr),
-    .io_mem2_fwd_rd_en      (_mem2_io_mem2_fwd_rd_en),
-    .io_mem2_fwd_rd_is_load (_mem2_io_mem2_fwd_rd_is_load),
-    .io_mem2_fwd_val_out    (_mem2_io_mem2_fwd_val_out),
-    .io_d_cnt               (io_d_cnt)
+    .clock                    (clock),
+    .reset                    (reset),
+    .io_in_ready              (_mem2_io_in_ready),
+    .io_in_valid              (_mem1_io_out_valid),
+    .io_in_bits_pc            (_mem1_io_out_bits_pc),
+    .io_in_bits_inst          (_mem1_io_out_bits_inst),
+    .io_in_bits_addr          (_mem1_io_out_bits_addr),
+    .io_in_bits_rd_addr       (_mem1_io_out_bits_rd_addr),
+    .io_in_bits_rd_en         (_mem1_io_out_bits_rd_en),
+    .io_in_bits_load_tag      (_mem1_io_out_bits_load_tag),
+    .io_in_bits_csr_wdata     (_mem1_io_out_bits_csr_wdata),
+    .io_in_bits_csr_wen       (_mem1_io_out_bits_csr_wen),
+    .io_in_bits_csr_waddr     (_mem1_io_out_bits_csr_waddr),
+    .io_in_bits_csr_rdata     (_mem1_io_out_bits_csr_rdata),
+    .io_in_bits_is_csrrw      (_mem1_io_out_bits_is_csrrw),
+    .io_in_bits_is_csrrs      (_mem1_io_out_bits_is_csrrs),
+    .io_in_bits_is_load       (_mem1_io_out_bits_is_load),
+    .io_in_bits_is_store      (_mem1_io_out_bits_is_store),
+    .io_in_bits_is_lb         (_mem1_io_out_bits_is_lb),
+    .io_in_bits_is_lbu        (_mem1_io_out_bits_is_lbu),
+    .io_in_bits_is_lh         (_mem1_io_out_bits_is_lh),
+    .io_in_bits_is_lhu        (_mem1_io_out_bits_is_lhu),
+    .io_in_bits_is_jalr       (_mem1_io_out_bits_is_jalr),
+    .io_in_bits_is_jal        (_mem1_io_out_bits_is_jal),
+    .io_out_ready             (_wb_io_in_ready),
+    .io_out_valid             (_mem2_io_out_valid),
+    .io_out_bits_pc           (_mem2_io_out_bits_pc),
+    .io_out_bits_inst         (_mem2_io_out_bits_inst),
+    .io_out_bits_addr         (_mem2_io_out_bits_addr),
+    .io_out_bits_rd_addr      (_mem2_io_out_bits_rd_addr),
+    .io_out_bits_rd_en        (_mem2_io_out_bits_rd_en),
+    .io_out_bits_mem_data     (_mem2_io_out_bits_mem_data),
+    .io_out_bits_is_load      (_mem2_io_out_bits_is_load),
+    .io_out_bits_is_jalr      (_mem2_io_out_bits_is_jalr),
+    .io_out_bits_is_jal       (_mem2_io_out_bits_is_jal),
+    .io_out_bits_csr_wdata    (_mem2_io_out_bits_csr_wdata),
+    .io_out_bits_csr_wen      (_mem2_io_out_bits_csr_wen),
+    .io_out_bits_csr_waddr    (_mem2_io_out_bits_csr_waddr),
+    .io_out_bits_csr_rdata    (_mem2_io_out_bits_csr_rdata),
+    .io_out_bits_is_csrrw     (_mem2_io_out_bits_is_csrrw),
+    .io_out_bits_is_csrrs     (_mem2_io_out_bits_is_csrrs),
+    .io_mem_resp_ready        (_mem2_io_mem_resp_ready),
+    .io_mem_resp_valid        (_dcache1_io_dcache_resp_valid),
+    .io_mem_resp_bits_addr    (_dcache1_io_dcache_resp_bits_addr),
+    .io_mem_resp_bits_data    (_dcache1_io_dcache_resp_bits_data),
+    .io_mem2_fwd_valid        (_mem2_io_mem2_fwd_valid),
+    .io_mem2_fwd_rd_addr      (_mem2_io_mem2_fwd_rd_addr),
+    .io_mem2_fwd_rd_en        (_mem2_io_mem2_fwd_rd_en),
+    .io_mem2_fwd_rd_is_load   (_mem2_io_mem2_fwd_rd_is_load),
+    .io_mem2_fwd_val_out      (_mem2_io_mem2_fwd_val_out),
+    .io_load_tag_commit_valid (_mem2_io_load_tag_commit_valid),
+    .io_load_tag_commit_rd    (_mem2_io_load_tag_commit_rd),
+    .io_load_tag_commit_tag   (_mem2_io_load_tag_commit_tag),
+    .io_d_cnt                 (io_d_cnt)
   );
   WB wb (
     .clock                (clock),
@@ -11235,7 +12318,7 @@ module NPC_CPU(
     .io_csr_waddr         (_wb_io_csr_waddr),
     .io_csr_wdata         (_wb_io_csr_wdata),
     .io_csr_wen           (_wb_io_csr_wen),
-    .io_commit            (_wb_io_commit),
+    .io_commit            (io_difftest_valid),
     .io_commit_pc         (_wb_io_commit_pc),
     .io_commit_inst       (io_commit_inst),
     .io_wb_fwd_valid      (_wb_io_wb_fwd_valid),
@@ -11244,29 +12327,48 @@ module NPC_CPU(
     .io_wb_fwd_val_out    (_wb_io_wb_fwd_val_out)
   );
   HazardUnit hazard_unit (
-    .io_exu_fwd_valid       (_exu_io_exu_fwd_valid),
-    .io_exu_fwd_rd_addr     (_exu_io_exu_fwd_rd_addr),
-    .io_exu_fwd_rd_en       (_exu_io_exu_fwd_rd_en),
-    .io_exu_fwd_rd_is_load  (_exu_io_exu_fwd_rd_is_load),
-    .io_exu_fwd_val_out     (_exu_io_exu_fwd_val_out),
-    .io_mem2_fwd_valid      (_mem2_io_mem2_fwd_valid),
-    .io_mem2_fwd_rd_addr    (_mem2_io_mem2_fwd_rd_addr),
-    .io_mem2_fwd_rd_en      (_mem2_io_mem2_fwd_rd_en),
-    .io_mem2_fwd_rd_is_load (_mem2_io_mem2_fwd_rd_is_load),
-    .io_mem2_fwd_val_out    (_mem2_io_mem2_fwd_val_out),
-    .io_wb_fwd_valid        (_wb_io_wb_fwd_valid),
-    .io_wb_fwd_rd_addr      (_wb_io_wb_fwd_rd_addr),
-    .io_wb_fwd_rd_en        (_wb_io_wb_fwd_rd_en),
-    .io_wb_fwd_val_out      (_wb_io_wb_fwd_val_out),
-    .io_id_rs1              (_idu_io_id_rs1),
-    .io_id_rs2              (_idu_io_id_rs2),
-    .io_use_rs1             (_idu_io_use_rs1),
-    .io_use_rs2             (_idu_io_use_rs2),
-    .io_fs1_fwd_en          (_hazard_unit_io_fs1_fwd_en),
-    .io_fs1_fwd_data        (_hazard_unit_io_fs1_fwd_data),
-    .io_fs2_fwd_en          (_hazard_unit_io_fs2_fwd_en),
-    .io_fs2_fwd_data        (_hazard_unit_io_fs2_fwd_data),
-    .io_stall               (_hazard_unit_io_stall)
+    .clock                    (clock),
+    .reset                    (reset),
+    .io_exu_fwd_valid         (_exu_io_exu_fwd_valid),
+    .io_exu_fwd_rd_addr       (_exu_io_exu_fwd_rd_addr),
+    .io_exu_fwd_rd_en         (_exu_io_exu_fwd_rd_en),
+    .io_exu_fwd_rd_is_load    (_exu_io_exu_fwd_rd_is_load),
+    .io_exu_fwd_val_out       (_exu_io_exu_fwd_val_out),
+    .io_mem2_fwd_valid        (_mem2_io_mem2_fwd_valid),
+    .io_mem2_fwd_rd_addr      (_mem2_io_mem2_fwd_rd_addr),
+    .io_mem2_fwd_rd_en        (_mem2_io_mem2_fwd_rd_en),
+    .io_mem2_fwd_rd_is_load   (_mem2_io_mem2_fwd_rd_is_load),
+    .io_mem2_fwd_val_out      (_mem2_io_mem2_fwd_val_out),
+    .io_wb_fwd_valid          (_wb_io_wb_fwd_valid),
+    .io_wb_fwd_rd_addr        (_wb_io_wb_fwd_rd_addr),
+    .io_wb_fwd_rd_en          (_wb_io_wb_fwd_rd_en),
+    .io_wb_fwd_val_out        (_wb_io_wb_fwd_val_out),
+    .io_load_tag_alloc_valid  (_exu_io_load_tag_alloc_valid),
+    .io_load_tag_alloc_rd     (_exu_io_load_tag_alloc_rd),
+    .io_load_tag_alloc_tag    (_exu_io_load_tag_alloc_tag),
+    .io_load_tag_commit_valid (_mem2_io_load_tag_commit_valid),
+    .io_load_tag_commit_rd    (_mem2_io_load_tag_commit_rd),
+    .io_load_tag_commit_tag   (_mem2_io_load_tag_commit_tag),
+    .io_id_rs1                (_idu_io_id_rs1),
+    .io_id_rs2                (_idu_io_id_rs2),
+    .io_use_rs1               (_idu_io_use_rs1),
+    .io_use_rs2               (_idu_io_use_rs2),
+    .io_fs1_fwd_en            (_hazard_unit_io_fs1_fwd_en),
+    .io_fs1_fwd_data          (_hazard_unit_io_fs1_fwd_data),
+    .io_fs2_fwd_en            (_hazard_unit_io_fs2_fwd_en),
+    .io_fs2_fwd_data          (_hazard_unit_io_fs2_fwd_data),
+    .io_stall                 (_hazard_unit_io_stall)
+  );
+  BPU bpu (
+    .clock               (clock),
+    .reset               (reset),
+    .io_pred_pc          (_ifu1_io_bpu_pred_pc),
+    .io_pred_next_pc     (_bpu_io_pred_next_pc),
+    .io_update_valid     (_exu_io_bpu_update_valid),
+    .io_update_pc        (_exu_io_bpu_update_pc),
+    .io_update_taken     (_exu_io_bpu_update_taken),
+    .io_update_target    (_exu_io_bpu_update_target),
+    .io_update_is_branch (_exu_io_bpu_update_is_branch)
   );
   ICache1 icache1 (
     .clock                   (clock),
@@ -11512,7 +12614,6 @@ module NPC_CPU(
     .io_regs_out_31 (io_regs_out_31)
   );
   assign io_commit_pc = _wb_io_commit_pc;
-  assign io_difftest_valid = _wb_io_commit;
   assign io_stall_cnt = stall_cnt;
   assign io_flush_cnt = flush_cnt;
 endmodule
@@ -11583,6 +12684,7 @@ module top(
   output [31:0] io_slave_rdata,
   output        io_slave_rlast,
   output [3:0]  io_slave_rid,
+  output        io_halt,
   output [31:0] io_gpr_0,
                 io_gpr_1,
                 io_gpr_2,
@@ -11660,6 +12762,10 @@ module top(
   wire [31:0] _npc_cpu_io_d_cnt;
   wire [31:0] _npc_cpu_io_stall_cnt;
   wire [31:0] _npc_cpu_io_flush_cnt;
+  wire [31:0] _npc_cpu_io_bp_total_count;
+  wire [31:0] _npc_cpu_io_bp_hit_count;
+  wire        io_halt_0 =
+    _npc_cpu_io_commit_inst == 32'h100073 & _npc_cpu_io_difftest_valid;
   NPC_CPU npc_cpu (
     .clock                (clock),
     .reset                (reset),
@@ -11727,10 +12833,12 @@ module top(
     .io_i_cnt             (_npc_cpu_io_i_cnt),
     .io_d_cnt             (_npc_cpu_io_d_cnt),
     .io_stall_cnt         (_npc_cpu_io_stall_cnt),
-    .io_flush_cnt         (_npc_cpu_io_flush_cnt)
+    .io_flush_cnt         (_npc_cpu_io_flush_cnt),
+    .io_bp_total_count    (_npc_cpu_io_bp_total_count),
+    .io_bp_hit_count      (_npc_cpu_io_bp_hit_count)
   );
   EbreakBlackBox ebreak_box (
-    .is_ebreak (_npc_cpu_io_commit_inst == 32'h100073 & _npc_cpu_io_difftest_valid)
+    .is_ebreak (io_halt_0)
   );
   DifftestDPI difftest_dpi (
     .pc                (_npc_cpu_io_commit_pc),
@@ -11776,7 +12884,9 @@ module top(
     .i_cnt             (_npc_cpu_io_i_cnt),
     .d_cnt             (_npc_cpu_io_d_cnt),
     .stall_cnt         (_npc_cpu_io_stall_cnt),
-    .flush_cnt         (_npc_cpu_io_flush_cnt)
+    .flush_cnt         (_npc_cpu_io_flush_cnt),
+    .bp_total_count    (_npc_cpu_io_bp_total_count),
+    .bp_hit_count      (_npc_cpu_io_bp_hit_count)
   );
   assign io_pc = _npc_cpu_io_commit_pc;
   assign io_inst = _npc_cpu_io_commit_inst;
@@ -11795,6 +12905,7 @@ module top(
   assign io_slave_rdata = 32'h0;
   assign io_slave_rlast = 1'h0;
   assign io_slave_rid = 4'h0;
+  assign io_halt = io_halt_0;
   assign io_gpr_0 = 32'h0;
   assign io_gpr_1 = _npc_cpu_io_regs_out_1;
   assign io_gpr_2 = _npc_cpu_io_regs_out_2;
@@ -11891,7 +13002,9 @@ module DifftestDPI(
     input  [31:0] i_cnt,
     input  [31:0] d_cnt,
     input  [31:0] stall_cnt,
-    input  [31:0] flush_cnt
+    input  [31:0] flush_cnt,
+    input  [31:0] bp_total_count,
+    input  [31:0] bp_hit_count
 );
 
     function int get_pc();
@@ -11992,6 +13105,16 @@ module DifftestDPI(
         get_flush_cnt = flush_cnt;
     endfunction
     export "DPI-C" function get_flush_cnt;
+
+    function int get_bp_total_count();
+        get_bp_total_count = bp_total_count;
+    endfunction
+    export "DPI-C" function get_bp_total_count;
+
+    function int get_bp_hit_count();
+        get_bp_hit_count = bp_hit_count;
+    endfunction
+    export "DPI-C" function get_bp_hit_count;
 
 endmodule
         

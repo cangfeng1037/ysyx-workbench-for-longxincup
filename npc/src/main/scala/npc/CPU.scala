@@ -8,6 +8,7 @@ import bus.Axi4_MEM_Master
 import bus.AXI_ARB2TO1
 import npc.chisel_src.cache.ICache1
 import npc.chisel_src.cache.DCache1
+import npc.chisel_src.BranchPredictor.BPU
 
 // 五个步骤：取指，译码，执行，访存，写回
 
@@ -37,6 +38,8 @@ class NPC_CPU extends Module {
 
         val stall_cnt = Output(UInt(32.W))
         val flush_cnt = Output(UInt(32.W))
+        val bp_total_count = Output(UInt(32.W))
+        val bp_hit_count = Output(UInt(32.W))
     })
 
 /* ======================= 流水段相关 ====================== */
@@ -59,6 +62,7 @@ class NPC_CPU extends Module {
     val frontend_flush = ifu1.io.flush
     ifu2.io.flush := frontend_flush
     idu.io.flush := frontend_flush
+    // EXU 的 flush 输入已移除
 
 /* ====================== 流水段前递相关 =======================*/
     val hazard_unit = Module(new HazardUnit())
@@ -73,11 +77,31 @@ class NPC_CPU extends Module {
     hazard_unit.io.id_rs2 := idu.io.id_rs2
     hazard_unit.io.use_rs1 := idu.io.use_rs1
     hazard_unit.io.use_rs2 := idu.io.use_rs2
+    hazard_unit.io.load_tag_alloc_valid := exu.io.load_tag_alloc_valid
+    hazard_unit.io.load_tag_alloc_rd := exu.io.load_tag_alloc_rd
+    hazard_unit.io.load_tag_alloc_tag := exu.io.load_tag_alloc_tag
+    hazard_unit.io.load_tag_commit_valid := mem2.io.load_tag_commit_valid
+    hazard_unit.io.load_tag_commit_rd := mem2.io.load_tag_commit_rd
+    hazard_unit.io.load_tag_commit_tag := mem2.io.load_tag_commit_tag
 
     val frontend_stall = hazard_unit.io.stall && !frontend_flush
     ifu1.io.stall := frontend_stall
     ifu2.io.stall := frontend_stall
     idu.io.stall := frontend_stall
+
+/* ======================= 分支预测器相关 ====================== */
+    val bpu = Module(new BPU())
+
+    // IFU1 <-> BPU
+    bpu.io.pred_pc := ifu1.io.bpu_pred_pc
+    ifu1.io.bpu_pred_next_pc := bpu.io.pred_next_pc
+
+    // EXU -> BPU 训练
+    bpu.io.update_valid := exu.io.bpu_update_valid
+    bpu.io.update_pc := exu.io.bpu_update_pc
+    bpu.io.update_taken := exu.io.bpu_update_taken
+    bpu.io.update_target := exu.io.bpu_update_target
+    bpu.io.update_is_branch := exu.io.bpu_update_is_branch
 
 /* ======================= 性能计数器 ====================== */
     val stall_cnt = RegInit(0.U(32.W))
@@ -87,6 +111,8 @@ class NPC_CPU extends Module {
 
     io.stall_cnt := stall_cnt
     io.flush_cnt := flush_cnt
+    io.bp_total_count := exu.io.bp_total_count
+    io.bp_hit_count := exu.io.bp_hit_count
 
 
 /* ====================== cache相关 ====================== */
@@ -174,12 +200,6 @@ class NPC_CPU extends Module {
 // ======================= Difftest 相关 ================== */
 
     // 在此添加difftest信号，在wb.commit后执行difftest，传到top供cpp调用
-    val busy = RegInit(false.B)
-    idu.io.busy := busy
-    ifu2.io.busy := busy
-
-    when(idu.io.in.fire) { busy := true.B }
-    when(wb.io.commit) { busy := false.B }
 
     io.difftest_valid := wb.io.commit
 
@@ -196,4 +216,8 @@ class NPC_CPU extends Module {
     io.slave.rdata   := 0.U
     io.slave.rlast   := false.B
     io.slave.rid     := 0.U
+
+
+    
+
 }

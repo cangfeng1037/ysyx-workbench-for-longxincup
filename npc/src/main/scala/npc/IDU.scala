@@ -10,7 +10,7 @@ class ID2EX extends Bundle {
     val inst     = UInt(32.W)
     val rd_addr  = UInt(5.W)
     val rd_en    = Bool()
-    
+
     val alu_a    = UInt(32.W)
     val alu_b    = UInt(32.W)
     val alu_op   = UInt(4.W)
@@ -67,7 +67,6 @@ class IDU extends Module {
         val csr_rdata = Input(UInt(32.W))
         val is_ecall  = Output(Bool())
         val is_mret   = Output(Bool())
-        val busy = Input(Bool())
 
         // 前递相关信号
         val fwd_rs1_en = Input(Bool())
@@ -89,11 +88,12 @@ class IDU extends Module {
     val state = RegInit(s_idle)
 
     // 默认信号：stall时保持当前译码态，flush时清空并优先级更高
-    io.in.ready := (state === s_idle) && !io.busy && !io.stall && !io.flush
+    io.in.ready := (state === s_idle) && !io.stall && !io.flush
     io.out.valid := (state === s_decode) && !io.stall && !io.flush
-    
+
     val inst = RegInit(0.U(32.W))
     val pc = RegInit(0.U(32.W))
+
     // 状态机实现
     switch(state) {
         is (s_idle) {
@@ -119,8 +119,6 @@ class IDU extends Module {
         pc := 0.U
     }
 
-
-
     // 根据inst译码
     val opcode   = inst(6, 0)
     val rd_addr  = inst(11, 7)
@@ -142,7 +140,7 @@ class IDU extends Module {
     val is_andi  = opcode === "b0010011".U && funct3 === "b111".U
     val is_ori   = opcode === "b0010011".U && funct3 === "b110".U
     val is_xori  = opcode === "b0010011".U && funct3 === "b100".U
-    
+
     val is_lw    = opcode === "b0000011".U && funct3 === "b010".U
     val is_lbu   = opcode === "b0000011".U && funct3 === "b100".U
     val is_lh    = opcode === "b0000011".U && funct3 === "b001".U
@@ -156,10 +154,10 @@ class IDU extends Module {
     val is_srai  = opcode === "b0010011".U && funct3 === "b101".U && inst(30) === 1.U
     val is_srli  = opcode === "b0010011".U && funct3 === "b101".U && inst(30) === 0.U
     val is_slli  = opcode === "b0010011".U && funct3 === "b001".U
-    
+
     val is_jal   = opcode === "b1101111".U
     val is_jalr  = opcode === "b1100111".U && funct3 === "b000".U
-    
+
     val is_add   = opcode === "b0110011".U && funct3 === "b000".U && inst(30) === 0.U && funct7 === "b0000000".U
     val is_sub   = opcode === "b0110011".U && funct3 === "b000".U && inst(30) === 1.U
     val is_xor   = opcode === "b0110011".U && funct3 === "b100".U
@@ -175,7 +173,7 @@ class IDU extends Module {
     val is_sll   = opcode === "b0110011".U && funct3 === "b001".U && inst(30) === 0.U
     val is_srl   = opcode === "b0110011".U && funct3 === "b101".U && inst(30) === 0.U && funct7 === "b0000000".U
     val is_sra   = opcode === "b0110011".U && funct3 === "b101".U && inst(30) === 1.U
-    
+
     val is_bne   = opcode === "b1100011".U && funct3 === "b001".U
     val is_beq   = opcode === "b1100011".U && funct3 === "b000".U
     val is_bge   = opcode === "b1100011".U && funct3 === "b101".U
@@ -205,13 +203,15 @@ class IDU extends Module {
     io.reg_rs2_addr := rs2_addr
     val rs1_data = io.reg_rs1_data
     val rs2_data = io.reg_rs2_data
+    val rs1_selected = Mux(io.fwd_rs1_en, io.fwd_rs1_data, rs1_data)
+    val rs2_selected = Mux(io.fwd_rs2_en, io.fwd_rs2_data, rs2_data)
     // 在IDU里判断寄存器写使能
     // NOTE: ecall/mret are also opcode=SYSTEM, but they should NOT write rd.
     val is_csr_rd = (is_csrrw || is_csrrs) && (rd_addr =/= 0.U)
     val rd_en = is_load || is_lui || is_auipc || is_op || is_jal || is_jalr || is_op_imm || is_csr_rd
 
     //ALU 源选择
-    val alu_a = MuxCase(rs1_data, Seq(
+    val alu_a = MuxCase(rs1_selected, Seq(
         is_auipc -> pc,
         is_jal   -> pc,
         is_lui   -> 0.U
@@ -227,7 +227,7 @@ class IDU extends Module {
         (is_slli || is_srli || is_srai) -> Cat(0.U(27.W), inst(24,20))
     ))
     val use_imm = is_op_imm || is_load || is_store || is_jal || is_jalr || is_auipc || is_lui || is_branch
-    val alu_b = Mux(use_imm, imm_sel, rs2_data)
+    val alu_b = Mux(use_imm, imm_sel, rs2_selected)
 
     val alu_op   = MuxCase(AluOp.ADD , Seq(
         is_sub   -> AluOp.SUB,
@@ -246,7 +246,7 @@ class IDU extends Module {
         is_divu -> AluOp.DIVU,
         is_rem  -> AluOp.REM,
         is_remu -> AluOp.REMU
-    ))  
+    ))
 
     // CSR寄存器接口
     val csr_raddr = MuxCase(inst(31, 20), Seq(
@@ -258,7 +258,7 @@ class IDU extends Module {
         is_mret  -> "h342".U   // 写mscause
     ))
 
-    val csr_wdata = MuxCase(rs1_data, Seq(
+    val csr_wdata = MuxCase(rs1_selected, Seq(
         is_ecall -> pc,
         is_mret  -> 0.U(32.W)
     ))
@@ -281,8 +281,8 @@ class IDU extends Module {
     io.out.bits.alu_a     := alu_a
     io.out.bits.alu_b     := alu_b
     io.out.bits.alu_op    := alu_op
-    io.out.bits.rs1_data  := Mux(io.fwd_rs1_en, io.fwd_rs1_data, rs1_data)
-    io.out.bits.rs2_data  := Mux(io.fwd_rs2_en, io.fwd_rs2_data, rs2_data)
+    io.out.bits.rs1_data  := rs1_selected
+    io.out.bits.rs2_data  := rs2_selected
     io.out.bits.rd_en     := rd_en
 
 
@@ -316,22 +316,16 @@ class IDU extends Module {
     val csr_rdata = io.csr_rdata
     io.is_ecall  := is_ecall
     io.is_mret   := is_mret
-    
+
     // 连接向EXU传递的CSR信号
     io.out.bits.csr_wdata := csr_wdata
     io.out.bits.csr_wen   := csr_wen
     io.out.bits.csr_waddr := csr_waddr
     io.out.bits.csr_rdata := csr_rdata
-    
+
     // 前递相关信号
     io.id_rs1 := rs1_addr
     io.id_rs2 := rs2_addr
     io.use_rs1 := use_rs1
     io.use_rs2 := use_rs2
-    /*
-    printf("IDU: inst=%x, in.valid=%d, in.ready=%d, out.valid=%d, out.ready=%d\n",
-        inst, io.in.valid, io.in.ready, io.out.valid, io.out.ready)
-    */
-
-
 }

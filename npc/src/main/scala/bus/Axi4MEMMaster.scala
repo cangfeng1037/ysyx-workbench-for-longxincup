@@ -57,6 +57,11 @@ class Axi4_MEM_Master extends Module {
     val req_wsize = RegInit(2.U(3.W))
     val req_waddr = RegInit(0.U(32.W))
     val req_burst = RegInit(false.B)
+    val read_beat = RegInit(0.U(4.W))
+
+    // DEBUG_AXI_W_TEXT_BEGIN: 监视所有写流量是否覆盖 printf 热点代码窗口
+    val dbgAxiWTextCnt = RegInit(0.U(10.W))
+    // DEBUG_AXI_W_TEXT_END
 
     // 默认值
     io.master.awaddr  := 0.U; io.master.awvalid := false.B
@@ -103,6 +108,21 @@ class Axi4_MEM_Master extends Module {
                 val wFire  = io.master.wvalid  && io.master.wready
                 io.mem_req.ready := awFire
 
+                // 监视 sIdle 同拍 AW+W 写（此前只在 sWriteData 监视会漏掉这类写）
+                val wAddrHotIdle = (io.mem_req.bits.waddr >= "ha0015d80".U) && (io.mem_req.bits.waddr <= "ha0015db0".U)
+                when (false.B && awFire && wFire && wAddrHotIdle && dbgAxiWTextCnt < 256.U) {
+                    printf(
+                        p"[DBG_AXI_W_TEXT] waddr=0x${Hexadecimal(io.mem_req.bits.waddr)} wdata=0x${Hexadecimal(io.mem_req.bits.wdata)} wstrb=0x${Hexadecimal(io.mem_req.bits.wmask)} state=${state}\n"
+                    )
+                    dbgAxiWTextCnt := dbgAxiWTextCnt + 1.U
+                }
+                when (false.B && awFire && wFire && io.mem_req.bits.waddr === "ha0015da4".U && dbgAxiWTextCnt < 256.U) {
+                    printf(
+                        p"[DBG_AXI_W_DA4] wdata=0x${Hexadecimal(io.mem_req.bits.wdata)} wstrb=0x${Hexadecimal(io.mem_req.bits.wmask)}\n"
+                    )
+                    dbgAxiWTextCnt := dbgAxiWTextCnt + 1.U
+                }
+
                 when(awFire) {
                     req_wen   := io.mem_req.bits.wen
                     req_rsize := io.mem_req.bits.rsize
@@ -138,6 +158,7 @@ class Axi4_MEM_Master extends Module {
                     req_wsize := io.mem_req.bits.wsize
                     req_waddr := io.mem_req.bits.waddr
                     req_burst := io.mem_req.bits.burst
+                    read_beat := 0.U
                     state := sReadWait
                 }
             }
@@ -149,8 +170,20 @@ class Axi4_MEM_Master extends Module {
             io.mem_resp.bits.data := io.master.rdata
             io.mem_resp.bits.last := io.master.rlast
 
+            // DEBUG_AXIMEM_TRACE_BEGIN: AXI读返回观测点（删除时搜索此标记整段移除）
+            // val debugReadAddr = req_raddr >= "ha001a600".U && req_raddr <= "ha001a900".U
+            // when(io.master.rvalid && io.master.rready && debugReadAddr) {
+            //     printf(
+            //         p"[DBG_AXIMEM_R] req_raddr=0x${Hexadecimal(req_raddr)} beat=${read_beat} rdata=0x${Hexadecimal(io.master.rdata)} rlast=${io.master.rlast} req_burst=${req_burst} req_rlen=${req_rlen} req_rsize=${req_rsize}\n"
+            //     )
+            // }
+            // DEBUG_AXIMEM_TRACE_END
+
             when(io.master.rvalid && io.master.rready && io.master.rlast) {
+                read_beat := 0.U
                 state := sIdle
+            } .elsewhen (io.master.rvalid && io.master.rready) {
+                read_beat := read_beat + 1.U
             }
         }
 
@@ -160,6 +193,21 @@ class Axi4_MEM_Master extends Module {
             io.master.wstrb   := req_wmask
             io.master.wvalid  := true.B
             io.master.wlast   := true.B
+
+            val w_fire = io.master.wvalid && io.master.wready
+            val w_addr_hot = (req_waddr >= "ha0015d80".U) && (req_waddr <= "ha0015db0".U)
+            when (false.B && w_fire && w_addr_hot && dbgAxiWTextCnt < 256.U) {
+                printf(
+                    p"[DBG_AXI_W_TEXT] waddr=0x${Hexadecimal(req_waddr)} wdata=0x${Hexadecimal(req_wdata)} wstrb=0x${Hexadecimal(req_wmask)} state=${state}\n"
+                )
+                dbgAxiWTextCnt := dbgAxiWTextCnt + 1.U
+            }
+            when (false.B && w_fire && req_waddr === "ha0015da4".U && dbgAxiWTextCnt < 256.U) {
+                printf(
+                    p"[DBG_AXI_W_DA4] wdata=0x${Hexadecimal(req_wdata)} wstrb=0x${Hexadecimal(req_wmask)}\n"
+                )
+                dbgAxiWTextCnt := dbgAxiWTextCnt + 1.U
+            }
 
             when(io.master.wvalid && io.master.wready) {
                 state := sWriteResp

@@ -7,10 +7,12 @@ import bus.Axi4MasterIO
 import bus.Axi4SlaveIO
 
 // 定义 DPI-C ebreak 函数的 BlackBox
+
 class EbreakBlackBox extends BlackBox with HasBlackBoxInline {
     val io = IO(new Bundle {
         val is_ebreak = Input(Bool())
     })
+
 
     setInline("EbreakBlackBox.v",
         """module EbreakBlackBox(
@@ -74,6 +76,8 @@ class DifftestDPI extends BlackBox with HasBlackBoxInline {
         val d_cnt = Input(UInt(32.W))  // 数据访存周期总数
         val stall_cnt = Input(UInt(32.W))  // 停顿周期总数
         val flush_cnt = Input(UInt(32.W))  // 刷新周期总数
+        val bp_total_count = Input(UInt(32.W))
+        val bp_hit_count = Input(UInt(32.W))
     })
 
     setInline("DifftestDPI.v",
@@ -121,7 +125,9 @@ class DifftestDPI extends BlackBox with HasBlackBoxInline {
           |    input  [31:0] i_cnt,
           |    input  [31:0] d_cnt,
           |    input  [31:0] stall_cnt,
-          |    input  [31:0] flush_cnt
+          |    input  [31:0] flush_cnt,
+          |    input  [31:0] bp_total_count,
+          |    input  [31:0] bp_hit_count
           |);
           |
           |    function int get_pc();
@@ -222,6 +228,16 @@ class DifftestDPI extends BlackBox with HasBlackBoxInline {
           |        get_flush_cnt = flush_cnt;
           |    endfunction
           |    export "DPI-C" function get_flush_cnt;
+                    |
+                    |    function int get_bp_total_count();
+                    |        get_bp_total_count = bp_total_count;
+                    |    endfunction
+                    |    export "DPI-C" function get_bp_total_count;
+                    |
+                    |    function int get_bp_hit_count();
+                    |        get_bp_hit_count = bp_hit_count;
+                    |    endfunction
+                    |    export "DPI-C" function get_bp_hit_count;
           |
           |endmodule
         """.stripMargin)
@@ -229,15 +245,18 @@ class DifftestDPI extends BlackBox with HasBlackBoxInline {
 
 class top extends Module {
     val io = IO(new Bundle {
+        
         val pc = Output(UInt(32.W))
         val inst = Output(UInt(32.W))
         val halt_ret = Output(Bool())
         val non_inst = Output(Bool())
-
-        val interrupt = Input(Bool())
+           
+       val interrupt = Input(Bool())
 
         val master = new bus.Axi4MasterIO()
         val slave  = new bus.Axi4SlaveIO()
+
+        val halt = Output(Bool()) // 用于测试结束的信号
         // 导出寄存器堆的值
         val gpr = Output(Vec(32, UInt(32.W)))
         // Difftest接口
@@ -255,7 +274,9 @@ class top extends Module {
 
     // ebreak 检测和调用
     // ebreak只在提交时触发
+    
     val is_ebreak = (npc_cpu.io.commit_inst === "h00100073".U) && (npc_cpu.io.difftest_valid)
+    io.halt := is_ebreak
     val ebreak_box = Module(new EbreakBlackBox())
     ebreak_box.io.is_ebreak := is_ebreak
 
@@ -263,6 +284,7 @@ class top extends Module {
     io.difftest_valid := npc_cpu.io.difftest_valid
 
     // 连接 Difftest DPI 导出模块
+    
     val difftest_dpi = Module(new DifftestDPI())
     difftest_dpi.io.pc := io.pc
     difftest_dpi.io.inst := io.inst
@@ -308,7 +330,9 @@ class top extends Module {
     difftest_dpi.io.d_cnt := npc_cpu.io.d_cnt
     difftest_dpi.io.stall_cnt := npc_cpu.io.stall_cnt
     difftest_dpi.io.flush_cnt := npc_cpu.io.flush_cnt
-
+    difftest_dpi.io.bp_total_count := npc_cpu.io.bp_total_count
+    difftest_dpi.io.bp_hit_count := npc_cpu.io.bp_hit_count
+    
     // 连接顶层总线
     npc_cpu.io.master <> io.master
     io.slave <> npc_cpu.io.slave
@@ -325,13 +349,12 @@ class top extends Module {
     io.slave.rlast   := false.B
     io.slave.rid     := 0.U
 
+    /*
+    // 只在前N个周期打印
     // 添加一个计数器来跟踪周期数
     val printCycles = 1000  // 只打印前3个周期
     val cycleCounter = RegInit(0.U(32.W))
     cycleCounter := cycleCounter + 1.U
-    
-    /*
-    // 只在前N个周期打印
     when (cycleCounter < printCycles.U) {
         printf(p"PC: 0x${Hexadecimal(io.pc)}, Instruction: 0x${Hexadecimal(io.inst)}\n")
         // 打印所有总线信号
