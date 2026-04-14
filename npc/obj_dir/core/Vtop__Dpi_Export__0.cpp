@@ -120,3 +120,131 @@ int Vtop::get_miss_count() {
     for (size_t get_miss_count__Vfuncrtn__Vidx = 0; get_miss_count__Vfuncrtn__Vidx < 1; ++get_miss_count__Vfuncrtn__Vidx) get_miss_count__Vfuncrtn = get_miss_count__Vfuncrtn__Vcvt;
     return get_miss_count__Vfuncrtn;
 }
+
+int Vtop::get_dcache_hit_count() {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root::get_dcache_hit_count\n"); );
+    // Init
+    IData/*31:0*/ get_dcache_hit_count__Vfuncrtn__Vcvt;
+    get_dcache_hit_count__Vfuncrtn__Vcvt = 0;
+    // Body
+    static int __Vfuncnum = -1;
+    if (VL_UNLIKELY(__Vfuncnum == -1)) __Vfuncnum = Verilated::exportFuncNum("get_dcache_hit_count");
+    const VerilatedScope* __Vscopep = Verilated::dpiScope();
+    Vtop__Vcb_get_dcache_hit_count_t __Vcb = (Vtop__Vcb_get_dcache_hit_count_t)(VerilatedScope::exportFind(__Vscopep, __Vfuncnum));
+    (*__Vcb)((Vtop__Syms*)(__Vscopep->symsp()), get_dcache_hit_count__Vfuncrtn__Vcvt);
+    int get_dcache_hit_count__Vfuncrtn;
+    for (size_t get_dcache_hit_count__Vfuncrtn__Vidx = 0; get_dcache_hit_count__Vfuncrtn__Vidx < 1; ++get_dcache_hit_count__Vfuncrtn__Vidx) get_dcache_hit_count__Vfuncrtn = get_dcache_hit_count__Vfuncrtn__Vcvt;
+    return get_dcache_hit_count__Vfuncrtn;
+}
+
+int Vtop::get_dcache_miss_count() {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root::get_dcache_miss_count\n"); );
+    // Init
+    IData/*31:0*/ get_dcache_miss_count__Vfuncrtn__Vcvt;
+    get_dcache_miss_count__Vfuncrtn__Vcvt = 0;
+    // Body
+    static int __Vfuncnum = -1;
+    if (VL_UNLIKELY(__Vfuncnum == -1)) __Vfuncnum = Verilated::exportFuncNum("get_dcache_miss_count");
+    const VerilatedScope* __Vscopep = Verilated::dpiScope();
+    Vtop__Vcb_get_dcache_miss_count_t __Vcb = (Vtop__Vcb_get_dcache_miss_count_t)(VerilatedScope::exportFind(__Vscopep, __Vfuncnum));
+    (*__Vcb)((Vtop__Syms*)(__Vscopep->symsp()), get_dcache_miss_count__Vfuncrtn__Vcvt);
+    int get_dcache_miss_count__Vfuncrtn;
+    for (size_t get_dcache_miss_count__Vfuncrtn__Vidx = 0; get_dcache_miss_count__Vfuncrtn__Vidx < 1; ++get_dcache_miss_count__Vfuncrtn__Vidx) get_dcache_miss_count__Vfuncrtn = get_dcache_miss_count__Vfuncrtn__Vcvt;
+    return get_dcache_miss_count__Vfuncrtn;
+}
+
+int Vtop::get_i_cnt() {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root::get_i_cnt\n"); );
+    // Init
+    IData/*31:0*/ get_i_cnt__Vfuncrtn__Vcvt;
+    get_i_cnt__Vfuncrtn__Vcvt = 0;
+    // Body
+    static int __Vfuncnum = -1;
+    if (VL_UNLIKELY(__Vfuncnum == -1)) __Vfuncnum = Verilated::exportFuncNum("get_i_cnt");
+    const VerilatedScope* __Vscopep = Verilated::dpiScope();
+    Vtop__Vcb_get_i_cnt_t __Vcb = (Vtop__Vcb_get_i_cnt_t)(VerilatedScope::exportFind(__Vscopep, __Vfuncnum));
+    (*__Vcb)((Vtop__Syms*)(__Vscopep->symsp()), get_i_cnt__Vfuncrtn__Vcvt);
+    int get_i_cnt__Vfuncrtn;
+    for (size_t get_i_cnt__Vfuncrtn__Vidx = 0; get_i_cnt__Vfuncrtn__Vidx < 1; ++get_i_cnt__Vfuncrtn__Vidx) get_i_cnt__Vfuncrtn = get_i_cnt__Vfuncrtn__Vcvt;
+    return get_i_cnt__Vfuncrtn;
+}
+
+int Vtop::get_d_cnt() {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root::get_d_cnt\n"); );
+    // Init
+    IData/*31:0*/ get_d_cnt__Vfuncrtn__Vcvt;
+    get_d_cnt__Vfuncrtn__Vcvt = 0;
+    // Body
+    static int __Vfuncnum = -1;
+    if (VL_UNLIKELY(__Vfuncnum == -1)) __Vfuncnum = Verilated::exportFuncNum("get_d_cnt");
+    const VerilatedScope* __Vscopep = Verilated::dpiScope();
+    Vtop__Vcb_get_d_cnt_t __Vcb = (Vtop__Vcb_get_d_cnt_t)(VerilatedScope::exportFind(__Vscopep, __Vfuncnum));
+    (*__Vcb)((Vtop__Syms*)(__Vscopep->symsp()), get_d_cnt__Vfuncrtn__Vcvt);
+    int get_d_cnt__Vfuncrtn;
+    for (size_t get_d_cnt__Vfuncrtn__Vidx = 0; get_d_cnt__Vfuncrtn__Vidx < 1; ++get_d_cnt__Vfuncrtn__Vidx) get_d_cnt__Vfuncrtn = get_d_cnt__Vfuncrtn__Vcvt;
+    return get_d_cnt__Vfuncrtn;
+}
+
+int Vtop::get_stall_cnt() {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root::get_stall_cnt\n"); );
+    // Init
+    IData/*31:0*/ get_stall_cnt__Vfuncrtn__Vcvt;
+    get_stall_cnt__Vfuncrtn__Vcvt = 0;
+    // Body
+    static int __Vfuncnum = -1;
+    if (VL_UNLIKELY(__Vfuncnum == -1)) __Vfuncnum = Verilated::exportFuncNum("get_stall_cnt");
+    const VerilatedScope* __Vscopep = Verilated::dpiScope();
+    Vtop__Vcb_get_stall_cnt_t __Vcb = (Vtop__Vcb_get_stall_cnt_t)(VerilatedScope::exportFind(__Vscopep, __Vfuncnum));
+    (*__Vcb)((Vtop__Syms*)(__Vscopep->symsp()), get_stall_cnt__Vfuncrtn__Vcvt);
+    int get_stall_cnt__Vfuncrtn;
+    for (size_t get_stall_cnt__Vfuncrtn__Vidx = 0; get_stall_cnt__Vfuncrtn__Vidx < 1; ++get_stall_cnt__Vfuncrtn__Vidx) get_stall_cnt__Vfuncrtn = get_stall_cnt__Vfuncrtn__Vcvt;
+    return get_stall_cnt__Vfuncrtn;
+}
+
+int Vtop::get_flush_cnt() {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root::get_flush_cnt\n"); );
+    // Init
+    IData/*31:0*/ get_flush_cnt__Vfuncrtn__Vcvt;
+    get_flush_cnt__Vfuncrtn__Vcvt = 0;
+    // Body
+    static int __Vfuncnum = -1;
+    if (VL_UNLIKELY(__Vfuncnum == -1)) __Vfuncnum = Verilated::exportFuncNum("get_flush_cnt");
+    const VerilatedScope* __Vscopep = Verilated::dpiScope();
+    Vtop__Vcb_get_flush_cnt_t __Vcb = (Vtop__Vcb_get_flush_cnt_t)(VerilatedScope::exportFind(__Vscopep, __Vfuncnum));
+    (*__Vcb)((Vtop__Syms*)(__Vscopep->symsp()), get_flush_cnt__Vfuncrtn__Vcvt);
+    int get_flush_cnt__Vfuncrtn;
+    for (size_t get_flush_cnt__Vfuncrtn__Vidx = 0; get_flush_cnt__Vfuncrtn__Vidx < 1; ++get_flush_cnt__Vfuncrtn__Vidx) get_flush_cnt__Vfuncrtn = get_flush_cnt__Vfuncrtn__Vcvt;
+    return get_flush_cnt__Vfuncrtn;
+}
+
+int Vtop::get_bp_total_count() {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root::get_bp_total_count\n"); );
+    // Init
+    IData/*31:0*/ get_bp_total_count__Vfuncrtn__Vcvt;
+    get_bp_total_count__Vfuncrtn__Vcvt = 0;
+    // Body
+    static int __Vfuncnum = -1;
+    if (VL_UNLIKELY(__Vfuncnum == -1)) __Vfuncnum = Verilated::exportFuncNum("get_bp_total_count");
+    const VerilatedScope* __Vscopep = Verilated::dpiScope();
+    Vtop__Vcb_get_bp_total_count_t __Vcb = (Vtop__Vcb_get_bp_total_count_t)(VerilatedScope::exportFind(__Vscopep, __Vfuncnum));
+    (*__Vcb)((Vtop__Syms*)(__Vscopep->symsp()), get_bp_total_count__Vfuncrtn__Vcvt);
+    int get_bp_total_count__Vfuncrtn;
+    for (size_t get_bp_total_count__Vfuncrtn__Vidx = 0; get_bp_total_count__Vfuncrtn__Vidx < 1; ++get_bp_total_count__Vfuncrtn__Vidx) get_bp_total_count__Vfuncrtn = get_bp_total_count__Vfuncrtn__Vcvt;
+    return get_bp_total_count__Vfuncrtn;
+}
+
+int Vtop::get_bp_hit_count() {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root::get_bp_hit_count\n"); );
+    // Init
+    IData/*31:0*/ get_bp_hit_count__Vfuncrtn__Vcvt;
+    get_bp_hit_count__Vfuncrtn__Vcvt = 0;
+    // Body
+    static int __Vfuncnum = -1;
+    if (VL_UNLIKELY(__Vfuncnum == -1)) __Vfuncnum = Verilated::exportFuncNum("get_bp_hit_count");
+    const VerilatedScope* __Vscopep = Verilated::dpiScope();
+    Vtop__Vcb_get_bp_hit_count_t __Vcb = (Vtop__Vcb_get_bp_hit_count_t)(VerilatedScope::exportFind(__Vscopep, __Vfuncnum));
+    (*__Vcb)((Vtop__Syms*)(__Vscopep->symsp()), get_bp_hit_count__Vfuncrtn__Vcvt);
+    int get_bp_hit_count__Vfuncrtn;
+    for (size_t get_bp_hit_count__Vfuncrtn__Vidx = 0; get_bp_hit_count__Vfuncrtn__Vidx < 1; ++get_bp_hit_count__Vfuncrtn__Vidx) get_bp_hit_count__Vfuncrtn = get_bp_hit_count__Vfuncrtn__Vcvt;
+    return get_bp_hit_count__Vfuncrtn;
+}

@@ -31,6 +31,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vtop VL_NOT_FINAL : public VerilatedModel {
     // The application code writes and reads these signals to
     // propagate new values into/out from the Verilated model.
     VL_IN8(&clock,0,0);
+    VL_OUT8(&io_halt,0,0);
     VL_IN8(&reset,0,0);
     VL_OUT8(&io_halt_ret,0,0);
     VL_OUT8(&io_non_inst,0,0);
@@ -88,6 +89,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vtop VL_NOT_FINAL : public VerilatedModel {
     VL_OUT8(&io_difftest_valid,0,0);
     VL_OUT(&io_pc,31,0);
     VL_OUT(&io_inst,31,0);
+    VL_OUT(&io_commit_addr,31,0);
     VL_OUT(&io_master_awaddr,31,0);
     VL_OUT(&io_master_wdata,31,0);
     VL_OUT(&io_master_araddr,31,0);
@@ -170,13 +172,21 @@ class alignas(VL_CACHE_LINE_BYTES) Vtop VL_NOT_FINAL : public VerilatedModel {
     const char* name() const;
 
     /// DPI Export functions
+    static int get_bp_hit_count();
+    static int get_bp_total_count();
+    static int get_d_cnt();
+    static int get_dcache_hit_count();
+    static int get_dcache_miss_count();
     static int get_difftest_valid();
+    static int get_flush_cnt();
     static int get_gpr(int idx);
     static int get_hit_count();
+    static int get_i_cnt();
     static int get_inst();
     static int get_miss_count();
     static int get_non_inst();
     static int get_pc();
+    static int get_stall_cnt();
 
     // Abstract methods from VerilatedModel
     const char* hierName() const override final;

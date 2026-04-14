@@ -42,6 +42,7 @@ VM_USER_CFLAGS = \
 	-DTOP_NAME="VysyxSoCFull" \
 	-DCONFIG_MTRACE \
 	-DCONFIG_PATCH \
+	-DCONFIG_WAVE \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \

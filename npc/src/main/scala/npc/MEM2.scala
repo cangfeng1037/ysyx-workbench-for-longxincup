@@ -131,12 +131,13 @@ class MEM2 extends Module {
         is (s_wait) {
             // 等待dcache的内存响应
             io.mem_resp.ready := true.B
-            when(pc >= "ha0010000".U) {
+            val perfPcInAmText = pc >= "ha0010000".U
+            val perfPcInNpcPmem = pc(31, 28) === "h8".U
+            when(perfPcInAmText || perfPcInNpcPmem) {
                 total_mem_cycles := total_mem_cycles + 1.U
             }
             when(io.mem_resp.fire) {
                 // 收到内存响应，准备发送到下一级
-                addr := io.mem_resp.bits.addr
                 val raw = io.mem_resp.bits.data
                 val byteSel = io.mem_resp.bits.addr(1, 0)
                 val halfSel = io.mem_resp.bits.addr(1)
@@ -155,6 +156,19 @@ class MEM2 extends Module {
                     is_lw  -> raw
                 ))
                 mem_data := Mux(is_load, loadData, raw)
+                // ===== MEM2 RET debug trace (disabled by default) =====
+                val mem2RetDbgEnable = false.B
+                val dbgStackLo = "h8004ff00".U(32.W)
+                val dbgStackHi = "h80050020".U(32.W)
+                val dbgPcLo = "h80005c04".U(32.W)
+                val dbgPcHi = "h80005c10".U(32.W)
+                val dbgAddrHit = io.mem_resp.bits.addr >= dbgStackLo && io.mem_resp.bits.addr <= dbgStackHi
+                val dbgPcHit = pc >= dbgPcLo && pc <= dbgPcHi
+                when (mem2RetDbgEnable && (is_load || is_store) && (dbgAddrHit || dbgPcHit)) {
+                    printf(
+                        p"[MEM2-RET-DBG] pc=0x${Hexadecimal(pc)} inst=0x${Hexadecimal(inst)} addr=0x${Hexadecimal(io.mem_resp.bits.addr)} is_load=${is_load} is_store=${is_store} raw=0x${Hexadecimal(raw)} load_data=0x${Hexadecimal(loadData)} rd_en=${rd_en} rd=${rd_addr}\n"
+                    )
+                }
                 state := s_send
             }
         }

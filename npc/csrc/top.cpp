@@ -404,22 +404,34 @@ void eval() {
         }
 
         if (difftest_get_difftest_valid()) {
+            uint32_t dut_pc_before = difftest_get_pc();
+            uint32_t dut_inst_before = difftest_get_inst();
+            uint32_t dut_addr_before = difftest_get_addr();
+            uint32_t gpr_before_1 = rf_read(1);
+            uint32_t gpr_before_2 = rf_read(2);
+            uint32_t gpr_before_9 = rf_read(9);
+
             difftest_step(1);
-        
+
             CPU_state dut_s;
             for (int i = 0; i < 32; i ++ ) dut_s.gpr[i] = rf_read(i);
-            dut_s.pc = difftest_get_pc();
-            uint32_t difftest_inst = difftest_get_inst();
+            uint32_t dut_pc_after = difftest_get_pc();
+            dut_s.pc = dut_pc_after;
             bool check = difftest_check_reg(dut_s.gpr, dut_s.pc);
             if (!check) {
-                printf("Difftest failed at cycle %d, pc = 0x%08x\n, inst = 0x%08x\n", cnt, dut_s.pc, difftest_inst);
+                printf("Difftest failed at cycle %d: commit_before(pc=0x%08x, inst=0x%08x, addr=0x%08x) check_after(pc=0x%08x)\n",
+                       cnt, dut_pc_before, dut_inst_before, dut_addr_before, dut_pc_after);
+                printf("  regs_before_commit: x1(ra)=0x%08x x2(sp)=0x%08x x9(s1)=0x%08x\n",
+                       gpr_before_1, gpr_before_2, gpr_before_9);
                 if(difftest_get_non_inst()) {
-                    printf("The non-inst instruction detected! : inst = 0x%08x\n, pc = 0x%08x\n", difftest_inst, dut_s.pc);
+                    printf("The non-inst instruction detected! commit_before(inst=0x%08x) check_after(pc=0x%08x)\n",
+                           dut_inst_before, dut_pc_after);
                 }
                 exit(1);
             }
             else {
-                //printf("Difftest passed at cycle %d, pc = 0x%08x, inst = 0x%08x\n", cnt, dut_s.pc, difftest_inst);
+                //printf("Difftest passed at cycle %d, commit_before(pc=0x%08x, inst=0x%08x) check_after(pc=0x%08x)\n",
+                //       cnt, dut_pc_before, dut_inst_before, dut_pc_after);
             }
         }
     } 
@@ -433,10 +445,9 @@ void init_sim() {
     tfp = new VerilatedVcdC;
     top->trace(tfp, 99);
 
-#ifndef CONFIG_WAVE
+#ifdef CONFIG_WAVE
     tfp->open("wave.vcd");
 #endif
-
 
     top -> reset = 1;
     top -> clock = 0;

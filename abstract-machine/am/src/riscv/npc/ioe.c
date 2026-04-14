@@ -1,5 +1,6 @@
 #include <am.h>
 #include <klib-macros.h>
+#include <klib.h>
 
 void __am_timer_init();
 
@@ -23,6 +24,19 @@ static void *lut[128] = {
 
 static void fail(void *buf) { panic("access nonexist register"); }
 
+static inline handler_t get_handler_or_panic(int reg) {
+  int lut_size = (int)LENGTH(lut);
+  if (reg < 0 || reg >= lut_size) {
+    printf("[IOE] invalid reg=%d, lut_size=%d\n", reg, lut_size);
+    panic("invalid ioe reg index");
+  }
+  handler_t h = (handler_t)lut[reg];
+  if (h == NULL) {
+    panic("null ioe handler");
+  }
+  return h;
+}
+
 bool ioe_init() {
   for (int i = 0; i < LENGTH(lut); i++)
     if (!lut[i]) lut[i] = fail;
@@ -31,5 +45,5 @@ bool ioe_init() {
 }
 
 
-void ioe_read (int reg, void *buf) { ((handler_t)lut[reg])(buf); }
-void ioe_write(int reg, void *buf) { ((handler_t)lut[reg])(buf); }
+void ioe_read (int reg, void *buf) { get_handler_or_panic(reg)(buf); }
+void ioe_write(int reg, void *buf) { get_handler_or_panic(reg)(buf); }

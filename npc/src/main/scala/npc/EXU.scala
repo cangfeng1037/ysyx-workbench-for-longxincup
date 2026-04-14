@@ -103,7 +103,8 @@ class EXU extends Module {
     val is_bge   = RegInit(false.B)
     val is_bgeu  = RegInit(false.B)
 
-    // 前递保持寄存器：在 EXU->MEM 交接后额外保持一拍，填补 EXU/MEM2 前递空窗
+    // 前递保持寄存器：在 EXU->MEM 交接后仅保持一拍，填补 EXU/MEM2 前递空窗
+    val fwd_hold_valid = RegInit(false.B)
     val fwd_hold_rd_addr = RegInit(0.U(5.W))
     val fwd_hold_rd_en = RegInit(false.B)
     val fwd_hold_rd_is_load = RegInit(false.B)
@@ -113,7 +114,7 @@ class EXU extends Module {
     val nextLoadTag = RegInit(1.U(6.W))
 
     // 上一条已执行指令的正确下一PC，用于本拍输入纠错比较
-    val expected_next_pc_reg = RegInit("h30000000".U(32.W))
+    val expected_next_pc_reg = RegInit(BootConfig.resetPc.U(32.W))
     val first_inst_reg = RegInit(true.B)
     val bp_expect_valid_reg = RegInit(false.B)
     val bp_total_count_reg = RegInit(0.U(32.W))
@@ -241,17 +242,30 @@ class EXU extends Module {
     val pc_jal = pc + alu_b
     val pc_jalr = (alu_a + alu_b) & Cat(Fill(31, 1.U), 0.U(1.W))
     val is_branch = is_beq || is_bne || is_blt || is_bltu || is_bge || is_bgeu
-    val exu_fwd_live_valid = (rd_en || fwd_hold_rd_en) && (state === s_exec) && !redirect_now
+    val exu_fwd_live_valid = rd_en && (state === s_exec) && out_valid && !redirect_now
 
-    // 交接拍锁存前递信息，下一拍通过 hold_valid 对外可见
-    when (io.out.fire && exu_fwd_live_valid) {
+    // 交接拍锁存前递信息，下一拍通过 hold_valid 对外可见（只保持 1 拍）
+    val hold_capture = io.out.fire && exu_fwd_live_valid
+    when (redirect_now) {
+        fwd_hold_valid := false.B
+        fwd_hold_rd_addr := 0.U
+        fwd_hold_rd_en := false.B
+        fwd_hold_rd_is_load := false.B
+        fwd_hold_val_out := 0.U
+    } .elsewhen (hold_capture) {
+        fwd_hold_valid := true.B
         fwd_hold_rd_addr := rd_addr
         fwd_hold_rd_en := rd_en
         fwd_hold_rd_is_load := is_lw || is_lbu || is_lh || is_lhu || is_lb
         fwd_hold_val_out := alu_result
+    } .elsewhen (fwd_hold_valid) {
+        // hold 被消费后强制清空，防止陈旧元数据悬挂
+        fwd_hold_valid := false.B
+        fwd_hold_rd_addr := 0.U
+        fwd_hold_rd_en := false.B
+        fwd_hold_rd_is_load := false.B
+        fwd_hold_val_out := 0.U
     }
-    val exu_fwd_hold_valid_1 = RegNext(io.out.fire && exu_fwd_live_valid, false.B)
-    val exu_fwd_hold_valid_2 = RegNext(exu_fwd_hold_valid_1, false.B)
 
     // 输出打包
     io.out.valid := out_valid && !redirect_now
@@ -296,7 +310,7 @@ class EXU extends Module {
 
     // 前递：优先当前执行态，若当前无效则使用保持一拍的结果
     val exu_fwd_use_live = exu_fwd_live_valid
-    io.exu_fwd.valid := exu_fwd_use_live || exu_fwd_hold_valid_1 || exu_fwd_hold_valid_2
+    io.exu_fwd.valid := exu_fwd_use_live || fwd_hold_valid
     io.exu_fwd.rd_addr := Mux(exu_fwd_use_live, rd_addr, fwd_hold_rd_addr)
     io.exu_fwd.rd_en := Mux(exu_fwd_use_live, rd_en, fwd_hold_rd_en)
     io.exu_fwd.val_out := Mux(exu_fwd_use_live, alu_result, fwd_hold_val_out)

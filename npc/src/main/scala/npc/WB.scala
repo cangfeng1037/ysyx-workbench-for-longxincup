@@ -19,6 +19,7 @@ class WB extends Module {
         val commit    = Output(Bool()) // 指令提交信号
         val commit_pc = Output(UInt(32.W))
         val commit_inst = Output(UInt(32.W))
+        val commit_addr = Output(UInt(32.W))
 
         // Difftest接口
 
@@ -73,51 +74,73 @@ class WB extends Module {
 
     // 状态机
     
-    val s_idle :: s_writeback :: Nil = Enum(2)
-    val state = RegInit(s_idle)
+    val (s_idle, s_writeback, s_writeback_hold_opt, state_init) =
+      if (WbConfig.useThreeCycleWb) {
+        val s_idle :: s_writeback :: s_writeback_hold :: Nil = Enum(3)
+        (s_idle, s_writeback, Some(s_writeback_hold), s_idle)
+      } else {
+        val s_idle :: s_writeback :: Nil = Enum(2)
+        (s_idle, s_writeback, None, s_idle)
+      }
+    val state = RegInit(state_init)
 
     io.in.ready := (state === s_idle)
-    io.commit := (state === s_writeback)
+    io.commit :=
+      (if (WbConfig.useThreeCycleWb) {
+        state === s_writeback_hold_opt.get
+      } else {
+        state === s_writeback
+      })
     io.commit_pc := pc
     io.commit_inst := inst
-    // 不使用difftest测试时，请使用两周期代码，三周期会带来约9.3%的周期数增加
-
-       // val s_idle :: s_writeback :: Nil = Enum(2)
-
-
-        io.commit := (state === s_writeback)
-
+    io.commit_addr := addr
+    if (WbConfig.useThreeCycleWb) {
         switch(state) {
             is (s_idle) {
                 when (io.in.fire) { state := s_writeback }
             }
             is (s_writeback) {
-                // 写回一拍完成，回到空闲
+                state := s_writeback_hold_opt.get
+            }
+            is (s_writeback_hold_opt.get) {
                 state := s_idle
             }
         }
-    
-
-    /*
-    switch(state) {
-        is (s_idle) {
-            when (io.in.fire) { state := s_writeback }
-        }
-        is (s_writeback) {
-            // 写回一拍完成，进入保持状态
-            state := s_writeback_hold
-        }
-        is (s_writeback_hold) {
-            state := s_idle
+    } else {
+        switch(state) {
+            is (s_idle) {
+                when (io.in.fire) { state := s_writeback }
+            }
+            is (s_writeback) {
+                state := s_idle
+            }
         }
     }
-    */
     val wb_result = MuxCase(addr, Seq(
         // CSR read/write instructions write the *old* CSR value to rd
         (is_csrrw || is_csrrs) -> csr_rdata,
         is_load -> mem_data,
         (is_jal || is_jalr) -> (pc + 4.U)
     )) // 所有load指令都已经在MEM阶段处理好了
+
+    // ===== RET debug trace (disabled by default) =====
+    val wbRetDbgEnable = false.B
+    val dbgRetPc = "h80005c18".U(32.W)
+    val dbgWinLo = "h80005c04".U(32.W)
+    val dbgWinHi = "h80005c18".U(32.W)
+    val dbgFollowCnt = RegInit(0.U(5.W))
+    val inDbgWin = pc >= dbgWinLo && pc <= dbgWinHi
+    when (io.commit && pc === dbgRetPc) {
+        dbgFollowCnt := 16.U
+    } .elsewhen (io.commit && dbgFollowCnt =/= 0.U) {
+        dbgFollowCnt := dbgFollowCnt - 1.U
+    }
+    val wbDbgFire = wbRetDbgEnable && io.commit && (inDbgWin || dbgFollowCnt =/= 0.U)
+    when (wbDbgFire) {
+        printf(
+            p"[WB-RET-DBG] pc=0x${Hexadecimal(pc)} inst=0x${Hexadecimal(inst)} rd_en=${rd_en} rd=${rd_addr} rd_data=0x${Hexadecimal(wb_result)} is_load=${is_load} is_store=${is_store} follow=${dbgFollowCnt}\n"
+        )
+    }
 
     // 连接regfile
     io.rd_addr := rd_addr
@@ -130,10 +153,11 @@ class WB extends Module {
     io.csr_wdata := csr_wdata
     io.csr_wen   := csr_wen
 
-    // 前递相关信号
-    io.wb_fwd.valid := rd_en && (state =/= s_idle) 
-    io.wb_fwd.rd_addr := rd_addr
-    io.wb_fwd.rd_en := rd_en
-    io.wb_fwd.val_out := wb_result
-    io.wb_fwd.rd_is_load := is_load
+    // 前递相关信号：valid/rd_en 同源，空闲态显式输出无效语义
+    val wbFwdActive = rd_en && (state =/= s_idle)
+    io.wb_fwd.valid := wbFwdActive
+    io.wb_fwd.rd_en := wbFwdActive
+    io.wb_fwd.rd_addr := Mux(wbFwdActive, rd_addr, 0.U)
+    io.wb_fwd.val_out := Mux(wbFwdActive, wb_result, 0.U)
+    io.wb_fwd.rd_is_load := Mux(wbFwdActive, is_load, false.B)
 }

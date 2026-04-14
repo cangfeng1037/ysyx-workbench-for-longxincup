@@ -24,6 +24,7 @@ class NPC_CPU extends Module {
         val inst_out = Output(UInt(32.W))
         val commit_pc = Output(UInt(32.W))
         val commit_inst = Output(UInt(32.W))
+        val commit_addr = Output(UInt(32.W))
 
         // Difftest接口
         val difftest_valid = Output(Bool())
@@ -67,6 +68,7 @@ class NPC_CPU extends Module {
 /* ====================== 流水段前递相关 =======================*/
     val hazard_unit = Module(new HazardUnit())
     exu.io.exu_fwd <> hazard_unit.io.exu_fwd
+    mem1.io.mem1_fwd <> hazard_unit.io.mem1_fwd
     mem2.io.mem2_fwd <> hazard_unit.io.mem2_fwd
     wb.io.wb_fwd <> hazard_unit.io.wb_fwd
     idu.io.fwd_rs1_en := hazard_unit.io.fs1_fwd_en
@@ -77,6 +79,13 @@ class NPC_CPU extends Module {
     hazard_unit.io.id_rs2 := idu.io.id_rs2
     hazard_unit.io.use_rs1 := idu.io.use_rs1
     hazard_unit.io.use_rs2 := idu.io.use_rs2
+    hazard_unit.io.id_valid := idu.io.id_valid
+    hazard_unit.io.dbg_id_pc := idu.io.dbg_id_pc
+    hazard_unit.io.dbg_id_inst := idu.io.dbg_id_inst
+    hazard_unit.io.dbg_id_valid := idu.io.id_valid
+    hazard_unit.io.dbg_wb_pc := wb.io.commit_pc
+    hazard_unit.io.dbg_wb_inst := wb.io.commit_inst
+    hazard_unit.io.dbg_wb_valid := wb.io.commit
     hazard_unit.io.load_tag_alloc_valid := exu.io.load_tag_alloc_valid
     hazard_unit.io.load_tag_alloc_rd := exu.io.load_tag_alloc_rd
     hazard_unit.io.load_tag_alloc_tag := exu.io.load_tag_alloc_tag
@@ -106,8 +115,10 @@ class NPC_CPU extends Module {
 /* ======================= 性能计数器 ====================== */
     val stall_cnt = RegInit(0.U(32.W))
     val flush_cnt = RegInit(0.U(32.W))
-    when (frontend_stall && wb.io.commit_pc >= "ha0010000".U) { stall_cnt := stall_cnt + 1.U }
-    when (frontend_flush && wb.io.commit_pc >= "ha0010000".U) { flush_cnt := flush_cnt + 1.U }
+    val perfPcInAmText = wb.io.commit_pc >= "ha0010000".U
+    val perfPcInNpcPmem = wb.io.commit_pc(31, 28) === "h8".U
+    when (frontend_stall && (perfPcInAmText || perfPcInNpcPmem)) { stall_cnt := stall_cnt + 1.U }
+    when (frontend_flush && (perfPcInAmText || perfPcInNpcPmem)) { flush_cnt := flush_cnt + 1.U }
 
     io.stall_cnt := stall_cnt
     io.flush_cnt := flush_cnt
@@ -196,6 +207,7 @@ class NPC_CPU extends Module {
     io.inst_out := ifu2.io.out.bits.inst
     io.commit_pc := wb.io.commit_pc
     io.commit_inst := wb.io.commit_inst
+    io.commit_addr := wb.io.commit_addr
 
 // ======================= Difftest 相关 ================== */
 

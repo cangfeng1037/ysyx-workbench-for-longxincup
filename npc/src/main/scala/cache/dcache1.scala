@@ -76,9 +76,12 @@ class DCache1 extends Module {
     val wen_reg = RegInit(false.B) // 锁存当前请求的读写属性，供后续状态机使用
     val wdata_reg = RegInit(0.U(32.W))
     val wmask_reg = RegInit(0.U(4.W))
+    val wsize_reg = RegInit(2.U(3.W))
     val bypass_write_reg = RegInit(false.B)
     val wb_addr = RegInit(0.U(32.W)) // 锁存需要写回的地址
     val rsize_reg = RegInit(0.U(3.W)) // 锁存当前请求的读大小，供后续状态机使用
+    val req_pc_reg = RegInit(0.U(32.W))
+    val req_inst_reg = RegInit(0.U(32.W))
 
     // 伪随机替换算法
     val lfsr = chisel3.util.random.LFSR(8)
@@ -114,6 +117,22 @@ class DCache1 extends Module {
     io.data_req.bits.burst := false.B
     io.data_resp.ready := false.B
 
+    // ===== DCache RET debug trace (disabled by default) =====
+    val dcacheRetDbgEnable = false.B
+    val dbgStackLo = "h8000ff00".U(32.W)
+    val dbgStackHi = "h80010000".U(32.W)
+    val watch0 = "h8000ffd8".U(32.W)
+    val watch1 = "h8000ffd4".U(32.W)
+    val watch2 = "h8000ffd0".U(32.W)
+    val watch3 = "h8000ffc0".U(32.W)
+    val watch4 = "h8000ffbc".U(32.W)
+    val watch5 = "h8000ffc4".U(32.W)
+    def isWatchAddr(addr: UInt): Bool = {
+        val wordBase = Cat(addr(31, 2), 0.U(2.W))
+        (wordBase === watch0) || (wordBase === watch1) || (wordBase === watch2) ||
+        (wordBase === watch3) || (wordBase === watch4) || (wordBase === watch5)
+    }
+
     // SyncReadMem 读端：lookup 与 writeback-read 复用同一读口
     val read_en = state === s_lookup_req || state === s_wb_read
     val read_addr = Mux(state === s_lookup_req, Cat(index_reg, offset_reg(4, 2)), Cat(index_reg, refill_cnt))
@@ -148,13 +167,16 @@ class DCache1 extends Module {
                     line_base := addr & "hffffffe0".U
                     req_addr_reg := addr
                     miss_addr_reg := addr
+                    req_pc_reg := io.dcache_req.bits.pc
+                    req_inst_reg := io.dcache_req.bits.inst
                     wen_reg := io.dcache_req.bits.wen
                     wdata_reg := io.dcache_req.bits.wdata
                     wmask_reg := io.dcache_req.bits.wmask
+                    wsize_reg := io.dcache_req.bits.wsize
                     rsize_reg := io.dcache_req.bits.rsize
                     bypass_write_reg := io.dcache_req.bits.bypass && io.dcache_req.bits.wen
-                    // 仅SDRAM且非旁路访问才走cache refill
-                    miss_cacheable_reg := (addr(31, 26) === "b101000".U) && !io.dcache_req.bits.bypass
+                    // SDRAM/PSRAM窗口且非旁路访问才走cache refill: 0xa0xx_xxxx 或 0x80xx_xxxx
+                    miss_cacheable_reg := ((addr(31, 26) === "b101000".U) || (addr(31, 26) === "b100000".U)) && !io.dcache_req.bits.bypass
                     victim_way := rand_way // 记录当前被替换的路径，供下一次替换使用
                     refill_cnt := 0.U
                     when (io.dcache_req.bits.bypass && io.dcache_req.bits.wen) {
@@ -191,12 +213,27 @@ class DCache1 extends Module {
                             hit2 -> read_words(2),
                             hit3 -> read_words(3)
                         ))
+                        when (dcacheRetDbgEnable && req_addr_reg >= dbgStackLo && req_addr_reg <= dbgStackHi) {
+                            printf(
+                                p"[DCACHE-RET-DBG][HIT-R] addr=0x${Hexadecimal(req_addr_reg)} data=0x${Hexadecimal(hitData)} way_hit=${Cat(hit3, hit2, hit1, hit0)} rsize=${rsize_reg}\n"
+                            )
+                        }
                         resp_data_reg := hitData
                         resp_is_bypass := false.B
                         state := s_resp
                     } .otherwise {
                         // 写命中，直接在缓存中更新数据，并标记dirty
                         resp_data_reg := wdata_reg
+                        when (dcacheRetDbgEnable && req_addr_reg >= dbgStackLo && req_addr_reg <= dbgStackHi) {
+                            printf(
+                                p"[DCACHE-RET-DBG][HIT-W] addr=0x${Hexadecimal(req_addr_reg)} wdata=0x${Hexadecimal(wdata_reg)} wmask=0x${Hexadecimal(wmask_reg)} wsize=${wsize_reg}\n"
+                            )
+                        }
+                        when (isWatchAddr(req_addr_reg)) {
+                            printf(
+                                p"[DCACHE-WATCH] path=HIT-W pc=0x${Hexadecimal(req_pc_reg)} inst=0x${Hexadecimal(req_inst_reg)} addr=0x${Hexadecimal(req_addr_reg)} word=0x${Hexadecimal(Cat(req_addr_reg(31, 2), 0.U(2.W)))} wdata=0x${Hexadecimal(wdata_reg)} wmask=0x${Hexadecimal(wmask_reg)} wsize=${wsize_reg}\n"
+                            )
+                        }
                         val byteMask32 = FillInterleaved(8, wmask_reg)
                         when (hit0) {
                             val oldWord = read_words(0)
@@ -259,6 +296,11 @@ class DCache1 extends Module {
                 io.data_req.bits.wmask := "b1111".U
                 io.data_req.bits.waddr := wb_addr + (refill_cnt << 2)
                 io.data_req.bits.burst := false.B
+                when (io.data_req.fire && isWatchAddr(io.data_req.bits.waddr)) {
+                    printf(
+                        p"[DCACHE-WATCH] path=WB-REFILL pc=0x${Hexadecimal(req_pc_reg)} inst=0x${Hexadecimal(req_inst_reg)} addr=0x${Hexadecimal(io.data_req.bits.waddr)} word=0x${Hexadecimal(Cat(io.data_req.bits.waddr(31, 2), 0.U(2.W)))} wdata=0x${Hexadecimal(io.data_req.bits.wdata)} wmask=0x${Hexadecimal(io.data_req.bits.wmask)} wsize=${io.data_req.bits.wsize} beat=${refill_cnt}\n"
+                    )
+                }
 
                 // DEBUG_DCACHE_WB_TEXT_BEGIN: 仅观测写回是否命中 printf 热点代码窗口
                 val dbgDcacheWbCnt = RegInit(0.U(8.W))
@@ -303,6 +345,11 @@ class DCache1 extends Module {
                 io.data_req.bits.raddr := Mux(miss_cacheable_reg, line_base, miss_addr_reg)
                 io.data_req.bits.burst := miss_cacheable_reg
                 io.data_req.bits.rlen := Mux(miss_cacheable_reg, (words_per_line - 1).U, 0.U)
+                when (dcacheRetDbgEnable && io.data_req.fire && io.data_req.bits.raddr >= dbgStackLo && io.data_req.bits.raddr <= dbgStackHi) {
+                    printf(
+                        p"[DCACHE-RET-DBG][MISS-RQ] raddr=0x${Hexadecimal(io.data_req.bits.raddr)} burst=${io.data_req.bits.burst} rsize=${io.data_req.bits.rsize} req_addr=0x${Hexadecimal(req_addr_reg)}\n"
+                    )
+                }
                 when (io.data_req.fire) {
                     state := s_refill
                 }
@@ -314,6 +361,11 @@ class DCache1 extends Module {
 
                 when (io.data_resp.fire) {
                     val data = io.data_resp.bits.data
+                    when (dcacheRetDbgEnable && req_addr_reg >= dbgStackLo && req_addr_reg <= dbgStackHi) {
+                        printf(
+                            p"[DCACHE-RET-DBG][MISS-RSP] req_addr=0x${Hexadecimal(req_addr_reg)} beat=${refill_cnt} data=0x${Hexadecimal(data)} last=${io.data_resp.bits.last} cacheable=${miss_cacheable_reg}\n"
+                        )
+                    }
                     // DEBUG_DCACHE_TRACE_BEGIN: DCache读数据通路观测点（删除时搜索此标记整段移除）
                     // val debugHotAddr = !wen_reg && (req_addr_reg >= "ha001a600".U) && (req_addr_reg <= "ha001a900".U)
                     // when (debugHotAddr) {
@@ -394,12 +446,22 @@ class DCache1 extends Module {
                 // 直通写：不访问 DCache 数组，直接发单拍写请求到下游
                 io.data_req.valid := true.B
                 io.data_req.bits.wen := true.B
-                io.data_req.bits.wsize := io.dcache_req.bits.wsize
+                io.data_req.bits.wsize := wsize_reg
                 io.data_req.bits.wlen := 0.U
                 io.data_req.bits.wdata := wdata_reg
                 io.data_req.bits.wmask := wmask_reg
                 io.data_req.bits.waddr := req_addr_reg
                 io.data_req.bits.burst := false.B
+                when (dcacheRetDbgEnable && io.data_req.fire && req_addr_reg >= dbgStackLo && req_addr_reg <= dbgStackHi) {
+                    printf(
+                        p"[DCACHE-RET-DBG][BYPASS-W] waddr=0x${Hexadecimal(req_addr_reg)} wdata=0x${Hexadecimal(wdata_reg)} wmask=0x${Hexadecimal(wmask_reg)} wsize=${wsize_reg}\n"
+                    )
+                }
+                when (io.data_req.fire && isWatchAddr(req_addr_reg)) {
+                    printf(
+                        p"[DCACHE-WATCH] path=BYPASS-W pc=0x${Hexadecimal(req_pc_reg)} inst=0x${Hexadecimal(req_inst_reg)} addr=0x${Hexadecimal(req_addr_reg)} word=0x${Hexadecimal(Cat(req_addr_reg(31, 2), 0.U(2.W)))} wdata=0x${Hexadecimal(wdata_reg)} wmask=0x${Hexadecimal(wmask_reg)} wsize=${wsize_reg}\n"
+                    )
+                }
                 when (io.data_req.fire) {
                     state := s_bypass_resp
                 }

@@ -56,6 +56,14 @@ class ICache1 extends Module {
     val tag_reg = RegInit(0.U(21.W)) // 存储当前访问地址的 tag[31:11]
     val index_reg = RegInit(0.U(6.W))
     val offset_reg = RegInit(0.U(5.W))
+    // lookup 元数据快照：与一次 SyncReadMem 读请求严格绑定
+    val lk_tag_reg = RegInit(0.U(tag_bits.W))
+    val lk_index_reg = RegInit(0.U(index_bits.W))
+    val lk_offset_reg = RegInit(0.U(offset_bits.W))
+    val lk_pc_reg = RegInit(0.U(32.W))
+    // SyncReadMem 读结果打一拍，避免状态推进导致的读值错配
+    val rd_tags_reg = Reg(Vec(ways, UInt(tag_bits.W)))
+    val rd_words_reg = Reg(Vec(ways, UInt(32.W)))
     val line_base = RegInit(0.U(32.W)) // 存储当前行的基地址
     val miss_pc_reg = RegInit(0.U(32.W)) // 锁存本次请求PC（用于bypass响应）
     val miss_cacheable_reg = RegInit(false.B) // 当前miss是否可缓存（SDRAM）
@@ -72,13 +80,21 @@ class ICache1 extends Module {
 
 // ============== 状态机定义  ===================
     val state = RegInit(0.U(3.W)) // 状态机状态
-    val s_idle :: s_lookup_req :: s_lookup_resp :: s_missreq :: s_refill :: s_resp :: Nil = Enum(6)
+    val s_idle :: s_lookup_req :: s_lookup_resp :: s_lookup_eval :: s_missreq :: s_refill :: s_resp :: Nil = Enum(7)
 
 // ============== 性能计数器  ===================
     val hit_count = RegInit(0.U(32.W))
     val miss_count = RegInit(0.U(32.W))
     io.hit_count := hit_count
     io.miss_count := miss_count
+
+    // -------- debug: default on, only print narrow PC windows --------
+    val icDbgEnable = false.B
+    private def inDbgWin(pc: UInt): Bool = {
+        // putch/ioe + printf return path windows
+        (pc >= "h80005580".U && pc <= "h800056f0".U) ||
+        (pc >= "h80005b00".U && pc <= "h80005c40".U)
+    }
 
 // ============== 赋默认值  ===================
     io.fetch_req.ready := false.B
@@ -108,8 +124,8 @@ class ICache1 extends Module {
         offset_reg := addr(4, 0)
         line_base := addr & "hffffffe0".U // 行基地址，低5位清零
         miss_pc_reg := addr
-        // 仅SDRAM区域(0xa0000000~0xa3ffffff)走cache，其他地址单拍bypass
-        miss_cacheable_reg := addr(31, 26) === "b101000".U
+        // SDRAM/PSRAM窗口走cache：0xa0xx_xxxx 或 0x80xx_xxxx
+        miss_cacheable_reg := (addr(31, 26) === "b101000".U) || (addr(31, 26) === "b100000".U)
         victim_way := rand_way // 记录当前被替换的路径，供下一次替换使用
         refill_cnt := 0.U
     }
@@ -135,30 +151,54 @@ class ICache1 extends Module {
             }
 
             is (s_lookup_req) {
-                // 发起 SyncReadMem 读取，请求后一拍在 s_lookup_resp 消费
+                // 发起 SyncReadMem 读取，并锁存本次 lookup 元数据
+                lk_tag_reg := tag_reg
+                lk_index_reg := index_reg
+                lk_offset_reg := offset_reg
+                lk_pc_reg := line_base + offset_reg
                 state := s_lookup_resp
             }
 
             is (s_lookup_resp) {
-                val hit0 = valid_array(0)(index_reg) && lookup_tags(0) === tag_reg
-                val hit1 = valid_array(1)(index_reg) && lookup_tags(1) === tag_reg
-                val hit2 = valid_array(2)(index_reg) && lookup_tags(2) === tag_reg
-                val hit3 = valid_array(3)(index_reg) && lookup_tags(3) === tag_reg
+                // 接收 SyncReadMem 结果，下一拍再做 hit/miss 判定
+                for (w <- 0 until ways) {
+                    rd_tags_reg(w) := lookup_tags(w)
+                    rd_words_reg(w) := lookup_words(w)
+                }
+                state := s_lookup_eval
+            }
+
+            is (s_lookup_eval) {
+                val hit0 = valid_array(0)(lk_index_reg) && rd_tags_reg(0) === lk_tag_reg
+                val hit1 = valid_array(1)(lk_index_reg) && rd_tags_reg(1) === lk_tag_reg
+                val hit2 = valid_array(2)(lk_index_reg) && rd_tags_reg(2) === lk_tag_reg
+                val hit3 = valid_array(3)(lk_index_reg) && rd_tags_reg(3) === lk_tag_reg
                 val hit = hit0 || hit1 || hit2 || hit3
+                val reqPc = lk_pc_reg
 
                 when (hit) {
                     hit_count := hit_count + 1.U
                     // 命中后统一进入 s_resp
-                    resp_pc_reg := line_base + offset_reg
+                    resp_pc_reg := lk_pc_reg
                     resp_inst_reg := Mux1H(Seq(
-                        hit0 -> lookup_words(0),
-                        hit1 -> lookup_words(1),
-                        hit2 -> lookup_words(2),
-                        hit3 -> lookup_words(3)
+                        hit0 -> rd_words_reg(0),
+                        hit1 -> rd_words_reg(1),
+                        hit2 -> rd_words_reg(2),
+                        hit3 -> rd_words_reg(3)
                     ))
+                    when (icDbgEnable && inDbgWin(reqPc)) {
+                        printf(
+                            p"[ICACHE-DBG][HIT] pc=0x${Hexadecimal(reqPc)} tag=0x${Hexadecimal(lk_tag_reg)} idx=0x${Hexadecimal(lk_index_reg)} off=0x${Hexadecimal(lk_offset_reg)} way=${Mux1H(Seq(hit0 -> 0.U, hit1 -> 1.U, hit2 -> 2.U, hit3 -> 3.U))} inst=0x${Hexadecimal(resp_inst_reg)}\n"
+                        )
+                    }
                     state := s_resp
                 } .otherwise {
                     miss_count := miss_count + 1.U
+                    when (icDbgEnable && inDbgWin(reqPc)) {
+                        printf(
+                            p"[ICACHE-DBG][MISS] pc=0x${Hexadecimal(reqPc)} tag=0x${Hexadecimal(lk_tag_reg)} idx=0x${Hexadecimal(lk_index_reg)} off=0x${Hexadecimal(lk_offset_reg)} cacheable=${miss_cacheable_reg}\n"
+                        )
+                    }
                     // 未命中，进入 missreq:
                     // - SDRAM: 发burst做refill
                     // - 非SDRAM: 发单拍并bypass
@@ -182,6 +222,11 @@ class ICache1 extends Module {
                 io.inst_req.bits.pc := Mux(miss_cacheable_reg, line_base, miss_pc_reg)
                 io.inst_req.bits.burst := miss_cacheable_reg
                 when (io.inst_req.fire) {
+                    when (icDbgEnable && inDbgWin(miss_pc_reg)) {
+                        printf(
+                            p"[ICACHE-DBG][REQ] pc=0x${Hexadecimal(miss_pc_reg)} req=0x${Hexadecimal(io.inst_req.bits.pc)} burst=${io.inst_req.bits.burst}\n"
+                        )
+                    }
                     state := s_refill
                 }
             }
@@ -192,6 +237,11 @@ class ICache1 extends Module {
 
                 when (io.inst_resp.fire) {
                     val data = io.inst_resp.bits.inst
+                    when (icDbgEnable && inDbgWin(miss_pc_reg)) {
+                        printf(
+                            p"[ICACHE-DBG][RSP] miss_pc=0x${Hexadecimal(miss_pc_reg)} beat=${refill_cnt} data=0x${Hexadecimal(data)} last=${io.inst_resp.bits.last} cacheable=${miss_cacheable_reg}\n"
+                        )
+                    }
                     when (miss_cacheable_reg) {
                         for (w <- 0 until ways) {
                             when (victim_way === w.U) {
@@ -233,16 +283,14 @@ class ICache1 extends Module {
                 io.fetch_resp.bits.pc := resp_pc_reg
                 io.fetch_resp.bits.inst := resp_inst_reg
                 io.fetch_resp.bits.miss := false.B
-                // 若本拍响应被前端消费，允许同拍接收下一条请求
-                io.fetch_req.ready := io.fetch_resp.ready
 
                 when (io.fetch_resp.fire) {
-                    when (io.fetch_req.fire) {
-                        latchFetchAddr(io.fetch_req.bits.pc)
-                        state := s_lookup_req
-                    } .otherwise {
-                        state := s_idle
+                    when (icDbgEnable && inDbgWin(resp_pc_reg)) {
+                        printf(
+                            p"[ICACHE-DBG][OUT] pc=0x${Hexadecimal(resp_pc_reg)} inst=0x${Hexadecimal(resp_inst_reg)} ready=${io.fetch_resp.ready}\n"
+                        )
                     }
+                    state := s_idle
                 }
             }
         }

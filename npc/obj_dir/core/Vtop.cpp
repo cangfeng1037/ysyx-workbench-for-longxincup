@@ -11,6 +11,7 @@ Vtop::Vtop(VerilatedContext* _vcontextp__, const char* _vcname__)
     : VerilatedModel{*_vcontextp__}
     , vlSymsp{new Vtop__Syms(contextp(), _vcname__, this)}
     , clock{vlSymsp->TOP.clock}
+    , io_halt{vlSymsp->TOP.io_halt}
     , reset{vlSymsp->TOP.reset}
     , io_halt_ret{vlSymsp->TOP.io_halt_ret}
     , io_non_inst{vlSymsp->TOP.io_non_inst}
@@ -68,6 +69,7 @@ Vtop::Vtop(VerilatedContext* _vcontextp__, const char* _vcname__)
     , io_difftest_valid{vlSymsp->TOP.io_difftest_valid}
     , io_pc{vlSymsp->TOP.io_pc}
     , io_inst{vlSymsp->TOP.io_inst}
+    , io_commit_addr{vlSymsp->TOP.io_commit_addr}
     , io_master_awaddr{vlSymsp->TOP.io_master_awaddr}
     , io_master_wdata{vlSymsp->TOP.io_master_wdata}
     , io_master_araddr{vlSymsp->TOP.io_master_araddr}

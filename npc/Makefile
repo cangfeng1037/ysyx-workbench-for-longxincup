@@ -1,5 +1,5 @@
 # 基本配置
-SIM_MODE ?= soc
+SIM_MODE ?= core
 
 ifeq ($(SIM_MODE),core)
 TOP_MODULE = top
@@ -10,11 +10,20 @@ $(error Unsupported SIM_MODE '$(SIM_MODE)'; expected 'soc' or 'core')
 endif
 TOPNAME = $(TOP_MODULE)
 
+ifeq ($(SIM_MODE),core)
+NPC_RESET_PC = 0x80000000
+else
+NPC_RESET_PC = 0x30000000
+endif
+
 
 IMAGE ?=
 ELF   ?=
 ARGS  ?= 
-WAVE  ?= 0
+WAVE  ?= 1
+DIFFTEST ?= 0
+NPC_WB_THREE_CYCLE ?= 0
+NPC_HW_FWD_DEBUG ?= 0
 
 
 # 工具配置
@@ -28,7 +37,7 @@ VERILATOR_CFLAGS = --cc --trace --exe --build -j 0 \
 	--vpi $(addprefix -I, $(PERIP_INC_PATHS))
 
 #chisel配置
-CHISEL_FIRTOOL = /home/cangfeng_/.local/bin/firtool
+CHISEL_FIRTOOL = /home/cangfeng_/circt-build/circt/build/bin
 SBT = sbt
 GEN_SCRIPT = ./gen_verilog.sh
 
@@ -37,12 +46,13 @@ BUILD_DIR = ./obj_dir/$(SIM_MODE)
 OBJ_DIR = $(BUILD_DIR)
 VSRC_DIR = ./verilog
 CSRC_DIR = ./csrc
+GEN_VSRC_DIR = $(VSRC_DIR)/$(SIM_MODE)
 
 # 目标文件
 BIN = $(BUILD_DIR)/V$(TOPNAME)
 
 # 源文件搜索
-GEN_VSRCS = $(VSRC_DIR)/top.sv
+GEN_VSRCS = $(GEN_VSRC_DIR)/top.sv
 
 ifeq ($(SIM_MODE),core)
 CSRCS = $(shell find $(abspath ./csrc) -name "*.cpp" | grep -v char-test.cpp | grep -v top.cpp)
@@ -79,24 +89,36 @@ CXXFLAGS += -DCONFIG_MTRACE
 CFLAGS   += -DCONFIG_PATCH
 CXXFLAGS += -DCONFIG_PATCH
 
+ifeq ($(WAVE),1)
+CFLAGS   += -DCONFIG_WAVE
+CXXFLAGS += -DCONFIG_WAVE
+endif
+
 # Chisel 源文件检测
 CHISEL_SRCS = $(shell find src/main/scala -name "*.scala" 2>/dev/null)
 
 # 默认目标
 all: sim
 
+check-image:
+ifeq ($(strip $(IMAGE)),)
+	$(error IMAGE is required. Example: make run IMAGE=/abs/path/to/program.bin)
+endif
+
 # Chisel 生成 Verilog
 $(GEN_VSRCS): $(CHISEL_SRCS)
 	@echo "=== Generating Verilog from Chisel ==="
 	@chmod +x $(GEN_SCRIPT)
-	@CHISEL_FIRTOOL_PATH=$(CHISEL_FIRTOOL) $(GEN_SCRIPT)
+	@mkdir -p $(GEN_VSRC_DIR)
+	@CHISEL_FIRTOOL_PATH=$(CHISEL_FIRTOOL) NPC_VERILOG_DIR=$(GEN_VSRC_DIR) NPC_RESET_PC=$(NPC_RESET_PC) NPC_WB_THREE_CYCLE=$(NPC_WB_THREE_CYCLE) NPC_HW_FWD_DEBUG=$(NPC_HW_FWD_DEBUG) $(GEN_SCRIPT)
 	@echo "=== Verilog generation completed ==="
 
 # 强制重新生成 Verilog
 gen-verilog:
 	@echo "=== Forcing Verilog generation from Chisel ==="
 	@chmod +x $(GEN_SCRIPT)
-	@CHISEL_FIRTOOL_PATH=$(CHISEL_FIRTOOL) $(GEN_SCRIPT)
+	@mkdir -p $(GEN_VSRC_DIR)
+	@CHISEL_FIRTOOL_PATH=$(CHISEL_FIRTOOL) NPC_VERILOG_DIR=$(GEN_VSRC_DIR) NPC_RESET_PC=$(NPC_RESET_PC) NPC_WB_THREE_CYCLE=$(NPC_WB_THREE_CYCLE) NPC_HW_FWD_DEBUG=$(NPC_HW_FWD_DEBUG) $(GEN_SCRIPT)
 	@echo "=== Verilog generation completed ==="
 
 # 构建规则 - 依赖 Verilog 生成
@@ -115,13 +137,13 @@ $(BIN): $(VSRCS) $(CSRCS)
 	@echo "Build completed: $(BIN)"
 
 # 仿真运行
-sim: $(BIN)
+sim: check-image $(BIN)
 	@echo "Running simulation..."
 	@$(BIN) $(IMAGE) 
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 
 # 快速运行
-run: $(BIN)
+run: check-image $(BIN)
 	@echo "Running simulation (quick)..."
 	@echo "Simulation mode: $(SIM_MODE), top: $(TOPNAME)"
 	@$(BIN) $(IMAGE) # 快速运行
@@ -135,9 +157,15 @@ info:
 	@echo "BIN: $(BIN)"
 	@echo "BUILD_DIR: $(BUILD_DIR)"
 	@echo "VSRC_DIR: $(VSRC_DIR)"
+	@echo "GEN_VSRC_DIR: $(GEN_VSRC_DIR)"
 	@echo "CSRC_DIR: $(CSRC_DIR)"
 	@echo "VSRCS: $(VSRCS)"
 	@echo "CSRCS: $(CSRCS)"
+	@echo "NPC_RESET_PC: $(NPC_RESET_PC)"
+	@echo "DIFFTEST: $(DIFFTEST)"
+	@echo "NPC_WB_THREE_CYCLE: $(NPC_WB_THREE_CYCLE)"
+	@echo "NPC_HW_FWD_DEBUG: $(NPC_HW_FWD_DEBUG)"
+	@echo "WAVE: $(WAVE)"
 	@echo "VERILATOR_CFLAGS: $(VERILATOR_CFLAGS)"
 	@echo "CHISEL_SRCS: $(CHISEL_SRCS)"
 	@echo "CHISEL_FIRTOOL: $(CHISEL_FIRTOOL)"
@@ -158,6 +186,7 @@ clean:
 # 深度清理 - 包括生成的 Verilog
 distclean: clean
 	@echo "Cleaning generated Verilog..."
+	rm -rf $(VSRC_DIR)/core $(VSRC_DIR)/soc
 	rm -rf $(VSRC_DIR)/*.sv $(VSRC_DIR)/*.v $(VSRC_DIR)/*.fir
 	rm -rf target project/target
 	@echo "Deep clean completed."
@@ -167,7 +196,7 @@ rebuild: clean sim
 
 # 创建必要目录
 setup:
-	@mkdir -p $(VSRC_DIR) $(CSRC_DIR)
+	@mkdir -p $(VSRC_DIR) $(GEN_VSRC_DIR) $(CSRC_DIR)
 
 # 帮助信息
 help:
@@ -182,7 +211,7 @@ help:
 	@echo "  setup   - Create directories"
 	@echo "  help    - Show this help"
 
-.PHONY: all sim run clean rebuild lint info setup help gen-verilog
+.PHONY: all sim run clean rebuild lint info setup help gen-verilog check-image
 
 # 包含上级Makefile
 include ../Makefile

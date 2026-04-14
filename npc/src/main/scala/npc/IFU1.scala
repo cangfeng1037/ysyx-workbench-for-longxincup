@@ -51,8 +51,10 @@ class IFU1 extends Module {
         val flush = Output(Bool())
     })
 
+    private val bootPc = BootConfig.resetPc.U(32.W)
+
     // PC 寄存器
-    val pc = RegInit("h30000000".U(32.W))
+    val pc = RegInit(bootPc)
 
     // 锁存一次发射请求对应的pc
     val pc_reg = RegInit(0.U(32.W))
@@ -67,8 +69,8 @@ class IFU1 extends Module {
     val pred_valid = RegInit(false.B)  // BPU 响应有效标志
 
     when (reset.asBool) {
-        pc := "h30000000".U(32.W)
-        pc_reg := "h30000000".U(32.W)
+        pc := bootPc
+        pc_reg := bootPc
         req_valid := false.B
         out_valid := false.B
         wait_pred := false.B

@@ -39,7 +39,9 @@ class IFU2 extends Module {
     }.elsewhen(io.inst_resp.fire) {
       waiting := false.B
     }
-    when(waiting && !io.flush && wait_pc_reg >= "ha0010000".U) {
+    val perfPcInAmText = wait_pc_reg >= "ha0010000".U
+    val perfPcInNpcPmem = wait_pc_reg(31, 28) === "h8".U
+    when(waiting && !io.flush && (perfPcInAmText || perfPcInNpcPmem)) {
       i_cnt := i_cnt + 1.U
     }
 

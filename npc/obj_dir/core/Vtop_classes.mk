@@ -29,31 +29,24 @@ VM_CLASSES_FAST += \
 	Vtop___024root__DepSet_heccd7ead__0 \
 	Vtop___024root__DepSet_heccd7ead__1 \
 	Vtop___024root__DepSet_heccd7ead__2 \
-	Vtop___024root__DepSet_heccd7ead__3 \
-	Vtop___024root__DepSet_heccd7ead__4 \
-	Vtop___024root__DepSet_heccd7ead__5 \
-	Vtop___024root__DepSet_heccd7ead__6 \
 
 # Generated module classes, non-fast-path, compile with low/medium optimization
 VM_CLASSES_SLOW += \
+	Vtop__ConstPool_0 \
 	Vtop___024root__Slow \
 	Vtop___024root__DepSet_h84412442__0__Slow \
 	Vtop___024root__DepSet_heccd7ead__0__Slow \
-	Vtop___024root__DepSet_heccd7ead__1__Slow \
-	Vtop___024root__DepSet_heccd7ead__2__Slow \
 
 # Generated support classes, fast-path, compile with highest optimization
 VM_SUPPORT_FAST += \
 	Vtop__Dpi \
 	Vtop__Trace__0 \
-	Vtop__Trace__1 \
 
 # Generated support classes, non-fast-path, compile with low/medium optimization
 VM_SUPPORT_SLOW += \
 	Vtop__Syms \
 	Vtop__Trace__0__Slow \
 	Vtop__TraceDecls__0__Slow \
-	Vtop__Trace__1__Slow \
 
 # Global classes, need linked once per executable, fast-path, compile with highest optimization
 VM_GLOBAL_FAST += \

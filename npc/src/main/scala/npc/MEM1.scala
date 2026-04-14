@@ -33,6 +33,8 @@ class MEM12MEM2 extends Bundle {
 }
 
 class dcache_req extends Bundle {
+    val pc = UInt(32.W)
+    val inst = UInt(32.W)
     val wen = Bool() // true: 写请求，false: 读请求
     val rsize = UInt(3.W) // 0: byte, 1: half-word, 2: word
     val wdata = UInt(32.W) // 写数据
@@ -47,6 +49,7 @@ class MEM1 extends Module {
     val io = IO(new Bundle {
         val in  = Flipped(Decoupled(new EX2MEM()))
         val out = Decoupled(new MEM12MEM2())
+        val mem1_fwd = Output(new fwd_info())
         
         // 内存访问接口（连接到 SRAM）
         val mem_req = Decoupled(new dcache_req())
@@ -192,6 +195,8 @@ class MEM1 extends Module {
     ))
     // 内存接口输出
     io.mem_req.bits.wen   := is_sw || is_sh || is_sb
+    io.mem_req.bits.pc    := pc
+    io.mem_req.bits.inst  := inst
     io.mem_req.bits.raddr := alu_result
     io.mem_req.bits.waddr := alu_result
     io.mem_req.bits.wdata := wdata
@@ -204,10 +209,56 @@ class MEM1 extends Module {
     ))
     // bootloader 阶段（pc < 0xa0010000）的访存优先旁路，避免与 DCache 一致性耦合
     val is_bootloader_phase = pc < "ha0010000".U(32.W)
-    val is_cacheable_addr = (alu_result(31, 26) === "b101000".U) // 0xa0xx_xxxx SDRAM
+    val is_cacheable_addr =
+        (alu_result(31, 26) === "b101000".U) || // 0xa0xx_xxxx
+        (alu_result(31, 26) === "b100000".U) || // 0x80xx_xxxx
+        (alu_result(31, 16) === "h8000".U(16.W)) // 0x8000_xxxx
     val is_uncacheable_store = is_store && !is_cacheable_addr
     val is_mem_op = is_load || is_store
     io.mem_req.bits.bypass := is_uncacheable_store || (is_bootloader_phase && is_mem_op)
+
+    // ===== MEM1 RET debug trace (disabled by default) =====
+    val mem1RetDbgEnable = false.B
+    val dbgStackLo = "h8004ff00".U(32.W)
+    val dbgStackHi = "h80050020".U(32.W)
+    val dbgPcLo = "h80005c04".U(32.W)
+    val dbgPcHi = "h80005c10".U(32.W)
+    val dbgAddr = alu_result
+    val dbgHitAddr = dbgAddr >= dbgStackLo && dbgAddr <= dbgStackHi
+    val dbgHitPc = pc >= dbgPcLo && pc <= dbgPcHi
+    when (mem1RetDbgEnable && io.mem_req.fire && (is_load || is_store) && (dbgHitAddr || dbgHitPc)) {
+        printf(
+            p"[MEM1-RET-DBG] pc=0x${Hexadecimal(pc)} inst=0x${Hexadecimal(inst)} addr=0x${Hexadecimal(dbgAddr)} is_load=${is_load} is_store=${is_store} rsize=${rsize} rd_en=${rd_en} rd=${rd_addr} wdata=0x${Hexadecimal(wdata)} wmask=0x${Hexadecimal(wmask)} bypass=${io.mem_req.bits.bypass}\n"
+        )
+    }
+
+    // ===== MEM1 exact watch trace (default on, precise addr only) =====
+    val watch0 = "h8004ff48".U(32.W)
+    val watch1 = "h8004ffe0".U(32.W)
+    val watch2 = "h8004ff44".U(32.W)
+    val watch3 = "h8004ff4c".U(32.W)
+    val watch4 = "h8004ff40".U(32.W)
+    val watch5 = "h8004ff50".U(32.W)
+    val dbgWordBase = Cat(dbgAddr(31, 2), 0.U(2.W))
+    val isWatchAddr =
+        (dbgWordBase === watch0) || (dbgWordBase === watch1) || (dbgWordBase === watch2) ||
+        (dbgWordBase === watch3) || (dbgWordBase === watch4) || (dbgWordBase === watch5)
+    when (false.B && io.mem_req.fire && is_store && isWatchAddr) {
+        printf(
+            p"[MEM1-WATCH] pc=0x${Hexadecimal(pc)} inst=0x${Hexadecimal(inst)} addr=0x${Hexadecimal(dbgAddr)} word=0x${Hexadecimal(dbgWordBase)} wdata=0x${Hexadecimal(wdata)} wmask=0x${Hexadecimal(wmask)} wsize=${io.mem_req.bits.wsize} bypass=${io.mem_req.bits.bypass}\n"
+        )
+    }
+
+    val mem1_result = MuxCase(alu_result, Seq(
+        (is_csrrw || is_csrrs) -> csr_rdata,
+        (is_jal || is_jalr) -> (pc + 4.U)
+    ))
+    io.mem1_fwd.rd_en := rd_en && (state =/= s_idle)
+    io.mem1_fwd.rd_addr := rd_addr
+    io.mem1_fwd.rd_is_load := is_load
+    io.mem1_fwd.val_out := mem1_result
+    io.mem1_fwd.valid := io.mem1_fwd.rd_en && !is_load
+
     // 输出打包
     io.out.bits.pc         := pc
     io.out.bits.inst       := inst

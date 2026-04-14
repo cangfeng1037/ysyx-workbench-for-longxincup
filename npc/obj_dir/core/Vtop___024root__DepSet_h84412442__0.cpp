@@ -18,21 +18,21 @@ void Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_pc_TOP(Vtop__Sym
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_pc_TOP\n"); );
     // Init
     // Body
-    get_pc__Vfuncrtn = vlSymsp->TOP.top__DOT__npc_cpu__DOT__ifu1__DOT__pc_reg;
+    get_pc__Vfuncrtn = vlSymsp->TOP.top__DOT__npc_cpu__DOT__wb__DOT__pc;
 }
 
 void Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_inst_TOP(Vtop__Syms* __restrict vlSymsp, IData/*31:0*/ &get_inst__Vfuncrtn) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_inst_TOP\n"); );
     // Init
     // Body
-    get_inst__Vfuncrtn = vlSymsp->TOP.top__DOT__npc_cpu__DOT__ifu2__DOT__inst_reg;
+    get_inst__Vfuncrtn = vlSymsp->TOP.top__DOT__npc_cpu__DOT__wb__DOT__inst;
 }
 
 void Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_difftest_valid_TOP(Vtop__Syms* __restrict vlSymsp, IData/*31:0*/ &get_difftest_valid__Vfuncrtn) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_difftest_valid_TOP\n"); );
     // Init
     // Body
-    get_difftest_valid__Vfuncrtn = (2U == (IData)(vlSymsp->TOP.top__DOT__npc_cpu__DOT__wb__DOT__state));
+    get_difftest_valid__Vfuncrtn = vlSymsp->TOP.top__DOT__npc_cpu__DOT__wb__DOT__state;
 }
 
 void Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_non_inst_TOP(Vtop__Syms* __restrict vlSymsp, IData/*31:0*/ &get_non_inst__Vfuncrtn) {
@@ -195,6 +195,62 @@ void Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_miss_count_TOP(V
     get_miss_count__Vfuncrtn = vlSymsp->TOP.top__DOT__npc_cpu__DOT__icache1__DOT__miss_count;
 }
 
+void Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_dcache_hit_count_TOP(Vtop__Syms* __restrict vlSymsp, IData/*31:0*/ &get_dcache_hit_count__Vfuncrtn) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_dcache_hit_count_TOP\n"); );
+    // Init
+    // Body
+    get_dcache_hit_count__Vfuncrtn = vlSymsp->TOP.top__DOT__npc_cpu__DOT__dcache1__DOT__hit_count;
+}
+
+void Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_dcache_miss_count_TOP(Vtop__Syms* __restrict vlSymsp, IData/*31:0*/ &get_dcache_miss_count__Vfuncrtn) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_dcache_miss_count_TOP\n"); );
+    // Init
+    // Body
+    get_dcache_miss_count__Vfuncrtn = vlSymsp->TOP.top__DOT__npc_cpu__DOT__dcache1__DOT__miss_count;
+}
+
+void Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_i_cnt_TOP(Vtop__Syms* __restrict vlSymsp, IData/*31:0*/ &get_i_cnt__Vfuncrtn) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_i_cnt_TOP\n"); );
+    // Init
+    // Body
+    get_i_cnt__Vfuncrtn = vlSymsp->TOP.top__DOT__npc_cpu__DOT__ifu2__DOT__i_cnt;
+}
+
+void Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_d_cnt_TOP(Vtop__Syms* __restrict vlSymsp, IData/*31:0*/ &get_d_cnt__Vfuncrtn) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_d_cnt_TOP\n"); );
+    // Init
+    // Body
+    get_d_cnt__Vfuncrtn = vlSymsp->TOP.top__DOT__npc_cpu__DOT__mem2__DOT__total_mem_cycles;
+}
+
+void Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_stall_cnt_TOP(Vtop__Syms* __restrict vlSymsp, IData/*31:0*/ &get_stall_cnt__Vfuncrtn) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_stall_cnt_TOP\n"); );
+    // Init
+    // Body
+    get_stall_cnt__Vfuncrtn = vlSymsp->TOP.top__DOT__npc_cpu__DOT__stall_cnt;
+}
+
+void Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_flush_cnt_TOP(Vtop__Syms* __restrict vlSymsp, IData/*31:0*/ &get_flush_cnt__Vfuncrtn) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_flush_cnt_TOP\n"); );
+    // Init
+    // Body
+    get_flush_cnt__Vfuncrtn = vlSymsp->TOP.top__DOT__npc_cpu__DOT__flush_cnt;
+}
+
+void Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_bp_total_count_TOP(Vtop__Syms* __restrict vlSymsp, IData/*31:0*/ &get_bp_total_count__Vfuncrtn) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_bp_total_count_TOP\n"); );
+    // Init
+    // Body
+    get_bp_total_count__Vfuncrtn = vlSymsp->TOP.top__DOT__npc_cpu__DOT__exu__DOT__bp_total_count_reg;
+}
+
+void Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_bp_hit_count_TOP(Vtop__Syms* __restrict vlSymsp, IData/*31:0*/ &get_bp_hit_count__Vfuncrtn) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiexp_top__DOT__difftest_dpi__DOT__get_bp_hit_count_TOP\n"); );
+    // Init
+    // Body
+    get_bp_hit_count__Vfuncrtn = vlSymsp->TOP.top__DOT__npc_cpu__DOT__exu__DOT__bp_hit_count_reg;
+}
+
 #ifdef VL_DEBUG
 VL_ATTR_COLD void Vtop___024root___dump_triggers__ico(Vtop___024root* vlSelf);
 #endif  // VL_DEBUG
@@ -225,11 +281,10 @@ void Vtop___024root___eval_triggers__act(Vtop___024root* vlSelf) {
     // Body
     vlSelfRef.__VactTriggered.set(0U, ((IData)(vlSelfRef.clock) 
                                        & (~ (IData)(vlSelfRef.__Vtrigprevexpr___TOP__clock__0))));
-    vlSelfRef.__VactTriggered.set(1U, ((IData)(vlSelfRef.top__DOT____Vcellinp__ebreak_box__is_ebreak) 
-                                       & (~ (IData)(vlSelfRef.__Vtrigprevexpr___TOP__top__DOT____Vcellinp__ebreak_box__is_ebreak__0))));
+    vlSelfRef.__VactTriggered.set(1U, ((IData)(vlSelfRef.io_halt) 
+                                       & (~ (IData)(vlSelfRef.__Vtrigprevexpr___TOP__io_halt__0))));
     vlSelfRef.__Vtrigprevexpr___TOP__clock__0 = vlSelfRef.clock;
-    vlSelfRef.__Vtrigprevexpr___TOP__top__DOT____Vcellinp__ebreak_box__is_ebreak__0 
-        = vlSelfRef.top__DOT____Vcellinp__ebreak_box__is_ebreak;
+    vlSelfRef.__Vtrigprevexpr___TOP__io_halt__0 = vlSelfRef.io_halt;
 #ifdef VL_DEBUG
     if (VL_UNLIKELY(vlSymsp->_vm_contextp__->debug())) {
         Vtop___024root___dump_triggers__act(vlSelf);

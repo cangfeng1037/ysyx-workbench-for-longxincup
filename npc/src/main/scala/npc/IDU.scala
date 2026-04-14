@@ -78,6 +78,9 @@ class IDU extends Module {
         val id_rs2 = Output(UInt(5.W))
         val use_rs1 = Output(Bool())
         val use_rs2 = Output(Bool())
+        val id_valid = Output(Bool())
+        val dbg_id_pc = Output(UInt(32.W))
+        val dbg_id_inst = Output(UInt(32.W))
 
         val stall = Input(Bool())
         val flush = Input(Bool())
@@ -323,9 +326,15 @@ class IDU extends Module {
     io.out.bits.csr_waddr := csr_waddr
     io.out.bits.csr_rdata := csr_rdata
 
-    // 前递相关信号
-    io.id_rs1 := rs1_addr
-    io.id_rs2 := rs2_addr
-    io.use_rs1 := use_rs1
-    io.use_rs2 := use_rs2
+    // 前递相关信号（仅在 decode 有效时导出，避免 idle 态旧译码残留参与 hazard）
+    val id_active = (state === s_decode)
+    io.id_rs1 := Mux(id_active, rs1_addr, 0.U)
+    io.id_rs2 := Mux(id_active, rs2_addr, 0.U)
+    io.use_rs1 := id_active && use_rs1
+    io.use_rs2 := id_active && use_rs2
+    io.id_valid := id_active
+
+    // 调试上下文：以 IDU 视角导出，供 Hazard 调试打印使用
+    io.dbg_id_pc := pc
+    io.dbg_id_inst := inst
 }

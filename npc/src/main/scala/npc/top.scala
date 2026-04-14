@@ -248,6 +248,7 @@ class top extends Module {
         
         val pc = Output(UInt(32.W))
         val inst = Output(UInt(32.W))
+        val commit_addr = Output(UInt(32.W))
         val halt_ret = Output(Bool())
         val non_inst = Output(Bool())
            
@@ -271,6 +272,7 @@ class top extends Module {
     io.gpr := npc_cpu.io.regs_out
     io.pc := npc_cpu.io.commit_pc
     io.inst := npc_cpu.io.commit_inst
+    io.commit_addr := npc_cpu.io.commit_addr
 
     // ebreak 检测和调用
     // ebreak只在提交时触发
